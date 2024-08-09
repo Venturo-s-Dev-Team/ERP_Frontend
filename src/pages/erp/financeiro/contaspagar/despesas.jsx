@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
 import {
   PieChart,
@@ -75,7 +75,6 @@ const despesas = [
     data: "09/03/25",
     finalizado: "Sim",
   },
-
   {
     id: 2,
     name: "Despesa 2",
@@ -84,7 +83,6 @@ const despesas = [
     data: "09/03/25",
     finalizado: "Sim",
   },
-
   {
     id: 3,
     name: "Despesa 3",
@@ -109,7 +107,6 @@ const despesas = [
     data: "09/03/25",
     finalizado: "Sim",
   },
-
   {
     id: 6,
     name: "Despesa 6",
@@ -118,7 +115,6 @@ const despesas = [
     data: "09/03/25",
     finalizado: "Sim",
   },
-
   {
     id: 7,
     name: "Despesa 7",
@@ -146,6 +142,21 @@ const despesas = [
 ];
 
 function Despesas() {
+  const [finalizar, setFinalizar] = useState(despesas);
+
+  const Finalizado = (id) => {
+    setFinalizar((prevDespesas) =>
+     
+        despesa.id === id
+          ? {
+              ...despesa,
+              finalizado: despesa.finalizado === "Sim" ? "Não" : "Sim",
+            }
+          : despesa
+      
+    );
+  };
+
   return (
     <main className="main-container">
       {/* Título principal */}
@@ -155,21 +166,19 @@ function Despesas() {
 
       {/* Botões para cadastrar despesas, excluir ou editar */}
       <div className="Button_Despesas">
-          <button className="Button-Menu" >
-            Adicionar
-            <FaPlus />
-          </button>
-          <button className="Button-Menu">
-            Editar
-            <FaPenToSquare />
-          </button>
-          <button className="Button-Menu">
-            Excluir
-            <FaTrashCan />
-          </button>
-        </div>
-
-      {/* Div com as despesas mais gerais */}
+        <button className="Button-Menu">
+          Adicionar
+          <FaPlus />
+        </button>
+        <button className="Button-Menu">
+          Editar
+          <FaPenToSquare />
+        </button>
+        <button className="Button-Menu">
+          Excluir
+          <FaTrashCan />
+        </button>
+      </div>
 
       {/* Box sobre contas */}
       <div className="box_desp">
@@ -183,56 +192,52 @@ function Despesas() {
         </div>
       </div>
 
-      {/* Um gráfico representativo */}
+      {/* Gráficos representativos */}
       <div className="gráficos">
-      <div className="gráfico1">
-        <PieChart width={700} height={300}>
-          <Pie
-            dataKey="value"
-            isAnimationActive={false}
-            data={data01}
-            cx="50%"
-            cy="50%"
-            outerRadius={80}
-            fill="#02416D"
-            label
-            className="pie1"
-          />
+        <div className="gráfico1">
+          <PieChart width={700} height={300}>
+            <Pie
+              dataKey="value"
+              isAnimationActive={false}
+              data={data01}
+              cx="50%"
+              cy="50%"
+              outerRadius={80}
+              fill="#02416D"
+              label
+              className="pie1"
+            />
+            <Tooltip />
+          </PieChart>
+          <h4 className="legenda_despesas1">Gráfico representativo</h4>
+        </div>
+        <div className="gráfico02">
+          <BarChart
+            width={500}
+            height={300}
+            data={data02}
+            margin={{
+              top: 20,
+              right: 30,
+              left: 20,
+              bottom: 5,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="pv" stackId="a" fill="#02416D" />
+            <Bar dataKey="amt" stackId="a" fill="#AEDD2B" />
+            <Bar dataKey="uv" fill="#066699" />
+          </BarChart>
+          <h4 className="legenda_despesas2">Gráfico representativo</h4>
+        </div>
+      </div>
 
-          <Tooltip />
-        </PieChart>
-        <h4 className="legenda_despesas1">Gráfico representativo</h4>
-      </div>
-      <div className="gráfico02">
-        <BarChart
-          width={500}
-          height={300}
-          data={data02}
-          margin={{
-            top: 20,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="pv" stackId="a" fill="#02416D" />
-          <Bar dataKey="amt" stackId="a" fill="#AEDD2B" />
-          <Bar dataKey="uv" fill="#066699" />
-         
-        </BarChart>
-        <h4 className="legenda_despesas2">Gráfico representativo</h4>
-        
-      </div>
-      </div>
       {/* Div para tabela com as despesas detalhadas */}
-
       <div className="Despesas_List">
-      
         <table>
           <caption>Registro de Despesas</caption>
           <thead>
@@ -240,22 +245,22 @@ function Despesas() {
               <th>Nome</th>
               <th>Descrição</th>
               <th>Valor</th>
-              <th>Data de Expiação</th>
+              <th>Data de Expiração</th>
               <th>Finalizado</th>
             </tr>
           </thead>
           <tbody>
-            {despesas.map((despesas) => (
-              <tr key={despesas.id}>
-                <td>{despesas.name}</td>
-                <td>{despesas.descricao}</td>
-
-                <td>R$ {despesas.valor.toFixed(2)}</td>
-
-                <td>{despesas.data}</td>
-
+            {finalizar.map((despesa) => (
+              <tr key={despesa.id}>
+                <td>{despesa.name}</td>
+                <td>{despesa.descricao}</td>
+                <td>R$ {despesa.valor.toFixed(2)}</td>
+                <td>{despesa.data}</td>
                 <td>
-                  {despesas.finalizado} 
+                  {despesa.finalizado}{" "}
+                  <button onClick={() => Finalizado(despesa.id)}>
+                    {despesa.finalizado === "Sim" ? "Marcar como Não" : "Marcar como Sim"}
+                  </button>
                 </td>
               </tr>
             ))}
@@ -265,4 +270,5 @@ function Despesas() {
     </main>
   );
 }
+
 export default Despesas;
