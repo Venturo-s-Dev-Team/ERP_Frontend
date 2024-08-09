@@ -146,14 +146,14 @@ function Despesas() {
 
   const Finalizado = (id) => {
     setFinalizar((prevDespesas) =>
-     
+      prevDespesas.map((despesa) =>
         despesa.id === id
           ? {
               ...despesa,
-              finalizado: despesa.finalizado === "Sim" ? "Não" : "Sim",
+              finalizado: despesa.finalizado === "Não" ? "Sim" : "Não",
             }
           : despesa
-      
+      )
     );
   };
 
@@ -259,7 +259,7 @@ function Despesas() {
                 <td>
                   {despesa.finalizado}{" "}
                   <button onClick={() => Finalizado(despesa.id)}>
-                    {despesa.finalizado === "Sim" ? "Marcar como Não" : "Marcar como Sim"}
+                    {despesa.finalizado === "Não" ? "Marcar como Não" : "Marcar como Sim"}
                   </button>
                 </td>
               </tr>
