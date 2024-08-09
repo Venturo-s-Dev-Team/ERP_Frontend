@@ -51,16 +51,6 @@ const MenuList = ({ darkTheme }) => {
           label: "Contas à pagar",
           children: [
             {
-              key: "cadastrodespesas",
-              label: "Cadastro despesas",
-              onClick: () => handleNavigation("/cad_despesas"),
-            },
-            {
-              key: "cadastrofornecedores",
-              label: "Cadastro fornecedores",
-              onClick: () => handleNavigation("/cad_fornecedor"),
-            },
-            {
               key: "despesas",
               label: "Despesas",
               onClick: () => handleNavigation("/despesas"),

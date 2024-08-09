@@ -2,7 +2,6 @@ import { Button, Modal, Form } from "react-bootstrap";
 import React, { useState } from "react";
 import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
 import "../../../App.css";
-import Venturo from "../../../images/Venturo.png";
 
 const products = [
   { id: 1, name: "Produto 1", code: 244, quantidade: 3, valorUni: 4 },

@@ -33,7 +33,7 @@ function DashboardAdmin() {
 
   const [selectedId, setSelectedId] = useState(null);
   const [itemStatus, setItemStatus] = useState(() => {
-    // Inicialize o status de cada item como "Desativado"
+    // Inicia o status de cada item como "Desativado"
     const status = {};
     initialItems.forEach((item) => {
       status[item.id] = "Desativado";

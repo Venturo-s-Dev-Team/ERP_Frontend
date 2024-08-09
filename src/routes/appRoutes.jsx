@@ -50,6 +50,9 @@ import Cad_cliente from "../pages/erp/vendas/pedidos/cad_cliente";
 import Clientes from "../pages/erp/vendas/pedidos/clientes";
 import Precofinal from "../pages/erp/vendas/pedidos/precofinal";
 
+//ERROR
+import Error from "../pages/erro/error";
+
 function AppRoutes() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
 
@@ -107,6 +110,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           <Route path="/balancete" element={<Balancete />} />
           <Route path="/dre" element={<Dre />} />
           <Route path="/razao" element={<Razao />} />
+          <Route path="/error" element={<Error/>}/>
         </Routes>
       </div>
     </div>

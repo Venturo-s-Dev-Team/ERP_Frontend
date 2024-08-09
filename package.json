@@ -11,7 +11,12 @@
   },
   "dependencies": {
     "antd": "^5.19.4",
+    "axios": "^1.7.3",
     "bootstrap": "^5.3.3",
+    "formik": "^2.4.6",
+    "framer-motion": "^11.3.24",
+    "jsonwebtoken": "^9.0.2",
+    "jwt-decode": "^4.0.0",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.4",
     "react-dom": "^18.3.1",

@@ -1,7 +1,7 @@
 html, body {
   height: 100%;
   width: 100%;
-  color: #ffffff;
+  color: #000;
   font-family: 'Montserrat', sans-serif;
   
 }
@@ -117,6 +117,7 @@ width: 100%;
 .main-title {
   display: flex;
   justify-content: space-between;
+  color: #000000;
 }
 
 .main-cards {
@@ -459,51 +460,6 @@ tbody td {
   text-align: center;
 }
 
-/* Despesas */
-.Button_Despesas{
-  gap: 20px;
-  border-bottom: solid 1px;
-  border-color: #0a5483;
-  flex-direction: row;
-}
-
-.despesa1-box{
-  width: 290px;
-  height: 150px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  padding: 10px;
-  text-align: center;
-}
-
-.despesa1-box:hover{
-  opacity: 0.8;
-  background: linear-gradient(to top, #0056b3, #0a5483);
-}
-.despesa2-box{
-  width: 290px;
-  height: 150px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  padding: 10px;
-  text-align: center;
-}
-
-.despesa-box2:hover{
-  opacity: 0.8;
-  background: linear-gradient(to top, #0056b3, #0a5483);
-}
-
 .DivModalCont {
   flex-direction: column;
   justify-content: center;
@@ -564,21 +520,28 @@ tbody td {
   left: 700px;
 }
 
-
 /* Despesas */
-.Button_Despesas {
+.Button_Despesas{
   gap: 20px;
   border-bottom: solid 1px;
   border-color: #0a5483;
   flex-direction: row;
 }
-.Button-Despesas_letras {
+
+.Button_Despesas button{
   width: 120px;
   height: 40px;
-  justify-content: space-between;
-  margin-right: 10px;
-  margin-bottom: 10px;
-}
+  border-radius: 5px;
+  background: linear-gradient(to top, #0056b3, #0a5483);
+  margin: 15px;
+  border-color: transparent;
+  color: #fff;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  }
+
 
 .despesa1-box {
   width: 290px;
@@ -592,6 +555,7 @@ tbody td {
   cursor: pointer;
   padding: 10px;
   text-align: center;
+  color: #000;
 }
 
 .despesa1-box:hover {
@@ -599,6 +563,11 @@ tbody td {
 
   background-color: #0000001c;
 }
+
+.despesa-letras{
+  color: #000;
+}
+
 .despesa2-box {
   width: 290px;
   height: 150px;
@@ -630,12 +599,70 @@ tbody td {
   margin: 0 10px;
 }
 
+.gráficos{  
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.gráfico1,
+.gráfico02 {
+  flex: 1;
+  margin-right: 20px;
+}
+
 .gráfico1 {
   width: 50%;
-  justify-content: center;
-  flex-direction: center;
+}
+.gráfico02 {
+  width: 50%;
 }
 
 .pie1 {
   margin-left: 200px;
+}
+
+.legenda_despesas1{
+  margin-left: 255px;
+  margin-top: 20px;
+}
+.legenda_despesas2{
+  margin-left: 195px;
+  margin-top: 20px;
+}
+
+.Despesas_List {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  padding: 13px;
+  margin-top: 60px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+  background-color: #f4f4f4;
+  text-align: center;
+  border-radius: 0;
+  padding: 8px;
+
+}
+
+th:hover {
+  background-color: #e2e2e2;
+}
+
+caption {
+  font-size: 1.2em;
+  margin: 10px 0;
+}
+
+table {
+  margin: 0 auto;
+  border-spacing: 0;
+  width: 100%;
 }

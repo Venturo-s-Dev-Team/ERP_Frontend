@@ -1,0 +1,75 @@
+
+.main-container {
+    height: 100%;
+    width: 100%;
+        padding: 20px 20px;
+
+      /*background: linear-gradient(to right, #02416D, #010a2a);*/
+      background-color: #ffffff;
+    
+    }
+
+.divError h1 {
+color: black;
+font-size: 100px;
+justify-content: flex-start;
+display: flex;
+border: 1px solid black;
+border-radius: 150px;
+text-align: center;
+align-items: center;
+display: flex;
+text-align: center;
+justify-content: center;
+height: 220px;
+width: 220px;
+margin-bottom: 60px;
+}
+
+.ContainerError{
+    flex-direction: row;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 50px;
+}
+
+.spanText{
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.spanText span{
+    font-size: 20px;
+    color: red;
+}
+
+.spanText p{
+    font-size: 50px;
+    font-weight: bold;
+    height: 150px;
+    width: 150px;
+  
+}
+
+.divError {
+    flex-direction: column;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+}
+
+.ImgChatBot {
+    width: 360px;
+    height: 360px;
+}
+
+.DivImagemBot{
+display:flex;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+}

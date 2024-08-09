@@ -1,4 +1,7 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
+import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import { jwtDecode } from "jwt-decode";
 import {
   BsFillArchiveFill,
   BsPeopleFill,
@@ -24,7 +27,10 @@ const XAxisWithDefault = (props) => <XAxis {...props} />;
 const YAxisWithDefault = (props) => <YAxis {...props} />;
 
 function Home() {
-  const data = [
+
+  const navigate = useNavigate();
+
+  const InfoData = [
     {
       name: "Page A",
       uv: 4000,
@@ -69,6 +75,35 @@ function Home() {
     },
   ];
 
+  // Token e Logout
+  const [userInfo, setUserInfo] = useState(null);
+
+useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const response = await axios.get('http://10.144.170.15:3001/verifyToken', { withCredentials: true });
+        const decodedToken = jwtDecode(response.data.token);
+        setUserInfo(decodedToken);
+      } catch (error) {
+        console.error('Token inválido', error);
+        navigate('/');
+      }
+    };
+    
+    verifyToken();
+  }, [navigate]);
+
+  const Logout = async () => {
+    try {
+      const response = await axios.get('http://10.144.170.15:3001/logout', { withCredentials: true });
+      if (response) {
+      navigate('/')
+    }
+    } catch (err) {
+      alert('Erro ao efetuar login');
+    }
+  };
+
   return (
     <div className="main-container">
       <div className="main-title">
@@ -111,7 +146,7 @@ function Home() {
           <BarChart
             width={500}
             height={300}
-            data={data}
+            data={InfoData}
             margin={{
               top: 5,
               right: 30,
@@ -133,7 +168,7 @@ function Home() {
           <LineChart
             width={500}
             height={300}
-            data={data}
+            data={InfoData}
             margin={{
               top: 5,
               right: 30,
