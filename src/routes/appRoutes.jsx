@@ -4,8 +4,10 @@ import {
   Route,
   Routes,
   useLocation,
+  Navigate
 } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
+import Header from "../components/Header";
 import Dashboard from "../pages/erp/Dashboard";
 import DashboardAdmin from "../pages/erp/DashboardAdmin";
 import Login from "../pages/Login";
@@ -72,15 +74,15 @@ function AppRoutes() {
 
 function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
   const location = useLocation();
-  const isLoginRoute = location.pathname === "/";
+  const isExcludedRoute = ["/", "/error"].includes(location.pathname);
 
   return (
     <div className="grid-container">
-      {!isLoginRoute && (
-        <Sidebar
-          openSidebarToggle={openSidebarToggle}
-          OpenSidebar={OpenSidebar}
-        />
+      {!isExcludedRoute && (
+          <Sidebar
+            openSidebarToggle={openSidebarToggle}
+            OpenSidebar={OpenSidebar}
+          />
       )}
       <div className="content">
         <Routes>
@@ -110,7 +112,8 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           <Route path="/balancete" element={<Balancete />} />
           <Route path="/dre" element={<Dre />} />
           <Route path="/razao" element={<Razao />} />
-          <Route path="/error" element={<Error/>}/>
+          <Route path="/error" element={<Error errorCode={404} />} />
+          <Route path="*" element={<Navigate to="/error" />} />
         </Routes>
       </div>
     </div>

@@ -6,7 +6,6 @@ html, body {
   
 }
 
-
 .icon {
   vertical-align: middle;
   line-height: 1px;
@@ -33,7 +32,6 @@ html, body {
   flex: 1;
   height: 100%;
   height: 100vh;
-  
 }
 
 .content {
@@ -62,8 +60,9 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 30px 0 30px;
+  padding: 0 30px;
   box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+  background-color: #ffffff;
 }
 
 .menu-icon {
@@ -136,6 +135,8 @@ width: 100%;
   height: 180px;
   width: 300px;
   color: #ffff;
+  box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
+
 }
 
 .card:first-child {
@@ -152,6 +153,11 @@ width: 100%;
 
 .card:nth-child(4) {
   background: linear-gradient(to bottom, #AEDD2B, #d4ff5f);
+}
+
+.card:hover{
+  opacity: 0.8;
+  background-color: #000000;
 }
 
 .card-inner {
@@ -253,13 +259,15 @@ width: 100%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
   padding: 20px;
   width: 380px;
-  height: 200px;
+  height: 460px;
   text-align: center;
   color: #ffffff00;
 }
 .letras{
   color: #000000;
 }
+
+
 .div-statusbtn {
   margin-top: 18px;
   margin-bottom: 10px;
@@ -267,53 +275,53 @@ width: 100%;
 }
 
 .div-fecharbtn {
-  margin-top: -35px;
+  margin-left: 300px; 
 }
 
-.status-button {
-  height: 40px;
-  width: 90px;
-  border-radius: 5px;
+.close_btn{
+  background-color: #f8f8f800;
+  border: 0px;
 }
 
-.status-button.activated {
-  color: #28a745; /* Verde para ativado */
-  border-color: #28a745;
+.icone{
+  height: 30px;
+  width: 30px;
 }
 
-.status-button.activated:hover {
-  opacity: 0.8;
-  background-color: #28a7466e;
+.status-button-autorizar {
+  background-color: #4CAF50; /* Verde */
+  border: none;
+  padding: 15px 20px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+  left: 50%;
 }
 
-.status-button.deactivated {
-  color: #dc3545; /* Vermelho para desativado */
-  border-color: #dc3545;
+.status-button-autorizar:hover {
+  background-color: #22963d83;
 }
 
-.status-button.deactivated:hover {
-  opacity: 0.8;
-  background-color: #dc354678;
+.status-button-desautorizar {
+  background-color: #f44336; /* Vermelho */
+  border: none;
+  padding: 15px 20px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+  left: 50%;
 }
 
-.status-button:hover {
-  opacity: 0.8;
+.status-button-desautorizar:hover {
+  background-color: rgba(255, 0, 0, 0.427);
 }
+
 .div-close {
   margin-top: 20px;
-}
-.close-button {
-  margin-top: 40px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: #fff9f9;
-  cursor: pointer;
-}
-
-.close-button:hover {
-  background-color: #0056b3;
 }
 
 .main-titulo {
@@ -372,6 +380,19 @@ width: 100%;
 .div-titulos-card {
   margin-top: 25px;
 }
+.dados-imagem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px; 
+margin-bottom: 100px;
+margin-top: 30px;
+}
+
+
+.logo-container {
+  display: flex;
+  align-items: center; 
+}
 
 
 /* Estoque Cadastro */
@@ -394,6 +415,14 @@ width: 100%;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  cursor: pointer;
+  box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
+
+  }
+
+  .Button_Cad button:hover{
+    opacity: 0.8;
+    background-color: #000000;
   }
 
 
@@ -499,6 +528,12 @@ tbody td {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  cursor: pointer;
+}
+
+.RegisterPr:hover {
+  opacity: 0.8;
+  background-color: #000000;
 }
 
 .FecharPr {
@@ -513,6 +548,12 @@ tbody td {
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  cursor: pointer;
+}
+
+.FecharPr:hover{
+  opacity: 0.8;
+  background-color: #000000;
 }
 
 .ImageModal {
@@ -665,4 +706,58 @@ table {
   margin: 0 auto;
   border-spacing: 0;
   width: 100%;
+}
+.despesas_opc_btn {
+  border: none;
+  padding: 5px 10px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+  margin-left: 30px;
+}
+
+.despesas_opc_btn.sim{
+  background-color: rgba(255, 0, 0, 0.427);
+}
+.despesas_opc_btn.nao{
+  
+background-color: #22963d83;
+}
+
+/*PAGAMENTOS */
+.divEstatistcPgFunc {
+width: 100%;
+height: 40%;
+align-items: center;
+justify-content: center;
+display: flex;
+gap: 100px;
+}
+
+.divEstatistcPgFunc button{
+background-color: #fff;
+border-radius: 10px;
+height: 150px;
+width: 520px;
+box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
+border: transparent;
+flex-direction: row;
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 15px
+;
+cursor: pointer;
+}
+
+.divEstatistcPgFunc button:hover{
+  opacity: 0.8;
+  background-color: #0000001a;
+  }
+
+.icon-PagFunc{
+ width: 30px;
+ height: 30px; 
 }

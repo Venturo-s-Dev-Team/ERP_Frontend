@@ -1,37 +1,24 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import ChatBot from '../../images/ChatBotAssist.png'
 import "./error.css"
 
-function Error() {
+function Error({ errorCode }) {
+  const location = useLocation();
+  const code = errorCode || location.state?.errorCode || 404; 
+
   return (
-    <main className="main-container">
-
+    <main className="main-containerError">
       <div className="ContainerError">
-      <div className="divError">
+        <div className="divError">
+          <h1>{code}</h1>
+        </div>
 
-<h1>
-  404
-  </h1>
- 
-
-    <div className="spanText">
-  
-    <span>
-  This page does not exist/loading ERROR.
-    </span>
-
-  
-    </div>
-   </div>
-
-   <div className="DivImagemBot">
-   <img src={ChatBot} className="ImgChatBot"/>
-
-   </div>
-
-
-        </div>;
- 
+        <div className="DivImagemBot">
+          <img src={ChatBot} className="ImgChatBot" alt="Chat Bot" />
+          <h3>Oops... ERROR {code} occurred.</h3>
+        </div>
+      </div>
     </main>
   );
 }

@@ -257,9 +257,11 @@ function Despesas() {
                 <td>R$ {despesa.valor.toFixed(2)}</td>
                 <td>{despesa.data}</td>
                 <td>
-                  {despesa.finalizado}{" "}
-                  <button onClick={() => Finalizado(despesa.id)}>
-                    {despesa.finalizado === "Não" ? "Marcar como Não" : "Marcar como Sim"}
+                  {despesa.finalizado}
+                  <button className={`despesas_opc_btn ${
+                      despesa.finalizado === "Sim" ? "sim" : "nao"
+                    }`} onClick={() => Finalizado(despesa.id)}>
+                    {despesa.finalizado === "Não" ? "Marcar como Sim" : "Marcar como Não"}
                   </button>
                 </td>
               </tr>

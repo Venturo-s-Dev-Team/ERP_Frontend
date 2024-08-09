@@ -8,9 +8,30 @@ import {
 } from "@ant-design/icons";
 import { IoPieChartSharp } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const MenuList = ({ darkTheme }) => {
   const navigate = useNavigate();
+
+  // Token
+  const [userInfo, setUserInfo] = useState('');
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const response = await axios.get('http://10.144.170.15:3001/verifyToken', { withCredentials: true });
+        const decodedToken = jwtDecode(response.data.token);
+        setUserInfo(decodedToken);
+      } catch (error) {
+        console.error('Token inválido', error);
+        navigate('/');
+      }
+    };
+    
+    verifyToken();
+  }, [navigate]);
 
   const handleNavigation = (path) => {
     navigate(path);
@@ -23,7 +44,7 @@ const MenuList = ({ darkTheme }) => {
       label: "Dashboard",
       onClick: () => handleNavigation("/dashboard"),
     },
-    {
+    userInfo?.TypeUser === 'SuperAdmin' && {
       key: "DashboardAdmin",
       icon: <IoPieChartSharp />,
       label: "DashboardAdmin",
@@ -210,7 +231,7 @@ const MenuList = ({ darkTheme }) => {
     <Menu
       theme={darkTheme ? "dark" : "light"}
       className="menu-bar"
-      items={menuItems}
+      items={menuItems.filter(Boolean)}  // Filtra os itens nulos
     />
   );
 };

@@ -76,7 +76,7 @@ function Home() {
   ];
 
   // Token e Logout
-  const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState('');
 
 useEffect(() => {
     const verifyToken = async () => {
@@ -107,7 +107,7 @@ useEffect(() => {
   return (
     <div className="main-container">
       <div className="main-title">
-        <h3>DASHBOARD</h3>
+        <h3>DASHBOARD - BEM VINDO {userInfo.Nome_user}</h3>
       </div>
 
       <div className="main-cards">
