@@ -1,159 +1,157 @@
-import React from "react";
-import {
-  BsFillArchiveFill,
-  BsPeopleFill,
-  BsFillBellFill,
-  BsListCheck,
-} from "react-icons/bs";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  LineChart,
-  Line,
-} from "recharts";
-import "../../App.css";
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Venturo from "../../images/Venturo.png";
 
 function DashboardAdmin() {
-  const data = [
+  // Inicializar o status dos itens
+  const initialItems = [
     {
-      name: "Page A",
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
+      id: 1,
+      subtitle: "Gestão de Empresas",
+      title: "Empresa A",
+      color: "#0A5483",
     },
     {
-      name: "Page B",
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
+      id: 2,
+      subtitle: "Gestão de Empresas",
+      title: "Empresa B",
+      color: "#0A5483",
     },
     {
-      name: "Page C",
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
+      id: 3,
+      subtitle: "Gestão de Empresas",
+      title: "Empresa C",
+      color: "#0A5483",
     },
     {
-      name: "Page D",
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: "Page E",
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: "Page F",
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: "Page G",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
+      id: 4,
+      subtitle: "Gestão de Empresas",
+      title: "Empresa D",
+      color: "#0A5483",
     },
   ];
 
+  const [selectedId, setSelectedId] = useState(null);
+  const [itemStatus, setItemStatus] = useState(() => {
+    // Inicialize o status de cada item como "Desativado"
+    const status = {};
+    initialItems.forEach((item) => {
+      status[item.id] = "Desativado";
+    });
+    return status;
+  });
+
+  const toggleStatus = (id) => {
+    setItemStatus((prevStatus) => ({
+      ...prevStatus,
+      [id]: prevStatus[id] === "Ativado" ? "Desativado" : "Ativado",
+    }));
+  };
+
   return (
     <div className="main-container">
-      <div className="main-title">
-        <h3>DASHBOARD</h3>
+      {/* Texto do início */}
+      <div className="intro">
+        <div className="main-title">
+          <h1 className="main-titulo">Bem-Vindo ao Venturo!</h1>
+        </div>
+        <h4 className="texto-secundario1">
+          O Venturos é a solução definitiva para a gestão de recursos
+          empresariais,
+        </h4>
+        <h4 className="texto-secundario2">
+          projetado especialmente para atender às necessidades de super
+          administradores
+        </h4>
+        <h4 className="texto-secundario3">
+          como você. Explore as funcionalidades e traga mais eficiência e
+          clareza para suas operações.
+        </h4>
       </div>
 
-      <div className="main-cards">
-        <div className="card">
-          <div className="card-inner">
-            <h3>ITENS DE ESTOQUE</h3>
-            <BsFillArchiveFill className="card_icon" />
-          </div>
-          <h1>300</h1>
-        </div>
-        <div className="card">
-          <div className="card-inner">
-            <h3>TAREFAS</h3>
-            <BsListCheck className="card_icon" />
-          </div>
-          <h1>12</h1>
-        </div>
-        <div className="card">
-          <div className="card-inner">
-            <h3>FUNCIONÁRIOS</h3>
-            <BsPeopleFill className="card_icon" />
-          </div>
-          <h1>33</h1>
-        </div>
-        <div className="card">
-          <div className="card-inner">
-            <h3>ALTERAÇÕES</h3>
-            <BsFillBellFill className="card_icon" />
-          </div>
-          <h1>42</h1>
-        </div>
-      </div>
-
-      <div className="charts">
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            width={500}
-            height={300}
-            data={data}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
+      <div className="items-container">
+        {initialItems.map((item) => (
+          /* Div dos cards com animação */
+          <motion.div
+            key={item.id}
+            className="item-box"
+            style={{ backgroundColor: item.color }}
+            layoutId={item.id}
+            onClick={() => setSelectedId(item.id)}
           >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="pv" fill="#8884d8" />
-            <Bar dataKey="uv" fill="#82ca9d" />
-          </BarChart>
-        </ResponsiveContainer>
+            <motion.div className="div-titulos-card">
+              <motion.h5>{item.subtitle}</motion.h5>
+              <motion.h2>{item.title}</motion.h2>
+              <motion.h6>Status: {itemStatus[item.id]}</motion.h6>{" "}
+            </motion.div>
+            {/* Texto exibindo o status */}
+            <motion.div>
+              <motion.img src={Venturo} className="logo-cards" />
+            </motion.div>
+          </motion.div>
+        ))}
 
-        <ResponsiveContainer width="100%" height="100%">
-          <LineChart
-            width={500}
-            height={300}
-            data={data}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="pv"
-              stroke="#8884d8"
-              activeDot={{ r: 8 }}
-            />
-            <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-          </LineChart>
-        </ResponsiveContainer>
+        <AnimatePresence>
+          {/* Div do que está dentro dos cards */}
+          {selectedId && (
+            <motion.div
+              className="item-detail"
+              layoutId={selectedId}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+            >
+              {initialItems.find((item) => item.id === selectedId) && (
+                <>
+                  {" "}
+                  <motion.div className="div-statusbtn">
+                    <motion.h5 className="letras">
+                      {
+                        initialItems.find((item) => item.id === selectedId)
+                          .subtitle
+                      }
+                    </motion.h5>
+                    <motion.h2 className="letras">
+                      {
+                        initialItems.find((item) => item.id === selectedId)
+                          .title
+                      }
+                    </motion.h2>
+                    <motion.h6 className="letras">
+                      Status: {itemStatus[selectedId]}
+                    </motion.h6>{" "}
+                    {/* Texto exibindo status */}
+                    {/* Div com o botão alterando o status */}
+                    <motion.button
+                      className={`status-button ${
+                        itemStatus[selectedId] === "Ativado"
+                          ? "activated"
+                          : "deactivated"
+                      }`}
+                      onClick={() => toggleStatus(selectedId)}
+                    >
+                      {itemStatus[selectedId] === "Ativado"
+                        ? "Desativar"
+                        : "Ativar"}
+                    </motion.button>
+                  </motion.div>
+                  {/* Botão de fechar */}
+                  <motion.div className="div-fecharbtn">
+                    <motion.button
+                      className="close-button"
+                      onClick={() => setSelectedId(null)}
+                    >
+                      Fechar
+                    </motion.button>
+                  </motion.div>
+                </>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
 }
 
-export default Home;
+export default DashboardAdmin;
