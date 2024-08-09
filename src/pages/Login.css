@@ -10,7 +10,7 @@
 
 .BodyDiv {
     background-color: aliceblue;
-    background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+    background: linear-gradient(to bottom, #fff, #c9d6ff);
   display: flex;
     align-items: center;
     justify-content: center;
@@ -138,7 +138,7 @@
 }
 
 .container.active .toggle-left {
-    transform: translateX(0);
+    transform: translateX(0%);
 }
 
 .toggle-right {
@@ -159,7 +159,7 @@
     text-align: center;
     background-color: #02416D;
     color: #fff; 
-       border-radius: 10px;
+       border-radius: 5px;
        cursor: pointer;
        margin: 10px;
        text-transform: uppercase;

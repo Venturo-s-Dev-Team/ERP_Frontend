@@ -24,20 +24,16 @@ const MenuList = ({ darkTheme }) => {
       onClick: () => handleNavigation("/dashboard"),
     },
     {
+      key: "DashboardAdmin",
+      icon: <IoPieChartSharp />,
+      label: "DashboardAdmin",
+      onClick: () => handleNavigation("/dashboard_admin"),
+    },
+    {
       key: "subestoque",
       icon: <StockOutlined />,
       label: "Estoque",
       children: [
-        {
-          key: "atualizar",
-          label: "Atualizar produtos",
-          onClick: () => handleNavigation("/up_produto"),
-        },
-        {
-          key: "movimentacoes",
-          label: "Movimentações",
-          onClick: () => handleNavigation("/movimentacoes"),
-        },
         {
           key: "registrar",
           label: "Registrar produtos",

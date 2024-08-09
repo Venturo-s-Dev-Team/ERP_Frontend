@@ -7,17 +7,14 @@ import {
 } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Dashboard from "../pages/erp/Dashboard";
+import DashboardAdmin from "../pages/erp/DashboardAdmin";
 import Login from "../pages/Login";
 
 // ESTOQUE
 import Cad_produto from "../pages/erp/estoque/cad_produto";
-import Movimentacoes from "../pages/erp/estoque/movimentacoes";
-import Up_produto from "../pages/erp/estoque/up_produto";
 
 // FINANCEIRO
 // CONTAS A PAGAR
-import Cad_Despesas from "../pages/erp/financeiro/contaspagar/cad_despesas";
-import Cad_fornecedor from "../pages/erp/financeiro/contaspagar/cad_fornecedor";
 import Despesas from "../pages/erp/financeiro/contaspagar/despesas";
 import Fornecedores from "../pages/erp/financeiro/contaspagar/fornecedores";
 import Pagamentos from "../pages/erp/financeiro/contaspagar/pagamentos";
@@ -86,17 +83,14 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard_admin" element={<DashboardAdmin />} />
           <Route path="/cad_produto" element={<Cad_produto />} />
-          <Route path="/movimentacoes" element={<Movimentacoes />} />
-          <Route path="/up_produto" element={<Up_produto />} />
           <Route path="/cadastronf" element={<Cadastronf />} />
           <Route path="/emissaonf" element={<Emissaonf />} />
           <Route path="/cad_cliente" element={<Cad_cliente />} />
           <Route path="/clientes" element={<Clientes />} />
           <Route path="/precofinal" element={<Precofinal />} />
           <Route path="/vendas" element={<Vendas />} />
-          <Route path="/cad_despesas" element={<Cad_Despesas />} />
-          <Route path="/cad_fornecedor" element={<Cad_fornecedor />} />
           <Route path="/despesas" element={<Despesas />} />
           <Route path="/fornecedores" element={<Fornecedores />} />
           <Route path="/pagamentos" element={<Pagamentos />} />
