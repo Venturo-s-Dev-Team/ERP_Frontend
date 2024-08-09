@@ -226,6 +226,7 @@ function Despesas() {
          
         </BarChart>
         <h4 className="legenda_despesas2">Gráfico representativo</h4>
+        
       </div>
       </div>
       {/* Div para tabela com as despesas detalhadas */}
