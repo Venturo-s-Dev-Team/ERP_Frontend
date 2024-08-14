@@ -26,7 +26,7 @@ function DashboardAdmin() {
   // Função para desautorizar empresa
   const Desautorizado = async (id) => {
     try {
-      const response = await axios.get(`http://10.144.170.15:3001/desautorizar/${id}`, {
+      const response = await axios.get(`http://192.168.0.178:3001/desautorizar/${id}`, {
         withCredentials: true,
       });
       if (response) {
@@ -41,7 +41,7 @@ function DashboardAdmin() {
   // Função para autorizar empresa
   const Autorizado = async (id) => {
     try {
-      const response = await axios.get(`http://10.144.170.15:3001/autorizar/${id}`, {
+      const response = await axios.get(`http://192.168.0.178:3001/autorizar/${id}`, {
         withCredentials: true,
       });
       if (response) {
@@ -57,14 +57,18 @@ function DashboardAdmin() {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get("http://10.144.170.15:3001/verifyToken", {
-          withCredentials: true,
-        });
-        const decodedToken = jwtDecode(response.data.token);
-        setUserInfo(decodedToken);
+        const response = await axios.get('http://192.168.0.178:3001/verifyToken', { withCredentials: true });
+        if (response.status === 200) {
+          const decodedToken = jwtDecode(response.data.token);
+          setUserInfo(decodedToken);
+        } else if (response.status === 201) {
+          alert('Refresh necessário');
+          const decodedToken = jwtDecode(response.data.token);
+          setUserInfo(decodedToken);
+        }
       } catch (error) {
-        console.error("Token inválido", error);
-        navigate("/");
+        console.error('Token inválido', error);
+        navigate('/');
       }
     };
 
@@ -75,7 +79,7 @@ function DashboardAdmin() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const Info = await axios.get("http://10.144.170.15:3001/tableEmpresas", {
+        const Info = await axios.get("http://192.168.0.178:3001/tableEmpresas", {
           withCredentials: true,
         });
         if (Info.status === 200) {
@@ -87,7 +91,7 @@ function DashboardAdmin() {
             status: item.Autorizado === "YES" ? "Autorizado" : "Desautorizado",
             gestor: item.Gestor,
             cnpj: item.CNPJ,
-            email: item.Email,
+            email: item.email,
             logo: item.Logo,
           }));
           setData(fetchedData);
@@ -167,7 +171,7 @@ function DashboardAdmin() {
                 <motion.div>
                 {selectedItem.logo ? (
                   <img
-                    src={`http://10.144.170.15:3001/uploads/Logo/${selectedItem.logo}`}
+                    src={`http://192.168.0.178:3001/uploads/Logo/${selectedItem.logo}`}
                     style={{ width: 100, height: 100 }}
                     alt="Logo"
                   />

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import { useState, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { jwtDecode } from "jwt-decode";
@@ -78,24 +78,31 @@ function Home() {
   // Token e Logout
   const [userInfo, setUserInfo] = useState('');
 
-useEffect(() => {
+  useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get('http://10.144.170.15:3001/verifyToken', { withCredentials: true });
-        const decodedToken = jwtDecode(response.data.token);
-        setUserInfo(decodedToken);
+        const response = await axios.get('http://192.168.0.178:3001/verifyToken', { withCredentials: true });
+        if (response.status === 200) {
+          const decodedToken = jwtDecode(response.data.token);
+          setUserInfo(decodedToken);
+        } else if (response.status === 201) {
+          alert('Refresh necessário');
+          const decodedToken = jwtDecode(response.data.token);
+          setUserInfo(decodedToken);
+        }
       } catch (error) {
         console.error('Token inválido', error);
         navigate('/');
       }
     };
-    
+
     verifyToken();
   }, [navigate]);
 
+
   const Logout = async () => {
     try {
-      const response = await axios.get('http://10.144.170.15:3001/logout', { withCredentials: true });
+      const response = await axios.get('http://192.168.0.178:3001/logout', { withCredentials: true });
       if (response) {
       navigate('/')
     }
@@ -190,6 +197,7 @@ useEffect(() => {
             <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
           </LineChart>
         </ResponsiveContainer>
+        <button onClick={() => Logout()} className='btn btn-dark'  type='submit'>Logout</button>
       </div>
     </div>
   );
