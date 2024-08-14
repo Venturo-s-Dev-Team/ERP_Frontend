@@ -26,7 +26,7 @@ function DashboardAdmin() {
   // Função para desautorizar empresa
   const Desautorizado = async (id) => {
     try {
-      const response = await axios.get(`http://192.168.0.178:3001/desautorizar/${id}`, {
+      const response = await axios.get(`http://10.144.170.15:3001/desautorizar/${id}`, {
         withCredentials: true,
       });
       if (response) {
@@ -41,7 +41,7 @@ function DashboardAdmin() {
   // Função para autorizar empresa
   const Autorizado = async (id) => {
     try {
-      const response = await axios.get(`http://192.168.0.178:3001/autorizar/${id}`, {
+      const response = await axios.get(`http://10.144.170.15:3001/autorizar/${id}`, {
         withCredentials: true,
       });
       if (response) {
@@ -57,7 +57,7 @@ function DashboardAdmin() {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get('http://192.168.0.178:3001/verifyToken', { withCredentials: true });
+        const response = await axios.get('http://10.144.170.15:3001/verifyToken', { withCredentials: true });
         if (response.status === 200) {
           const decodedToken = jwtDecode(response.data.token);
           setUserInfo(decodedToken);
@@ -79,14 +79,14 @@ function DashboardAdmin() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const Info = await axios.get("http://192.168.0.178:3001/tableEmpresas", {
+        const Info = await axios.get("http://10.144.170.15:3001/tableEmpresas", {
           withCredentials: true,
         });
         if (Info.status === 200) {
           const fetchedData = Info.data.InfoTabela.map((item) => ({
             id: item.id,
             subtitle: "Gestão de Empresas",
-            title: item.Empresa,
+            title: item.RazaoSocial,
             color: "#0A5483",
             status: item.Autorizado === "YES" ? "Autorizado" : "Desautorizado",
             gestor: item.Gestor,
@@ -113,6 +113,7 @@ function DashboardAdmin() {
 
   return (
     <div className="main-container">
+      {/* Textos de boas vindas e introdução */}
       <div className="intro">
         <div className="main-title">
           <h1 className="main-titulo">Bem-Vindo ao Venturo!</h1>
@@ -129,6 +130,7 @@ function DashboardAdmin() {
       </div>
 
       <div className="items-container">
+        {/* Container - Box das empresas */}
         {data.map((item) => (
           <motion.div
             key={item.id}
@@ -148,6 +150,7 @@ function DashboardAdmin() {
           </motion.div>
         ))}
 
+{/* Parte de dentro dos containers das empresas */}
         <AnimatePresence>
           {selectedId && selectedItem && (
             <motion.div
@@ -157,6 +160,7 @@ function DashboardAdmin() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
+              {/* Botão de fechar */}
               <motion.div className="div-fecharbtn">
                 <motion.button
                   className="close_btn"
@@ -165,37 +169,33 @@ function DashboardAdmin() {
                  <CgCloseR className="icone"/>
                 </motion.button>
               </motion.div>
-
+{/* Nome da empresa e a logo */}
               <motion.div className="div-statusbtn">
-                <motion.h2 className="letras">{selectedItem.title}</motion.h2>
-                <motion.div>
+                <motion.div className="div-meio">
+<motion.div className="logo-e-btn">
+    {/* Logo da empresa */}
                 {selectedItem.logo ? (
                   <img
-                    src={`http://192.168.0.178:3001/uploads/Logo/${selectedItem.logo}`}
-                    style={{ width: 100, height: 100 }}
+                    src={`http://10.144.170.15:3001/uploads/Logo/${selectedItem.logo}`}
+                    className="img-empresa"
                     alt="Logo"
                   />
                 ) : (
                   <div style={{ width: 100, height: 100 }}></div>
                 )}
-              </motion.div>
-              </motion.div>
 
-              <details>
-                <summary className="letras">Dados da empresa</summary>
-                <motion.div className="div-informacoes-adicionais">
-                  <motion.p className="letras"><strong>ID:</strong> {selectedItem.id}</motion.p>
-                  <motion.p className="letras"><strong>Gestor:</strong> {selectedItem.gestor}</motion.p>
-                  <motion.p className="letras"><strong>CNPJ:</strong> {selectedItem.cnpj}</motion.p>
-                  <motion.p className="letras"><strong>Email:</strong> {selectedItem.email}</motion.p>
-                </motion.div>
-              </details>
-
+</motion.div>
+              </motion.div>
               
+              
+                <motion.h2 className="letras-titulo">{selectedItem.title}</motion.h2>
+               {/* Botão de autorizar */}
 
-              <motion.div className="div-dashboard-desa">
-                <motion.h6 className="letras">Status: {itemStatus[selectedId]}</motion.h6>
+  <motion.div className="div-dashboard-desa">
+                <motion.h6 className="letras-status">Status: {itemStatus[selectedId]}</motion.h6>
+                <motion.div className="btn-status">
                 {itemStatus[selectedId] === "Autorizado" ? (
+            
                   <motion.button
                   
   
@@ -213,8 +213,21 @@ function DashboardAdmin() {
                     type="button"
                   >
                     Autorizar
-                  </motion.button>
-                )}
+                  </motion.button> 
+                )} </motion.div>
+              </motion.div>
+  {/* Dados da empresa */}
+  <motion.div className="dados">
+              <details>
+                <summary className="dados-titulo">Dados da empresa</summary>
+                <motion.div className="div-informacoes-adicionais">
+                  <motion.p className="letras-more-info1"><strong>ID:</strong> {selectedItem.id}</motion.p>
+                  <motion.p className="letras-more-info2"><strong>Gestor:</strong> {selectedItem.gestor}</motion.p>
+                  <motion.p className="letras-more-info3"><strong>CNPJ:</strong> {selectedItem.cnpj}</motion.p>
+                  <motion.p className="letras-more-info4"><strong>Email:</strong> {selectedItem.email}</motion.p>
+                </motion.div>
+              </details>
+            </motion.div>
               </motion.div>
             </motion.div>
           )}

@@ -3,9 +3,10 @@ import {
   MoneyCollectOutlined,
   AreaChartOutlined,
   PayCircleOutlined,
-  SettingOutlined,
   StockOutlined,
 } from "@ant-design/icons";
+import { MdLogout } from "react-icons/md";
+import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import { IoPieChartSharp } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
@@ -21,7 +22,7 @@ const MenuList = ({ darkTheme }) => {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get('http://192.168.0.178:3001/verifyToken', { withCredentials: true });
+        const response = await axios.get('http://10.144.170.15:3001/verifyToken', { withCredentials: true });
         const decodedToken = jwtDecode(response.data.token);
         setUserInfo(decodedToken);
       } catch (error) {
@@ -35,6 +36,17 @@ const MenuList = ({ darkTheme }) => {
 
   const handleNavigation = (path) => {
     navigate(path);
+  };
+  
+  const Logout = async () => {
+    try {
+      const response = await axios.get('http://10.144.170.15:3001/logout', { withCredentials: true });
+      if (response) {
+      navigate('/')
+    }
+    } catch (err) {
+      alert('Erro ao efetuar logout');
+    }
   };
 
   const menuItems = [
@@ -64,7 +76,7 @@ const MenuList = ({ darkTheme }) => {
     },
     {
       key: "financeiro",
-      icon: <MoneyCollectOutlined />,
+      icon: <FaMoneyBillTrendUp />,
       label: "Financeiro",
       children: [
         {
@@ -184,46 +196,38 @@ const MenuList = ({ darkTheme }) => {
           children: [
             {
               key: "cadastro",
-              label: "Cadastro",
+              label: "Notas Fiscais",
               onClick: () => handleNavigation("/cadastronf"),
             },
             {
               key: "emissao",
-              label: "Emissão nf",
+              label: "Emissão de Nota Fiscal",
               onClick: () => handleNavigation("/emissaonf"),
             },
           ],
         },
         {
-          key: "cadastrocliente",
-          label: "Cadastro cliente",
-          onClick: () => handleNavigation("/cad_cliente"),
-        },
-        {
           key: "clientes",
-          icon: <PayCircleOutlined />,
           label: "Clientes",
           onClick: () => handleNavigation("/clientes"),
         },
         {
           key: "precofinal",
-          icon: <PayCircleOutlined />,
           label: "Preço final",
           onClick: () => handleNavigation("/precofinal"),
         },
         {
           key: "historicovendas",
-          icon: <PayCircleOutlined />,
           label: "Histórico de Vendas",
           onClick: () => handleNavigation("/vendas"),
         },
       ],
     },
     {
-      key: "setting",
-      icon: <SettingOutlined />,
-      label: "Setting",
-      onClick: () => handleNavigation("/setting"),
+      key: "Logout",
+      icon: <MdLogout />,
+      label: "Logout",
+      onClick:() => Logout(),
     },
   ];
 

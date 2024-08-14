@@ -30,7 +30,7 @@ function Login() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://192.168.0.178:3001/login",
+        "http://10.144.170.15:3001/login",
         {
           Nome: nome,
           Senha: Password,
@@ -47,7 +47,7 @@ function Login() {
       if (error.response) {
         if (error.response.status === 403) {
           setProtocoloErro("403");
-          setMsgErro("Esta empresa não está autorizada");
+          setMsgErro("Esta RazaoSocial não está autorizada");
         } else if (error.response.status === 401) {
           setErro("Credenciais inválidas");
         } else {
@@ -62,11 +62,11 @@ function Login() {
   };
 
   // Cadastro
-  const [gestor, setGestor] = useState("");
-  const [cnpj, setCnpj] = useState("");
-  const [empresa, setEmpresa] = useState("");
-  const [senha, setSenha] = useState("");
-  const [logo, setLogo] = useState(null);
+  const [Gestor, setGestor] = useState("");
+  const [CNPJ, setCNPJ] = useState("");
+  const [RazaoSocial, setRazaoSocial] = useState("");
+  const [senha, setsenha] = useState("");
+  const [Logo, setLogo] = useState(null);
 
   const formatCNPJ = (value) => {
     return value
@@ -84,19 +84,19 @@ function Login() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    const email = generateEmail(gestor);
+    const Email = generateEmail(Gestor);
 
     const formData = new FormData();
-    formData.append("gestor", gestor);
-    formData.append("email", email);
-    formData.append("cnpj", cnpj);
-    formData.append("empresa", empresa);
+    formData.append("Gestor", Gestor);
+    formData.append("Email", Email);
+    formData.append("CNPJ", CNPJ);
+    formData.append("RazaoSocial", RazaoSocial);
     formData.append("senha", senha);
-    formData.append("logo", logo);
+    formData.append("Logo", Logo);
 
     try {
       const response = await axios.post(
-        "http://192.168.0.178:3001/registro",
+        "http://10.144.170.15:3001/registro",
         formData,
         {
           headers: {
@@ -120,8 +120,8 @@ function Login() {
     }
   };
 
-  const handleCnpjChange = (e) => {
-    setCnpj(formatCNPJ(e.target.value));
+  const handleCNPJChange = (e) => {
+    setCNPJ(formatCNPJ(e.target.value));
   };
 
   return (
@@ -133,34 +133,34 @@ function Login() {
               <h1> Crie sua Conta!</h1>
               <form onSubmit={handleRegister}>
                 <input
-                  value={gestor}
+                  value={Gestor}
                   onChange={(e) => setGestor(e.target.value)}
                   type="text"
                   placeholder="Nome"
-                  name="gestor"
+                  name="Gestor"
                   required
                 />
                 <input
-                  value={cnpj}
-                  onChange={handleCnpjChange}
+                  value={CNPJ}
+                  onChange={handleCNPJChange}
                   type="text"
                   placeholder="CNPJ"
-                  name="cnpj"
+                  name="CNPJ"
                   required
                 />
                 <input
-                  value={empresa}
-                  onChange={(e) => setEmpresa(e.target.value)}
+                  value={RazaoSocial}
+                  onChange={(e) => setRazaoSocial(e.target.value)}
                   type="text"
-                  placeholder="Nome da empresa"
-                  name="empresa"
+                  placeholder="Nome da RazaoSocial"
+                  name="RazaoSocial"
                   required
                 />
                 <input
                   value={senha}
-                  onChange={(e) => setSenha(e.target.value)}
+                  onChange={(e) => setsenha(e.target.value)}
                   type="password"
-                  placeholder="Senha"
+                  placeholder="senha"
                   name="senha"
                   required
                 />
@@ -189,7 +189,7 @@ function Login() {
                 />
                 <input
                   type="password"
-                  placeholder="Senha"
+                  placeholder="senha"
                   value={Password}
                   onChange={(e) => setPassword(e.target.value)}
                   required

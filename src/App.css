@@ -251,22 +251,65 @@ width: 100%;
 
 .item-detail {
   position: fixed;
-  top: 20%;
-  left: 50%;
+  top: 25%;
+  left: 22%;
   transform: translateX(-50%);
-  background: #ffffff;
+  background: #ededed;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
   padding: 20px;
-  width: 380px;
-  height: 460px;
+  width: 70%;
+  height: 60%;
   text-align: center;
   color: #ffffff00;
 }
+
+.dados{
+  color: #000;
+  margin-top: 20px;
+}
+
+.dados-titulo{
+  color: #000;
+  text-align: left;
+  
+  font-size: 23px; 
+}
+
+.logo-e-btn{
+  display: flex;
+  align-items: center;
+  gap: 15px; 
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+}
+
+.img-empresa{
+  width: 80px; 
+  height: 80px; 
+  border-radius: 50%; 
+  object-fit: cover; 
+}
+
+.letras-titulo{
+  color: #000000;
+  font-size: 29px; 
+  margin-left: -620px; 
+  margin-top: -70px;
+  margin-bottom: 10px;
+
+}
+
 .letras{
   color: #000000;
 }
 
+.letras-more-info1, .letras-more-info2, .letras-more-info3, .letras-more-info4 {
+  text-align: left;
+  color: #000;
+  font-size: 20px;
+}
 
 .div-statusbtn {
   margin-top: 18px;
@@ -274,8 +317,14 @@ width: 100%;
   color: #0000;
 }
 
+.div-meio{
+  border-bottom-width: 1px; 
+  border-bottom-style: solid; 
+  border-bottom-color:  rgb(0, 0, 0);
+}
+
 .div-fecharbtn {
-  margin-left: 300px; 
+  margin-left: 930px;
 }
 
 .close_btn{
@@ -284,20 +333,37 @@ width: 100%;
 }
 
 .icone{
-  height: 30px;
-  width: 30px;
+  height: 40px;
+  width: 40px;
+}
+
+.div-dashboard-desa{
+  margin-top: 50px;
+}
+
+
+.letras-status{
+  color: #000000;
+  text-align: left;
+  font-size: 20px;
+}
+
+.btn-status{
+  margin-top: -20px;
+  margin-left: -470px;
 }
 
 .status-button-autorizar {
   background-color: #4CAF50; /* Verde */
   border: none;
-  padding: 15px 20px;
+  padding: 10px 30px;
   color: white;
   font-size: 14px;
   cursor: pointer;
   border-radius: 3px;
   transition: background-color 0.3s ease;
-  left: 50%;
+  margin-top: -80px;
+  margin-left: 40px;
 }
 
 .status-button-autorizar:hover {
@@ -307,13 +373,13 @@ width: 100%;
 .status-button-desautorizar {
   background-color: #f44336; /* Vermelho */
   border: none;
-  padding: 15px 20px;
+  padding: 10px 30px;
   color: white;
   font-size: 14px;
   cursor: pointer;
   border-radius: 3px;
   transition: background-color 0.3s ease;
-  left: 50%;
+  margin-top: -80px;
 }
 
 .status-button-desautorizar:hover {
@@ -561,29 +627,43 @@ tbody td {
   left: 700px;
 }
 
-/* Despesas */
-.Button_Despesas{
-  gap: 20px;
-  border-bottom: solid 1px;
-  border-color: #0a5483;
-  flex-direction: row;
+.ButtonInfoProduct {
+  width: 60px;
+  height: 35px;
+  background: linear-gradient(to top, #bcbcbc, #d8d8d8);
+  color: #000000;
+  border-radius: 5px;
+  border: transparent;
+  font-weight: bold;
+  cursor: pointer;
+
 }
 
-.Button_Despesas button{
-  width: 120px;
-  height: 40px;
-  border-radius: 5px;
-  background: linear-gradient(to top, #0056b3, #0a5483);
-  margin: 15px;
-  border-color: transparent;
-  color: #fff;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
+.ButtonInfoProduct:hover{
+opacity: 0.8;
+}
+
+.corpoInfoProduto{
+  text-align: flex-start;
+  font-size: 30px;
+  padding: 25px;
   flex-direction: column;
-  }
+  width: 70%;
+  height: 500px;
+}
 
+.corpoInfoProduto i{
+  flex-direction: column;
+  display: flex;
+}
 
+.ImagemInfoProduto {
+  border: 1px solid black;
+  border-radius: 10px;
+  
+}
+
+/* Despesas */
 .despesa1-box {
   width: 290px;
   height: 150px;
@@ -760,4 +840,118 @@ cursor: pointer;
 .icon-PagFunc{
  width: 30px;
  height: 30px; 
+}
+
+/* Fluxo de caixa */
+
+.box_fluxo {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.saldo1-box {
+  width: 290px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  padding: 10px;
+  text-align: center;
+  color: #000;
+}
+
+.saldo1-box:hover {
+  opacity: 0.8;
+  background-color: #0000001c;
+}
+
+.saldo2-box {
+  width: 290px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  padding: 10px;
+  text-align: center;
+}
+
+.saldo2-box:hover {
+  opacity: 0.8;
+  background-color: #0000001a;
+}
+
+.saldo1-box,
+.saldo2-box {
+  flex: 1;
+  margin: 0 10px;
+}
+
+/* Cadastro Nota Fiscal */
+.cadastro-nota{
+  border-color: #000000;
+  border-width: 1px;
+  border-style: solid;
+height: 500px;
+}
+
+.intro-notafiscal{
+  font-weight: 300;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+.coluna1{display: flex;
+  flex-direction: column;
+}
+
+.coluna1 {
+  display: flex;
+  gap: 20px;
+}
+
+.nota-fiscal{
+  border-color: #000000;
+  border-width: 1px;
+  border-style: solid;
+  width: 400px;
+  height: 60px;
+  margin-left: 15px;
+  margin-top: 10px;
+  
+}
+.titulo-nota-fiscal{
+background-color: #ffffff;
+ margin-top: -10px;
+ width: 90px;
+ font-weight: 400;
+ margin-left: 20px;
+ text-align: center;
+}
+
+.natureza-operacao{
+  border-color: #000000;
+  border-width: 1px;
+  border-style: solid;
+  width: 700px;
+  height: 60px;
+  margin-left: 430px;
+  margin-top: -80px;
+  
+}
+.titulo-natureza-operacao{
+background-color: #ffffff;
+ margin-top: -10px;
+ width: 170px;
+ font-weight: 400;
+ margin-left: 20px;
+ text-align: center;
 }

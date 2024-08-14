@@ -164,21 +164,21 @@ function Despesas() {
         <h3>Despesas</h3>
       </div>
 
-      {/* Botões para cadastrar despesas, excluir ou editar */}
-      <div className="Button_Despesas">
-        <button className="Button-Menu">
-          Adicionar
-          <FaPlus />
-        </button>
-        <button className="Button-Menu">
-          Editar
-          <FaPenToSquare />
-        </button>
-        <button className="Button-Menu">
-          Excluir
-          <FaTrashCan />
-        </button>
-      </div>
+        {/* Botões para cadastrar despesas, excluir ou editar */}
+        <div className="Button_Cad">
+          <button className="Button-Menu">
+            Adicionar
+            <FaPlus />
+          </button>
+          <button className="Button-Menu">
+            Editar
+            <FaPenToSquare />
+          </button>
+          <button className="Button-Menu">
+            Excluir
+            <FaTrashCan />
+          </button>
+        </div>
 
       {/* Box sobre contas */}
       <div className="box_desp">

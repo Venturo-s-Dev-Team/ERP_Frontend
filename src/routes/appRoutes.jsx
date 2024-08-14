@@ -11,11 +11,13 @@ import Header from "../components/Header";
 import Dashboard from "../pages/erp/Dashboard";
 import DashboardAdmin from "../pages/erp/DashboardAdmin";
 import Login from "../pages/Login";
+import CadastroEmpresa from "../pages/CadastroEmpresa"
 
 // ESTOQUE
 import Cad_produto from "../pages/erp/estoque/cad_produto";
 
 // FINANCEIRO
+
 // CONTAS A PAGAR
 import Despesas from "../pages/erp/financeiro/contaspagar/despesas";
 import Fornecedores from "../pages/erp/financeiro/contaspagar/fornecedores";
@@ -74,7 +76,7 @@ function AppRoutes() {
 
 function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
   const location = useLocation();
-  const isExcludedRoute = ["/", "/error"].includes(location.pathname);
+  const isExcludedRoute = ["/", "/error","/CadastroEmpresa"].includes(location.pathname);
 
   return (
     <div className="grid-container">
@@ -87,6 +89,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
       <div className="content">
         <Routes>
           <Route path="/" element={<Login />} />
+          <Route path="/CadastroEmpresa" element={<CadastroEmpresa />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard_admin" element={<DashboardAdmin />} />
           <Route path="/cad_produto" element={<Cad_produto />} />
