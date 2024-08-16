@@ -23,7 +23,7 @@ function CadastroEmpresa() {
         }
       } catch (error) {
         console.error('Token inválido', error);
-        navigate('/');
+        navigate('/login');
       }
     };
 

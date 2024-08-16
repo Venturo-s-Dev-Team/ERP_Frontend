@@ -68,7 +68,7 @@ function DashboardAdmin() {
         }
       } catch (error) {
         console.error('Token inválido', error);
-        navigate('/');
+        navigate('/login');
       }
     };
 
@@ -187,12 +187,33 @@ function DashboardAdmin() {
 </motion.div>
               </motion.div>
               
-              
+              <motion.div className="conteudo">
+
                 <motion.h2 className="letras-titulo">{selectedItem.title}</motion.h2>
+                <motion.h6 className="letras-status">Status: {itemStatus[selectedId]}</motion.h6>
+
                {/* Botão de autorizar */}
+  {/* Dados da empresa */}
+  <motion.div className="centro">
+          <motion.div className="dados">
+              <details>
+                <summary className="dados-titulo">Dados da empresa</summary>
+                <motion.div className="div-informacoes-adicionais">
+                  <motion.p className="letras-more-info1"><strong>ID:</strong> {selectedItem.id}</motion.p>
+                  <motion.p className="letras-more-info2"><strong>Gestor:</strong> {selectedItem.gestor}</motion.p>
+                  <motion.p className="letras-more-info3"><strong>CNPJ:</strong> {selectedItem.cnpj}</motion.p>
+                  <motion.p className="letras-more-info4"><strong>Email:</strong> {selectedItem.email}</motion.p>
+                </motion.div>
+              </details>
+            </motion.div>
+      </motion.div>
+              
+              
+              </motion.div>
+              
 
   <motion.div className="div-dashboard-desa">
-                <motion.h6 className="letras-status">Status: {itemStatus[selectedId]}</motion.h6>
+              
                 <motion.div className="btn-status">
                 {itemStatus[selectedId] === "Autorizado" ? (
             
@@ -215,21 +236,17 @@ function DashboardAdmin() {
                     Autorizar
                   </motion.button> 
                 )} </motion.div>
+
+                <motion.div className="btn-ver-mais-div">
+                  <motion.button className="btn-ver-mais">
+                    Ver mais
+                    </motion.button>
+                  </motion.div>
               </motion.div>
-  {/* Dados da empresa */}
-  <motion.div className="dados">
-              <details>
-                <summary className="dados-titulo">Dados da empresa</summary>
-                <motion.div className="div-informacoes-adicionais">
-                  <motion.p className="letras-more-info1"><strong>ID:</strong> {selectedItem.id}</motion.p>
-                  <motion.p className="letras-more-info2"><strong>Gestor:</strong> {selectedItem.gestor}</motion.p>
-                  <motion.p className="letras-more-info3"><strong>CNPJ:</strong> {selectedItem.cnpj}</motion.p>
-                  <motion.p className="letras-more-info4"><strong>Email:</strong> {selectedItem.email}</motion.p>
-                </motion.div>
-              </details>
+            </motion.div> 
+            
             </motion.div>
-              </motion.div>
-            </motion.div>
+            
           )}
         </AnimatePresence>
       </div>

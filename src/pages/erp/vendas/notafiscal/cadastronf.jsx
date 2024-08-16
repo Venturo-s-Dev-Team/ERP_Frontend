@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import jsPDF from 'jspdf';
-import autoTable from 'jsPDF-autoTable';
+import autoTable from 'jspdf-autotable';
 
 function Cad_nf() {
   const [formData, setFormData] = useState({
@@ -57,51 +57,61 @@ function Cad_nf() {
     const precoBruto = formData.produtos.reduce((acc, produto) => acc + parseFloat(produto.preco || 0), 0);
     const icms = precoBruto * 0.18;
     const ipi = precoBruto * 0.05;
-    const precoFinal = precoBruto + icms + ipi + parseFloat(formData.frete) - parseFloat(formData.desconto);
+    const precoFinal = precoBruto + icms + ipi + parseFloat(formData.frete || 0) - parseFloat(formData.desconto || 0);
     setFormData({ ...formData, precoBruto, icms, ipi, precoFinal });
   };
+
   const generatePDF = () => {
-    const doc = new jsPDF();
+    const doc = new jsPDF('p', 'mm', 'a4');
+  
     const img = new Image();
-    img.src = '/src/images/Venturo.png'; 
+    img.src = '/src/images/Venturo.png';
   
     img.onload = () => {
       doc.addImage(img, 'PNG', 10, 10, 50, 30);
   
-      doc.text('Nota Fiscal', 20, 50);
-      doc.text(`Razão Social: ${formData.razaoSocial}`, 20, 60);
-      doc.text(`CPF/CNPJ: ${formData.cpfCnpj}`, 20, 70);
-      doc.text(`Endereço: ${formData.endereco.logradouro}, ${formData.endereco.numero}, ${formData.endereco.complemento}`, 20, 80);
-      doc.text(`Cidade: ${formData.endereco.cidade} - ${formData.endereco.estado}`, 20, 90);
-      doc.text(`Tipo de Pagamento: ${formData.tipoPagamento}`, 20, 100);
-  
-      // Adiciona tabela de produtos
-      doc.text('Produtos:', 20, 110);
-      doc.autoTable({
-        startY: 120,
+      // Cabeçalho
+      doc.setFontSize(12);
+      doc.text('NOTA FISCAL', 105, 10, { align: 'center' });
+      
+      doc.setFontSize(10);
+      doc.text(`Razão Social: ${formData.razaoSocial}`, 10, 20);
+      doc.text(`CPF/CNPJ: ${formData.cpfCnpj}`, 10, 25);
+      doc.text(`Endereço: ${formData.endereco.logradouro}, ${formData.endereco.numero}, ${formData.endereco.complemento}`, 10, 30);
+      doc.text(`Cidade: ${formData.endereco.cidade} - ${formData.endereco.estado}`, 10, 35);
+      
+      // Produtos
+      doc.text('Produtos:', 10, 45);
+      autoTable(doc, {
+        startY: 50,
         head: [['Produto', 'Preço']],
         body: formData.produtos.map(produto => [produto.nome, `R$ ${parseFloat(produto.preco).toFixed(2)}`]),
         theme: 'grid',
       });
   
-      // Adiciona tabela de valores
-      doc.autoTable({
-        startY: doc.autoTable.previous.finalY + 10,
+      // Resumo de valores
+      autoTable(doc, {
+        startY: doc.lastAutoTable.finalY + 10,
         head: [['Descrição', 'Valor']],
         body: [
-          ['Preço Bruto', `R$ ${formData.precoBruto.toFixed(2)}`],
-          ['ICMS (18%)', `R$ ${formData.icms.toFixed(2)}`],
-          ['IPI (5%)', `R$ ${formData.ipi.toFixed(2)}`],
-          ['Frete', `R$ ${formData.frete.toFixed(2)}`],
-          ['Desconto', `R$ ${formData.desconto.toFixed(2)}`],
-          ['Preço Final', `R$ ${formData.precoFinal.toFixed(2)}`],
+          ['Preço Bruto', `R$ ${parseFloat(formData.precoBruto).toFixed(2)}`],
+          ['ICMS (18%)', `R$ ${parseFloat(formData.icms).toFixed(2)}`],
+          ['IPI (5%)', `R$ ${parseFloat(formData.ipi).toFixed(2)}`],
+          ['Frete', `R$ ${parseFloat(formData.frete).toFixed(2)}`],
+          ['Desconto', `R$ ${parseFloat(formData.desconto).toFixed(2)}`],
+          ['Preço Final', `R$ ${parseFloat(formData.precoFinal).toFixed(2)}`],
         ],
         theme: 'grid',
       });
   
+      // Rodapé
+      doc.setFontSize(8);
+      doc.text('NF-e Emitida em Ambiente de Homologação - Sem Valor Fiscal', 105, doc.internal.pageSize.height - 10, { align: 'center' });
+  
       doc.save('nota_fiscal.pdf');
     };
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     calculateValues();
@@ -263,11 +273,3 @@ function Cad_nf() {
 }
 
 export default Cad_nf;
-
-
-
-
-
-
-
-

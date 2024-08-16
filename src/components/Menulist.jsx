@@ -5,9 +5,10 @@ import {
   PayCircleOutlined,
   StockOutlined,
 } from "@ant-design/icons";
-import { MdLogout } from "react-icons/md";
+import { MdLogout, MdOutlineMailOutline } from "react-icons/md";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import { IoPieChartSharp } from "react-icons/io5";
+import { RxAvatar } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
@@ -27,7 +28,7 @@ const MenuList = ({ darkTheme }) => {
         setUserInfo(decodedToken);
       } catch (error) {
         console.error('Token inválido', error);
-        navigate('/');
+        navigate('/login');
       }
     };
     
@@ -44,6 +45,19 @@ const MenuList = ({ darkTheme }) => {
       icon: <IoPieChartSharp />,
       label: "Dashboard",
       onClick: () => handleNavigation("/dashboard"),
+    },
+    {
+      key: 'Caixa_Entrada',
+      icon: <MdOutlineMailOutline />,
+      label: "E-mail",
+      onClick: () => handleNavigation("/E-mail_Caixa_Entrada")
+      
+    },
+    {
+      key: 'Perfil',
+      icon: <RxAvatar />,
+      label: 'Perfil',
+      onClick: () => handleNavigation("/Perfil")
     },
     userInfo?.TypeUser === 'SuperAdmin' && {
       key: "DashboardAdmin",

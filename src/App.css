@@ -6,6 +6,7 @@ html, body {
   
 }
 
+
 .icon {
   vertical-align: middle;
   line-height: 1px;
@@ -47,10 +48,12 @@ html, body {
 
 }
 
-.titulo-box{
-  margin-bottom: 30px;
-  position: relative;
-  left: 20;
+.titulo-box {
+  margin-top: 15px;
+  position: relative; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Header  */
@@ -251,28 +254,33 @@ width: 100%;
 
 .item-detail {
   position: fixed;
-  top: 25%;
-  left: 22%;
+  top: 30%;
+  left: 36%;
   transform: translateX(-50%);
-  background: #ededed;
-  border-radius: 8px;
+  background: rgb(249, 247, 247);
+  border-radius: 30px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
   padding: 20px;
-  width: 70%;
-  height: 60%;
+  width: 45%;
+  height: 48%;
   text-align: center;
   color: #ffffff00;
+  display: flex;
+  flex-direction: column;
+}
+
+.item-detail .conteudo {
+  position: relative; 
+  margin-top: -230px;
 }
 
 .dados{
-  color: #000;
-  margin-top: 20px;
+  margin-top: 0px;
 }
 
 .dados-titulo{
   color: #000;
   text-align: left;
-  
   font-size: 23px; 
 }
 
@@ -282,23 +290,24 @@ width: 100%;
   gap: 15px; 
   margin-top: 20px;
   margin-bottom: 20px;
-
+  width: 100px;
 }
 
 .img-empresa{
-  width: 80px; 
-  height: 80px; 
-  border-radius: 50%; 
+  width: 200px; 
+  height: 200px; 
+  border-radius: 10%; 
   object-fit: cover; 
+  margin-top: -40px;
+  border-color: #000;
+  border-width: 1px;
+  border-style: solid;
 }
 
 .letras-titulo{
   color: #000000;
   font-size: 29px; 
-  margin-left: -580px; 
-  margin-top: -70px;
-  margin-bottom: 10px;
-
+  margin-bottom: 0px;
 }
 
 .letras{
@@ -312,9 +321,8 @@ width: 100%;
 }
 
 .div-statusbtn {
-  margin-top: 18px;
   margin-bottom: 10px;
-  color: #0000;
+  color: #ffffff00;
 }
 
 .div-meio{
@@ -324,7 +332,7 @@ width: 100%;
 }
 
 .div-fecharbtn {
-  margin-left: 930px;
+  margin-left: 570px;
 }
 
 .close_btn{
@@ -338,9 +346,22 @@ width: 100%;
 }
 
 .div-dashboard-desa{
-  margin-top: 50px;
+  position: absolute;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  bottom: 10px;
+  left: 12px;
+  width: 96%;
+  height: 14%;
 }
 
+.conteudo{
+  width: 300px;
+  margin-left: 230px;
+  margin-right: auto;
+  margin-top: -230px;
+}
 
 .letras-status{
   color: #000000;
@@ -350,7 +371,7 @@ width: 100%;
 
 .btn-status{
   margin-top: -20px;
-  margin-left: -470px;
+  margin-left: 0px;
 }
 
 .status-button-autorizar {
@@ -362,8 +383,8 @@ width: 100%;
   cursor: pointer;
   border-radius: 3px;
   transition: background-color 0.3s ease;
-  margin-top: -80px;
-  margin-left: 40px;
+  margin-top: 16px;
+  margin-left: -520px;
 }
 
 .status-button-autorizar:hover {
@@ -379,11 +400,23 @@ width: 100%;
   cursor: pointer;
   border-radius: 3px;
   transition: background-color 0.3s ease;
-  margin-top: -80px;
+  margin-top: 16px;
+  margin-left: -520px;
 }
 
 .status-button-desautorizar:hover {
   background-color: rgba(255, 0, 0, 0.427);
+}
+
+
+.status-button-autorizar,
+.status-button-desautorizar {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .div-close {
@@ -446,13 +479,6 @@ width: 100%;
 .div-titulos-card {
   margin-top: 25px;
 }
-.dados-imagem {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px; 
-margin-bottom: 100px;
-margin-top: 30px;
-}
 
 
 .logo-container {
@@ -460,6 +486,24 @@ margin-top: 30px;
   align-items: center; 
 }
 
+.btn-ver-mais-div{
+  left: 90%;
+  margin-left: 500px;
+  margin-top: -35px;
+  
+}
+
+
+.btn-ver-mais{
+  background-color: #000;
+  border: none;
+  padding: 10px 30px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+}
 
 /* Estoque Cadastro */
 .Button_Cad{

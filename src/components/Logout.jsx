@@ -10,7 +10,7 @@ function Logout() {
       try {
         const response = await axios.get('http://10.144.170.13:3001/logout', { withCredentials: true });
         if (response) {
-          navigate('/');
+          navigate('/login');
         }
       } catch (err) {
         alert('Erro ao efetuar logout');

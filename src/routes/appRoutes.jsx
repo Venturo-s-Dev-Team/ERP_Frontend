@@ -16,6 +16,13 @@ import DashboardAdmin from "../pages/erp/DashboardAdmin";
 import Login from "../pages/Login";
 import CadastroEmpresa from "../pages/CadastroEmpresa"
 
+//E-MAIL
+import Caixa_Saida from "../pages/erp/e-mail/Caixa_Saida";
+import Caixa_Entrada from "../pages/erp/e-mail/Caixa_Entrada";
+
+//PERFIL
+import Perfil from "../pages/erp/Perfil/Perfil";
+
 // ESTOQUE
 import Cad_produto from "../pages/erp/estoque/cad_produto";
 
@@ -60,6 +67,8 @@ import Error from "../pages/erro/error";
 
 //LANDPAGE
 import Landpage from "../pages/erp/landpage/landpage"
+
+//LOGOUT
 import Logout from "../components/Logout";
 
 function AppRoutes() {
@@ -81,7 +90,7 @@ function AppRoutes() {
 
 function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
   const location = useLocation();
-  const isExcludedRoute = ["/", "/error","/CadastroEmpresa", "/landpage"].includes(location.pathname);
+  const isExcludedRoute = ["/", "/error","/CadastroEmpresa", "/login"].includes(location.pathname);
 
   // Função para verificar o token
  const [userInfo, setUserInfo] = useState('');
@@ -101,7 +110,6 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
       }
     } catch (error) {
       console.error('Token inválido', error);
-      navigate('/');
     }
   };
 
@@ -118,9 +126,13 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
       )}
       <div className="content">
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<Landpage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/Perfil" element={<Perfil />} />
           <Route path="/CadastroEmpresa" element={<CadastroEmpresa />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path='/E-mail_Caixa_Saida' element={<Caixa_Saida />} />
+          <Route path="/E-mail_Caixa_Entrada" element={<Caixa_Entrada />} /> 
           {userInfo?.Status !== 'NO' && (
             <>
           <Route path="/dashboard_admin" element={<DashboardAdmin />} />
@@ -145,10 +157,9 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           <Route path="/balancete" element={<Balancete />} />
           <Route path="/dre" element={<Dre />} />
           <Route path="/razao" element={<Razao />} />
-          <Route path="/error" element={<Error errorCode={404} />} />
           <Route path="*" element={<Navigate to="/error" />} />
           </> )}
-          <Route path="/landpage" element={<Landpage/>}/>
+          <Route path="/error" element={<Error errorCode={404} />} />
           <Route path="/logout" element={<Logout/>} />
         </Routes>
       </div>

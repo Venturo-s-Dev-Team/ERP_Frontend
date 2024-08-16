@@ -166,8 +166,6 @@ function Despesas() {
   const abrirModal = () => setShowModal(true);
   const fecharModal = () => setShowModal(false); 
 
-
-
   return (
     <main className="main-container">
       {/* Título principal */}

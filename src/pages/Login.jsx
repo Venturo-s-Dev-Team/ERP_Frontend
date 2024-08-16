@@ -106,7 +106,7 @@ function Login() {
         }
       );
       if (response.status === 200) {
-        navigate("/");
+        navigate('/login');
         alert("Cadastro Realizado");
       }
     } catch (error) {
@@ -189,7 +189,7 @@ function Login() {
                 />
                 <input
                   type="password"
-                  placeholder="senha"
+                  placeholder="Senha"
                   value={Password}
                   onChange={(e) => setPassword(e.target.value)}
                   required

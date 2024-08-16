@@ -1,7 +1,13 @@
 import "./landpage.css" 
 import Foguete from "../../../images/Foguete3d.png"
+import { useNavigate } from "react-router-dom";
+import LogoV from "../../../images/LogoVenturoV.png"
+import Engrenagem from '../../../images/Engrenagem.png'
 
 function Landpage() {
+
+    const navigate = useNavigate();
+    
     return (
         
         <main className="main-containerLandPg">
@@ -9,6 +15,7 @@ function Landpage() {
                 <h1>
 Boas-Vindas
  </h1>
+ <img src={LogoV} className="Logo"/>
                 </div>
 
 
@@ -19,6 +26,12 @@ Boas-Vindas
     <h1>
         Venturo
         </h1>
+<div className="SpaceButton">
+<button className="ButtonPageLand" onClick={() => navigate("/login")}>
+            Começar
+            </button>
+    </div>
+       
     </div>
 
                     <div className="div-blur">
@@ -26,12 +39,16 @@ Boas-Vindas
 
 <div className="TextDivBlur"> 
     <p>
-    SOFTWERE
+    SOFTWARE
 
         </p>
+        <div className="alinhando-erp">
         <h1>
     ERP
     </h1>
+<img src={Engrenagem} className="Engrena"/>
+            </div>
+      
     </div>
  
                         </div>

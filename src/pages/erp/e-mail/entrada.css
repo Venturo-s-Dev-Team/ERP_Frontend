@@ -1,0 +1,77 @@
+.app {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f7f7f7;
+}
+
+.Assunto {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.email-list {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.email-item {
+    padding: 10px 15px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.email-item:last-child {
+    border-bottom: none;
+}
+
+.email-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.email-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.email-timestamp {
+    font-size: 14px;
+    color: #999;
+}
+
+.email-body {
+    padding: 10px 0;
+}
+
+.email-attachment {
+    display: inline-block;
+    margin-top: 10px;
+    color: #1a73e8;
+    text-decoration: none;
+}
+
+.email-attachment:hover {
+    text-decoration: underline;
+}
+
+.btn-voltar,
+.btn-nova-mensagem {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn-voltar:hover,
+.btn-nova-mensagem:hover {
+    background-color: #0056b3;
+}

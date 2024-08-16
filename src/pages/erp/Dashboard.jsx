@@ -92,7 +92,7 @@ function Home() {
         }
       } catch (error) {
         console.error('Token inválido', error);
-        navigate('/');
+        navigate('/login');
       }
     };
 
