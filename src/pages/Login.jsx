@@ -30,7 +30,7 @@ function Login() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://10.144.170.15:3001/login",
+        "http://10.144.170.13:3001/login",
         {
           Nome: nome,
           Senha: Password,
@@ -96,7 +96,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        "http://10.144.170.15:3001/registro",
+        "http://10.144.170.13:3001/registro",
         formData,
         {
           headers: {
@@ -152,7 +152,7 @@ function Login() {
                   value={RazaoSocial}
                   onChange={(e) => setRazaoSocial(e.target.value)}
                   type="text"
-                  placeholder="Nome da RazaoSocial"
+                  placeholder="Razão Social"
                   name="RazaoSocial"
                   required
                 />
@@ -160,7 +160,7 @@ function Login() {
                   value={senha}
                   onChange={(e) => setsenha(e.target.value)}
                   type="password"
-                  placeholder="senha"
+                  placeholder="Senha"
                   name="senha"
                   required
                 />

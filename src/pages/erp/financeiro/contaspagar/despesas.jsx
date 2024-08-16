@@ -11,6 +11,7 @@ import {
   YAxis,
   CartesianGrid,
 } from "recharts";
+import {Modal} from "react-bootstrap";
 
 const data01 = [
   { name: "Group A", value: 400 },
@@ -141,6 +142,9 @@ const despesas = [
   },
 ];
 
+
+
+// Função para alterar o botão de finalização da tabela
 function Despesas() {
   const [finalizar, setFinalizar] = useState(despesas);
 
@@ -157,6 +161,13 @@ function Despesas() {
     );
   };
 
+  // Função para abrir modal - add
+  const [showModal, setShowModal] = useState(false);
+  const abrirModal = () => setShowModal(true);
+  const fecharModal = () => setShowModal(false); 
+
+
+
   return (
     <main className="main-container">
       {/* Título principal */}
@@ -166,7 +177,7 @@ function Despesas() {
 
         {/* Botões para cadastrar despesas, excluir ou editar */}
         <div className="Button_Cad">
-          <button className="Button-Menu">
+          <button className="Button-Menu" onClick={abrirModal}>
             Adicionar
             <FaPlus />
           </button>
@@ -269,6 +280,46 @@ function Despesas() {
           </tbody>
         </table>
       </div>
+<div>
+  <Modal   style={{
+          position: "fixed",
+          top: "50%",
+          bottom: 0,
+          left: "50%",
+          right: 0,
+          zIndex: 1000,
+          width: "70%",
+          height: "73%",
+          borderRadius: 20,
+          transform: "translate(-50%, -50%)",
+          background: "linear-gradient(135deg, #ddd, silver)",
+          boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
+        }}
+        show={showModal}
+        onHide={fecharModal}>
+          <div>
+          <div className="DivModalDesp">
+          <div className="HeaderModal">
+            <h1>Registrar Venda</h1>
+          </div>
+          <form>
+            <input type="number" placeholder="Valor" />
+            <input type="text" placeholder="Nome" />
+            <input type="date" placeholder="Data de Expiração" />
+            <input type="text" placeholder="Descrição" />
+            <div className="FooterButton">
+              <button className="RegisterPr">Registrar</button>
+              <button className="FecharPr" onClick={fecharModal}>
+                Fechar
+              </button>
+            </div>
+          </form>
+        </div>
+        
+            </div>
+
+    </Modal>
+    </div>
     </main>
   );
 }

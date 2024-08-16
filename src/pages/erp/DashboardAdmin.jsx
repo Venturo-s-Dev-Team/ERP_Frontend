@@ -26,7 +26,7 @@ function DashboardAdmin() {
   // Função para desautorizar empresa
   const Desautorizado = async (id) => {
     try {
-      const response = await axios.get(`http://10.144.170.15:3001/desautorizar/${id}`, {
+      const response = await axios.get(`http://10.144.170.13:3001/desautorizar/${id}`, {
         withCredentials: true,
       });
       if (response) {
@@ -41,7 +41,7 @@ function DashboardAdmin() {
   // Função para autorizar empresa
   const Autorizado = async (id) => {
     try {
-      const response = await axios.get(`http://10.144.170.15:3001/autorizar/${id}`, {
+      const response = await axios.get(`http://10.144.170.13:3001/autorizar/${id}`, {
         withCredentials: true,
       });
       if (response) {
@@ -57,7 +57,7 @@ function DashboardAdmin() {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get('http://10.144.170.15:3001/verifyToken', { withCredentials: true });
+        const response = await axios.get('http://10.144.170.13:3001/verifyToken', { withCredentials: true });
         if (response.status === 200) {
           const decodedToken = jwtDecode(response.data.token);
           setUserInfo(decodedToken);
@@ -79,7 +79,7 @@ function DashboardAdmin() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const Info = await axios.get("http://10.144.170.15:3001/tableEmpresas", {
+        const Info = await axios.get("http://10.144.170.13:3001/tableEmpresas", {
           withCredentials: true,
         });
         if (Info.status === 200) {
@@ -176,7 +176,7 @@ function DashboardAdmin() {
     {/* Logo da empresa */}
                 {selectedItem.logo ? (
                   <img
-                    src={`http://10.144.170.15:3001/uploads/Logo/${selectedItem.logo}`}
+                    src={`http://10.144.170.13:3001/uploads/Logo/${selectedItem.logo}`}
                     className="img-empresa"
                     alt="Logo"
                   />

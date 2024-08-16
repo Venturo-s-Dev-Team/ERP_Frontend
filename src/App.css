@@ -295,7 +295,7 @@ width: 100%;
 .letras-titulo{
   color: #000000;
   font-size: 29px; 
-  margin-left: -620px; 
+  margin-left: -580px; 
   margin-top: -70px;
   margin-bottom: 10px;
 
@@ -787,6 +787,7 @@ table {
   border-spacing: 0;
   width: 100%;
 }
+
 .despesas_opc_btn {
   border: none;
   padding: 5px 10px;
@@ -801,10 +802,39 @@ table {
 .despesas_opc_btn.sim{
   background-color: rgba(255, 0, 0, 0.427);
 }
+
 .despesas_opc_btn.nao{
-  
 background-color: #22963d83;
 }
+
+.DivModalDesp {
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  display: flex;
+  top: 20%;
+  padding-top: 5%;
+  padding-left: 7%;
+}
+
+
+.DivModalDesp input{
+  margin: 10px;
+  width: 350px;
+  height: 40px;
+  border-radius: 3px;
+  border: transparent;
+  background-color: #fff;
+  padding-left: 30px;
+}
+
+
+.DivModalDesp h1{
+  color: #0a5483;
+  margin-bottom: 20px;
+}
+
+
 
 /*PAGAMENTOS */
 .divEstatistcPgFunc {
@@ -954,4 +984,64 @@ background-color: #ffffff;
  font-weight: 400;
  margin-left: 20px;
  text-align: center;
+}
+
+/* Clientes */
+.Clientes_List {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  padding: 13px;
+}
+
+/* Histórico de vendas */
+
+.gráficos-vendas{  
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.gráfico1-vendas,
+.gráfico02-vendas {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.gráfico1-vendas {
+  width: 50%;
+}
+
+.grafico01-item{
+  margin-left: 100px;
+  margin-top: 50px;
+}
+
+.gráfico02-vendas {
+  width: 50%;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.grafico02-item{
+  margin-top: 10px;
+}
+
+.pie1 {
+  margin-left: 200px;
+}
+
+.legenda_vendas1{
+  margin-left: 255px;
+  margin-top: 10px;
+}
+
+.legenda_vendas2{
+  margin-left: 180px;
+  margin-top: 0px;
+}
+
+.tabela-vendas{
+  margin-top: 30px;
 }

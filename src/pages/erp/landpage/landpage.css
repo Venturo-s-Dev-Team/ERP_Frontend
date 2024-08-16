@@ -1,0 +1,88 @@
+.main-containerLandPg {
+    height: 100%;
+width: 100%;
+    padding: 20px 20px;
+  color: rgba(255, 255, 255, 0.95);
+      background: linear-gradient(to right, #02416D, #AEDD2B);
+      flex: 1;
+ 
+    }
+
+    .main-titlePg {
+        display: flex;
+        justify-content: space-between;
+        color: aliceblue;
+        font-size: 15px;
+        padding-left: 20px;
+        padding-top: 20px;
+
+      }
+
+      .Body-LandPG {
+ height: 90%;
+        flex: 1;
+        flex-direction: row;
+        display: flex;
+        align-items: center;
+      }
+
+.TextBodyLandPg{
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    display: flex;
+}
+
+      .TextBodyLandPg h1{
+font-size: 110px;
+margin-left: 20px;
+      }
+
+      .TextBodyLandPg p{
+        margin-left: 20px;
+        font-size: 20px;
+      }
+
+      .div-blur{
+        width: 60%;
+        height: 100%;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(223, 223, 223, 0)) ;
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        border-radius: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.37);
+        position: relative;
+        right: -100px;
+        flex-direction: row;
+        display: flex;
+        align-items: center;
+      }
+
+      .TextDivBlur{
+        flex-direction: column;
+        display: flex;
+        align-items: center;
+        left: -100px;
+        position: relative;
+      }
+
+      .TextDivBlur p{
+        font-size: 40px;
+        color: aliceblue;
+        margin-bottom: 20px;
+      }
+
+      .TextDivBlur h1{
+        font-size: 130px;
+        color: aliceblue;
+      }
+
+      
+
+      .Foguetinho3d {
+        position: relative;
+        left: -150px;
+        width: 600px;
+        height: 600px;
+      }

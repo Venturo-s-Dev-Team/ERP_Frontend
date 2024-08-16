@@ -22,7 +22,7 @@ const MenuList = ({ darkTheme }) => {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get('http://10.144.170.15:3001/verifyToken', { withCredentials: true });
+        const response = await axios.get('http://10.144.170.13:3001/verifyToken', { withCredentials: true });
         const decodedToken = jwtDecode(response.data.token);
         setUserInfo(decodedToken);
       } catch (error) {
@@ -36,17 +36,6 @@ const MenuList = ({ darkTheme }) => {
 
   const handleNavigation = (path) => {
     navigate(path);
-  };
-  
-  const Logout = async () => {
-    try {
-      const response = await axios.get('http://10.144.170.15:3001/logout', { withCredentials: true });
-      if (response) {
-      navigate('/')
-    }
-    } catch (err) {
-      alert('Erro ao efetuar logout');
-    }
   };
 
   const menuItems = [
@@ -62,7 +51,7 @@ const MenuList = ({ darkTheme }) => {
       label: "DashboardAdmin",
       onClick: () => handleNavigation("/dashboard_admin"),
     },
-    {
+    !(userInfo?.Status === 'NO') && {
       key: "subestoque",
       icon: <StockOutlined />,
       label: "Estoque",
@@ -74,7 +63,7 @@ const MenuList = ({ darkTheme }) => {
         },
       ],
     },
-    {
+    !(userInfo?.Status === 'NO') && {
       key: "financeiro",
       icon: <FaMoneyBillTrendUp />,
       label: "Financeiro",
@@ -185,26 +174,15 @@ const MenuList = ({ darkTheme }) => {
         },
       ],
     },
-    {
+    !(userInfo?.Status === 'NO') && {
       key: "vendas",
       icon: <AreaChartOutlined />,
       label: "Vendas",
       children: [
         {
-          key: "notafiscal",
-          label: "Nota fiscal",
-          children: [
-            {
-              key: "cadastro",
-              label: "Notas Fiscais",
-              onClick: () => handleNavigation("/cadastronf"),
-            },
-            {
-              key: "emissao",
-              label: "Emissão de Nota Fiscal",
-              onClick: () => handleNavigation("/emissaonf"),
-            },
-          ],
+          key: "cadastro",
+          label: "Notas Fiscais",
+          onClick: () => handleNavigation("/cadastronf"),
         },
         {
           key: "clientes",
@@ -227,10 +205,10 @@ const MenuList = ({ darkTheme }) => {
       key: "Logout",
       icon: <MdLogout />,
       label: "Logout",
-      onClick:() => Logout(),
+      onClick: () => handleNavigation("/logout"),
     },
   ];
-
+  
   return (
     <Menu
       theme={darkTheme ? "dark" : "light"}
@@ -238,6 +216,6 @@ const MenuList = ({ darkTheme }) => {
       items={menuItems.filter(Boolean)}  // Filtra os itens nulos
     />
   );
-};
+}  
 
 export default MenuList;

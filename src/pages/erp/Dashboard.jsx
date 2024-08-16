@@ -81,7 +81,7 @@ function Home() {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get('http://10.144.170.15:3001/verifyToken', { withCredentials: true });
+        const response = await axios.get('http://10.144.170.13:3001/verifyToken', { withCredentials: true });
         if (response.status === 200) {
           const decodedToken = jwtDecode(response.data.token);
           setUserInfo(decodedToken);
@@ -99,9 +99,9 @@ function Home() {
     verifyToken();
   }, [navigate]);
 
-  if (userInfo.ValoresNull === true || userInfo.Autorizado === 'NO') {
+  if (userInfo.ValoresNull === true) {
     navigate('/CadastroEmpresa')
-  } else if (userInfo.Autorizado === 'NO') {
+  } else if (userInfo.Status === 'NO') {
     return <div>{userInfo.Nome_user}, sua empresa não esta autorizada, entre em contato conosco via e-mail do sistema ou no nosso número de WhatsApp: (19)98171-2080 </div>
   }
 

@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Route,
   Routes,
   useLocation,
-  Navigate
+  Navigate,
+  useNavigate
 } from "react-router-dom";
+import axios from 'axios';
+import { jwtDecode } from "jwt-decode";
 import Sidebar from "../components/Sidebar";
 import Header from "../components/Header";
 import Dashboard from "../pages/erp/Dashboard";
@@ -47,15 +50,17 @@ import Vendas from "../pages/erp/vendas/vendas";
 
 // NOTAFISCAL
 import Cadastronf from "../pages/erp/vendas/notafiscal/cadastronf";
-import Emissaonf from "../pages/erp/vendas/notafiscal/emissaonf";
 
 // PEDIDOS
-import Cad_cliente from "../pages/erp/vendas/pedidos/cad_cliente";
 import Clientes from "../pages/erp/vendas/pedidos/clientes";
 import Precofinal from "../pages/erp/vendas/pedidos/precofinal";
 
 //ERROR
 import Error from "../pages/erro/error";
+
+//LANDPAGE
+import Landpage from "../pages/erp/landpage/landpage"
+import Logout from "../components/Logout";
 
 function AppRoutes() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
@@ -76,7 +81,32 @@ function AppRoutes() {
 
 function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
   const location = useLocation();
-  const isExcludedRoute = ["/", "/error","/CadastroEmpresa"].includes(location.pathname);
+  const isExcludedRoute = ["/", "/error","/CadastroEmpresa", "/landpage"].includes(location.pathname);
+
+  // Função para verificar o token
+ const [userInfo, setUserInfo] = useState('');
+ const navigate = useNavigate();
+
+ useEffect(() => {
+  const verifyToken = async () => {
+    try {
+      const response = await axios.get('http://10.144.170.13:3001/verifyToken', { withCredentials: true });
+      if (response.status === 200) {
+        const decodedToken = jwtDecode(response.data.token);
+        setUserInfo(decodedToken);
+      } else if (response.status === 201) {
+        alert('Refresh necessário');
+        const decodedToken = jwtDecode(response.data.token);
+        setUserInfo(decodedToken);
+      }
+    } catch (error) {
+      console.error('Token inválido', error);
+      navigate('/');
+    }
+  };
+
+  verifyToken();
+}, [navigate]);
 
   return (
     <div className="grid-container">
@@ -91,11 +121,11 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           <Route path="/" element={<Login />} />
           <Route path="/CadastroEmpresa" element={<CadastroEmpresa />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          {userInfo?.Status !== 'NO' && (
+            <>
           <Route path="/dashboard_admin" element={<DashboardAdmin />} />
           <Route path="/cad_produto" element={<Cad_produto />} />
           <Route path="/cadastronf" element={<Cadastronf />} />
-          <Route path="/emissaonf" element={<Emissaonf />} />
-          <Route path="/cad_cliente" element={<Cad_cliente />} />
           <Route path="/clientes" element={<Clientes />} />
           <Route path="/precofinal" element={<Precofinal />} />
           <Route path="/vendas" element={<Vendas />} />
@@ -117,6 +147,9 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           <Route path="/razao" element={<Razao />} />
           <Route path="/error" element={<Error errorCode={404} />} />
           <Route path="*" element={<Navigate to="/error" />} />
+          </> )}
+          <Route path="/landpage" element={<Landpage/>}/>
+          <Route path="/logout" element={<Logout/>} />
         </Routes>
       </div>
     </div>
