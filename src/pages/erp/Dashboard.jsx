@@ -81,23 +81,24 @@ function Home() {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get('http://10.144.170.13:3001/verifyToken', { withCredentials: true });
-        if (response.status === 200) {
+        const response = await axios.get('http://192.168.0.177:3001/verifyToken', { withCredentials: true });
+        
+        if (typeof response.data.token === 'string') {
           const decodedToken = jwtDecode(response.data.token);
           setUserInfo(decodedToken);
-        } else if (response.status === 201) {
-          alert('Refresh necessário');
-          const decodedToken = jwtDecode(response.data.token);
-          setUserInfo(decodedToken);
+        } else {
+          console.error('Token não é uma string:', response.data.token);
+          navigate('/');
         }
       } catch (error) {
         console.error('Token inválido', error);
         navigate('/login');
       }
     };
-
+    
     verifyToken();
-  }, [navigate]);
+}, [navigate]);
+
 
   if (userInfo.ValoresNull === true) {
     navigate('/CadastroEmpresa')

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {jwtDecode} from 'jwt-decode';
-import './entrada.css'
+import './entrada.css';
 
 // Componentes
 import EmailPopup from './popup_email';
@@ -24,30 +24,40 @@ const Caixa_Saida = () => {
     useEffect(() => {
         const verifyToken = async () => {
             try {
-                const response = await axios.get('http://10.144.170.13:3001/verifyToken', { withCredentials: true });
-                const decodedToken = jwtDecode(response.data.token);
-                setUserInfo(decodedToken);
+                const response = await axios.get('http://192.168.0.177:3001/verifyToken', { withCredentials: true });
+                 
+                if (typeof response.data.token === 'string') {
+                    const decodedToken = jwtDecode(response.data.token);
+                    setUserInfo(decodedToken);
+                } else {
+                    console.error('Token não é uma string:', response.data.token);
+                    navigate('/');
+                }
             } catch (error) {
                 console.error('Token inválido', error);
                 navigate('/login');
             }
         };
-
         verifyToken();
     }, [navigate]);
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const response = await axios.get(`http://10.144.170.13:3001/caixa_saida`, { withCredentials: true });
-                setEmails(response.data);
-            } catch (err) {
-                setProtocoloErro("500");
-                setMsgErro("Não foi possível fazer a requisição da sua caixa de saída");
+            if (userInfo && userInfo.Email) {
+                try {
+                    const response = await axios.get('http://192.168.0.177:3001/caixa_saida', {
+                        params: { Email: userInfo.Email },
+                        withCredentials: true
+                    });
+                    setEmails(response.data);
+                } catch (err) {
+                    setProtocoloErro("500");
+                    setMsgErro("Não foi possível fazer a requisição da sua caixa de saída");
+                }
             }
-        }
+        };
         fetchData();
-    }, []);
+    }, [userInfo]);
 
     const formatTimestamp = (timestamp) => {
         const date = new Date(timestamp);
@@ -84,7 +94,7 @@ const Caixa_Saida = () => {
                                 <div className="email-body">
                                     <p>{email.Mensagem}</p>
                                     {email.Arquivo && (
-                                        <a href={`http://10.144.170.13:3001/uploads/Docs/${email.Arquivo}`} className="email-attachment">
+                                        <a href={`http://192.168.0.177:3001/uploads/Docs/${email.Arquivo}`} className="email-attachment">
                                             {email.Arquivo}
                                         </a>
                                     )}
@@ -100,7 +110,7 @@ const Caixa_Saida = () => {
 
     return (
         <div className="app">
-            <h1 className='Assunto' >E-mail: Suas mensagens enviadas</h1>
+            <h1 className='Assunto'>E-mail: Suas mensagens enviadas</h1>
             <Cards />
             <button className='btn-voltar' onClick={() => navigate('/E-mail_Caixa_Entrada')}>Caixa de entrada</button>
             <button className='btn-nova-mensagem' onClick={openPopup}>Nova Mensagem</button>

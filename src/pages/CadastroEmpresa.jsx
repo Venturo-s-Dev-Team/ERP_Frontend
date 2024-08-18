@@ -12,7 +12,7 @@ function CadastroEmpresa() {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get('http://10.144.170.13:3001/verifyToken', { withCredentials: true });
+        const response = await axios.get('http://192.168.0.177:3001/verifyToken', { withCredentials: true });
         if (response.status === 200) {
           const decodedToken = jwtDecode(response.data.token);
           setUserInfo(decodedToken);
@@ -68,7 +68,7 @@ function CadastroEmpresa() {
     });
 
     try {
-      await axios.post(`http://10.144.170.13:3001/updateEmpresa/${id}`, data, {
+      await axios.post(`http://192.168.0.177:3001/updateEmpresa/${id}`, data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

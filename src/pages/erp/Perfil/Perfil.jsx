@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-
+import './perfil.css';
 
 const Perfil = () => {
   const navigate = useNavigate();
@@ -11,8 +11,8 @@ const Perfil = () => {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get('http://10.144.170.13:3001/verifyToken', { withCredentials: true });
-        console.log('Token recebido:', response.data.token); // Adicione este log
+        const response = await axios.get('http://192.168.0.177:3001/verifyToken', { withCredentials: true });
+        
         if (typeof response.data.token === 'string') {
           const decodedToken = jwtDecode(response.data.token);
           setUserInfo(decodedToken);
@@ -22,38 +22,40 @@ const Perfil = () => {
         }
       } catch (error) {
         console.error('Token inválido', error);
-        navigate('/');
+        navigate('/login');
       }
     };
     
     verifyToken();
-}, [navigate]);
+  }, [navigate]);
 
   const Body = () => {
     if (userInfo) {
       if (userInfo.TypeUser === 'SuperAdmin') {
         return (
-          <div>
-            <p>ID: {userInfo.id_user}</p>
-            <p>Nome: {userInfo.Nome_user}</p>
-            <p>Email: {userInfo.Email}</p>
+          <div className="perfil-body">
+            <div className="perfil-info">
+              <p className="perfil-id">ID: {userInfo.id_user}</p>
+              <p className="perfil-nome">Nome: {userInfo.Nome_user}</p>
+              <p className="perfil-email">Email: {userInfo.Email}</p>
+            </div>
           </div>
         );
       } else if (userInfo.TypeUser === 'Admin') {
         return (
-          <div>
-            <footer>
-              <details>
-                <summary>
+          <div className="perfil-body">
+            <footer className="perfil-footer">
+              <details className="perfil-details">
+                <summary className="perfil-summary">
                   {!userInfo.id_EmpresaDb ? (
                     <div>Vazio</div>
                   ) : (
-                    <img src={`http://10.144.170.13:3001/uploads/Logo/${userInfo.id_EmpresaDb}.png`} style={{ width: 100, height: 100 }} alt="" />
+                    <img src={`http://192.168.0.177:3001/uploads/Logo/${userInfo.id_EmpresaDb}.png`} style={{ width: 100, height: 100 }} alt="" />
                   )}
                 </summary>
-                <p>ID: {userInfo.id_user}</p>
-                <p>Nome: {userInfo.Nome_user}</p>
-                <p>Email: {userInfo.Email}</p>
+                <p className="perfil-id">ID: {userInfo.id_user}</p>
+                <p className="perfil-nome">Nome: {userInfo.Nome_user}</p>
+                <p className="perfil-email">Email: {userInfo.Email}</p>
                 <p>{userInfo.TypeUser}</p>
               </details>
             </footer>
@@ -61,20 +63,20 @@ const Perfil = () => {
         );
       } else if (userInfo.RazaoSocial) {
         return (
-          <div>
-            <footer>
-              <details>
-                <summary>
+          <div className="perfil-body">
+            <footer className="perfil-footer">
+              <details className="perfil-details">
+                <summary className="perfil-summary">
                   {!userInfo.Logo ? (
                     <div>Perfil</div>
                   ) : (
-                    <img src={`http://10.144.170.13:3001/uploads/Logo/${userInfo.Logo}`} style={{ width: 100, height: 100 }} alt="" />
+                    <img src={`http://192.168.0.177:3001/uploads/Logo/${userInfo.Logo}`} style={{ width: 100, height: 100 }} alt="" />
                   )}
                 </summary>
-                <p>ID: {userInfo.id_user}</p>
-                <p>Nome_user: {userInfo.Nome_user}</p>
+                <p className="perfil-id">ID: {userInfo.id_user}</p>
+                <p className="perfil-nome">Nome: {userInfo.Nome_user}</p>
                 <p>Empresa: {userInfo.RazaoSocial}</p>
-                <p>E-mail: {userInfo.Email}</p>
+                <p className="perfil-email">E-mail: {userInfo.Email}</p>
               </details>
             </footer>
           </div>
@@ -86,8 +88,8 @@ const Perfil = () => {
   };
 
   return (
-    <div>
-      <h1>Perfil</h1>
+    <div className="perfil-container">
+      <h1 className="perfil-header">Perfil</h1>
       <Body />
     </div>
   );

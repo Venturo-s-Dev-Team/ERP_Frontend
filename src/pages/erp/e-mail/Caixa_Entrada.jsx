@@ -2,58 +2,59 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {jwtDecode} from 'jwt-decode';
-import './entrada.css'
+import './entrada.css';
 
 // Componentes
 import EmailPopup from './popup_email';
 
 const Caixa_Entrada = () => {
     const navigate = useNavigate();
-    const [userInfo, setUserInfo] = useState(null);
+    const [userInfo, setUserInfo] = useState({});
     const [emails, setEmails] = useState([]);
     const [protocoloErro, setProtocoloErro] = useState(null);
-    const [msgErro, setMsgErro] = useState(null);
+    const [msgErro, setMsgErro] = useState('');
     const [openedEmailId, setOpenedEmailId] = useState(null);
-
-    // E-mail pop-up
-    const [isPopupOpen, setPopupOpen] = useState(false);
-
-    const openPopup = () => setPopupOpen(true);
-    const closePopup = () => setPopupOpen(false);
+    const [isPopupOpen, setPopupOpen] = useState(false); // E-mail pop-up
 
     useEffect(() => {
-        const verifyToken = async () => {
-            try {
-                const response = await axios.get('http://10.144.170.13:3001/verifyToken', { withCredentials: true });
-                if (response.status === 200) {
-                    const decodedToken = jwtDecode(response.data.token);
-                    setUserInfo(decodedToken);
-                } else if (response.status === 201) {
-                    alert('Refresh necessário');
-                    const decodedToken = jwtDecode(response.data.token);
-                    setUserInfo(decodedToken);
-                }
-            } catch (error) {
-                console.error('Token inválido', error);
-                navigate('/login');
-            }
-        };
-
         verifyToken();
-    }, [navigate]);
+    }, []);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get('http://10.144.170.13:3001/caixa_entrada', { withCredentials: true });
-                setEmails(response.data);
-            } catch (err) {
-                setProtocoloErro("500");
-                setMsgErro("Não foi possível fazer a requisição da sua caixa de entrada");
+        if (userInfo.Email) {
+            fetchEmails(userInfo.Email);
+        }
+    }, [userInfo]);
+
+    const verifyToken = async () => {
+        try {
+            const response = await axios.get('http://192.168.0.177:3001/verifyToken', { withCredentials: true });
+            
+            if (typeof response.data.token === 'string') {
+                const decodedToken = jwtDecode(response.data.token);
+                setUserInfo(decodedToken);
+            } else {
+                console.error('Token não é uma string:', response.data.token);
+                navigate('/');
             }
-        };
-        fetchData();
-    }, []);
+        } catch (error) {
+            console.error('Token inválido', error);
+            navigate('/login');
+        }
+    };
+
+    const fetchEmails = async (email) => {
+        try {
+            const response = await axios.get('http://192.168.0.177:3001/caixa_entrada', {
+                params: { Email: email },
+                withCredentials: true 
+            });
+            setEmails(response.data);
+        } catch (err) {
+            setProtocoloErro("500");
+            setMsgErro("Não foi possível fazer a requisição da sua caixa de entrada");
+        }
+    };
 
     const formatTimestamp = (timestamp) => {
         const date = new Date(timestamp);
@@ -71,15 +72,15 @@ const Caixa_Entrada = () => {
         setOpenedEmailId(openedEmailId === id ? null : id);
     };
 
-    if (protocoloErro) {
-        return <Error protocolo={protocoloErro} msg={msgErro} />;
-    }
+    const renderError = () => (
+        <div>Erro {protocoloErro}: {msgErro}</div>
+    );
 
-    const Cards = () => (
+    const renderEmails = () => (
         <div className="email-list">
             {emails.length > 0 ? (
                 emails
-                    .sort((a, b) => new Date(b.TimeStamp) - new Date(a.TimeStamp)) // Ordena por mais recente
+                    .sort((a, b) => new Date(b.TimeStamp) - new Date(a.TimeStamp)) 
                     .map((email) => (
                         <div key={email.id} className="email-item">
                             <div className="email-header" onClick={() => toggleEmail(email.id)}>
@@ -90,7 +91,7 @@ const Caixa_Entrada = () => {
                                 <div className="email-body">
                                     <p>{email.Mensagem}</p>
                                     {email.Arquivo && (
-                                        <a href={`http://10.144.170.13:3001/uploads/Docs/${email.Arquivo}`} className="email-attachment">
+                                        <a href={`http://192.168.0.177:3001/uploads/Docs/${email.Arquivo}`} className="email-attachment">
                                             {email.Arquivo}
                                         </a>
                                     )}
@@ -106,11 +107,11 @@ const Caixa_Entrada = () => {
 
     return (
         <div className="app">
-            <h1 className='Assunto' >E-mail: Caixa de Entrada</h1>
-            <Cards />
+            <h1 className='Assunto'>E-mail: Caixa de Entrada</h1>
+            {protocoloErro ? renderError() : renderEmails()}
             <button className='btn-voltar' onClick={() => navigate('/E-mail_Caixa_Saida')}>Caixa de saída</button>
-            <button className='btn-nova-mensagem' onClick={openPopup}>Nova Mensagem</button>
-            {isPopupOpen && <EmailPopup Email={userInfo?.Email} onClose={closePopup} />}
+            <button className='btn-nova-mensagem' onClick={() => setPopupOpen(true)}>Nova Mensagem</button>
+            {isPopupOpen && <EmailPopup Email={userInfo?.Email} onClose={() => setPopupOpen(false)} />}
             <button className='btn-voltar' onClick={() => navigate('/dashboard')}>Voltar</button>
         </div>
     );

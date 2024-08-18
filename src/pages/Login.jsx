@@ -30,7 +30,7 @@ function Login() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://10.144.170.13:3001/login",
+        "http://192.168.0.177:3001/login",
         {
           Nome: nome,
           Senha: Password,
@@ -96,7 +96,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        "http://10.144.170.13:3001/registro",
+        "http://192.168.0.177:3001/registro",
         formData,
         {
           headers: {
@@ -130,7 +130,7 @@ function Login() {
         <div className={`form-container ${isSignUp ? "sign-up" : "sign-in"}`}>
           {isSignUp ? (
             <div className="form-sign-up">
-              <h1> Crie sua Conta!</h1>
+              <h1> Cadastre sua empresa aqui!</h1>
               <form onSubmit={handleRegister}>
                 <input
                   value={Gestor}

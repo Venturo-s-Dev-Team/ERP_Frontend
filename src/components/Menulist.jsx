@@ -23,9 +23,15 @@ const MenuList = ({ darkTheme }) => {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get('http://10.144.170.13:3001/verifyToken', { withCredentials: true });
-        const decodedToken = jwtDecode(response.data.token);
-        setUserInfo(decodedToken);
+        const response = await axios.get('http://192.168.0.177:3001/verifyToken', { withCredentials: true });
+        
+        if (typeof response.data.token === 'string') {
+          const decodedToken = jwtDecode(response.data.token);
+          setUserInfo(decodedToken);
+        } else {
+          console.error('Token não é uma string:', response.data.token);
+          navigate('/login');
+        }
       } catch (error) {
         console.error('Token inválido', error);
         navigate('/login');
@@ -33,7 +39,7 @@ const MenuList = ({ darkTheme }) => {
     };
     
     verifyToken();
-  }, [navigate]);
+}, [navigate]);
 
   const handleNavigation = (path) => {
     navigate(path);
