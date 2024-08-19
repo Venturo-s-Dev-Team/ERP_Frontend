@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import './entrada.css';
 
 // Componentes
@@ -25,7 +25,7 @@ const Caixa_Saida = () => {
         const verifyToken = async () => {
             try {
                 const response = await axios.get('http://192.168.0.177:3001/verifyToken', { withCredentials: true });
-                 
+
                 if (typeof response.data.token === 'string') {
                     const decodedToken = jwtDecode(response.data.token);
                     setUserInfo(decodedToken);
@@ -75,19 +75,24 @@ const Caixa_Saida = () => {
         setOpenedEmailId(openedEmailId === id ? null : id);
     };
 
-    if (protocoloErro) {
-        return <Error protocolo={protocoloErro} msg={msgErro} />;
-    }
+    const excluirEmail = async (id) => {
+        try {
+            await axios.put(`http://192.168.0.177:3001/excluir_email_remetente`, { id });
+            setEmails(emails.filter(email => email.id !== id));
+        } catch (err) {
+            console.error("Erro ao excluir o e-mail", err);
+        }
+    };
 
     const Cards = () => (
         <div className="email-list">
             {emails.length > 0 ? (
                 emails
-                    .sort((a, b) => new Date(b.TimeStamp) - new Date(a.TimeStamp)) // Ordena por mais recente
+                    .sort((a, b) => new Date(b.TimeStamp) - new Date(a.TimeStamp))
                     .map((email) => (
                         <div key={email.id} className="email-item">
                             <div className="email-header" onClick={() => toggleEmail(email.id)}>
-                                <h3>{email.Assunto} para {email.Destinatario}</h3>
+                                {!email.Assunto ? (<h3>Sem assunto para {email.Destinatario}</h3>) : (<h3>{email.Assunto} para {email.Destinatario}</h3>)}
                                 <p className="email-timestamp">{formatTimestamp(email.TimeStamp)}</p>
                             </div>
                             {openedEmailId === email.id && (
@@ -98,6 +103,7 @@ const Caixa_Saida = () => {
                                             {email.Arquivo}
                                         </a>
                                     )}
+                                    <button className='btn-voltar' onClick={() => excluirEmail(email.id)}>Excluir</button> {/* Botão de exclusão */}
                                 </div>
                             )}
                         </div>
@@ -108,12 +114,13 @@ const Caixa_Saida = () => {
         </div>
     );
 
+
     return (
         <div className="app">
             <h1 className='Assunto'>E-mail: Suas mensagens enviadas</h1>
             <Cards />
             <button className='btn-voltar' onClick={() => navigate('/E-mail_Caixa_Entrada')}>Caixa de entrada</button>
-            <button className='btn-nova-mensagem' onClick={openPopup}>Nova Mensagem</button>
+            <button className='btn-voltar' onClick={openPopup}>Nova Mensagem</button>
             {isPopupOpen && <EmailPopup Email={userInfo?.Email} onClose={closePopup} />}
             <button className='btn-voltar' onClick={() => navigate('/dashboard')}>Voltar</button>
         </div>

@@ -1,77 +1,94 @@
 .app {
-    max-width: 900px;
-    margin: 0 auto;
     padding: 20px;
     background-color: #f7f7f7;
+    font-family: Arial, sans-serif;
+    color: #333;
 }
 
 .Assunto {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+    color: #4a90e2;
 }
 
 .email-list {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #fff;
+    margin-top: 10px;
+    max-width: 600px;
+    margin: auto;
 }
 
 .email-item {
-    padding: 10px 15px;
-    border-bottom: 1px solid #ddd;
-    cursor: pointer;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    transition: box-shadow 0.2s ease;
 }
 
-.email-item:last-child {
-    border-bottom: none;
+.email-item:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .email-header {
+    padding: 10px 15px;
+    cursor: pointer;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.email-header h3 {
-    margin: 0;
-    font-size: 18px;
-    color: #333;
+.new-email {
+    background-color: #eaf7ff;
 }
 
-.email-timestamp {
-    font-size: 14px;
-    color: #999;
+.new-icon {
+    margin-left: 10px;
+    color: #ff5722;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
 }
 
 .email-body {
-    padding: 10px 0;
+    padding: 15px;
+    border-top: 1px solid #ddd;
 }
 
-.email-attachment {
-    display: inline-block;
+.email-timestamp {
+    color: #999;
+    font-size: 0.85em;
+}
+
+.btn-delete {
+    background-color: #ff5722;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
     margin-top: 10px;
-    color: #1a73e8;
-    text-decoration: none;
 }
 
-.email-attachment:hover {
-    text-decoration: underline;
+.btn-delete:hover {
+    background-color: #e64a19;
 }
 
-.btn-voltar,
-.btn-nova-mensagem {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
+.btn-voltar {
+    background-color: #4a90e2;
+    color: white;
+    padding: 10px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    text-align: center;
+    margin-top: 15px;
+    display: inline-block;
+    margin: 10px
 }
 
-.btn-voltar:hover,
-.btn-nova-mensagem:hover {
-    background-color: #0056b3;
+.btn-voltar:hover {
+    background-color: #357ab7;
 }
