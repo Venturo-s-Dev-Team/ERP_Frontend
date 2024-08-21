@@ -3,18 +3,76 @@
     background-color: #f7f7f7;
     font-family: Arial, sans-serif;
     color: #333;
+    width: 100%;
+    height: 100%;
+   
+}
+
+.titleEmail{
+    width: 100%;
+    padding-top: 10px;
+    padding-left: 10px;
+    align-items: center;
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+
+}
+
+.titleEmail h1{
+font-size: 25px;
+
+}
+
+.alinhar-divs{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: flex-start;
+    display: flex;
+}
+
+.buttonsEntrada{
+    width: 200px;
+    height: 100%;
+    flex-direction: column;
+    display: flex;  
+    align-items: flex-start;
+ justify-content: flex-start;
+ gap: 5px;
+}
+
+.Conteudo{
+    width: 100%;
+    height: 60%;    
+ border-radius: 20px;
+
+ height: 90dvh;
+ background-color: white;
+
 }
 
 .Assunto {
-    text-align: center;
     margin-bottom: 20px;
-    color: #4a90e2;
+    color: #000;
+
+}
+
+
+
+.LogoEmail{
+    width: 50px;
+    height: 50px;
+    position: relative;
+    top: -8px;
 }
 
 .email-list {
-    margin-top: 10px;
-    max-width: 600px;
+    max-width: 100%;
     margin: auto;
+    height: 90dvh;
+    background-color: white;
+
 }
 
 .email-item {
@@ -35,6 +93,44 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+.coluna{
+    flex-direction: row;
+    display: flex;
+    gap:30px;
+}
+
+.dot {
+    width: 20px; /* Tamanho da bolinha */
+    height: 20px;
+    background-color: #00BFFF; /* Azul claro brilhante */
+    border-radius: 50%; /* Torna o elemento circular */
+    box-shadow: 0 0 20px rgba(0, 191, 255, 0.8); /* Brilho intenso */
+    animation: shine 1.5s infinite; /* Animação de brilho */
+}
+
+/* Animação para o efeito de brilho pulsante */
+@keyframes shine {
+    0% {
+        box-shadow: 0 0 20px rgba(0, 191, 255, 0.8);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(0, 191, 255, 1);
+        transform: scale(1.1); /* Aumenta ligeiramente o tamanho */
+    }
+    100% {
+        box-shadow: 0 0 20px rgba(0, 191, 255, 0.8);
+        transform: scale(1);
+    }
+}
+
+
+
+.email-header h3{
+    color: #000;
+    
 }
 
 .new-email {
@@ -58,6 +154,8 @@
     border-top: 1px solid #ddd;
 }
 
+
+
 .email-timestamp {
     color: #999;
     font-size: 0.85em;
@@ -78,17 +176,79 @@
 }
 
 .btn-voltar {
-    background-color: #4a90e2;
+    background: linear-gradient(to top, #b30000, #f01919);
     color: white;
-    padding: 10px 15px;
+    font-weight: bold;
+width: 120px;
+height: 40px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     margin-top: 15px;
-    display: inline-block;
-    margin: 10px
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    cursor:pointer;
+    gap: 10px;
+}
+
+
+.btn-caixas {
+    color: black;
+    font-weight: bold;
+width: 150px;
+height: 30px;
+    border: none;
+    border-radius: 1px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor:pointer;
+    font-size: 13px;
+}
+
+
+.btn-caixas:hover {
+    background-color: #b9d9f6;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+
+}
+
+.btn-caixas.active {
+    background-color: #b9d9f6; /* Cor quando o botão está ativo */
+    color: white;
 }
 
 .btn-voltar:hover {
     background-color: #357ab7;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+
+}
+
+.btn-mensagem {
+    background: linear-gradient(to top, #357ab7, #4582b8);
+    color: white;
+    font-weight: bold;
+  height: 60px;
+  width: 130px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    margin-top: 15px;
+    display: flex;
+    margin-bottom: 15px;
+    cursor:pointer;
+    gap: 15px;
+    box-shadow: 0px 0px 13px rgba(0, 0, 0, 0.1);
+justify-content: center;
+    align-items: center;
+}
+
+
+.btn-mensagem:hover {
+    background-color: #357ab7;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+
 }

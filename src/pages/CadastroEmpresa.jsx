@@ -4,6 +4,7 @@ import axios from 'axios';
 import "../styles/CadastroEmpresa.css";
 import { jwtDecode } from "jwt-decode";
 import InputMask from 'react-input-mask';
+import "../App.css";
 
 function CadastroEmpresa() {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ function CadastroEmpresa() {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get('http://192.168.0.177:3001/verifyToken', { withCredentials: true });
+        const response = await axios.get('http://10.144.170.4:3001/verifyToken', { withCredentials: true });
         if (response.status === 200) {
           const decodedToken = jwtDecode(response.data.token);
           setUserInfo(decodedToken);
@@ -68,7 +69,7 @@ function CadastroEmpresa() {
     });
 
     try {
-      await axios.post(`http://192.168.0.177:3001/updateEmpresa/${id}`, data, {
+      await axios.post(`http://10.144.170.4:3001/updateEmpresa/${id}`, data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -84,39 +85,49 @@ function CadastroEmpresa() {
   };
 
   return (
-    <div className='container-cadastro'>
-      <div className='form-container'>
-        <div className="form-sign-up">
-          <h1>Formulário de Empresa</h1>
-          <form onSubmit={handleSubmit}>
-            <fieldset>
-              <legend>Geral</legend>
-              <label>
+      <div className='container-total-ce'>
+  
+          
+          <form  className="box-dentro-ce"onSubmit={handleSubmit}>
+          <h2>Formulário de Empresa</h2>
+
+    <div className="geral-div">
+              <legend className='legenda_cadastro-empresa'>Geral</legend>
+              <div className="inscricao-div">
+              <label className='inscricao'>
                 Inscrição Estadual:
                 <InputMask
                   mask="999.999.999.999"
                   type="text"
                   name="InscricaoEstadual"
                   value={formData.InscricaoEstadual}
+                  className='input-inscricao'
                   onChange={handleChange}
                   required
                 />
-              </label>
-            </fieldset>
+              </label> 
+              </div> 
+        </div>
 
-            <fieldset>
-              <legend>Endereço</legend>
-              <label>
-                Município:
+<div className="endereco-div">           
+
+              <legend  className='legenda_cadastro-empresa-especial'>Endereço</legend>
+              <div className="municipio-div">
+              <label className='municipio'>
+               Município:
                 <input
                   type="text"
                   name="Municipio"
                   value={formData.Municipio}
                   onChange={handleChange}
+                  className="input-municipio"
                   required
                 />
               </label>
-              <label>
+              </div>
+
+              <div className="uf-div">
+              <label className='uf'>
                 UF:
                 <InputMask
                   mask="aa"
@@ -124,10 +135,14 @@ function CadastroEmpresa() {
                   name="UF"
                   value={formData.UF}
                   onChange={handleChange}
+                  className='input-uf'
                   required
                 />
               </label>
-              <label>
+</div>
+
+<div className="logradouro-div">
+              <label className=''>
                 Logradouro:
                 <input
                   type="text"
@@ -137,6 +152,8 @@ function CadastroEmpresa() {
                   required
                 />
               </label>
+</div>
+
               <label>
                 Número:
                 <InputMask
@@ -168,8 +185,8 @@ function CadastroEmpresa() {
                   onChange={handleChange}
                 />
               </label>
-            </fieldset>
 
+</div>
             <fieldset>
               <legend>Empresa</legend>
               <label>
@@ -223,6 +240,7 @@ function CadastroEmpresa() {
                   type="file"
                   name="ContratoSocial"
                   onChange={handleFileChange}
+                  required
                 />
               </label>
               <label>
@@ -231,6 +249,7 @@ function CadastroEmpresa() {
                   type="file"
                   name="RequerimentoEmpresario"
                   onChange={handleFileChange}
+                  required
                 />
               </label>
               <label>
@@ -239,14 +258,13 @@ function CadastroEmpresa() {
                   type="file"
                   name="CertificadoMEI"
                   onChange={handleFileChange}
+                  required
                 />
               </label>
             </fieldset>
             <button type="submit">Enviar</button>
           </form>
         </div>
-      </div>
-    </div>
   );
 }
 

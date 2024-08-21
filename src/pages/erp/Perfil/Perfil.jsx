@@ -11,7 +11,7 @@ const Perfil = () => {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get('http://192.168.0.177:3001/verifyToken', { withCredentials: true });
+        const response = await axios.get('http://10.144.170.4:3001/verifyToken', { withCredentials: true });
         
         if (typeof response.data.token === 'string') {
           const decodedToken = jwtDecode(response.data.token);
@@ -37,7 +37,7 @@ const Perfil = () => {
             <div className="perfil-info">
               <p className="perfil-id">ID: {userInfo.id_user}</p>
               <p className="perfil-nome">Nome: {userInfo.Nome_user}</p>
-              <p className="perfil-email">Email: {userInfo.Email}</p>
+              <p className="perfil-email">E-mail: {userInfo.Email}</p>
             </div>
           </div>
         );
@@ -50,12 +50,12 @@ const Perfil = () => {
                   {!userInfo.id_EmpresaDb ? (
                     <div>Vazio</div>
                   ) : (
-                    <img src={`http://192.168.0.177:3001/uploads/Logo/${userInfo.id_EmpresaDb}.png`} style={{ width: 100, height: 100 }} alt="" />
+                    <img src={`http://10.144.170.4:3001/uploads/Logo/${userInfo.id_EmpresaDb}.png`} style={{ width: 100, height: 100 }} alt="" />
                   )}
                 </summary>
                 <p className="perfil-id">ID: {userInfo.id_user}</p>
                 <p className="perfil-nome">Nome: {userInfo.Nome_user}</p>
-                <p className="perfil-email">Email: {userInfo.Email}</p>
+                <p className="perfil-email">E-mail: {userInfo.Email}</p>
                 <p>{userInfo.TypeUser}</p>
               </details>
             </footer>
@@ -70,7 +70,7 @@ const Perfil = () => {
                   {!userInfo.Logo ? (
                     <div>Perfil</div>
                   ) : (
-                    <img src={`http://192.168.0.177:3001/uploads/Logo/${userInfo.Logo}`} style={{ width: 100, height: 100 }} alt="" />
+                    <img src={`http://10.144.170.4:3001/uploads/Logo/${userInfo.Logo}`} style={{ width: 100, height: 100 }} alt="" />
                   )}
                 </summary>
                 <p className="perfil-id">ID: {userInfo.id_user}</p>

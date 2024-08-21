@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import {  FaPlus } from "react-icons/fa6";
 
 function Cad_nf() {
   const [formData, setFormData] = useState({
@@ -120,81 +121,95 @@ function Cad_nf() {
   };
 
   return (
-    <div className="App">
-      <h1>Emissão de Nota Fiscal</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Razão Social:</label>
+    <main className="main-container">
+      <div className="main-title">
+        <h3>Emissão de Nota Fiscal</h3>
+      </div>
+      
+      <form onSubmit={handleSubmit} className="formulario">
+        <div className="emitente">
+          <h5 className="mini-titulo-nf"> Emitente </h5>
+         <div className="razao-social">
+          <label className="letras-nf">Razão Social:</label>
           <input
             type="text"
             name="razaoSocial"
             value={formData.razaoSocial}
             onChange={handleInputChange}
+            className="input-rs"
           />
         </div>
-        <div>
-          <label>CPF/CNPJ:</label>
+        <div className="cpf">
+          <label className="letras-nf">CPF/CNPJ:</label>
           <input
             type="text"
             name="cpfCnpj"
             value={formData.cpfCnpj}
             onChange={handleInputChange}
+            className="input-cpf"
           />
-        </div>
-
-        <h3>Endereço</h3>
-        <div>
+         </div>
+</div>
+<div className="endereço">
+        <h5 className="mini-titulo-nf">Endereço</h5>
+        <div className="logradouro">
           <label>Logradouro:</label>
           <input
             type="text"
             name="logradouro"
             value={formData.endereco.logradouro}
             onChange={handleEnderecoChange}
+            className="input-logra"
           />
         </div>
-        <div>
+        <div className="numero">
           <label>Número:</label>
           <input
             type="text"
             name="numero"
             value={formData.endereco.numero}
             onChange={handleEnderecoChange}
+            className="input-numero"
           />
         </div>
-        <div>
+        <div className="complemento">
           <label>Complemento:</label>
           <input
             type="text"
             name="complemento"
             value={formData.endereco.complemento}
             onChange={handleEnderecoChange}
+            className="input-complemento"
           />
         </div>
-        <div>
+        <div className="cidade">
           <label>Cidade:</label>
           <input
             type="text"
             name="cidade"
             value={formData.endereco.cidade}
             onChange={handleEnderecoChange}
+            className="input-cidade"
           />
         </div>
-        <div>
+        <div className="estado">
           <label>Estado:</label>
           <input
             type="text"
             name="estado"
             value={formData.endereco.estado}
             onChange={handleEnderecoChange}
+            className="input-estado"
           />
         </div>
 
-        <div>
+        <div className="tipo">
           <label>Tipo de Pagamento:</label>
           <select
             name="tipoPagamento"
             value={formData.tipoPagamento}
             onChange={handleInputChange}
+            className="select-tipo"
           >
             <option value="">Selecione</option>
             <option value="boleto">Boleto</option>
@@ -202,9 +217,12 @@ function Cad_nf() {
             <option value="transferencia">Transferência</option>
           </select>
         </div>
+        </div>
 
-        <h3>Produtos</h3>
+<div className="produto-geral">
+<h5 className="mini-titulo-nf">Produto</h5>
         {formData.produtos.map((produto, index) => (
+          <div className="produto">
           <div key={index}>
             <label>Produto:</label>
             <input
@@ -212,20 +230,29 @@ function Cad_nf() {
               name="nome"
               value={produto.nome}
               onChange={(e) => handleProdutoChange(index, e)}
+              className="input-produto"
             />
+            </div>
+
+            <div className="preco">
             <label>Preço:</label>
             <input
               type="number"
               name="preco"
               value={produto.preco}
               onChange={(e) => handleProdutoChange(index, e)}
+              className="input-preco"
             />
-            <button type="button" onClick={() => removeProduto(index)}>Remover Produto</button>
-          </div>
+            </div>
+            <div className="btn-div">
+            <button type="button" className="btn-remover-produto" onClick={() => removeProduto(index)}>Remover Produto</button>
+          </div></div>
         ))}
-        <button type="button" onClick={addProduto}>Adicionar Produto</button>
+        <button type="button" className="btn-adicionar-produto" onClick={addProduto}>Adicionar Produto
 
-        <div>
+<FaPlus /></button>
+
+        <div className="frete">
           <label>Frete:</label>
           <input
             type="number"
@@ -233,9 +260,10 @@ function Cad_nf() {
             value={formData.frete}
             onChange={handleInputChange}
             onBlur={calculateValues}
+            className="input-frete"
           />
         </div>
-        <div>
+        <div className="desconto">
           <label>Desconto:</label>
           <input
             type="number"
@@ -243,32 +271,38 @@ function Cad_nf() {
             value={formData.desconto}
             onChange={handleInputChange}
             onBlur={calculateValues}
+            className="input-desconto"
           />
-        </div>
+        </div>    </div>
 
-        <h3>Cálculo de Impostos</h3>
-        <div>
+
+<div className="impostos">
+<h5 className="mini-titulo-nf-especial">Cálculo de Impostos</h5>
+        <div className="icms">
           <label>ICMS (18%):</label>
-          <input type="number" name="icms" value={formData.icms} readOnly />
+          <input type="number" name="icms" value={formData.icms} readOnly className="input-icms"/>
         </div>
-        <div>
+
+        <div className="ipi">
           <label>IPI (5%):</label>
-          <input type="number" name="ipi" value={formData.ipi} readOnly />
+          <input className="input-ipi" type="number" name="ipi" value={formData.ipi} readOnly />
         </div>
+</div>
 
-        <h3>Resumo de Preços</h3>
-        <div>
+<div className="resumo">
+<h5 className="mini-titulo-nf-especial">Resumo de Preços</h5>
+        <div className="preco-bruto">
           <label>Preço Bruto:</label>
-          <input type="number" name="precoBruto" value={formData.precoBruto} readOnly />
+          <input className="input-preco-bruto" type="number" name="precoBruto" value={formData.precoBruto} readOnly />
         </div>
-        <div>
+        <div className="preco-final">
           <label>Preço Final:</label>
-          <input type="number" name="precoFinal" value={formData.precoFinal} readOnly />
-        </div>
+          <input className="input-preco-final" type="number" name="precoFinal" value={formData.precoFinal} readOnly />
+        </div>  </div>
 
-        <button type="submit">Emitir Nota Fiscal</button>
+        <button className="emitir" type="submit">Emitir Nota Fiscal</button>
       </form>
-    </div>
+  </main>
   );
 }
 

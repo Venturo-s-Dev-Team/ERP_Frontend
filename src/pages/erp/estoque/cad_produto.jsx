@@ -1,19 +1,21 @@
 import { Button, Modal } from "react-bootstrap";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
 import "../../../App.css";
 import VenturoImg from "../../../images/Venturo.png";
-
-const products = [
-  { id: 1, name: "Produto 1", code: 232144, quantidade: 3, valorUni: 4, fornecedor: "X", tamanho: "Grande" },
-  { id: 2, name: "Produto 2", code: 245, quantidade: 2, valorUni: 4.77, fornecedor: "X", tamanho: "Médio"},
-  { id: 3, name: "Produto 3", code: 246, quantidade: 1, valorUni: 1, fornecedor: "X", tamanho:"Pequeno" },
-];
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
+import InputMask from 'react-input-mask';
 
 function RegistroProduto() {
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [showModalInfo, setShowModalInfo] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedTotal, setSelectedTotal] = useState(0);
+  const [ProductsEstoque, setSelectedEstoque] = useState([]);
+  const [userInfo, setUserInfo] = useState({});
 
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
@@ -24,8 +26,96 @@ function RegistroProduto() {
   };
 
   const handleCloseInfo = () => {
-    setSelectedProduct(null);
-    setShowModalInfo(false);
+    window.location.reload(); // Recarrega a página
+  };
+
+  useEffect(() => {
+    verifyToken();
+  }, []);
+
+  useEffect(() => {
+    if (userInfo.id_user) {
+      fetchDados(userInfo.id_user);
+    }
+  }, [userInfo]);
+
+  const verifyToken = async () => {
+    try {
+      const response = await axios.get('http://10.144.170.4:3001/verifyToken', { withCredentials: true });
+      if (typeof response.data.token === 'string') {
+        const decodedToken = jwtDecode(response.data.token);
+        setUserInfo(decodedToken);
+      } else {
+        console.error('Token não é uma string:', response.data.token);
+        navigate('/');
+      }
+    } catch (error) {
+      console.error('Token inválido', error);
+      navigate('/login');
+    }
+  };
+
+  const fetchDados = async (id) => {
+    try {
+      const response = await axios.get(`http://10.144.170.4:3001/tableEstoque/${id}`, { withCredentials: true });
+      if (response.status === 200) {
+        setSelectedEstoque(response.data.InfoTabela);
+        setSelectedTotal(response.data.InfoTabela.length);
+      }
+    } catch (error) {
+      console.log('Não foi possível requerir as informações: ', error);
+    }
+  };
+
+  const [RegisterProdutos, setRegisterProdutos] = useState({
+    Nome: '',
+    Quantidade: '',
+    ValorUnitario: '',
+    Fornecedor: '',
+    Tamanho: '',
+    Imagem: null,
+    Estoque: '',
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    // Formata o valor para duas casas decimais
+    const formattedValue = name === 'ValorUnitario' ? parseFloat(value).toFixed(2) : value;
+    setRegisterProdutos({ ...RegisterProdutos, [name]: formattedValue });
+  };
+
+  const handleFileChange = (e) => {
+    const { name } = e.target;
+    setRegisterProdutos({ ...RegisterProdutos, [name]: e.target.files[0] });
+  };
+
+  const Registro_Produto = async (e) => {
+    e.preventDefault();
+    const data = new FormData();
+
+    // Adiciona os campos do formulário ao FormData
+    Object.keys(RegisterProdutos).forEach(key => {
+      console.log(`Adicionando ${key}:`, RegisterProdutos[key]); // Verifique o que está sendo adicionado
+      data.append(key, RegisterProdutos[key]);
+    });
+
+    // Determina o valor da string 'id' conforme a condição
+    const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
+
+    try {
+      const response = await axios.post(`http://10.144.170.4:3001/RegistrarProduto/${id}`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+      // Exibe o alerta e verifica se o usuário clicou em "OK"
+      alert('Informações enviadas com sucesso!');
+      window.location.reload(); // Recarrega a página
+    } catch (error) {
+      console.error('Erro ao enviar formulário:', error);
+      alert('Erro ao enviar formulário.');
+    }
   };
 
   return (
@@ -50,6 +140,13 @@ function RegistroProduto() {
           </button>
         </div>
 
+        <div className="TotalEstoqDiv">
+          <div className="DivInfoEstoq">
+            <h2>Total no Estoque:</h2>
+            <h1>{selectedTotal}</h1>
+          </div>
+        </div>
+
         <div className="Estoque_List">
           <table>
             <caption>Registro de Produtos</caption>
@@ -63,12 +160,12 @@ function RegistroProduto() {
               </tr>
             </thead>
             <tbody>
-              {products.map((product) => (
+              {ProductsEstoque.map((product) => (
                 <tr key={product.id}>
-                  <td>{product.name}</td>
-                  <td>{product.fornecedor}</td>
-                  <td>{product.quantidade}</td>
-                  <td>R$ {product.valorUni.toFixed(2)}</td>
+                  <td>{product.Nome}</td>
+                  <td>{product.Fornecedor}</td>
+                  <td>{product.Quantidade}</td>
+                  <td>R$ {product.ValorUnitario}</td>
                   <td>
                     <button className="ButtonInfoProduct" onClick={() => handleShowInfo(product)}>Abrir</button>
                   </td>
@@ -102,17 +199,23 @@ function RegistroProduto() {
           <div className="HeaderModal">
             <h1>Registrar Produto</h1>
           </div>
-          <form>
-            <input type="number" placeholder="ID" />
-            <input type="text" placeholder="Produto" />
-            <input type="text" placeholder="Código" />
-            <input type="number" placeholder="Quantidade" />
-            <input type="text" placeholder="Preço por Unidade" />
+          <form onSubmit={Registro_Produto}>
+            <input type="text" name="Nome" placeholder="Nome do produto" required onChange={handleChange} />
+            <input type="text" name="Fornecedor" placeholder="Fornecedor" onChange={handleChange} />
+            <input type="number" name="Quantidade" placeholder="Quantidade" required onChange={handleChange} />
+            <input
+  type="number"
+  name="ValorUnitario"
+  placeholder="Preço por Unidade"
+  value={RegisterProdutos.ValorUnitario}
+  onChange={handleChange}
+  required
+/>
+            <input type="text" name="Tamanho" placeholder="Tamanho" required onChange={handleChange} />
+            <input type="file" name="Imagem" placeholder="Imagem do produto" onChange={handleFileChange} />
             <div className="FooterButton">
-              <button className="RegisterPr">Registrar</button>
-              <button className="FecharPr" onClick={handleClose}>
-                Fechar
-              </button>
+              <button className="RegisterPr" type="submit">Registrar</button>
+              <button className="FecharPr" onClick={handleClose}>Fechar</button>
             </div>
           </form>
         </div>
@@ -146,34 +249,36 @@ function RegistroProduto() {
             <div className="corpoInfoProduto" style={{ overflowY: 'auto', flex: 1, padding: '20px' }}>
               <ul style={{ listStyleType: 'none', padding: 0 }}>
                 <li>
-                  <img src={VenturoImg} alt="Imagem do Produto" className="ImagemInfoProduto" />
+                  {!selectedProduct.Imagem ? (
+                    <img src={VenturoImg} alt="Imagem do Produto" className="ImagemInfoProduto" />
+                  ) : (
+                    <img src={`http://10.144.170.4:3001/uploads/ProdutosIMG/${selectedProduct.Imagem}`} alt="Imagem do produto" className="ImagemInfoProduto" style={{width: 50, height: 50}} />
+                  )}
                 </li>
                 <li>
-                  <strong>Nome:</strong> {selectedProduct.name}
+                  <strong>Nome:</strong> {selectedProduct.Nome}
                 </li>
                 <li>
-                  <strong>Código:</strong> {selectedProduct.code}
+                  <strong>Código:</strong> {selectedProduct.Codigo}
                 </li>
                 <li>
-                  <strong>Quantidade:</strong> {selectedProduct.quantidade}
+                  <strong>Quantidade:</strong> {selectedProduct.Quantidade}
                 </li>
                 <li>
-                  <strong>Valor Unitário:</strong> R$ {selectedProduct.valorUni.toFixed(2)}
+                  <strong>Valor Unitário:</strong> R$ {selectedProduct.ValorUnitario}
                 </li>
                 <li>
-                  <strong>Fornecedor:</strong> {selectedProduct.fornecedor}
+                  <strong>Fornecedor:</strong> {selectedProduct.Fornecedor}
                 </li>
                 <li>
-                  <strong>Tamanho:</strong> {selectedProduct.tamanho}
+                  <strong>Tamanho:</strong> {selectedProduct.Tamanho}
                 </li>
               </ul>
             </div>
           )}
 
           <div className="FooterButton">
-            <button className="FecharPr" onClick={handleCloseInfo}>
-              Fechar
-            </button>
+            <button className="FecharPr" onClick={handleCloseInfo}>Fechar</button>
           </div>
         </div>
       </Modal>

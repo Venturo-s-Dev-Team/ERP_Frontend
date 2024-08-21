@@ -1,15 +1,53 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
 import "../../../../App.css";
-
-
-const clienteslist = [
-  { id: 1, name: "Cliente 1", cnpjcpf: 12345678-9, endereco: 3, },
-  { id: 2, name: "Cliente 2", cnpjcpf: 12345678-9, endereco: 2, },
-  { id: 3, name: "Cliente 3", cnpjcpf: 12345678-9, endereco: 1, },
-];
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 
 function clientes() {
+  const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState({});
+  const [Clientes, setClientes] = useState([])
+
+
+  useEffect(() => {
+    verifyToken();
+  }, []);
+
+  useEffect(() => {
+    if (userInfo.id_user) {
+      fetchDados(userInfo.id_user);
+    }
+  }, [userInfo]);
+
+  const verifyToken = async () => {
+    try {
+      const response = await axios.get('http://10.144.170.4:3001/verifyToken', { withCredentials: true });
+      if (typeof response.data.token === 'string') {
+        const decodedToken = jwtDecode(response.data.token);
+        setUserInfo(decodedToken);
+      } else {
+        console.error('Token não é uma string:', response.data.token);
+        navigate('/');
+      }
+    } catch (error) {
+      console.error('Token inválido', error);
+      navigate('/login');
+    }
+  };
+
+  const fetchDados = async (id) => {
+    try {
+      const response = await axios.get(`http://10.144.170.4:3001/tableCliente/${id}`, { withCredentials: true });
+      if (response.status === 200) {
+        setClientes(response.data);
+      }
+    } catch (error) {
+      console.log('Não foi possível requerir as informações: ', error);
+    }
+  };
+
   return (
     <main className="main-container">
       <div className="main-title">
@@ -43,11 +81,11 @@ function clientes() {
               </tr>
             </thead>
             <tbody>
-              {clienteslist.map((cliente) => (
+              {Clientes.map((cliente) => (
                 <tr key={cliente.id}>
-                  <td>{cliente.name}</td>
-                  <td>{cliente.cnpjcpf}</td>
-                  <td>{cliente.endereco}</td>
+                  <td>{cliente.Nome}</td>
+                  <td>{cliente.CPF_CNPJ}</td>
+                  <td>{cliente.Enderecoid}</td>
                 </tr>
               ))}
             </tbody>

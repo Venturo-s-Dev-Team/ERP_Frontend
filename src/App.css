@@ -274,6 +274,47 @@ width: 100%;
   margin-top: -230px;
 }
 
+
+/* Estilos quando a empresa tem logo */
+.conteudo.has-logo {
+  /* estilização específica para quando a logo está presente */
+  background-color: #f0f0f000; /* Exemplo de cor de fundo */
+  text-align: left;
+  margin-top: -210px;
+
+}
+
+/* Estilos quando a empresa não tem logo */
+.conteudo.no-logo {
+  /* estilização específica para quando a logo não está presente */
+ text-align: left;
+ margin-top: 	-150px;
+ margin-left: 10px;
+}
+
+/* Placeholder para logo */
+.logo-placeholder {
+  width: 100px; /* ajuste conforme necessário */
+  height: 100px; /* ajuste conforme necessário */
+  background-color: #ccc; /* cor de fundo para o placeholder */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: #888;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 .dados{
   margin-top: 0px;
 }
@@ -321,15 +362,10 @@ width: 100%;
 }
 
 .div-statusbtn {
-  margin-bottom: 10px;
+ 
   color: #ffffff00;
 }
 
-.div-meio{
-  border-bottom-width: 1px; 
-  border-bottom-style: solid; 
-  border-bottom-color:  rgb(0, 0, 0);
-}
 
 .div-fecharbtn {
   margin-left: 570px;
@@ -354,6 +390,9 @@ width: 100%;
   left: 12px;
   width: 96%;
   height: 14%;
+  border-top-width: 1px; 
+  border-top-style: solid; 
+  border-top-color:  rgb(0, 0, 0);
 }
 
 .conteudo{
@@ -533,6 +572,28 @@ width: 100%;
   .Button_Cad button:hover{
     opacity: 0.8;
     background-color: #000000;
+  }
+
+  .TotalEstoqDiv {
+width: 100%;
+height: 300px;
+align-items: center;
+justify-content: center;
+display: flex;
+  }
+
+  .DivInfoEstoq {
+    cursor: pointer;
+    box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
+    height: 190px;
+    width: 100dvh;
+    border-radius: 10px;
+display: flex;
+align-items: center;
+text-align: center;
+flex-direction: column;
+justify-content: center;
+
   }
 
 
@@ -970,64 +1031,348 @@ cursor: pointer;
 }
 
 /* Cadastro Nota Fiscal */
-.cadastro-nota{
-  border-color: #000000;
+.formulario{
+margin-top: 10px;
+}
+
+.letras-nf{
+  font-weight: 400;
+}
+
+.mini-titulo-nf{
+background-color: #ffffff;
+width: 90px;
+text-align: center;
+margin-top: -18px;
+}
+
+.mini-titulo-nf-especial{
+  background-color: #ffffff;
+  width: 160px;
+  text-align: center;
+  margin-top: -18px;
+  }
+
+.razao-social{
+margin-top: 15px;
+}
+
+.emitente{
+  border-color: #000;
   border-width: 1px;
   border-style: solid;
-height: 500px;
-}
-
-.intro-notafiscal{
-  font-weight: 300;
-  margin-left: 10px;
-  margin-top: 10px;
-}
-
-.coluna1{display: flex;
-  flex-direction: column;
-}
-
-.coluna1 {
+  padding: 10px;
   display: flex;
-  gap: 20px;
+  justify-content: space-between;
+  flex-direction: column;
+  padding-bottom: 20px;
+  padding-left: 40px;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
 }
 
-.nota-fiscal{
-  border-color: #000000;
+.input-rs{
+  margin-left: 10px;
+width: 500px;
+height: 25px;
+padding: 5px;
+border-radius: 2px;
+}
+
+.cpf{
+  margin-left: 800px;
+  margin-top: -25px;
+}
+
+.input-cpf{
+  margin-left: 10px;
+  width: 300px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+  }
+  
+.endereço{
+  border-color: #000;
   border-width: 1px;
   border-style: solid;
-  width: 400px;
-  height: 60px;
-  margin-left: 15px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  padding-bottom: 20px;
+  margin-top: 20px;
+  padding-left: 40px;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+}
+
+.logradouro{
+margin-top: 15px;
+}
+
+.input-logra{
+  margin-left: 10px;
+  width: 500px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+
+}
+
+.numero{
+  margin-left: 650px;
+  margin-top: -25px;
+}
+
+.input-numero{
+  margin-left: 10px;
+  width: 100px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.complemento{
+  margin-left: 864px;
+  margin-top: -25px;
+}
+
+.input-complemento{
+  margin-left: 10px;
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.cidade{
+  margin-top: 20px;
+}
+
+.input-cidade{
+  margin-left: 10px;
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.estado{
+  margin-left: 300px;
+  margin-top: -25px;
+}
+
+.input-estado{
+  margin-left: 10px;
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.tipo{
+  margin-left: 600px;
+  margin-top: -23px;
+}
+
+.select-tipo{
+background-color: #ffffff;
+margin-left: 10px;
+height: 25px;
+border-radius: 2px;
+}
+
+.produto-geral{
+  border-color: #000;
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  padding-bottom: 20px;
+  margin-top: 20px;
+  padding-left: 40px;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+}
+
+.produto{
+  margin-top: 20px;
+}
+
+.input-produto{ margin-left: 10px;
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.preco{
+  margin-left: 300px;
+  margin-top: -25px;
+}
+
+.input-preco{
+  margin-left: 10px;
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.btn-div{
+margin-left: 600px;
+margin-top: -29px;
+}
+
+.btn-remover-produto{
+border-radius:8px;
+width: 150px;
+height: 35px;
+background-color: rgba(255, 0, 0, 0.603);
+border-color:rgba(255, 0, 0, 0.19) ;
+border-width: 1;
+border-style: solid;
+color: white;
+}
+
+.btn-remover-produto:hover {
+  background-color: rgba(255, 0, 0, 0.427);
+}
+
+.btn-adicionar-produto{
+border-radius:8px;
+margin-top: 10px;
+width: 200px;
+height: 35px;
+background-color: #0a5583cf;
+border-color: #0a5583cf ;
+border-width: 1;
+border-style: solid;
+color: white;
+}
+
+.btn-adicionar-produto:hover{
+  background-color: #0a5583f4 ;
+}
+ 
+.frete{
   margin-top: 10px;
-  
-}
-.titulo-nota-fiscal{
-background-color: #ffffff;
- margin-top: -10px;
- width: 90px;
- font-weight: 400;
- margin-left: 20px;
- text-align: center;
 }
 
-.natureza-operacao{
-  border-color: #000000;
+.input-frete{
+  margin-left: 10px;
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.desconto{
+margin-left: 290px;
+margin-top: -25px;
+}
+
+.input-desconto{
+  margin-left: 10px;
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.impostos{
+  border-color: #000;
   border-width: 1px;
   border-style: solid;
-  width: 700px;
-  height: 60px;
-  margin-left: 430px;
-  margin-top: -80px;
-  
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  padding-bottom: 20px;
+  margin-top: 20px;
+  padding-left: 40px;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
 }
-.titulo-natureza-operacao{
-background-color: #ffffff;
- margin-top: -10px;
- width: 170px;
- font-weight: 400;
- margin-left: 20px;
- text-align: center;
+
+.icms{
+margin-top: 10px;
+}
+
+
+.input-icms{
+  margin-left: 10px;
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.ipi{
+margin-left: 330px;
+margin-top: -25px;
+}
+
+.input-ipi{
+  margin-left: 10px;
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.resumo{
+  border-color: #000;
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  padding-bottom: 20px;
+  margin-top: 20px;
+  padding-left: 40px;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+}
+
+.preco-bruto{
+  margin-top: 10px;
+}
+
+.input-preco-bruto{
+  margin-left: 10px;
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.preco-final{
+margin-left: 340px;
+margin-top: -25px;
+}
+
+.input-preco-final{
+  margin-left: 10px;
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.emitir{
+  border-radius:8px;
+  margin-top: 10px;
+  width: 200px;
+  height: 35px;
+  background-color:  #0a5583f4;
+  border-color: #0a5583cf ;
+  border-width: 1;
+  border-style: solid;
+  color: white;
+}
+
+.emitir:hover{
+  background-color: #0a5583cf ;
 }
 
 /* Clientes */
@@ -1088,4 +1433,114 @@ background-color: #ffffff;
 
 .tabela-vendas{
   margin-top: 30px;
+}
+
+/* Cadastro Empresa */
+
+.container-total-ce {
+  background: linear-gradient(to right, #066699, #AEDD2B);
+  height: 100vh; 
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+}
+
+.box-dentro-ce {
+  background-color: #f5f5f5;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+  padding: 20px; 
+  width: 80%;
+  max-width: 900px; 
+  height: 500px;
+  margin-left:100px;
+}
+
+.geral-div{
+  border-color: #000;
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding-bottom: 20px;
+  padding-left: 40px;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+  margin-top: 20px;
+}
+
+.legenda_cadastro-empresa{
+  background-color: #f5f5f5;
+  width: 70px;
+  text-align: center;
+  margin-top: -20px;
+  font-weight: 600px;
+}
+
+.input-inscricao{
+margin-left: 10px;
+width: 500px;
+height: 25px;
+padding: 5px;
+border-radius: 2px;
+}
+
+.inscricao{
+  margin-left: -30px;
+}
+
+.inscricao-div{
+margin-top: 10px;
+}
+
+.endereco-div{
+  border-color: #000;
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding-bottom: 20px;
+  padding-left: 40px;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+  margin-top: 20px;
+}
+
+.legenda_cadastro-empresa-especial{
+  background-color: #f5f5f5;
+  width: 90px;
+  text-align: center;
+  margin-top: -20px;
+  font-weight: 600px;
+}
+
+.municipio-div{
+margin-top: 10px;
+}
+
+.municipio{
+  margin-left: -30px;
+}
+
+.input-municipio{
+  margin-left: 10px;
+  width: 150px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.uf-div{
+margin-left: 240px;
+margin-top: -25px;
+}
+
+.input-uf{
+  margin-left: 10px;
+  width: 150px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
 }

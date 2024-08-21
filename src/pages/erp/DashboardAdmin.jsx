@@ -26,7 +26,7 @@ function DashboardAdmin() {
   // Função para desautorizar empresa
   const Desautorizado = async (id) => {
     try {
-      const response = await axios.get(`http://192.168.0.177:3001/desautorizar/${id}`, {
+      const response = await axios.get(`http://10.144.170.4:3001/desautorizar/${id}`, {
         withCredentials: true,
       });
       if (response) {
@@ -41,7 +41,7 @@ function DashboardAdmin() {
   // Função para autorizar empresa
   const Autorizado = async (id) => {
     try {
-      const response = await axios.get(`http://192.168.0.177:3001/autorizar/${id}`, {
+      const response = await axios.get(`http://10.144.170.4:3001/autorizar/${id}`, {
         withCredentials: true,
       });
       if (response) {
@@ -57,7 +57,7 @@ function DashboardAdmin() {
 useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get('http://192.168.0.177:3001/verifyToken', { withCredentials: true });
+        const response = await axios.get('http://10.144.170.4:3001/verifyToken', { withCredentials: true });
         
         if (typeof response.data.token === 'string') {
           const decodedToken = jwtDecode(response.data.token);
@@ -79,7 +79,7 @@ useEffect(() => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const Info = await axios.get("http://192.168.0.177:3001/tableEmpresas", {
+        const Info = await axios.get("http://10.144.170.4:3001/tableEmpresas", {
           withCredentials: true,
         });
         if (Info.status === 200) {
@@ -169,26 +169,27 @@ useEffect(() => {
                  <CgCloseR className="icone"/>
                 </motion.button>
               </motion.div>
+
 {/* Nome da empresa e a logo */}
-              <motion.div className="div-statusbtn">
-                <motion.div className="div-meio">
+      <motion.div className="div-statusbtn">
+                <motion.div >
 <motion.div className="logo-e-btn">
     {/* Logo da empresa */}
                 {selectedItem.logo ? (
                   <img
-                    src={`http://192.168.0.177:3001/uploads/Logo/${selectedItem.logo}`}
+                    src={`http://10.144.170.4:3001/uploads/Logo/${selectedItem.logo}`}
                     className="img-empresa"
                     alt="Logo"
                   />
                 ) : (
                   <div style={{ width: 100, height: 100 }}></div>
+                 // <div className="logo-placeholder"></div>
                 )}
 
-</motion.div>
-              </motion.div>
+             </motion.div>
+          </motion.div>
               
-              <motion.div className="conteudo">
-
+        <motion.div className={`conteudo ${selectedItem.logo ? 'has-logo' : 'no-logo'}`}>
                 <motion.h2 className="letras-titulo">{selectedItem.title}</motion.h2>
                 <motion.h6 className="letras-status">Status: {itemStatus[selectedId]}</motion.h6>
 

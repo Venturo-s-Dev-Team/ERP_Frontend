@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import './entrada.css';
+import { FaPen } from "react-icons/fa";
+import { RiInboxUnarchiveFill, RiInboxArchiveFill } from "react-icons/ri";
 
 // Componentes
 import EmailPopup from './popup_email';
@@ -14,8 +16,7 @@ const Caixa_Saida = () => {
     const [protocoloErro, setProtocoloErro] = useState(null);
     const [msgErro, setMsgErro] = useState(null);
     const [openedEmailId, setOpenedEmailId] = useState(null);
-
-    // E-mail pop-up
+    const [activeButton, setActiveButton] = useState('saida'); // Estado para o botão ativo
     const [isPopupOpen, setPopupOpen] = useState(false);
 
     const openPopup = () => setPopupOpen(true);
@@ -24,7 +25,7 @@ const Caixa_Saida = () => {
     useEffect(() => {
         const verifyToken = async () => {
             try {
-                const response = await axios.get('http://192.168.0.177:3001/verifyToken', { withCredentials: true });
+                const response = await axios.get('http://10.144.170.4:3001/verifyToken', { withCredentials: true });
 
                 if (typeof response.data.token === 'string') {
                     const decodedToken = jwtDecode(response.data.token);
@@ -45,7 +46,7 @@ const Caixa_Saida = () => {
         const fetchData = async () => {
             if (userInfo && userInfo.Email) {
                 try {
-                    const response = await axios.get('http://192.168.0.177:3001/caixa_saida', {
+                    const response = await axios.get('http://10.144.170.4:3001/caixa_saida', {
                         params: { Email: userInfo.Email },
                         withCredentials: true
                     });
@@ -77,7 +78,7 @@ const Caixa_Saida = () => {
 
     const excluirEmail = async (id) => {
         try {
-            await axios.put(`http://192.168.0.177:3001/excluir_email_remetente`, { id });
+            await axios.put(`http://10.144.170.4:3001/excluir_email_remetente`, { id });
             setEmails(emails.filter(email => email.id !== id));
         } catch (err) {
             console.error("Erro ao excluir o e-mail", err);
@@ -99,7 +100,7 @@ const Caixa_Saida = () => {
                                 <div className="email-body">
                                     <p>{email.Mensagem}</p>
                                     {email.Arquivo && (
-                                        <a href={`http://192.168.0.177:3001/uploads/Docs/${email.Arquivo}`} className="email-attachment">
+                                        <a href={`http://10.144.170.4:3001/uploads/Docs/${email.Arquivo}`} className="email-attachment">
                                             {email.Arquivo}
                                         </a>
                                     )}
@@ -114,15 +115,50 @@ const Caixa_Saida = () => {
         </div>
     );
 
-
     return (
         <div className="app">
-            <h1 className='Assunto'>E-mail: Suas mensagens enviadas</h1>
-            <Cards />
-            <button className='btn-voltar' onClick={() => navigate('/E-mail_Caixa_Entrada')}>Caixa de entrada</button>
-            <button className='btn-voltar' onClick={openPopup}>Nova Mensagem</button>
-            {isPopupOpen && <EmailPopup Email={userInfo?.Email} onClose={closePopup} />}
-            <button className='btn-voltar' onClick={() => navigate('/dashboard')}>Voltar</button>
+            <div className="titleEmail">
+                <h1 className='Assunto'>
+                    E-mail: Suas mensagens enviadas <RiInboxUnarchiveFill style={{ height: 35, width: 35, position: "relative", top: 10 }} />
+                </h1>
+            </div>
+
+            <div className="alinhar-divs">
+                <div className='buttonsEntrada'>
+                    <button 
+                        className={`btn-mensagem ${isPopupOpen ? 'active' : ''}`} 
+                        onClick={openPopup}
+                    >
+                        <FaPen style={{ height: 18, width: 18 }} /> Escrever
+                    </button>
+
+                    <button 
+                        className={`btn-caixas ${activeButton === 'entrada' ? 'active' : ''}`} 
+                        onClick={() => {
+                            setActiveButton('entrada');
+                            navigate('/E-mail_Caixa_Entrada');
+                        }}
+                    >
+                        <RiInboxArchiveFill style={{ height: 18, width: 18 }} /> Caixa de Entrada
+                    </button>
+
+                    <button 
+                        className={`btn-caixas ${activeButton === 'saida' ? 'active' : ''}`} 
+                        onClick={() => {
+                            setActiveButton('saida');
+                            navigate('/E-mail_Caixa_Saida');
+                        }}
+                    >
+                        <RiInboxUnarchiveFill style={{ height: 18, width: 18 }} /> Caixa de Saída
+                    </button>
+
+                    {isPopupOpen && <EmailPopup Email={userInfo?.Email} onClose={closePopup} />}
+                </div>
+
+                <div className="Conteudo">
+                    {protocoloErro ? <div>Erro {protocoloErro}: {msgErro}</div> : <Cards />}
+                </div>
+            </div>
         </div>
     );
 };
