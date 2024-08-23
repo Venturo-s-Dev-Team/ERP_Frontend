@@ -13,7 +13,6 @@ function RegistroProduto() {
   const [showModal, setShowModal] = useState(false);
   const [showModalInfo, setShowModalInfo] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const [selectedTotal, setSelectedTotal] = useState(0);
   const [ProductsEstoque, setSelectedEstoque] = useState([]);
   const [userInfo, setUserInfo] = useState({});
 
@@ -41,7 +40,7 @@ function RegistroProduto() {
 
   const verifyToken = async () => {
     try {
-      const response = await axios.get('http://10.144.170.4:3001/verifyToken', { withCredentials: true });
+      const response = await axios.get('http://10.144.170.24:3002/verifyToken', { withCredentials: true });
       if (typeof response.data.token === 'string') {
         const decodedToken = jwtDecode(response.data.token);
         setUserInfo(decodedToken);
@@ -57,10 +56,9 @@ function RegistroProduto() {
 
   const fetchDados = async (id) => {
     try {
-      const response = await axios.get(`http://10.144.170.4:3001/tableEstoque/${id}`, { withCredentials: true });
+      const response = await axios.get(`http://10.144.170.24:3001/tableEstoque/${id}`, { withCredentials: true });
       if (response.status === 200) {
         setSelectedEstoque(response.data.InfoTabela);
-        setSelectedTotal(response.data.InfoTabela.length);
       }
     } catch (error) {
       console.log('Não foi possível requerir as informações: ', error);
@@ -103,7 +101,7 @@ function RegistroProduto() {
     const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
 
     try {
-      const response = await axios.post(`http://10.144.170.4:3001/RegistrarProduto/${id}`, data, {
+      const response = await axios.post(`http://10.144.170.24:3001/RegistrarProduto/${id}`, data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -140,12 +138,7 @@ function RegistroProduto() {
           </button>
         </div>
 
-        <div className="TotalEstoqDiv">
-          <div className="DivInfoEstoq">
-            <h2>Total no Estoque:</h2>
-            <h1>{selectedTotal}</h1>
-          </div>
-        </div>
+    
 
         <div className="Estoque_List">
           <table>
@@ -189,7 +182,7 @@ function RegistroProduto() {
           height: "73%",
           borderRadius: 20,
           transform: "translate(-50%, -50%)",
-          background: "linear-gradient(135deg, #ddd, silver)",
+          background: "linear-gradient(135deg, #fff, #fff)",
           boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
         }}
         show={showModal}
@@ -234,7 +227,7 @@ function RegistroProduto() {
           height: "93%",
           borderRadius: 10,
           transform: "translate(-50%, -50%)",
-          background: "linear-gradient(135deg, #ddd, white)",
+          background: "linear- #fff)",
           boxShadow: "10px 10px 15px rgba(0, 0, 0, 0.6)",
         }}
         show={showModalInfo}
@@ -252,7 +245,7 @@ function RegistroProduto() {
                   {!selectedProduct.Imagem ? (
                     <img src={VenturoImg} alt="Imagem do Produto" className="ImagemInfoProduto" />
                   ) : (
-                    <img src={`http://10.144.170.4:3001/uploads/ProdutosIMG/${selectedProduct.Imagem}`} alt="Imagem do produto" className="ImagemInfoProduto" style={{width: 50, height: 50}} />
+                    <img src={`http://10.144.170.24:3001/uploads/ProdutosIMG/${selectedProduct.Imagem}`} alt="Imagem do produto" className="ImagemInfoProduto" style={{width: 50, height: 50}} />
                   )}
                 </li>
                 <li>

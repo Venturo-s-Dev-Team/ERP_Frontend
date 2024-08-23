@@ -77,11 +77,38 @@ function Home() {
 
   // Token e Logout
   const [userInfo, setUserInfo] = useState('');
+  //Informações das tabelas
+  const [SelectedTotalEstoque, setSelectedTotalEstoque] = useState(0) 
+  const [SelectedTotalFuncionario, setSelectedTotalFuncionario] = useState(0) 
+
+  const fetchDadosEstoque = async (id) => {
+    try {
+      const response = await axios.get(`http://10.144.170.24:3001/tableEstoque/${id}`, { withCredentials: true });
+      if (response.status === 200) {
+        setSelectedTotalEstoque(response.data.InfoTabela.length);
+      }
+    } catch (error) {
+      console.log('Não foi possível requerir as informações: ', error);
+      setSelectedTotalEstoque(0)
+    }
+  };
+
+  const fetchDadosFuncionarios = async (id) => {
+    try {
+      const response = await axios.get(`http://10.144.170.24:3001/tableFuncionario/${id}`, { withCredentials: true });
+      if (response.status === 200) {
+        setSelectedTotalFuncionario(response.data.InfoTabela.length);
+      }
+    } catch (error) {
+      console.log('Não foi possível requerir as informações: ', error);
+      setSelectedTotalFuncionario(0)
+    }
+  };
 
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get('http://10.144.170.4:3001/verifyToken', { withCredentials: true });
+        const response = await axios.get('http://10.144.170.24:3002/verifyToken', { withCredentials: true });
         
         if (typeof response.data.token === 'string') {
           const decodedToken = jwtDecode(response.data.token);
@@ -97,7 +124,15 @@ function Home() {
     };
     
     verifyToken();
-}, [navigate]);
+  }, [navigate]);
+  
+  useEffect(() => {
+    if (userInfo.id_user) {
+      fetchDadosEstoque(userInfo.id_user);
+      fetchDadosFuncionarios(userInfo.id_user)
+    }
+  }, [userInfo.id_user]);
+  
 
 
   if (userInfo.ValoresNull === true) {
@@ -105,26 +140,6 @@ function Home() {
   } else if (userInfo.Status === 'NO') {
     return <div>{userInfo.Nome_user}, sua empresa não esta autorizada, entre em contato conosco via e-mail do sistema ou no nosso número de WhatsApp: (19)98171-2080 </div>
   }
-
-  //Itens estoque
-  const [SelectedTotal, setSelectedTotal] = useState(0) 
-
-  useEffect(() => {
-    if (userInfo.id_user) {
-      fetchDados(userInfo.id_user);
-    }
-  }, [userInfo]);
-
-  const fetchDados = async (id) => {
-    try {
-      const response = await axios.get(`http://10.144.170.4:3001/tableEstoque/${id}`, { withCredentials: true });
-      if (response.status === 200) {
-        setSelectedTotal(response.data.InfoTabela.length);
-      }
-    } catch (error) {
-      console.log('Não foi possível requerir as informações: ', error);
-    }
-  };
 
   return (
     <div className="main-container">
@@ -138,7 +153,7 @@ function Home() {
             <h3>ITENS DE ESTOQUE</h3>
             <BsFillArchiveFill className="card_icon" />
           </div>
-          <h1>{SelectedTotal}</h1>
+          <h1>{SelectedTotalEstoque}</h1>
         </div>
         <div className="card">
           <div className="card-inner">
@@ -152,7 +167,7 @@ function Home() {
             <h3>FUNCIONÁRIOS</h3>
             <BsPeopleFill className="card_icon" />
           </div>
-          <h1>33</h1>
+          <h1>{SelectedTotalFuncionario}</h1>
         </div>
         <div className="card">
           <div className="card-inner">

@@ -68,6 +68,10 @@ import Error from "../pages/erro/error";
 //LANDPAGE
 import Landpage from "../pages/erp/landpage/landpage"
 
+//LOGSADMIN
+import LogsAdmin from "../pages/erp/LogsAdmin/LogsAdmin"
+import LogsAdminAnual from "../pages/erp/LogsAdmin/LogsAdminAnual"
+
 //LOGOUT
 import Logout from "../components/Logout";
 
@@ -99,7 +103,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
  useEffect(() => {
   const verifyToken = async () => {
     try {
-      const response = await axios.get('http://10.144.170.4:3001/verifyToken', { withCredentials: true });
+      const response = await axios.get('http://10.144.170.24:3002/verifyToken', { withCredentials: true });
       if (response.status === 200) {
         const decodedToken = jwtDecode(response.data.token);
         setUserInfo(decodedToken);
@@ -135,7 +139,10 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           <Route path="/E-mail_Caixa_Entrada" element={<Caixa_Entrada />} /> 
           {userInfo?.Status !== 'NO' && (
             <>
-          <Route path="/dashboard_admin" element={<DashboardAdmin />} />
+          <Route path="/logs_admin" element={< LogsAdmin/>}/>
+          <Route path="/logs_adminAnual" element={< LogsAdminAnual/>}/>
+
+          <Route path="/dashboard_admin" element={<DashboardAdmin/> } />
           <Route path="/cad_produto" element={<Cad_produto />} />
           <Route path="/cadastronf" element={<Cadastronf />} />
           <Route path="/clientes" element={<Clientes />} />
@@ -159,7 +166,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           <Route path="/razao" element={<Razao />} />
           <Route path="*" element={<Navigate to="/error" />} />
           </> )}
-          <Route path="/error" element={<Error errorCode={404} />} />
+          <Route path="/error" element={<Error errorCode={404 || 500} />} />
           <Route path="/logout" element={<Logout/>} />
         </Routes>
       </div>
