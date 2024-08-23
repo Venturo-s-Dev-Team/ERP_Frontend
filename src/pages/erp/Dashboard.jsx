@@ -83,7 +83,7 @@ function Home() {
 
   const fetchDadosEstoque = async (id) => {
     try {
-      const response = await axios.get(`http://10.144.170.24:3001/tableEstoque/${id}`, { withCredentials: true });
+      const response = await axios.get(`http://192.168.1.75:3001/tableEstoque/${id}`, { withCredentials: true });
       if (response.status === 200) {
         setSelectedTotalEstoque(response.data.InfoTabela.length);
       }
@@ -95,7 +95,7 @@ function Home() {
 
   const fetchDadosFuncionarios = async (id) => {
     try {
-      const response = await axios.get(`http://10.144.170.24:3001/tableFuncionario/${id}`, { withCredentials: true });
+      const response = await axios.get(`http://192.168.1.75:3001/tableFuncionario/${id}`, { withCredentials: true });
       if (response.status === 200) {
         setSelectedTotalFuncionario(response.data.InfoTabela.length);
       }
@@ -108,7 +108,7 @@ function Home() {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get('http://10.144.170.24:3002/verifyToken', { withCredentials: true });
+        const response = await axios.get('http://192.168.1.75:3002/verifyToken', { withCredentials: true });
         
         if (typeof response.data.token === 'string') {
           const decodedToken = jwtDecode(response.data.token);

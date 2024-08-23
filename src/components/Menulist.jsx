@@ -13,7 +13,7 @@ import { RxAvatar } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import jwtDecode from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 
 const MenuList = ({ darkTheme }) => {
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ const MenuList = ({ darkTheme }) => {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get('http://10.144.170.24:3002/verifyToken', { withCredentials: true });
+        const response = await axios.get('http://192.168.1.75:3002/verifyToken', { withCredentials: true });
         
         if (typeof response.data.token === 'string') {
           const decodedToken = jwtDecode(response.data.token);

@@ -103,7 +103,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
  useEffect(() => {
   const verifyToken = async () => {
     try {
-      const response = await axios.get('http://10.144.170.24:3002/verifyToken', { withCredentials: true });
+      const response = await axios.get('http://192.168.1.75:3002/verifyToken', { withCredentials: true });
       if (response.status === 200) {
         const decodedToken = jwtDecode(response.data.token);
         setUserInfo(decodedToken);
