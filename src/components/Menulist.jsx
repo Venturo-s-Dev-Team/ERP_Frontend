@@ -8,16 +8,16 @@ import {
 import { MdLogout, MdOutlineMailOutline } from "react-icons/md";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import { IoPieChartSharp } from "react-icons/io5";
+import { RiContactsBook3Fill } from "react-icons/ri";
 import { RxAvatar } from "react-icons/rx";
 import { useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
+import jwtDecode from "jwt-decode";
 
 const MenuList = ({ darkTheme }) => {
   const navigate = useNavigate();
 
-  // Token
   const [userInfo, setUserInfo] = useState('');
 
   useEffect(() => {
@@ -39,14 +39,29 @@ const MenuList = ({ darkTheme }) => {
     };
     
     verifyToken();
-}, [navigate]);
+  }, [navigate]);
 
   const handleNavigation = (path) => {
     navigate(path);
   };
 
+  const isRestricted = userInfo?.Status === 'NO';
+  const isSuperAdmin = userInfo?.TypeUser === 'SuperAdmin';
+
   const menuItems = [
-    {
+    isSuperAdmin && {
+      key: "dashboard_admin",
+      icon: <IoPieChartSharp />,
+      label: "Dashboard Admin",
+      onClick: () => handleNavigation("/dashboard_admin"),
+    },
+    isSuperAdmin && {
+      key: "logs_admin",
+      icon: <RiContactsBook3Fill />,
+      label: "Logs Admin",
+      onClick: () => handleNavigation("/logs_admin"),
+    },
+    !isRestricted && !isSuperAdmin && {
       key: "Dashboard",
       icon: <IoPieChartSharp />,
       label: "Dashboard",
@@ -56,22 +71,15 @@ const MenuList = ({ darkTheme }) => {
       key: 'Caixa_Entrada',
       icon: <MdOutlineMailOutline />,
       label: "E-mail",
-      onClick: () => handleNavigation("/E-mail_Caixa_Entrada")
-      
+      onClick: () => handleNavigation("/E-mail_Caixa_Entrada"),
     },
     {
       key: 'Perfil',
       icon: <RxAvatar />,
       label: 'Perfil',
-      onClick: () => handleNavigation("/Perfil")
+      onClick: () => handleNavigation("/Perfil"),
     },
-    userInfo?.TypeUser === 'SuperAdmin' && {
-      key: "DashboardAdmin",
-      icon: <IoPieChartSharp />,
-      label: "DashboardAdmin",
-      onClick: () => handleNavigation("/dashboard_admin"),
-    },
-    !(userInfo?.Status === 'NO') && {
+    !isRestricted && !isSuperAdmin && {
       key: "subestoque",
       icon: <StockOutlined />,
       label: "Estoque",
@@ -83,7 +91,7 @@ const MenuList = ({ darkTheme }) => {
         },
       ],
     },
-    !(userInfo?.Status === 'NO') && {
+    !isRestricted && !isSuperAdmin && {
       key: "financeiro",
       icon: <FaMoneyBillTrendUp />,
       label: "Financeiro",
@@ -194,7 +202,7 @@ const MenuList = ({ darkTheme }) => {
         },
       ],
     },
-    !(userInfo?.Status === 'NO') && {
+    !isRestricted && !isSuperAdmin && {
       key: "vendas",
       icon: <AreaChartOutlined />,
       label: "Vendas",
@@ -228,14 +236,14 @@ const MenuList = ({ darkTheme }) => {
       onClick: () => handleNavigation("/logout"),
     },
   ];
-  
+
   return (
     <Menu
       theme={darkTheme ? "dark" : "light"}
       className="menu-bar"
-      items={menuItems.filter(Boolean)}  // Filtra os itens nulos
+      items={menuItems.filter(Boolean)} // Filtra os itens nulos
     />
   );
-}  
+}
 
 export default MenuList;

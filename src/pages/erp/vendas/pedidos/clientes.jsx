@@ -39,7 +39,7 @@ function clientes() {
 
   const fetchDados = async (id) => {
     try {
-      const response = await axios.get(`http://10.144.170.24:3001/tableCliente/${id}`, { withCredentials: true });
+      const response = await axios.get(`http://10.144.170.24:3002/tableCliente/${id}`, { withCredentials: true });
       if (response.status === 200) {
         setClientes(response.data);
       }

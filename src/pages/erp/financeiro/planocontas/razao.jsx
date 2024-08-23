@@ -1,11 +1,59 @@
-import React from "react";
+import React, {useState} from "react";
+import {FaSearch} from "react-icons/fa";
 
 function razao() {
+  const [input, setInput] = useState("");
+
+const fetchData = (value) => {
+  fetch("https://jsonplaceholder.typicode.com/users")
+  .then((response) => response.json())
+  .then((json) => {
+    const results = json.filter((user) => {
+return (
+value && 
+user &&
+user.name &&
+user.name.toLowerCase().includes(value)
+);
+  });
+  setResults(results);
+});
+};
+
+const handleChange = (value) => {
+  setInput(value);
+  fetchData(value);
+};
+
+
+const [results, setResults] = useState([]);
+
   return (
     <main className="main-container">
       <div className="main-title">
         <h3>Razão</h3>
       </div>
+
+      <div className="search-bar-container">
+        <div className="input-wrapper">
+<FaSearch id="search-icon"/>
+<input placeholder="Type to search..."  
+className="input-razao" 
+value={input} 
+onChange={(e) => handleChange(e.target.value)}/>
+
+        </div>
+
+
+        <div className="results-list">
+          {
+            results.map((result, id) => {
+              return <div key={id} className="search-result" onClick={(e) => alert(`You clicked on ${result.name}`)} >{result.name}</div>;
+            })
+            }
+        </div>
+      </div>
+
     </main>
   );
 }

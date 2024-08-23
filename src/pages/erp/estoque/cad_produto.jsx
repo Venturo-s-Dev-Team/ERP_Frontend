@@ -101,7 +101,7 @@ function RegistroProduto() {
     const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
 
     try {
-      const response = await axios.post(`http://10.144.170.24:3001/RegistrarProduto/${id}`, data, {
+      const response = await axios.post(`http://10.144.170.24:3002/RegistrarProduto/${id}`, data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

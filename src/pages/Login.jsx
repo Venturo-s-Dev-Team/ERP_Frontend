@@ -38,8 +38,10 @@ function Login() {
         { withCredentials: true }
       );
 
-      if (response.status === 200) {
-        navigate("/dashboard");
+      if (response.data.TypeUser === 'SuperAdmin') {
+        navigate('/dashboard_admin')
+      } else if (response.data.TypeUser === 'Gestor' && 'Admin') {
+        navigate('/dashboard')
       } else {
         alert("Usuário desconhecido");
       }

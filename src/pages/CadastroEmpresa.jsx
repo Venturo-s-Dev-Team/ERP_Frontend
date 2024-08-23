@@ -70,7 +70,7 @@ function CadastroEmpresa() {
     });
 
     try {
-      await axios.post(`http://10.144.170.24:3001/updateEmpresa/${id}`, data, {
+      await axios.post(`http://10.144.170.24:3002/updateEmpresa/${id}`, data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

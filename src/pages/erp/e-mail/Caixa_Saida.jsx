@@ -5,6 +5,8 @@ import { jwtDecode } from 'jwt-decode';
 import './entrada.css';
 import { FaPen } from "react-icons/fa";
 import { RiInboxUnarchiveFill, RiInboxArchiveFill } from "react-icons/ri";
+import LogoVenturo from "../../../images/LogoVenturoBlackV.png"
+
 
 // Componentes
 import EmailPopup from './popup_email';
@@ -121,6 +123,8 @@ const Caixa_Saida = () => {
                 <h1 className='Assunto'>
                     E-mail: Suas mensagens enviadas <RiInboxUnarchiveFill style={{ height: 35, width: 35, position: "relative", top: 10 }} />
                 </h1>
+                <img src={LogoVenturo} className='LogoEmail'/>
+
             </div>
 
             <div className="alinhar-divs">

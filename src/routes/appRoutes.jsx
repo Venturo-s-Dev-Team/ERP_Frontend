@@ -133,36 +133,36 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           <Route path="/" element={<Landpage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/Perfil" element={<Perfil />} />
-          <Route path="/CadastroEmpresa" element={<CadastroEmpresa />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/CadastroEmpresa" element={<CadastroEmpresa />} /> //Apenas o userInfo.TypeUser === Gestor pode acessar
+          <Route path="/dashboard" element={<Dashboard />} /> // Apenas userInfo.TypeUser === Admin ou Gestor
           <Route path='/E-mail_Caixa_Saida' element={<Caixa_Saida />} />
           <Route path="/E-mail_Caixa_Entrada" element={<Caixa_Entrada />} /> 
           {userInfo?.Status !== 'NO' && (
             <>
-          <Route path="/logs_admin" element={< LogsAdmin/>}/>
-          <Route path="/logs_adminAnual" element={< LogsAdminAnual/>}/>
+          <Route path="/logs_admin" element={< LogsAdmin/>}/> // Apenas userInfo.TypeUser === SuperAdmin
+          <Route path="/logs_adminAnual" element={< LogsAdminAnual/>}/> // Apenas userInfo.TypeUser === SuperAdmin
 
-          <Route path="/dashboard_admin" element={<DashboardAdmin/> } />
-          <Route path="/cad_produto" element={<Cad_produto />} />
-          <Route path="/cadastronf" element={<Cadastronf />} />
-          <Route path="/clientes" element={<Clientes />} />
-          <Route path="/precofinal" element={<Precofinal />} />
-          <Route path="/vendas" element={<Vendas />} />
-          <Route path="/despesas" element={<Despesas />} />
-          <Route path="/fornecedores" element={<Fornecedores />} />
-          <Route path="/pagamentos" element={<Pagamentos />} />
-          <Route path="/fluxodecaixa" element={<Fluxodecaixa />} />
-          <Route path="/receitas" element={<Receitas />} />
-          <Route path="/cad_imposto" element={<Cad_imposto />} />
-          <Route path="/cofins" element={<Cofins />} />
-          <Route path="/csll" element={<Csll />} />
-          <Route path="/icms" element={<Icms />} />
-          <Route path="/ipi" element={<Ipi />} />
-          <Route path="/irpj" element={<Irpj />} />
-          <Route path="/iss" element={<Iss />} />
-          <Route path="/pis" element={<Pis />} />
-          <Route path="/balancete" element={<Balancete />} />
-          <Route path="/dre" element={<Dre />} />
+          <Route path="/dashboard_admin" element={<DashboardAdmin/> } />// Apenas userInfo.TypeUser === SuperAdmin
+          <Route path="/cad_produto" element={<Cad_produto />} /> // Apenas userInfo.TypeUser === Admin ou Gestor
+          <Route path="/cadastronf" element={<Cadastronf />} />// Apenas userInfo.TypeUser === Admin ou Gestor
+          <Route path="/clientes" element={<Clientes />} />// Apenas userInfo.TypeUser === Admin ou Gestor
+          <Route path="/precofinal" element={<Precofinal />} /> // Apenas userInfo.TypeUser === Admin ou Gestor
+          <Route path="/vendas" element={<Vendas />} />// Apenas userInfo.TypeUser === Admin ou Gestor
+          <Route path="/despesas" element={<Despesas />} />// Apenas userInfo.TypeUser === Admin ou Gestor
+          <Route path="/fornecedores" element={<Fornecedores />} />// Apenas userInfo.TypeUser === Admin ou Gestor
+          <Route path="/pagamentos" element={<Pagamentos />} />// Apenas userInfo.TypeUser === Admin ou Gestor
+          <Route path="/fluxodecaixa" element={<Fluxodecaixa />} />// Apenas userInfo.TypeUser === Admin ou Gestor
+          <Route path="/receitas" element={<Receitas />} />// Apenas userInfo.TypeUser === Admin ou Gestor
+          <Route path="/cad_imposto" element={<Cad_imposto />} />// Apenas userInfo.TypeUser === Admin ou Gestor
+          <Route path="/cofins" element={<Cofins />} />// Apenas userInfo.TypeUser === Admin ou Gestor
+          <Route path="/csll" element={<Csll />} />// Apenas userInfo.TypeUser === Admin ou Gestor
+          <Route path="/icms" element={<Icms />} />// Apenas userInfo.TypeUser === Admin ou Gestor
+          <Route path="/ipi" element={<Ipi />} />// Apenas userInfo.TypeUser === Admin ou Gestor
+          <Route path="/irpj" element={<Irpj />} />// Apenas userInfo.TypeUser === Admin ou Gestor
+          <Route path="/iss" element={<Iss />} />// Apenas userInfo.TypeUser === Admin ou Gestor
+          <Route path="/pis" element={<Pis />} />// Apenas userInfo.TypeUser === Admin ou Gestor
+          <Route path="/balancete" element={<Balancete />} />// Apenas userInfo.TypeUser === Admin ou Gestor
+          <Route path="/dre" element={<Dre />} />// Apenas userInfo.TypeUser === Admin ou Gestor
           <Route path="/razao" element={<Razao />} />
           <Route path="*" element={<Navigate to="/error" />} />
           </> )}

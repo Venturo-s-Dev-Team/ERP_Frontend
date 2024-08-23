@@ -1,36 +1,48 @@
+import React, { useState } from 'react';
 import "../../../App.css"
-import { useNavigate } from 'react-router-dom';
-import LogoVenturoLog from "../../../images/LogoVenturoBlackV.png"
 
-function LogsAdmin () {
-    const navigate = useNavigate();
+const anos = [2023, 2024, 2025]; // Lista de anos disponíveis
 
-    return(
+const meses = [
+  'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+  'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+];
 
-        <div className="main-container" >
-<div className="headerLogs"> 
-<h2> Logs Mensal </h2>
-<img src={LogoVenturoLog} className="LogoEmail"/>
-</div>
+function LogsAdmin() {
+  const [anoSelecionado, setAnoSelecionado] = useState(null);
+  const [mesesVisiveis, setMesesVisiveis] = useState(false);
 
-<div className="containerLogs">
-    
-<div className="optionsLogs">
+  const handleAnoClick = (ano) => {
+    setAnoSelecionado(ano);
+    setMesesVisiveis(!mesesVisiveis); // Alterna a visibilidade da lista de meses
+  };
 
-<button onClick={() => navigate("/logs_admin")}>
-    Mensal
-    </button>
-    
-    <button onClick={() => navigate("/logs_adminAnual")}>
-    Anual
-    </button>
+  return (
+    <div className="ano-mes-selector">
+      <div className="anos">
+        {anos.map((ano) => (
+          <button
+            key={ano}
+            className="ano-button"
+            onClick={() => handleAnoClick(ano)}
+          >
+            {ano}
+          </button>
+        ))}
+      </div>
 
+      {anoSelecionado && mesesVisiveis && (
+        <div className="meses">
+          <h3>Meses de {anoSelecionado}</h3>
+          <ul>
+            {meses.map((mes, index) => (
+              <li key={index}>{mes}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
-
-    </div>
-
-            </div>
-    )
+  );
 }
 
 export default LogsAdmin;
