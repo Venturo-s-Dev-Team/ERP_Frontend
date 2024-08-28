@@ -70,7 +70,6 @@ import Landpage from "../pages/erp/landpage/landpage"
 
 //LOGSADMIN
 import LogsAdmin from "../pages/erp/LogsAdmin/LogsAdmin"
-import LogsAdminAnual from "../pages/erp/LogsAdmin/LogsAdminAnual"
 
 //LOGOUT
 import Logout from "../components/Logout";
@@ -103,7 +102,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
  useEffect(() => {
   const verifyToken = async () => {
     try {
-      const response = await axios.get('http://192.168.1.75:3002/verifyToken', { withCredentials: true });
+      const response = await axios.get('http://10.144.170.27:3002/verifyToken', { withCredentials: true });
       if (response.status === 200) {
         const decodedToken = jwtDecode(response.data.token);
         setUserInfo(decodedToken);
@@ -140,7 +139,6 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           {userInfo?.Status !== 'NO' && (
             <>
           <Route path="/logs_admin" element={< LogsAdmin/>}/> // Apenas userInfo.TypeUser === SuperAdmin
-          <Route path="/logs_adminAnual" element={< LogsAdminAnual/>}/> // Apenas userInfo.TypeUser === SuperAdmin
 
           <Route path="/dashboard_admin" element={<DashboardAdmin/> } />// Apenas userInfo.TypeUser === SuperAdmin
           <Route path="/cad_produto" element={<Cad_produto />} /> // Apenas userInfo.TypeUser === Admin ou Gestor

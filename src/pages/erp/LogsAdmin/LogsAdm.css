@@ -1,0 +1,48 @@
+.logs-admin{
+    flex: 1;
+    width: 100%;
+}
+
+
+.logs-table{
+    width: 85%;
+    height: 20%;
+}
+
+.titleLogsAdm{
+    padding-left: 20px;
+    padding-top: 20px;
+}
+
+.direction-align{
+    flex-direction: row;
+    display: flex;
+    align-items: self-start;
+    padding-top: 30px;
+    padding-left: 20px;
+}
+
+.buttonsSelector {
+    width: 15%;
+    height: 100%;
+   
+    
+}
+
+.buttonsSelector button{
+    height: 36px;
+    width: 130px;
+    border: none;
+    background: linear-gradient(to top, #357ab7, #4582b8);
+    border-radius: 5px;
+    margin: 5px;
+    color: aliceblue;
+    cursor: pointer;
+    box-shadow: 0px 0px 23px rgba(0, 0, 0, 0.1);
+}
+
+.buttonsSelector button:hover{
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
+
+}
+

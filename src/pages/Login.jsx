@@ -30,7 +30,7 @@ function Login() {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://192.168.1.75:3002/login",
+        "http://10.144.170.27:3002/login",
         {
           Nome: nome,
           Senha: Password,
@@ -98,7 +98,7 @@ function Login() {
 
     try {
       const response = await axios.post(
-        "http://192.168.1.75:3002/registro",
+        "http://10.144.170.27:3002/registro",
         formData,
         {
           headers: {

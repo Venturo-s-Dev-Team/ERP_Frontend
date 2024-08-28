@@ -6,7 +6,6 @@ html, body {
   
 }
 
-
 .icon {
   vertical-align: middle;
   line-height: 1px;
@@ -275,45 +274,26 @@ width: 100%;
 }
 
 
-/* Estilos quando a empresa tem logo */
 .conteudo.has-logo {
-  /* estilização específica para quando a logo está presente */
-  background-color: #f0f0f000; /* Exemplo de cor de fundo */
   text-align: left;
   margin-top: -210px;
-
 }
-
-/* Estilos quando a empresa não tem logo */
 .conteudo.no-logo {
-  /* estilização específica para quando a logo não está presente */
  text-align: left;
  margin-top: 	-150px;
  margin-left: 10px;
 }
 
-/* Placeholder para logo */
 .logo-placeholder {
-  width: 100px; /* ajuste conforme necessário */
-  height: 100px; /* ajuste conforme necessário */
-  background-color: #ccc; /* cor de fundo para o placeholder */
+  width: 100px; 
+  height: 100px; 
+  background-color: #ccc; 
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.2rem;
   color: #888;
 }
-
-
-
-
-
-
-
-
-
-
-
 
 .dados{
   margin-top: 0px;
@@ -414,7 +394,7 @@ width: 100%;
 }
 
 .status-button-autorizar {
-  background-color: #4CAF50; /* Verde */
+  background-color: #4CAF50; 
   border: none;
   padding: 10px 30px;
   color: white;
@@ -431,7 +411,7 @@ width: 100%;
 }
 
 .status-button-desautorizar {
-  background-color: #f44336; /* Vermelho */
+  background-color: #f44336; 
   border: none;
   padding: 10px 30px;
   color: white;
@@ -446,7 +426,6 @@ width: 100%;
 .status-button-desautorizar:hover {
   background-color: rgba(255, 0, 0, 0.427);
 }
-
 
 .status-button-autorizar,
 .status-button-desautorizar {
@@ -588,7 +567,6 @@ flex-direction: column;
 justify-content: center;
 
   }
-
 
 .Estoque_List {
   align-items: center;
@@ -1836,25 +1814,15 @@ padding-left: 20px;
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
 /* Razão */
 .search-bar-container{
-  padding-top: 20vh;
-  width: 40%;
+  padding-top: 5vh;
+  width: 50%;
   margin:auto;
   display:flex;
   flex-direction: column;
   align-items: center;
+  margin-left: -5px;
   min-width: 200px;
 }
 
@@ -1904,4 +1872,23 @@ margin-left: 5px;
 
 .search-result:hover{
   background-color: #efefef;
+}
+
+.Razao_List {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  padding: 13px;
+}
+
+/* DRE */
+.dre-graficos {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  bottom: 10px;
+  width: 40%;
+  margin-top: 30px;
+  align-items: center;
+  justify-content: center;
+  margin-left: 30%;
 }

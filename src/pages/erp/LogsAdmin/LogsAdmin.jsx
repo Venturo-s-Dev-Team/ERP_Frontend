@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import "../../../App.css";
+import "./LogsAdm.css"
 
 function LogsAdmin() {
   const navigate = useNavigate();
@@ -12,11 +13,11 @@ function LogsAdmin() {
   const [userInfo, setUserInfo] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1); // Adicionado para armazenar totalPages
-  const logsPerPage = 15;
+  const logsPerPage = 12;
 
   const fetchHistoricLogs = async () => {
     try {
-      const response = await axios.get('http://192.168.1.75:3002/MainHistoricLogs', {
+      const response = await axios.get('http://10.144.170.27:3002/MainHistoricLogs', {
         params: { page: currentPage, limit: logsPerPage, year: selectedYear, month: selectedMonth },
         withCredentials: true
       });
@@ -36,7 +37,7 @@ function LogsAdmin() {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get('http://192.168.1.75:3002/verifyToken', { withCredentials: true });
+        const response = await axios.get('http://10.144.170.27:3002/verifyToken', { withCredentials: true });
         if (typeof response.data.token === 'string') {
           const decodedToken = jwtDecode(response.data.token);
           setUserInfo(decodedToken);
@@ -82,68 +83,87 @@ function LogsAdmin() {
 
   return (
     <div className="logs-admin">
-      <div className="year-selector">
-        {years.map(year => (
+
+<div className="titleLogsAdm">
+  <h3>
+    Logs
+    </h3>
+  </div>
+
+  <div className="direction-align">
+
+  <div className="buttonsSelector">
+
+<div className="year-selector">
+      {years.map(year => (
+        <button
+          key={year}
+          onClick={() => { setSelectedYear(year); setSelectedMonth(null); setCurrentPage(1); }}
+          className={year === selectedYear ? 'selected' : ''}
+        >
+          {year}
+        </button>
+      ))}
+    </div>
+
+    {selectedYear && (
+      <div className="month-selector">
+        {months.map(month => (
           <button
-            key={year}
-            onClick={() => { setSelectedYear(year); setSelectedMonth(null); setCurrentPage(1); }}
-            className={year === selectedYear ? 'selected' : ''}
+            key={month}
+            onClick={() => { setSelectedMonth(month); setCurrentPage(1); }}
+            className={month === selectedMonth ? 'selected' : ''}
           >
-            {year}
+            {monthNames[month - 1]}
           </button>
         ))}
       </div>
+    )}
 
-      {selectedYear && (
-        <div className="month-selector">
-          {months.map(month => (
-            <button
-              key={month}
-              onClick={() => { setSelectedMonth(month); setCurrentPage(1); }}
-              className={month === selectedMonth ? 'selected' : ''}
-            >
-              {monthNames[month - 1]}
+  </div>
+
+  
+
+    {selectedMonth && (
+      <div className="logs-table">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>User ID</th>
+              <th>User Name</th>
+              <th>Action</th>
+              <th>Table Name</th>
+              <th>Timestamp</th>
+            </tr>
+          </thead>
+          <tbody>
+            {dataLogs.map(log => (
+              <tr key={log.id}>
+                <td>{log.id}</td>
+                <td>{log.user_id}</td>
+                <td>{log.user_name}</td>
+                <td>{log.action}</td>
+                <td>{log.table_name}</td>
+                <td>{log.timestamp}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+
+        <div className="pagination">
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button key={i + 1} onClick={() => paginate(i + 1)}>
+              {i + 1}
             </button>
           ))}
         </div>
-      )}
+      </div>
+    )}
+    
+    </div>
 
-      {selectedMonth && (
-        <div className="logs-table">
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>User ID</th>
-                <th>User Name</th>
-                <th>Action</th>
-                <th>Table Name</th>
-                <th>Timestamp</th>
-              </tr>
-            </thead>
-            <tbody>
-              {dataLogs.map(log => (
-                <tr key={log.id}>
-                  <td>{log.id}</td>
-                  <td>{log.user_id}</td>
-                  <td>{log.user_name}</td>
-                  <td>{log.action}</td>
-                  <td>{log.table_name}</td>
-                  <td>{log.timestamp}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-
-          <div className="pagination">
-            {Array.from({ length: totalPages }, (_, i) => (
-              <button key={i + 1} onClick={() => paginate(i + 1)}>
-                {i + 1}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+ 
     </div>
   );
 }

@@ -32,7 +32,7 @@ const Caixa_Entrada = () => {
 
     const verifyToken = async () => {
         try {
-            const response = await axios.get('http://192.168.1.75:3002/verifyToken', { withCredentials: true });
+            const response = await axios.get('http://10.144.170.27:3002/verifyToken', { withCredentials: true });
             if (typeof response.data.token === 'string') {
                 const decodedToken = jwtDecode(response.data.token);
                 setUserInfo(decodedToken);
@@ -48,7 +48,7 @@ const Caixa_Entrada = () => {
 
     const fetchEmails = async (email) => {
         try {
-            const response = await axios.get('http://192.168.1.75:3001/caixa_entrada', {
+            const response = await axios.get('http://10.144.170.27:3001/caixa_entrada', {
                 params: { Email: email },
                 withCredentials: true
             });
@@ -80,7 +80,7 @@ const Caixa_Entrada = () => {
 
     const markEmailAsRead = async (id) => {
         try {
-            await axios.put('http://192.168.1.75:3001/caixa_entrada/view', { id });
+            await axios.put('http://10.144.170.27:3001/caixa_entrada/view', { id });
             const updatedEmails = emails.map(email =>
                 email.id === id ? { ...email, View: 1 } : email
             );
@@ -96,7 +96,7 @@ const Caixa_Entrada = () => {
 
     const excluirEmail = async (id) => {
         try {
-            await axios.put(`http://192.168.1.75:3001/excluir_email_destinatario`, { id });
+            await axios.put(`http://10.144.170.27:3001/excluir_email_destinatario`, { id });
             setEmails(emails.filter(email => email.id !== id));
         } catch (err) {
             console.error("Erro ao excluir o e-mail", err);
@@ -123,7 +123,7 @@ const Caixa_Entrada = () => {
                                 <div className="email-body">
                                     <p>{email.Mensagem}</p>
                                     {email.Arquivo && (
-                                        <a href={`http://192.168.1.75:3001/uploads/Docs/${email.Arquivo}`} className="email-attachment">
+                                        <a href={`http://10.144.170.27:3001/uploads/Docs/${email.Arquivo}`} className="email-attachment">
                                             {email.Arquivo}
                                         </a>
                                     )}
