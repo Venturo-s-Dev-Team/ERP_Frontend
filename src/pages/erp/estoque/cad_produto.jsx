@@ -40,7 +40,7 @@ function RegistroProduto() {
 
   const verifyToken = async () => {
     try {
-      const response = await axios.get('http://10.144.170.27:3002/verifyToken', { withCredentials: true });
+      const response = await axios.get('/api/ServerTwo/verifyToken', { withCredentials: true });
       if (typeof response.data.token === 'string') {
         const decodedToken = jwtDecode(response.data.token);
         setUserInfo(decodedToken);
@@ -56,7 +56,7 @@ function RegistroProduto() {
 
   const fetchDados = async (id) => {
     try {
-      const response = await axios.get(`http://10.144.170.27:3001/tableEstoque/${id}`, { withCredentials: true });
+      const response = await axios.get(`/api/ServerOne/tableEstoque/${id}`, { withCredentials: true });
       if (response.status === 200) {
         setSelectedEstoque(response.data.InfoTabela);
       }
@@ -101,7 +101,7 @@ function RegistroProduto() {
     const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
 
     try {
-      const response = await axios.post(`http://10.144.170.27:3002/RegistrarProduto/${id}`, data, {
+      const response = await axios.post(`/api/ServerTwo/RegistrarProduto/${id}`, data, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -227,7 +227,7 @@ function RegistroProduto() {
           height: "93%",
           borderRadius: 10,
           transform: "translate(-50%, -50%)",
-          background: "linear- #fff)",
+          background: "#fff",
           boxShadow: "10px 10px 15px rgba(0, 0, 0, 0.6)",
         }}
         show={showModalInfo}
@@ -245,7 +245,7 @@ function RegistroProduto() {
                   {!selectedProduct.Imagem ? (
                     <img src={VenturoImg} alt="Imagem do Produto" className="ImagemInfoProduto" />
                   ) : (
-                    <img src={`http://10.144.170.27:3001/uploads/ProdutosIMG/${selectedProduct.Imagem}`} alt="Imagem do produto" className="ImagemInfoProduto" style={{width: 50, height: 50}} />
+                    <img src={`/api/ServerOne/uploads/ProdutosIMG/${selectedProduct.Imagem}`} alt="Imagem do produto" className="ImagemInfoProduto" style={{width: 50, height: 50}} />
                   )}
                 </li>
                 <li>

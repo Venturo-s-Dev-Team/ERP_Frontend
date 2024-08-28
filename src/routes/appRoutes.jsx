@@ -23,6 +23,9 @@ import Caixa_Entrada from "../pages/erp/e-mail/Caixa_Entrada";
 //PERFIL
 import Perfil from "../pages/erp/Perfil/Perfil";
 
+//FUNCIONÁRIO
+import CadastroFuncionario from "../pages/erp/funcionarios/RegisterFuncionario";
+
 // ESTOQUE
 import Cad_produto from "../pages/erp/estoque/cad_produto";
 
@@ -102,7 +105,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
  useEffect(() => {
   const verifyToken = async () => {
     try {
-      const response = await axios.get('http://10.144.170.27:3002/verifyToken', { withCredentials: true });
+      const response = await axios.get('/api/ServerTwo/verifyToken', { withCredentials: true });
       if (response.status === 200) {
         const decodedToken = jwtDecode(response.data.token);
         setUserInfo(decodedToken);
@@ -141,6 +144,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           <Route path="/logs_admin" element={< LogsAdmin/>}/> // Apenas userInfo.TypeUser === SuperAdmin
 
           <Route path="/dashboard_admin" element={<DashboardAdmin/> } />// Apenas userInfo.TypeUser === SuperAdmin
+          <Route path="/CadastroFuncionario" element={<CadastroFuncionario />} />
           <Route path="/cad_produto" element={<Cad_produto />} /> // Apenas userInfo.TypeUser === Admin ou Gestor
           <Route path="/cadastronf" element={<Cadastronf />} />// Apenas userInfo.TypeUser === Admin ou Gestor
           <Route path="/clientes" element={<Clientes />} />// Apenas userInfo.TypeUser === Admin ou Gestor

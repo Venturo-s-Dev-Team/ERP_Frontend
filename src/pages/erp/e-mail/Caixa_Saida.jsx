@@ -27,7 +27,7 @@ const Caixa_Saida = () => {
     useEffect(() => {
         const verifyToken = async () => {
             try {
-                const response = await axios.get('http://10.144.170.27:3002/verifyToken', { withCredentials: true });
+                const response = await axios.get('/api/ServerTwo/verifyToken', { withCredentials: true });
 
                 if (typeof response.data.token === 'string') {
                     const decodedToken = jwtDecode(response.data.token);
@@ -48,7 +48,7 @@ const Caixa_Saida = () => {
         const fetchData = async () => {
             if (userInfo && userInfo.Email) {
                 try {
-                    const response = await axios.get('http://10.144.170.27:3001/caixa_saida', {
+                    const response = await axios.get('/api/ServerOne/caixa_saida', {
                         params: { Email: userInfo.Email },
                         withCredentials: true
                     });
@@ -80,7 +80,7 @@ const Caixa_Saida = () => {
 
     const excluirEmail = async (id) => {
         try {
-            await axios.put(`http://10.144.170.27:3001/excluir_email_remetente`, { id });
+            await axios.put(`/api/ServerOne/excluir_email_remetente`, { id });
             setEmails(emails.filter(email => email.id !== id));
         } catch (err) {
             console.error("Erro ao excluir o e-mail", err);
@@ -102,7 +102,7 @@ const Caixa_Saida = () => {
                                 <div className="email-body">
                                     <p>{email.Mensagem}</p>
                                     {email.Arquivo && (
-                                        <a href={`http://10.144.170.27:3001/uploads/Docs/${email.Arquivo}`} className="email-attachment">
+                                        <a href={`/api/ServerOne/uploads/Docs/${email.Arquivo}`} className="email-attachment">
                                             {email.Arquivo}
                                         </a>
                                     )}

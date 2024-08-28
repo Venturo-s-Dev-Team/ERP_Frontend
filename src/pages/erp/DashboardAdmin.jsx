@@ -26,7 +26,7 @@ function DashboardAdmin() {
   // Função para desautorizar empresa
   const Desautorizado = async (id) => {
     try {
-      const response = await axios.get(`http://10.144.170.27:3001/desautorizar/${id}`, {
+      const response = await axios.get(`/api/ServerOne/desautorizar/${id}`, {id_user: userInfo.id_user, Nome_user: userInfo.Nome_user}, {
         withCredentials: true,
       });
       if (response) {
@@ -41,7 +41,7 @@ function DashboardAdmin() {
   // Função para autorizar empresa
   const Autorizado = async (id) => {
     try {
-      const response = await axios.get(`http://10.144.170.27:3001/autorizar/${id}`, {
+      const response = await axios.get(`/api/ServerOne/autorizar/${id}`, {id_user: userInfo.id_user, Nome_user: userInfo.Nome_user}, {
         withCredentials: true,
       });
       if (response) {
@@ -57,7 +57,7 @@ function DashboardAdmin() {
 useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get('http://10.144.170.27:3002/verifyToken', { withCredentials: true });
+        const response = await axios.get('/api/ServerTwo/verifyToken', { withCredentials: true });
         
         if (typeof response.data.token === 'string') {
           const decodedToken = jwtDecode(response.data.token);
@@ -79,7 +79,7 @@ useEffect(() => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const Info = await axios.get("http://10.144.170.27:3001/tableEmpresas", {
+        const Info = await axios.get("/api/ServerOne/tableEmpresas", {
           withCredentials: true,
         });
         if (Info.status === 200) {
@@ -177,7 +177,7 @@ useEffect(() => {
     {/* Logo da empresa */}
                 {selectedItem.logo ? (
                   <img
-                    src={`http://10.144.170.27:3001/uploads/Logo/${selectedItem.logo}`}
+                    src={`/api/ServerOne/uploads/Logo/${selectedItem.logo}`}
                     className="img-empresa"
                     alt="Logo"
                   />

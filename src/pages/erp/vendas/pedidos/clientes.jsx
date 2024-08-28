@@ -23,7 +23,7 @@ function clientes() {
 
   const verifyToken = async () => {
     try {
-      const response = await axios.get('http://10.144.170.27:3002/verifyToken', { withCredentials: true });
+      const response = await axios.get('/api/ServerTwo/verifyToken', { withCredentials: true });
       if (typeof response.data.token === 'string') {
         const decodedToken = jwtDecode(response.data.token);
         setUserInfo(decodedToken);
@@ -39,7 +39,7 @@ function clientes() {
 
   const fetchDados = async (id) => {
     try {
-      const response = await axios.get(`http://10.144.170.27:3002/tableCliente/${id}`, { withCredentials: true });
+      const response = await axios.get(`/api/ServerTwo/tableCliente/${id}`, { withCredentials: true });
       if (response.status === 200) {
         setClientes(response.data);
       }

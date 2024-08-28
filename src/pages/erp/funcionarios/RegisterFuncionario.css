@@ -1,0 +1,34 @@
+.cadastro-funcionario h2{
+    padding: 20px;
+}
+
+.cadastro-funcionario form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.cadastro-funcionario input{
+    width: 200px;
+    height: 30px;
+}
+
+.cadastro-funcionario select{
+    height: 30px;
+    width: 200px;
+}
+
+.cadastro-funcionario button{
+    height: 35px;
+    width: 120px;
+    border-radius: 5px;
+}
+
+.textoCadastrarFunc{
+    font-size: 15px;
+}
+
+
+

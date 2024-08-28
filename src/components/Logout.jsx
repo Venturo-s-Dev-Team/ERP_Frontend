@@ -8,7 +8,7 @@ function Logout() {
   useEffect(() => {
     const logout = async () => {
       try {
-        const response = await axios.get('http://10.144.170.27:3002/logout', { withCredentials: true });
+        const response = await axios.get('/api/ServerTwo/logout', { withCredentials: true });
         if (response) {
           navigate('/login');
         }

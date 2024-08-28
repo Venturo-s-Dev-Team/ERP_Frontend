@@ -1,21 +1,54 @@
-import React from "react";
-import {  Modal } from "react-bootstrap";
-import {useState} from "react"
+import React, { useState, useEffect } from "react";
+import { Modal } from "react-bootstrap";
 import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
 import VenturoImg from "../../../../images/Venturo.png";
-
-
-const pagaments = [
-  { id: 1, name: "João, o atrasado.", valor: "duzentusmilreal", data: "15/10/2025", conta: "credito ou debito", tipo: "Pix",  },
-  { id: 2, name: "Fornecedor ", valor: 245, data: "17/08/2024", conta: "devedor", tipo: "Cheque", },
-  { id: 3, name: "Fulano de tal", valor: 246, data: "20/09/2027", conta: "badresco", tipo: "crédito",  },
-];
-
+import axios from "axios";
+import {jwtDecode} from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 function Pagamentos() {
-   const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [showModalInfo, setShowModalInfo] = useState(false);
   const [selectedPagament, setSelectedPagament] = useState(null);
+  const [pagaments, setPagaments] = useState([]);
+  const [userInfo, setUserInfo] = useState(null);
+  const navigate = useNavigate();
+
+  // Função para verificar o token
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const response = await axios.get('/api/ServerTwo/verifyToken', { withCredentials: true });
+        
+        if (typeof response.data.token === 'string') {
+          const decodedToken = jwtDecode(response.data.token);
+          setUserInfo(decodedToken);
+        } else {
+          console.error('Token não é uma string:', response.data.token);
+          navigate('/login');
+        }
+      } catch (error) {
+        console.error('Token inválido', error);
+        navigate('/login');
+      }
+    };
+    
+    verifyToken();
+  }, [navigate]);
+
+  // Função para buscar os pagamentos do banco de dados
+  useEffect(() => {
+    const fetchPagaments = async (id) => {
+      try {
+        const receitasResponse = await axios.get(`/api/ServerOne/tablepagamentos/${id}`, { withCredentials: true });
+        setPagaments(response.data);
+      } catch (error) {
+        console.error("Erro ao buscar pagamentos:", error);
+      }
+    };
+
+    fetchPagaments(userInfo.id_user);
+  }, []);
 
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
@@ -29,6 +62,7 @@ function Pagamentos() {
     setSelectedPagament(null);
     setShowModalInfo(false);
   };
+
   return (
     <main className="main-container">
       <div className="main-title">
@@ -36,52 +70,51 @@ function Pagamentos() {
       </div>
 
       <div className="Button_Cad">
-          <button className="Button-Menu" onClick={handleShow}>
-            Adicionar
-            <FaPlus />
-          </button>
-          <button className="Button-Menu">
-            Editar
-            <FaPenToSquare />
-          </button>
-          <button className="Button-Menu">
-            Excluir
-            <FaTrashCan />
-          </button>
-        </div>
+        <button className="Button-Menu" onClick={handleShow}>
+          Adicionar
+          <FaPlus />
+        </button>
+        <button className="Button-Menu">
+          Editar
+          <FaPenToSquare />
+        </button>
+        <button className="Button-Menu">
+          Excluir
+          <FaTrashCan />
+        </button>
+      </div>
 
-        <div className="Estoque_List">
-          <table>
-            <caption>Lista de Pagamentos</caption>
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>Valor</th>
-                <th>Data</th>
-                <th>Conta</th>
-                <th>Título</th>
-                <th>Info.</th>
+      <div className="Estoque_List">
+        <table>
+          <caption>Lista de Pagamentos</caption>
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Valor</th>
+              <th>Data</th>
+              <th>Conta</th>
+              <th>Tipo</th>
+              <th>Info.</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pagaments.map((pagament) => (
+              <tr key={pagament.id}>
+                <td>{pagament.name}</td>
+                <td>{pagament.valor}</td>
+                <td>{pagament.data}</td>
+                <td>{pagament.conta}</td>
+                <td>{pagament.tipo}</td>
+                <td>
+                  <button className="ButtonInfoProduct" onClick={() => handleShowInfo(pagament)}>Abrir</button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {pagaments.map((pagament) => (
-                <tr key={pagament.id}>
-                  <td>{pagament.name}</td>
-                  <td>{pagament.valor}</td>
-                  <td>{pagament.data}</td>
-                  <td> {pagament.conta}</td>
-                  <td> {pagament.tipo}</td>
-                  <td>
-                    <button className="ButtonInfoProduct" onClick={() => handleShowInfo(pagament)}>Abrir</button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-   {/* Modal de Adicionar Produto */}
-   <Modal
+      <Modal
         style={{
           position: "fixed",
           top: "50%",
@@ -120,7 +153,6 @@ function Pagamentos() {
         </div>
       </Modal>
 
-      {/* Modal de Informação do Produto */}
       <Modal
         style={{
           position: "fixed",
@@ -176,7 +208,6 @@ function Pagamentos() {
           </div>
         </div>
       </Modal>
-
     </main>
   );
 }

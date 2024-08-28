@@ -11,7 +11,7 @@ const Perfil = () => {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get('http://10.144.170.27:3002/verifyToken', { withCredentials: true });
+        const response = await axios.get('/api/ServerTwo/verifyToken', { withCredentials: true });
         
         if (typeof response.data.token === 'string') {
           const decodedToken = jwtDecode(response.data.token);
@@ -50,7 +50,7 @@ const Perfil = () => {
                   {!userInfo.id_EmpresaDb ? (
                     <div>Vazio</div>
                   ) : (
-                    <img src={`http://10.144.170.27:3001/uploads/Logo/${userInfo.id_EmpresaDb}.png`} style={{ width: 100, height: 100 }} alt="" />
+                    <img src={`/api/ServerOne/uploads/Logo/${userInfo.id_EmpresaDb}.png`} style={{ width: 100, height: 100 }} alt="" />
                   )}
                 </summary>
                 <p className="perfil-id">ID: {userInfo.id_user}</p>
@@ -70,7 +70,7 @@ const Perfil = () => {
                   {!userInfo.Logo ? (
                     <div>Perfil</div>
                   ) : (
-                    <img src={`http://10.144.170.27:3001/uploads/Logo/${userInfo.Logo}`} style={{ width: 100, height: 100 }} alt="" />
+                    <img src={`/api/ServerOne/uploads/Logo/${userInfo.Logo}`} style={{ width: 100, height: 100 }} alt="" />
                   )}
                 </summary>
                 <p className="perfil-id">ID: {userInfo.id_user}</p>
