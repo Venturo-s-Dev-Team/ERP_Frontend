@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
 import {
   PieChart,
@@ -11,7 +11,10 @@ import {
   YAxis,
   CartesianGrid,
 } from "recharts";
-import {Modal} from "react-bootstrap";
+import { Modal } from "react-bootstrap";
+import axios from "axios";
+import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 
 const data01 = [
   { name: "Group A", value: 400 },
@@ -74,7 +77,7 @@ const despesas = [
     descricao: "A despesa número 1",
     valor: 244,
     data: "09/03/25",
-    finalizado: "Sim",
+    Finalizado: "Sim",
   },
   {
     id: 2,
@@ -82,7 +85,7 @@ const despesas = [
     descricao: "A despesa número 2",
     valor: 435,
     data: "09/03/25",
-    finalizado: "Sim",
+    Finalizado: "Sim",
   },
   {
     id: 3,
@@ -90,7 +93,7 @@ const despesas = [
     descricao: "A despesa número 3",
     valor: 345,
     data: "09/03/25",
-    finalizado: "Sim",
+    Finalizado: "Sim",
   },
   {
     id: 4,
@@ -98,7 +101,7 @@ const despesas = [
     descricao: "A despesa número 4",
     valor: 5777,
     data: "09/03/25",
-    finalizado: "Sim",
+    Finalizado: "Sim",
   },
   {
     id: 5,
@@ -106,7 +109,7 @@ const despesas = [
     descricao: "A despesa número 5",
     valor: 102,
     data: "09/03/25",
-    finalizado: "Sim",
+    Finalizado: "Sim",
   },
   {
     id: 6,
@@ -114,7 +117,7 @@ const despesas = [
     descricao: "A despesa número 6",
     valor: 345,
     data: "09/03/25",
-    finalizado: "Sim",
+    Finalizado: "Sim",
   },
   {
     id: 7,
@@ -122,7 +125,7 @@ const despesas = [
     descricao: "A despesa número 7",
     valor: 243,
     data: "09/03/25",
-    finalizado: "Sim",
+    Finalizado: "Sim",
   },
   {
     id: 8,
@@ -130,7 +133,7 @@ const despesas = [
     descricao: "A despesa número 8",
     valor: 121,
     data: "09/03/25",
-    finalizado: "Sim",
+    Finalizado: "Sim",
   },
   {
     id: 9,
@@ -138,14 +141,14 @@ const despesas = [
     descricao: "A despesa número 9",
     valor: 888,
     data: "09/03/25",
-    finalizado: "Sim",
+    Finalizado: "Sim",
   },
 ];
 
-
-
 // Função para alterar o botão de finalização da tabela
 function Despesas() {
+  const navigate = useNavigate();
+  const [Despesas, setDespesas] = useState([]);
   const [finalizar, setFinalizar] = useState(despesas);
 
   const Finalizado = (id) => {
@@ -154,14 +157,62 @@ function Despesas() {
         despesa.id === id
           ? {
               ...despesa,
-              finalizado: despesa.finalizado === "Não" ? "Sim" : "Não",
+              Finalizado: despesa.Finalizado === "Não" ? "Sim" : "Não",
             }
           : despesa
       )
     );
   };
 
-  // Função para abrir modal - add
+  const [userInfo, setUserInfo] = useState(null);
+
+  // Função para verificar o token
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const response = await axios.get('/api/ServerTwo/verifyToken', { withCredentials: true });
+        
+        if (typeof response.data.token === 'string') {
+          const decodedToken = jwtDecode(response.data.token);
+          setUserInfo(decodedToken);
+        } else {
+          console.error('Token não é uma string:', response.data.token);
+          navigate('/login');
+        }
+      } catch (error) {
+        console.error('Token inválido', error);
+        navigate('/login');
+      }
+    };
+    
+    verifyToken();
+  }, [navigate]);
+
+  // Função para carregar dados do banco de dados
+  useEffect(() => {
+    const fetchData = async (id) => {
+      try {
+        const despesasResponse = await axios.get(`/api/ServerOne/tabledespesas/${id}`, { withCredentials: true });
+        setDespesas(despesasResponse.data.InfoTabela);
+      } catch (error) {
+        console.error("Erro ao carregar dados", error);
+      }
+    };
+
+    if (userInfo && userInfo.id_user) {
+      fetchData(userInfo.id_user);
+    }
+  }, [userInfo]);
+
+  // Função para calcular o total das despesas não finalizadas
+  const calcularTotalDespesasNaoFinalizadas = () => {
+    return Despesas
+      .filter(despesa => despesa.Finalizado === "Não")
+      .reduce((acc, despesa) => acc + (despesa.Valor || 0), 0)
+      .toFixed(2);
+  };
+
+  // Função para abrir modal
   const [showModal, setShowModal] = useState(false);
   const abrirModal = () => setShowModal(true);
   const fecharModal = () => setShowModal(false); 
@@ -173,27 +224,27 @@ function Despesas() {
         <h3>Despesas</h3>
       </div>
 
-        {/* Botões para cadastrar despesas, excluir ou editar */}
-        <div className="Button_Cad">
-          <button className="Button-Menu" onClick={abrirModal}>
-            Adicionar
-            <FaPlus />
-          </button>
-          <button className="Button-Menu">
-            Editar
-            <FaPenToSquare />
-          </button>
-          <button className="Button-Menu">
-            Excluir
-            <FaTrashCan />
-          </button>
-        </div>
+      {/* Botões para cadastrar despesas, excluir ou editar */}
+      <div className="Button_Cad">
+        <button className="Button-Menu" onClick={abrirModal}>
+          Adicionar
+          <FaPlus />
+        </button>
+        <button className="Button-Menu">
+          Editar
+          <FaPenToSquare />
+        </button>
+        <button className="Button-Menu">
+          Excluir
+          <FaTrashCan />
+        </button>
+      </div>
 
       {/* Box sobre contas */}
       <div className="box_desp">
         <div className="despesa1-box">
           <h3>Contas a pagar em aberto</h3>
-          <h1>R$ 14.987,93</h1>
+          <h1>R$ {calcularTotalDespesasNaoFinalizadas()}</h1>
         </div>
         <div className="despesa2-box">
           <h3>Contas a pagar em atraso</h3>
@@ -252,25 +303,23 @@ function Despesas() {
           <thead>
             <tr>
               <th>Nome</th>
-              <th>Descrição</th>
               <th>Valor</th>
               <th>Data de Expiração</th>
               <th>Finalizado</th>
             </tr>
           </thead>
           <tbody>
-            {finalizar.map((despesa) => (
+            {Despesas.map((despesa) => (
               <tr key={despesa.id}>
-                <td>{despesa.name}</td>
-                <td>{despesa.descricao}</td>
-                <td>R$ {despesa.valor.toFixed(2)}</td>
-                <td>{despesa.data}</td>
+                <td>{despesa.Nome}</td>
+                <td>R$ {Number(despesa.Valor || 0).toFixed(2)}</td>
+                <td>{despesa.DataExpiracao}</td>
                 <td>
-                  {despesa.finalizado}
+                  {despesa.Finalizado}
                   <button className={`despesas_opc_btn ${
-                      despesa.finalizado === "Sim" ? "sim" : "nao"
+                      despesa.Finalizado === "Sim" ? "sim" : "nao"
                     }`} onClick={() => Finalizado(despesa.id)}>
-                    {despesa.finalizado === "Não" ? "Marcar como Sim" : "Marcar como Não"}
+                    {despesa.Finalizado === "Não" ? "Marcar como Sim" : "Marcar como Não"}
                   </button>
                 </td>
               </tr>
@@ -278,46 +327,46 @@ function Despesas() {
           </tbody>
         </table>
       </div>
-<div>
-  <Modal   style={{
-          position: "fixed",
-          top: "50%",
-          bottom: 0,
-          left: "50%",
-          right: 0,
-          zIndex: 1000,
-          width: "70%",
-          height: "73%",
-          borderRadius: 20,
-          transform: "translate(-50%, -50%)",
-          background: "white",
-          boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
-        }}
-        show={showModal}
-        onHide={fecharModal}>
-          <div>
-          <div className="DivModalDesp">
-          <div className="HeaderModal">
-            <h1>Registrar de Despesas</h1>
-          </div>
-          <form>
-            <input type="number" placeholder="Valor" />
-            <input type="text" placeholder="Nome" />
-            <input type="date" placeholder="Data de Expiração" />
-            <input type="text" placeholder="Descrição" />
-            <div className="FooterButton">
-              <button className="RegisterPr">Registrar</button>
-              <button className="FecharPr" onClick={fecharModal}>
-                Fechar
-              </button>
-            </div>
-          </form>
-        </div>
-        
-            </div>
 
-    </Modal>
-    </div>
+      {/* Modal para adicionar despesas */}
+      <div>
+        <Modal   
+          style={{
+            position: "fixed",
+            top: "50%",
+            bottom: 0,
+            left: "50%",
+            right: 0,
+            zIndex: 1000,
+            width: "70%",
+            height: "73%",
+            borderRadius: 20,
+            transform: "translate(-50%, -50%)",
+            background: "white",
+            boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
+          }}
+          show={showModal}
+          onHide={fecharModal}
+        >
+          <div className="DivModalDesp">
+            <div className="HeaderModal">
+              <h1>Registrar Despesas</h1>
+            </div>
+            <form>
+              <input type="number" placeholder="Valor" />
+              <input type="text" placeholder="Nome" />
+              <input type="date" placeholder="Data de Expiração" />
+              <input type="text" placeholder="Descrição" />
+              <div className="FooterButton">
+                <button className="RegisterPr">Registrar</button>
+                <button className="FecharPr" onClick={fecharModal}>
+                  Fechar
+                </button>
+              </div>
+            </form>
+          </div>
+        </Modal>
+      </div>
     </main>
   );
 }

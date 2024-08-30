@@ -138,8 +138,6 @@ function RegistroProduto() {
           </button>
         </div>
 
-    
-
         <div className="Estoque_List">
           <table>
             <caption>Registro de Produtos</caption>

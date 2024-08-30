@@ -1,110 +1,67 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from "jwt-decode";
-import "./RegisterFuncionario.css"
+import React, { useState } from 'react';
+import SuccessPopup from './SuccessPopup'; // Importe o componente pop-up
+import './RegisterFuncionario.css';
+
+const funcionarios = [
+  { id: 1, name: "Funcionario 1",  senha: 2323, },
+  { id: 2, name: "Funcionario 2",  senha: 2323, },
+  { id: 3, name: "Funcionario 3",  senha: 2323, },
+];
 
 function CadastroFuncionario() {
-      // Token e Logout
-  const [userInfo, setUserInfo] = useState('');
-  const [EmpresaId, setIdEmpresa] = useState('')
-  const [nome, setNome] = useState('');
-  const [senha, setSenha] = useState('');
-  const [typeUser, setTypeUser] = useState('');
-  const [erro, setErro] = useState('');
-  const navigate = useNavigate();
+  const [showPopup, setShowPopup] = useState(false);
 
-  useEffect(() => {
-    const verifyToken = async () => {
-      try {
-        const response = await axios.get('/api/ServerTwo/verifyToken', { withCredentials: true });
-        
-        if (typeof response.data.token === 'string') {
-          const decodedToken = jwtDecode(response.data.token);
-          setUserInfo(decodedToken);
-          setIdEmpresa(decodedToken.id_user);
-        } else {
-          console.error('Token não é uma string:', response.data.token);
-          navigate('/');
-        }
-      } catch (error) {
-        console.error('Token inválido', error);
-        navigate('/login');
-      }
-    };
-    
-    verifyToken();
-  }, [navigate]);
-
-  const generateEmail = (nome) => {
-    return nome.toLowerCase().replace(/\s+/g, ".") + "@venturo.com";
+  const openPopup = () => {
+    setShowPopup(true);
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post('/api/ServerTwo/cadastro_funcionario', {
-        Nome: nome,
-        Senha: senha,
-        TypeUser: typeUser,
-        Email: generateEmail(nome),
-        id: EmpresaId
-      });
+  const closePopup = () => {
+    setShowPopup(false);
+  };
 
-      if (response.status === 200) {
-        alert('Funcionário cadastrado com sucesso!');
-      }
-    } catch (error) {
-      setErro('Erro ao cadastrar funcionário. Verifique os dados e tente novamente.');
-    }
+  const handleSuccess = () => {
+    closePopup();
   };
 
   return (
-    <div className="cadastro-funcionario">
-      <div className='TitleFuncPage'>
-      <h2>Cadastro de Funcionário</h2>
+    <main className="main-container">
+
+<div className="main-title">
+        <h3>Cadastrar Funcionário</h3>
       </div>
 
-<div className="AlinhandoConteudoFunc">
-  
-<div className='FormularioFunc'>
-<div className="textoCadastrarFunc">
-        <h2> Cadastrar Funcionário </h2>
+      <div className="Estoque_Cad">
+        <div className="Button_Cad">
+        <button onClick={openPopup}>Cadastrar Funcionário</button>
+      
         </div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Nome Completo"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Senha"
-          value={senha}
-          onChange={(e) => setSenha(e.target.value)}
-          required
-        />
-        <select
-          value={typeUser}
-          onChange={(e) => setTypeUser(e.target.value)}
-          required
-        >
-          <option value="">Selecione o cargo</option>
-          <option value="Socio">Sócio</option>
-          <option value="Gerente">Gerente</option>
-          <option value="Estoque">Estoque</option>
-          <option value="Venda">Venda</option>
-        </select>
-        <button type="submit">Cadastrar</button>
-        {erro && <p>{erro}</p>}
-      </form>
-  </div>
-  </div>
+        </div>
+      {/* Exibir o pop-up se showPopup for verdadeiro */}
+      {showPopup && <SuccessPopup onClose={closePopup} onSubmit={handleSuccess} />}
 
-     
-    </div>
-  )
+
+      <div className="Estoque_List">
+          <table>
+            <caption>Listagem de Funcionários</caption>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Senha</th>
+              </tr>
+            </thead>
+            <tbody>
+              {funcionarios.map((funcionario) => (
+                <tr key={funcionario.id}>
+                  <td>{funcionario.name}</td>
+                  <td>{funcionario.senha}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+    </main>
+  );
 }
+
 export default CadastroFuncionario;

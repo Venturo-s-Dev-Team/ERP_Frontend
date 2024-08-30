@@ -11,7 +11,9 @@ const products = [
 
 function Fornecedores() {
   const [showModal, setShowModal] = useState(false);
-
+  const [userInfo, setUserInfo] = useState(null);
+  const navigate = useNavigate();
+  
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
 
