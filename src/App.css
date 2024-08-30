@@ -643,7 +643,9 @@ tbody td {
 
 .DivModalCont input[type="text"],
 .DivModalCont input[type="number"],
-.DivModalCont input[type="date"]{
+.DivModalCont input[type="date"],
+.DivModalCont input[type="CNPJ"]
+{
   margin: 10px;
   width: 350px;
   height: 35px;
@@ -905,6 +907,9 @@ background-color: #22963d83;
   border: transparent;
   background-color: #fff;
   padding-left: 30px;
+  border-color: #000;
+  border-width: 1px;
+  border-style: solid;
 }
 
 

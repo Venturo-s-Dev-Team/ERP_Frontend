@@ -61,15 +61,20 @@ function CadastroFuncionario() {
 
   return (
     <div className="cadastro-funcionario">
+      <div className='TitleFuncPage'>
       <h2>Cadastro de Funcionário</h2>
+      </div>
 
-       <div className="textoCadastrarFunc">
+<div className="AlinhandoConteudoFunc">
+  
+<div className='FormularioFunc'>
+<div className="textoCadastrarFunc">
         <h2> Cadastrar Funcionário </h2>
         </div>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="Nome"
+          placeholder="Nome Completo"
           value={nome}
           onChange={(e) => setNome(e.target.value)}
           required
@@ -95,6 +100,10 @@ function CadastroFuncionario() {
         <button type="submit">Cadastrar</button>
         {erro && <p>{erro}</p>}
       </form>
+  </div>
+  </div>
+
+     
     </div>
   )
 }

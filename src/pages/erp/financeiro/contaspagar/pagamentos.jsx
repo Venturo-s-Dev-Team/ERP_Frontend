@@ -3,7 +3,7 @@ import { Modal } from "react-bootstrap";
 import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
 import VenturoImg from "../../../../images/Venturo.png";
 import axios from "axios";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
 function Pagamentos() {
@@ -40,15 +40,20 @@ function Pagamentos() {
   useEffect(() => {
     const fetchPagaments = async (id) => {
       try {
-        const receitasResponse = await axios.get(`/api/ServerOne/tablepagamentos/${id}`, { withCredentials: true });
-        setPagaments(response.data);
+        const response = await axios.get(`/api/ServerOne/tablepagamentos/${id}`, { withCredentials: true });
+        // Garantir que a resposta seja um array
+        setPagaments(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error("Erro ao buscar pagamentos:", error);
+        setPagaments([]); // Em caso de erro, garantir que pagaments seja um array
       }
-    };
+    };   
 
-    fetchPagaments(userInfo.id_user);
-  }, []);
+    // Só buscar pagamentos se userInfo estiver definido
+    if (userInfo && userInfo.id_user) {
+      fetchPagaments(userInfo.id_user);
+    }
+  }, [userInfo]); // Dependência adicionada para garantir que o efeito seja reexecutado quando userInfo mudar
 
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
@@ -126,7 +131,7 @@ function Pagamentos() {
           height: "73%",
           borderRadius: 20,
           transform: "translate(-50%, -50%)",
-          background: "linear-gradient(135deg, #ddd, silver)",
+          background: "white",
           boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
         }}
         show={showModal}

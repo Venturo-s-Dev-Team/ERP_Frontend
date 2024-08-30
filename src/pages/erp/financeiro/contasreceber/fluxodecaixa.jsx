@@ -2,8 +2,11 @@ import React, { useState, useEffect } from "react";
 import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
 import { Modal } from "react-bootstrap";
 import axios from "axios"; 
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 function FluxoCaixa() {
+  const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState('');
   const [fluxos, setFluxos] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -66,8 +69,11 @@ useEffect(() => {
       }
     };
 
-    fetchData(userInfo.userInfo);
-  }, []);
+     // Só buscar pagamentos se userInfo estiver definido
+     if (userInfo && userInfo.id_user) {
+      fetchData(userInfo.id_user);
+    }
+  }, [userInfo]);
 
   return (
     <main className="main-container">
@@ -136,7 +142,7 @@ useEffect(() => {
             height: "73%",
             borderRadius: 20,
             transform: "translate(-50%, -50%)",
-            background: "linear-gradient(135deg, #ddd, silver)",
+            background: "white",
             boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
           }}
           show={showModal}

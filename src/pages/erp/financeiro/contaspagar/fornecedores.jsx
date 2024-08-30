@@ -74,8 +74,8 @@ function Fornecedores() {
           height: "73%",
           borderRadius: 20,
           transform: "translate(-50%, -50%)",
-          background: "linear-gradient(135deg, #ddd, silver)",
-          boxShadow: "10 20px 30px rgba(0, 0, 0, 0.9)",
+          background: "white",
+          boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
         }}
         show={showModal}
         onHide={handleClose}

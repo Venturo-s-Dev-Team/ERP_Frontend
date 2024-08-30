@@ -290,7 +290,7 @@ function Despesas() {
           height: "73%",
           borderRadius: 20,
           transform: "translate(-50%, -50%)",
-          background: "linear-gradient(135deg, #ddd, silver)",
+          background: "white",
           boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
         }}
         show={showModal}
@@ -298,7 +298,7 @@ function Despesas() {
           <div>
           <div className="DivModalDesp">
           <div className="HeaderModal">
-            <h1>Registrar Venda</h1>
+            <h1>Registrar de Despesas</h1>
           </div>
           <form>
             <input type="number" placeholder="Valor" />
