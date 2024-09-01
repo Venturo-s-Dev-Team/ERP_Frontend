@@ -2,6 +2,7 @@ import { Button, Modal, Form } from "react-bootstrap";
 import React, { useState } from "react";
 import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
 import "../../../../App.css";
+import { useNavigate } from "react-router-dom";
 
 const products = [
   { id: 1, name: "Fornecedor 1", cnpj: 21343, endereco: 3, },

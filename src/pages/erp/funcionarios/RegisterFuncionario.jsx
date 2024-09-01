@@ -1,15 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import SuccessPopup from './SuccessPopup'; // Importe o componente pop-up
+import axios from "axios";
+import {jwtDecode} from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 import './RegisterFuncionario.css';
 
-const funcionarios = [
-  { id: 1, name: "Funcionario 1",  senha: 2323, },
-  { id: 2, name: "Funcionario 2",  senha: 2323, },
-  { id: 3, name: "Funcionario 3",  senha: 2323, },
-];
-
 function CadastroFuncionario() {
+  const navigate = useNavigate();
   const [showPopup, setShowPopup] = useState(false);
+  const [userInfo, setUserInfo] = useState('');
+  const [Funcionarios, setFuncionarios] = useState([])
+
+  // Função para verificar o token
+useEffect(() => {
+  const verifyToken = async () => {
+    try {
+      const response = await axios.get('/api/ServerTwo/verifyToken', { withCredentials: true });
+      
+      if (typeof response.data.token === 'string') {
+        const decodedToken = jwtDecode(response.data.token);
+        setUserInfo(decodedToken);
+      } else {
+        console.error('Token não é uma string:', response.data.token);
+        navigate('/');
+      }
+    } catch (error) {
+      console.error('Token inválido', error);
+      navigate('/login');
+    }
+  };
+  
+  verifyToken();
+}, [navigate]);
+
+useEffect(() => {
+  if (userInfo.id_user) {
+    fetchFuncionarios(userInfo.id_user);
+  }
+}, [userInfo]);
+
+const fetchFuncionarios = async (id) => {
+  try {
+    const response = await axios.get(`/api/ServerOne/tableFuncionario/${id}`, { withCredentials: true });
+    if (response.status === 200) {
+      setFuncionarios(response.data.InfoTabela);
+    }
+  } catch (error) {
+    console.log('Não foi possível requerir as informações: ', error);
+  }
+};
 
   const openPopup = () => {
     setShowPopup(true);
@@ -46,14 +85,16 @@ function CadastroFuncionario() {
             <thead>
               <tr>
                 <th>Nome</th>
-                <th>Senha</th>
+                <th>E-mail</th>
+                <th>Setor</th>
               </tr>
             </thead>
             <tbody>
-              {funcionarios.map((funcionario) => (
+              {Funcionarios.map((funcionario) => (
                 <tr key={funcionario.id}>
-                  <td>{funcionario.name}</td>
-                  <td>{funcionario.senha}</td>
+                  <td>{funcionario.Nome}</td>
+                  <td>{funcionario.email}</td>
+                  <td>{funcionario.TypeUser}</td>
                 </tr>
               ))}
             </tbody>

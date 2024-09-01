@@ -14,7 +14,7 @@ import {
 import { Modal } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 
 const data01 = [
   { name: "Group A", value: 400 },
@@ -70,94 +70,18 @@ const data02 = [
   },
 ];
 
-const despesas = [
-  {
-    id: 1,
-    name: "Despesa 1",
-    descricao: "A despesa número 1",
-    valor: 244,
-    data: "09/03/25",
-    Finalizado: "Sim",
-  },
-  {
-    id: 2,
-    name: "Despesa 2",
-    descricao: "A despesa número 2",
-    valor: 435,
-    data: "09/03/25",
-    Finalizado: "Sim",
-  },
-  {
-    id: 3,
-    name: "Despesa 3",
-    descricao: "A despesa número 3",
-    valor: 345,
-    data: "09/03/25",
-    Finalizado: "Sim",
-  },
-  {
-    id: 4,
-    name: "Despesa 4",
-    descricao: "A despesa número 4",
-    valor: 5777,
-    data: "09/03/25",
-    Finalizado: "Sim",
-  },
-  {
-    id: 5,
-    name: "Despesa 5",
-    descricao: "A despesa número 5",
-    valor: 102,
-    data: "09/03/25",
-    Finalizado: "Sim",
-  },
-  {
-    id: 6,
-    name: "Despesa 6",
-    descricao: "A despesa número 6",
-    valor: 345,
-    data: "09/03/25",
-    Finalizado: "Sim",
-  },
-  {
-    id: 7,
-    name: "Despesa 7",
-    descricao: "A despesa número 7",
-    valor: 243,
-    data: "09/03/25",
-    Finalizado: "Sim",
-  },
-  {
-    id: 8,
-    name: "Despesa 8",
-    descricao: "A despesa número 8",
-    valor: 121,
-    data: "09/03/25",
-    Finalizado: "Sim",
-  },
-  {
-    id: 9,
-    name: "Despesa 9",
-    descricao: "A despesa número 9",
-    valor: 888,
-    data: "09/03/25",
-    Finalizado: "Sim",
-  },
-];
-
-// Função para alterar o botão de finalização da tabela
 function Despesas() {
   const navigate = useNavigate();
   const [Despesas, setDespesas] = useState([]);
-  const [finalizar, setFinalizar] = useState(despesas);
-
+  
+  // Função para alternar o valor da coluna "Finalizado"
   const Finalizado = (id) => {
-    setFinalizar((prevDespesas) =>
+    setDespesas((prevDespesas) =>
       prevDespesas.map((despesa) =>
         despesa.id === id
           ? {
               ...despesa,
-              Finalizado: despesa.Finalizado === "Não" ? "Sim" : "Não",
+              Finalizado: despesa.Finalizado === 0 ? 1 : 0,
             }
           : despesa
       )
@@ -166,7 +90,7 @@ function Despesas() {
 
   const [userInfo, setUserInfo] = useState(null);
 
-  // Função para verificar o token
+  // Verificação do token e obtenção das informações do usuário
   useEffect(() => {
     const verifyToken = async () => {
       try {
@@ -204,18 +128,48 @@ function Despesas() {
     }
   }, [userInfo]);
 
-  // Função para calcular o total das despesas não finalizadas
+  // Calcular total das despesas não finalizadas
   const calcularTotalDespesasNaoFinalizadas = () => {
-    return Despesas
-      .filter(despesa => despesa.Finalizado === "Não")
-      .reduce((acc, despesa) => acc + (despesa.Valor || 0), 0)
-      .toFixed(2);
-  };
+    const total = Despesas
+        .filter(despesa => despesa.Finalizado === 0)
+        .reduce((acc, despesa) => acc + (parseFloat(despesa.Valor) || 0), 0);
 
-  // Função para abrir modal
+    return total.toFixed(2);
+};
+
+const parseDate = (dateString) => {
+  if (!dateString) return null;
+  const [year, month, day] = dateString.split('-').map(Number);
+  return new Date(year, month - 1, day); // Mês em JavaScript é 0-indexado
+};
+
+const calcularTotalDespesasAtrasadas = () => {
+  if (!Array.isArray(Despesas)) {
+    console.error('Despesas não é um array:', Despesas);
+    return 0;
+  }
+  
+  const hoje = new Date();
+  console.log('Despesas:', Despesas);
+  console.log('Data atual:', hoje);
+
+  const total = Despesas
+    .filter(despesa => {
+      const vencimento = parseDate(despesa.DataExpiracao);
+      console.log('Despesa:', despesa);
+      console.log('Vencimento:', vencimento);
+      return vencimento && despesa.Finalizado === 0 && vencimento < hoje;
+    })
+    .reduce((total, despesa) => total + (parseFloat(despesa.Valor) || 0), 0);
+
+  console.log('Total atrasadas:', total);
+  return total;
+};
+
+  // Modal control
   const [showModal, setShowModal] = useState(false);
   const abrirModal = () => setShowModal(true);
-  const fecharModal = () => setShowModal(false); 
+  const fecharModal = () => setShowModal(false);
 
   return (
     <main className="main-container">
@@ -248,7 +202,7 @@ function Despesas() {
         </div>
         <div className="despesa2-box">
           <h3>Contas a pagar em atraso</h3>
-          <h1>R$ 1.298,24</h1>
+          <h1>R$ {calcularTotalDespesasAtrasadas()}</h1>
         </div>
       </div>
 
@@ -315,11 +269,10 @@ function Despesas() {
                 <td>R$ {Number(despesa.Valor || 0).toFixed(2)}</td>
                 <td>{despesa.DataExpiracao}</td>
                 <td>
-                  {despesa.Finalizado}
                   <button className={`despesas_opc_btn ${
-                      despesa.Finalizado === "Sim" ? "sim" : "nao"
+                      despesa.Finalizado === 1 ? "sim" : "nao"
                     }`} onClick={() => Finalizado(despesa.id)}>
-                    {despesa.Finalizado === "Não" ? "Marcar como Sim" : "Marcar como Não"}
+                    {despesa.Finalizado === 0 ? "Marcar como Sim" : "Marcar como Não"}
                   </button>
                 </td>
               </tr>
