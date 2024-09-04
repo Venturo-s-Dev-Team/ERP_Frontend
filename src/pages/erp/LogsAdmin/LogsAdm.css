@@ -25,6 +25,7 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  border-right: 1px solid rgb(174, 174, 174);
 }
 
 /* Botões de ano */
@@ -49,13 +50,13 @@
 /* Seletores de mês */
 .month-selector {
   opacity: 0;
-  transform: translateX(20px); /* Inicia fora da tela (abaixo) */
+  transform: translateX(10px); /* Inicia fora da tela (abaixo) */
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .month-selector.show {
   opacity: 1;
-  transform: translateX(0); /* Move para sua posição original */
+  transform: translateX(0px); /* Move para sua posição original */
 }
 
 .month-selector.hide {

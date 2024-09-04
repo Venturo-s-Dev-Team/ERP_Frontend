@@ -31,6 +31,7 @@ const Perfil = () => {
 
   const Body = () => {
     if (userInfo) {
+
       if (userInfo.TypeUser === 'SuperAdmin') {
         return (
           <div className="perfil-body">
@@ -63,21 +64,23 @@ const Perfil = () => {
         );
       } else if (userInfo.RazaoSocial) {
         return (
-          <div className="perfil-body">
-            <footer className="perfil-footer">
-              <details className="perfil-details">
-                <summary className="perfil-summary">
+          <div className="perfil-body-rs">
+            <footer className="perfil-footer-rs">
+           
+                <summary className="perfil-summary-rs">
                   {!userInfo.Logo ? (
                     <div>Perfil</div>
                   ) : (
-                    <img src={`/api/ServerOne/uploads/Logo/${userInfo.Logo}`} style={{ width: 100, height: 100 }} alt="" />
+                    <img src={`/api/ServerOne/uploads/Logo/${userInfo.Logo}`} style={{ width: 270, height: 270 }} alt="" />
                   )}
                 </summary>
-                <p className="perfil-id">ID: {userInfo.id_user}</p>
-                <p className="perfil-nome">Nome: {userInfo.Nome_user}</p>
-                <p>Empresa: {userInfo.RazaoSocial}</p>
-                <p className="perfil-email">E-mail: {userInfo.Email}</p>
-              </details>
+                <div className="perfil-letras-rs">
+                  <h2 className="perfil-titulo-rs">Dados do Perfil</h2>
+                <p className="perfil-id-rs">ID: {userInfo.id_user}</p>
+                <p className="perfil-nome-rs">Nome: {userInfo.Nome_user}</p>
+                <p className="perfil-empresa-rs">Empresa: {userInfo.RazaoSocial}</p>
+                <p className="perfil-email-rs">E-mail: {userInfo.Email}</p>
+             </div>
             </footer>
           </div>
         );

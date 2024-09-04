@@ -220,37 +220,8 @@ function Cad_nf() {
         </div>
 
 <div className="produto-geral">
-<h5 className="mini-titulo-nf">Produto</h5>
-        {formData.produtos.map((produto, index) => (
-          <div className="produto">
-          <div key={index}>
-            <label>Produto:</label>
-            <input
-              type="text"
-              name="nome"
-              value={produto.nome}
-              onChange={(e) => handleProdutoChange(index, e)}
-              className="input-produto"
-            />
-            </div>
-
-            <div className="preco">
-            <label>Preço:</label>
-            <input
-              type="number"
-              name="preco"
-              value={produto.preco}
-              onChange={(e) => handleProdutoChange(index, e)}
-              className="input-preco"
-            />
-            </div>
-            <div className="btn-div">
-            <button type="button" className="btn-remover-produto" onClick={() => removeProduto(index)}>Remover Produto</button>
-          </div></div>
-        ))}
-        <button type="button" className="btn-adicionar-produto" onClick={addProduto}>Adicionar Produto
-
-<FaPlus /></button>
+<h5 className="mini-titulo-nf">Venda</h5>
+       
 
         <div className="frete">
           <label>Frete:</label>
@@ -273,7 +244,20 @@ function Cad_nf() {
             onBlur={calculateValues}
             className="input-desconto"
           />
-        </div>    </div>
+          
+        </div> 
+        <div className="código">
+          <label>Código da Venda:</label>
+          <input
+            type="text"
+            name="desconto"
+            value={formData.desconto}
+            onChange={handleInputChange}
+            onBlur={calculateValues}
+            className="input-código"
+          />
+          </div>
+             </div>
 
 
 <div className="impostos">
@@ -302,6 +286,7 @@ function Cad_nf() {
 
         <button className="emitir" type="submit">Emitir Nota Fiscal</button>
       </form>
+
   </main>
   );
 }

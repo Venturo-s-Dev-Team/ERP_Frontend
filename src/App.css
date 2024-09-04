@@ -545,7 +545,7 @@ width: 100%;
   flex-direction: column;
   cursor: pointer;
   box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
-
+  font-weight: bold;
   }
 
   .Button_Cad button:hover{
@@ -1259,6 +1259,20 @@ margin-top: -25px;
   border-radius: 2px;
 }
 
+
+.código{
+  margin-left: 620px;
+  margin-top: -25px;
+  }
+  
+  .input-código{
+    margin-left: 10px;
+    width: 200px;
+    height: 25px;
+    padding: 5px;
+    border-radius: 2px;
+  }
+
 .impostos{
   border-color: #000;
   border-width: 1px;
@@ -1914,3 +1928,5 @@ margin-left: 5px;
   max-height: 80vh; 
   overflow-y: auto; 
 }
+
+/* Gestão de Vendas */

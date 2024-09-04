@@ -57,6 +57,7 @@ import Razao from "../pages/erp/financeiro/planocontas/razao";
 
 // VENDAS
 import Vendas from "../pages/erp/vendas/vendas";
+import GestaoVendas from "../pages/erp/vendas/gestaoVendas";
 
 // NOTAFISCAL
 import Cadastronf from "../pages/erp/vendas/notafiscal/cadastronf";
@@ -150,6 +151,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           <Route path="/clientes" element={<Clientes />} />// Apenas userInfo.TypeUser === Admin ou Gestor
           <Route path="/precofinal" element={<Precofinal />} /> // Apenas userInfo.TypeUser === Admin ou Gestor
           <Route path="/vendas" element={<Vendas />} />// Apenas userInfo.TypeUser === Admin ou Gestor
+          <Route path="/gestaovendas" element={<GestaoVendas />} />// Apenas userInfo.TypeUser === Admin ou Gestor
           <Route path="/despesas" element={<Despesas />} />// Apenas userInfo.TypeUser === Admin ou Gestor
           <Route path="/fornecedores" element={<Fornecedores />} />// Apenas userInfo.TypeUser === Admin ou Gestor
           <Route path="/pagamentos" element={<Pagamentos />} />// Apenas userInfo.TypeUser === Admin ou Gestor

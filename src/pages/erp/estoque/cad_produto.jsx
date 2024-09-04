@@ -1,6 +1,7 @@
 import { Button, Modal } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
 import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
+import { FaFileExport } from "react-icons/fa";
 import "../../../App.css";
 import VenturoImg from "../../../images/Venturo.png";
 import { useNavigate } from 'react-router-dom';
@@ -135,6 +136,10 @@ function RegistroProduto() {
           <button className="Button-Menu">
             Excluir
             <FaTrashCan />
+          </button>
+          <button className="Button-Menu">
+            Exportar
+            <FaFileExport />
           </button>
         </div>
 

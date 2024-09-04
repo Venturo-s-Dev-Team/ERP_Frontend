@@ -4,6 +4,8 @@ import axios from "axios";
 import {jwtDecode} from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import './RegisterFuncionario.css';
+import { FaFileExport } from "react-icons/fa";
+import { IoIosPersonAdd  } from "react-icons/io";
 
 function CadastroFuncionario() {
   const navigate = useNavigate();
@@ -71,8 +73,18 @@ const fetchFuncionarios = async (id) => {
 
       <div className="Estoque_Cad">
         <div className="Button_Cad">
-        <button onClick={openPopup}>Cadastrar Funcionário</button>
+
+        <button 
+        onClick={openPopup}>
+          Cadastrar 
+          
+       </button>
       
+        <button >
+            Exportar
+            <FaFileExport />
+          </button>
+         
         </div>
         </div>
       {/* Exibir o pop-up se showPopup for verdadeiro */}

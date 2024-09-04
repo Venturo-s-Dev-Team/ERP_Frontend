@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { Button, Modal, Form } from "react-bootstrap";
+import { FaFileExport } from "react-icons/fa";
+
 
 
 function clientes() {
@@ -74,6 +76,10 @@ function clientes() {
           <button className="Button-Menu">
             Excluir
             <FaTrashCan />
+          </button>
+          <button className="Button-Menu">
+            Exportar
+            <FaFileExport />
           </button>
         </div>
 

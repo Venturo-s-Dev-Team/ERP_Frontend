@@ -239,6 +239,11 @@ const MenuList = ({ darkTheme }) => {
           onClick: () => handleNavigation("/clientes"),
         },
         {
+          key: "gestaoVendas",
+          label: "Gestão de Vendas",
+          onClick: () => handleNavigation("/gestaoVendas"),
+        },
+        {
           key: "precofinal",
           label: "Preço final",
           onClick: () => handleNavigation("/precofinal"),

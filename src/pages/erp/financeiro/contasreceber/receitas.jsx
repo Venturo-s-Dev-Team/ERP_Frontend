@@ -4,12 +4,19 @@ import { Modal } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import { FaFileExport } from "react-icons/fa";
+
 
 function Receitas() {
   const navigate = useNavigate();
-  const [userInfo, setUserInfo] = useState('');
+  const [userInfo, setUserInfo] = useState({});
   const [receitas, setReceitas] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [newReceita, setNewReceita] = useState({
+    Nome: '',
+    Valor: '',
+    id_EmpresaDb: parseInt(userInfo.id_user)
+  });
 
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
@@ -51,6 +58,29 @@ function Receitas() {
     }
   }, [userInfo]);
 
+  // Função para lidar com mudanças nos campos de input
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNewReceita({ ...newReceita, [name]: value });
+  };
+
+  // Função para registrar uma nova receita
+  const handleRegisterReceita = async (e) => {
+    e.preventDefault();
+    const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
+    try {
+      const response = await axios.post(`/api/ServerTwo/registrarReceitas`, newReceita, {
+        withCredentials: true,
+      });
+
+      alert('Receita registrada com sucesso!');
+      window.location.reload(); // Recarrega a página para atualizar a lista de receitas
+    } catch (error) {
+      console.error("Erro ao registrar receita:", error);
+      alert('Erro ao registrar receita.');
+    }
+  };
+
   return (
     <main className="main-container">
       <div className="main-title">
@@ -70,6 +100,10 @@ function Receitas() {
           Excluir
           <FaTrashCan />
         </button>
+        <button className="Button-Menu">
+            Exportar
+            <FaFileExport />
+          </button>
       </div>
 
       <div className="Despesas_List">
@@ -112,14 +146,30 @@ function Receitas() {
       >
         <div className="DivModalCont">
           <div className="HeaderModal">
-            <h1>Registrar de Receita</h1>
+            <h1>Registrar Receita</h1>
           </div>
 
-          <form>
-            <input type="text" placeholder="Nome" />
-            <input type="number" placeholder="Valor por Mês" />
+          <form onSubmit={handleRegisterReceita}>
+            <input
+              type="text"
+              name="Nome"
+              placeholder="Nome"
+              value={newReceita.Nome}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="number"
+              name="Valor"
+              placeholder="Valor por Mês"
+              value={newReceita.Valor}
+              onChange={handleChange}
+              required
+            />
             <div className="FooterButton">
-              <button className="RegisterPr">Registrar</button>
+              <button className="RegisterPr" type="submit">
+                Registrar
+              </button>
               <button className="FecharPr" onClick={handleClose}>
                 Fechar
               </button>

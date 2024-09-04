@@ -63,8 +63,8 @@ const EmailPopup = ({ onClose, Email }) => {
     };
 
     return (
-        <div className="popup-overlay">
-            <div className="popup-container">
+        <div className="popup-overlay-email">
+            <div className="popup-container-email">
                 <div className="popup-header">
                     <h3>Nova Mensagem</h3>
                     <span className="popup-close" onClick={onClose}>&times;</span>

@@ -1,6 +1,8 @@
 import { Button, Modal } from "react-bootstrap";
 import React, { useState } from "react";
 import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
+import { FaFileExport } from "react-icons/fa";
+
 
 const precos = [
   { id: 1, preco: "Fornecedor 1", custo: 21343, imposto: 3 },
@@ -43,6 +45,10 @@ function Precofinal() {
           <button className="Button-Menu">
             Excluir
             <FaTrashCan />
+          </button>
+          <button className="Button-Menu">
+            Exportar
+            <FaFileExport />
           </button>
         </div>
 

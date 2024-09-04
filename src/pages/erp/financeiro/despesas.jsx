@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
-import { FaFileExport } from "react-icons/fa";
-
 import {
   PieChart,
   Pie,
@@ -78,8 +76,7 @@ function Despesas() {
   const [valor, setValor] = useState("");
   const [nome, setNome] = useState("");
   const [dataExpiracao, setDataExpiracao] = useState("");
-  const [userInfo, setUserInfo] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const [descricao, setDescricao] = useState("");
 
   // Função para alternar o valor da coluna "Finalizado"
   const Finalizado = (id) => {
@@ -94,6 +91,8 @@ function Despesas() {
       )
     );
   };
+
+  const [userInfo, setUserInfo] = useState(null);
 
   // Verificação do token e obtenção das informações do usuário
   useEffect(() => {
@@ -119,25 +118,24 @@ function Despesas() {
     verifyToken();
   }, [navigate]);
 
-    // Carregar dados inicialmente
-    useEffect(() => {
-      if (userInfo && userInfo.id_user) {
-        fetchData(userInfo.id_user);
+  // Função para carregar dados do banco de dados
+  useEffect(() => {
+    const fetchData = async (id) => {
+      try {
+        const despesasResponse = await axios.get(
+          `/api/ServerTwo/tabledespesas/${id}`,
+          { withCredentials: true }
+        );
+        setDespesas(despesasResponse.data.InfoTabela);
+      } catch (error) {
+        console.error("Erro ao carregar dados", error);
       }
-    }, [userInfo]);
+    };
 
- // Função para carregar dados do banco de dados
- const fetchData = async (userId) => {
-  try {
-    const despesasResponse = await axios.get(
-      `/api/ServerOne/tabledespesas/${userId}`,
-      { withCredentials: true }
-    );
-    setDespesas(despesasResponse.data.InfoTabela);
-  } catch (error) {
-    console.error('Erro ao carregar dados', error);
-  }
-};
+    if (userInfo && userInfo.id_user) {
+      fetchData(userInfo.id_user);
+    }
+  }, [userInfo]);
 
   // Calcular total das despesas não finalizadas
   const calcularTotalDespesasNaoFinalizadas = () => {
@@ -149,92 +147,64 @@ function Despesas() {
     return total.toFixed(2);
   };
 
-  // Função para calcular o total das despesas não finalizadas e que estão atrasadas
-  const calcularTotalDespesasAtrasadas = () => {
-    const dateAtual = new Date().getTime(); // Timestamp da data atual
-
-    const total = Despesas.filter((despesa) => {
-      const dataExpiracao = new Date(despesa.DataExpiracao).getTime(); // Timestamp da data de expiração
-
-      // Verifica se a despesa não está finalizada e se está atrasada
-      return despesa.Finalizado === 0 && dataExpiracao < dateAtual;
-    }).reduce(
-      (acc, despesa) => acc + (parseFloat(despesa.Valor) || 0),
-      0
-    );
-
-    return total.toFixed(2);
+  const parseDate = (dateString) => {
+    if (!dateString) return null;
+    const [year, month, day] = dateString.split("-").map(Number);
+    return new Date(year, month - 1, day); // Mês em JavaScript é 0-indexado
   };
+
+  const calcularTotalDespesasAtrasadas = () => {
+    if (!Array.isArray(Despesas)) {
+      console.error("Despesas não é um array:", Despesas);
+      return 0;
+    }
+  
+    const hoje = new Date();
+  
+    const total = Despesas.filter((despesa) => {
+      const vencimento = parseDate(despesa.DataExpiracao); // Converte a data de expiração para um objeto Date
+      return vencimento && despesa.Finalizado === 0 && vencimento < hoje;
+    }).reduce((total, despesa) => total + (parseFloat(despesa.Valor) || 0), 0);
+  
+    return total.toFixed(2); // Retorna o total formatado com duas casas decimais
+  };
+  
 
   const handleSubmitDespesa = async (event) => {
     event.preventDefault();
-
-    const id_EmpresaDb = parseInt(userInfo.id_user); // Alterado para userInfo.id_user
-
-    const despesaData = {
-      Valor: valor,
-      Nome: nome,
-      DataExpiracao: dataExpiracao,
-      id_EmpresaDb
-    };
-
     try {
-      const response = await axios.post(`/api/ServerTwo/registrarDespesas`, despesaData, {withCredentials: true})
-      console.log('Dados da despesa:', response);
-      await fetchData(id_EmpresaDb);
+      const despesaData = {
+        Valor: valor,
+        Nome: nome,
+        DataExpiracao: dataExpiracao,
+        Descricao: descricao,
+        id_user: userInfo.id_user,
+      };
+      console.log('Dados da despesa:', despesaData);
+  
+      await axios.post(
+        "/api/ServerOne/tableDespesas",
+        despesaData,
+        { withCredentials: true }
+      );
+      // Após o sucesso, recarregue os dados
+      if (userInfo && userInfo.id_user) {
+        const despesasResponse = await axios.get(
+          `/api/ServerOne/tabledespesas/${userInfo.id_user}`,
+          { withCredentials: true }
+        );
+        setDespesas(despesasResponse.data.InfoTabela);
+      }
       fecharModal();
     } catch (error) {
       console.error("Erro ao registrar despesa", error);
     }
   };
-
+  
   // Modal control
+  const [showModal, setShowModal] = useState(false);
   const abrirModal = () => setShowModal(true);
   const fecharModal = () => setShowModal(false);
-
-// Função para atualizar o estado finalizado para 1
-const UpdateFinalizado1 = async (id) => {
-  const id_EmpresaDb = parseInt(userInfo.id_user); // Alterado para userInfo.id_user
-
-  try {
-    const response = await axios.put(
-      `/api/ServerOne/tableDespesasFinalizado/${id}`,
-      { id_EmpresaDb }, // Se não há dados a enviar, mantenha o corpo vazio
-      { withCredentials: true }
-    );
-
-    if (response.status === 200) {
-      console.log('Despesa atualizada com sucesso');
-      await fetchData(id_EmpresaDb); // Atualize os dados após a atualização
-    } else {
-      console.error('Erro ao atualizar a despesa');
-    }
-  } catch (err) {
-    console.error('Erro ao atualizar a despesa', err);
-  }
-};
-
-// Função para atualizar o estado finalizado para 1
-const UpdateFinalizado0 = async (id) => {
-  const id_EmpresaDb = parseInt(userInfo.id_user); // Alterado para userInfo.id_user
-
-  try {
-    const response = await axios.put(
-      `/api/ServerOne/tableDespesasNaoFinalizado/${id}`,
-      { id_EmpresaDb }, // Se não há dados a enviar, mantenha o corpo vazio
-      { withCredentials: true }
-    );
-
-    if (response.status === 200) {
-      console.log('Despesa atualizada com sucesso');
-      await fetchData(id_EmpresaDb); // Atualize os dados após a atualização
-    } else {
-      console.error('Erro ao atualizar a despesa');
-    }
-  } catch (err) {
-    console.error('Erro ao atualizar a despesa', err);
-  }
-};
 
   return (
     <main className="main-container">
@@ -328,32 +298,25 @@ const UpdateFinalizado0 = async (id) => {
             </tr>
           </thead>
           <tbody>
-          {Despesas.map((despesa) => (
-  <tr key={despesa.id}>
-    <td>{despesa.Nome}</td>
-    <td>R$ {Number(despesa.Valor || 0).toFixed(2)}</td>
-    <td>{despesa.DataExpiracao}</td>
-    <td>
-      <button
-        className={`despesas_opc_btn ${
-          despesa.Finalizado === 1 ? "sim" : "nao"
-        }`}
-        onClick={() => {
-          if (despesa.Finalizado === 0) {
-            UpdateFinalizado1(despesa.id);
-          } else {
-            UpdateFinalizado0(despesa.id);
-          }
-        }}
-      >
-        {despesa.Finalizado === 0
-          ? "Marcar como Sim"
-          : "Marcar como Não"}
-      </button>
-    </td>
-  </tr>
-))}
-
+            {Despesas.map((despesa) => (
+              <tr key={despesa.id}>
+                <td>{despesa.Nome}</td>
+                <td>R$ {Number(despesa.Valor || 0).toFixed(2)}</td>
+                <td>{despesa.DataExpiracao}</td>
+                <td>
+                  <button
+                    className={`despesas_opc_btn ${
+                      despesa.Finalizado === 1 ? "sim" : "nao"
+                    }`}
+                    onClick={() => Finalizado(despesa.id)}
+                  >
+                    {despesa.Finalizado === 0
+                      ? "Marcar como Sim"
+                      : "Marcar como Não"}
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -382,37 +345,33 @@ const UpdateFinalizado0 = async (id) => {
             <div className="HeaderModal">
               <h1>Registrar Despesas</h1>
             </div>
-            <form onSubmit={handleSubmitDespesa}>
+            <form>
               <input
                 type="number"
                 placeholder="Valor"
                 onChange={(e) => setValor(e.target.value)}
-                value={valor}
               />
               <input
                 type="text"
                 placeholder="Nome"
                 onChange={(e) => setNome(e.target.value)}
-                value={nome}
               />
               <input
                 type="date"
                 placeholder="Data de Expiração"
                 onChange={(e) => setDataExpiracao(e.target.value)}
-                value={dataExpiracao}
               />
+              <input
+                type="text"
+                placeholder="Descrição"
+                onChange={(e) => setDescricao(e.target.value)}
+              />
+
               <div className="FooterButton">
-                <button
-                  type="submit"
-                  className="RegisterPr"
-                >
+                <button className="RegisterPr" onClick={handleSubmitDespesa}>
                   Registrar
                 </button>
-                <button
-                  type="button"
-                  className="FecharPr"
-                  onClick={fecharModal}
-                >
+                <button className="FecharPr" onClick={fecharModal}>
                   Fechar
                 </button>
               </div>

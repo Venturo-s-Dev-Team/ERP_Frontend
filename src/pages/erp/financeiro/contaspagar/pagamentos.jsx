@@ -5,6 +5,7 @@ import VenturoImg from "../../../../images/Venturo.png";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import { FaFileExport } from "react-icons/fa";
 
 function Pagamentos() {
   const [showModal, setShowModal] = useState(false);
@@ -87,6 +88,10 @@ function Pagamentos() {
           Excluir
           <FaTrashCan />
         </button>
+        <button className="Button-Menu">
+            Exportar
+            <FaFileExport />
+          </button>
       </div>
 
       <div className="Estoque_List">

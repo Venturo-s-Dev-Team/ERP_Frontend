@@ -1,6 +1,8 @@
 import { Button, Modal, Form } from "react-bootstrap";
 import React, { useState } from "react";
 import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
+import { FaFileExport } from "react-icons/fa";
+
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,  ComposedChart,
   Area,
   Bar,
@@ -110,6 +112,10 @@ function Hist_vendas() {
           <button className="Button-Menu">
             Excluir
             <FaTrashCan />
+          </button>
+          <button className="Button-Menu">
+            Exportar
+            <FaFileExport />
           </button>
         </div>
 

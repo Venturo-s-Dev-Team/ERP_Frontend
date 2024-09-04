@@ -1,6 +1,8 @@
 import { Button, Modal } from "react-bootstrap";
 import React, { useState } from "react";
 import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
+import { FaFileExport } from "react-icons/fa";
+
 
 
 function cad_imposto() {
@@ -40,6 +42,10 @@ function cad_imposto() {
             Excluir
             <FaTrashCan />
           </button>
+          <button className="Button-Menu">
+            Exportar
+            <FaFileExport />
+          </button>
         </div>
 
         <div className="Estoque_List">
@@ -49,7 +55,7 @@ function cad_imposto() {
               <tr>
                 <th>Tipo</th>
                 <th>Estado</th>
-                <th>Alícota</th>
+                <th>Alíquota</th>
               </tr>
             </thead>
           </table>
@@ -100,8 +106,6 @@ function cad_imposto() {
                 <button type="button" onClick={() => removeImposto(imposto.id)} className="btn-remover-produto">Remover</button>
               </div>
             ))}
-
-            <button type="button" onClick={addImposto} className="btn-adicionar-produto">Adicionar Imposto</button>
 
             <div className="FooterButton">
               <button className="RegisterPr">Cadastrar</button>

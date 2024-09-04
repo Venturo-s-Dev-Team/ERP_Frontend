@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
-import "./LogsAdm.css"
+import {jwtDecode} from 'jwt-decode';
+import './LogsAdm.css';
 
 function LogsAdmin() {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ function LogsAdmin() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [pageRange, setPageRange] = useState({ start: 1, end: 5 });
-  const [showMonths, setShowMonths] = useState(false); // Adiciona estado para controlar a visibilidade dos meses
+  const [showMonths, setShowMonths] = useState(false);
   const logsPerPage = 10;
   const pagesToShow = 5;
 
@@ -64,10 +64,12 @@ function LogsAdmin() {
 
   const years = [...new Set(dataLogs.map(log => new Date(log.timestamp).getFullYear()))];
 
-  const months = selectedYear ? [...new Set(dataLogs
-    .filter(log => new Date(log.timestamp).getFullYear() === selectedYear)
-    .map(log => new Date(log.timestamp).getMonth() + 1)
-  )] : [];
+  // Extrair todos os meses únicos para o ano selecionado
+  const months = selectedYear ? 
+    [...new Set(dataLogs
+      .filter(log => new Date(log.timestamp).getFullYear() === selectedYear)
+      .map(log => new Date(log.timestamp).getMonth() + 1)
+    )] : [];
 
   const filteredLogs = dataLogs.filter(log => {
     const logDate = new Date(log.timestamp);
@@ -113,7 +115,6 @@ function LogsAdmin() {
 
   const handleYearClick = (year) => {
     if (year === selectedYear) {
-      // Se o ano já estiver selecionado, desmarque e esconda os meses
       setSelectedYear(null);
       setSelectedMonth(null);
       setShowMonths(false);
@@ -121,8 +122,13 @@ function LogsAdmin() {
       setSelectedYear(year);
       setSelectedMonth(null);
       setCurrentPage(1);
-      setShowMonths(true); // Mostra o seletor de meses ao selecionar um ano
+      setShowMonths(true);
     }
+  };
+
+  const handleMonthClick = (month) => {
+    setSelectedMonth(month);
+    setCurrentPage(1);
   };
 
   return (
@@ -149,11 +155,10 @@ function LogsAdmin() {
             {months.map(month => (
               <button
                 key={month}
-                onClick={() => { setSelectedMonth(month); setCurrentPage(1); }}
+                onClick={() => handleMonthClick(month)}
                 className={month === selectedMonth ? 'selected' : ''}
               >
-                {monthNames[month - 1]}
-
+                {monthNames[month -2]}
               </button>
             ))}
           </div>
@@ -173,7 +178,7 @@ function LogsAdmin() {
                 </tr>
               </thead>
               <tbody>
-                {dataLogs.map(log => (
+                {filteredLogs.map(log => (
                   <tr key={log.id}>
                     <td>{log.id}</td>
                     <td>{log.user_id}</td>

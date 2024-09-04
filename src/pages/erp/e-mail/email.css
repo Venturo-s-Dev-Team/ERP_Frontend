@@ -1,4 +1,4 @@
-.popup-overlay {
+.popup-overlay-email {
     position: fixed;
     top: 0;
     left: 0;
@@ -11,7 +11,7 @@
     z-index: 1000;
   }
   
-  .popup-container {
+  .popup-container-email {
     background: #fff;
     border-radius: 8px;
     width: 600px;
