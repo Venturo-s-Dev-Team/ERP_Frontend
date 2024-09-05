@@ -15,7 +15,6 @@ function Receitas() {
   const [newReceita, setNewReceita] = useState({
     Nome: '',
     Valor: '',
-    id_EmpresaDb: parseInt(userInfo.id_user)
   });
 
   const handleShow = () => setShowModal(true);
@@ -44,19 +43,19 @@ function Receitas() {
 
   // Função para carregar receitas do banco de dados
   useEffect(() => {
-    const fetchReceitas = async (id) => {
-      try {
-        const response = await axios.get(`/api/ServerOne/tablereceitas/${id}`, { withCredentials: true });
-        setReceitas(response.data.InfoTabela);
-      } catch (error) {
-        console.error("Erro ao carregar receitas", error);
-      }
-    };
-
     if (userInfo && userInfo.id_user) {
       fetchReceitas(userInfo.id_user);
     }
   }, [userInfo]);
+
+  const fetchReceitas = async (id) => {
+    try {
+      const response = await axios.get(`/api/ServerOne/tablereceitas/${id}`, { withCredentials: true });
+      setReceitas(response.data.InfoTabela);
+    } catch (error) {
+      console.error("Erro ao carregar receitas", error);
+    }
+  };
 
   // Função para lidar com mudanças nos campos de input
   const handleChange = (e) => {
@@ -65,22 +64,23 @@ function Receitas() {
   };
 
   // Função para registrar uma nova receita
-  const handleRegisterReceita = async (e) => {
-    e.preventDefault();
-    const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
-    try {
-      const response = await axios.post(`/api/ServerTwo/registrarReceitas`, newReceita, {
-        withCredentials: true,
-      });
-
-      alert('Receita registrada com sucesso!');
-      window.location.reload(); // Recarrega a página para atualizar a lista de receitas
-    } catch (error) {
-      console.error("Erro ao registrar receita:", error);
-      alert('Erro ao registrar receita.');
-    }
-  };
-
+const handleRegisterReceita = async (e) => {
+  e.preventDefault();
+  const id_EmpresaDb = parseInt(userInfo.id_user);
+  try {
+    const response = await axios.post(`/api/ServerTwo/registrarReceitas`, {
+      ...newReceita,
+      id_EmpresaDb // Passa o id_EmpresaDb junto com newReceita
+    }, {
+      withCredentials: true,
+    });
+    alert('Receita registrada com sucesso!');
+    await fetchReceitas(userInfo.id_user);
+  } catch (error) {
+    console.error("Erro ao registrar receita:", error);
+    alert('Erro ao registrar receita.');
+  }
+};
   return (
     <main className="main-container">
       <div className="main-title">
@@ -127,56 +127,57 @@ function Receitas() {
       </div>
 
       <Modal
-        style={{
-          position: "fixed",
-          top: "50%",
-          bottom: 0,
-          left: "50%",
-          right: 0,
-          zIndex: 1000,
-          width: "70%",
-          height: "73%",
-          borderRadius: 20,
-          transform: "translate(-50%, -50%)",
-          background: "white",
-          boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
-        }}
-        show={showModal}
-        onHide={handleClose}
-      >
-        <div className="DivModalCont">
-          <div className="HeaderModal">
-            <h1>Registrar Receita</h1>
-          </div>
+  style={{
+    position: "fixed",
+    top: "50%",
+    bottom: 0,
+    left: "50%",
+    right: 0,
+    zIndex: 1000,
+    width: "70%",
+    height: "73%",
+    borderRadius: 20,
+    transform: "translate(-50%, -50%)",
+    background: "white",
+    boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
+  }}
+  show={showModal}
+  onHide={handleClose}
+>
+  <div className="DivModalCont">
+    <div className="HeaderModal">
+      <h1>Registrar Receita</h1>
+    </div>
 
-          <form onSubmit={handleRegisterReceita}>
-            <input
-              type="text"
-              name="Nome"
-              placeholder="Nome"
-              value={newReceita.Nome}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="number"
-              name="Valor"
-              placeholder="Valor por Mês"
-              value={newReceita.Valor}
-              onChange={handleChange}
-              required
-            />
-            <div className="FooterButton">
-              <button className="RegisterPr" type="submit">
-                Registrar
-              </button>
-              <button className="FecharPr" onClick={handleClose}>
-                Fechar
-              </button>
-            </div>
-          </form>
-        </div>
-      </Modal>
+    <form onSubmit={handleRegisterReceita}>
+      <input
+        type="text"
+        name="Nome"
+        placeholder="Nome"
+        value={newReceita.Nome}
+        onChange={handleChange}
+        required
+      />
+      <input
+        type="number"
+        name="Valor"
+        placeholder="Valor por Mês"
+        value={newReceita.Valor}
+        onChange={handleChange}
+        required
+      />
+      <div className="FooterButton">
+        <button className="RegisterPr" type="submit">
+          Registrar
+        </button>
+      </div>
+    </form>
+    
+    <button className="FecharPr" onClick={handleClose}>
+      Fechar
+    </button>
+  </div>
+</Modal>
     </main>
   );
 }
