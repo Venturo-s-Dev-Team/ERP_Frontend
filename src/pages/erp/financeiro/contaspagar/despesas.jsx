@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
-import { FaFileExport } from "react-icons/fa";
+import { FaPenToSquare, FaPlus, FaTrashCan, FaFileExport } from "react-icons/fa6";
+import * as XLSX from 'xlsx'; // Importa a biblioteca xlsx
 
 import {
   PieChart,
@@ -119,25 +119,25 @@ function Despesas() {
     verifyToken();
   }, [navigate]);
 
-    // Carregar dados inicialmente
-    useEffect(() => {
-      if (userInfo && userInfo.id_user) {
-        fetchData(userInfo.id_user);
-      }
-    }, [userInfo]);
+  // Carregar dados inicialmente
+  useEffect(() => {
+    if (userInfo && userInfo.id_user) {
+      fetchData(userInfo.id_user);
+    }
+  }, [userInfo]);
 
- // Função para carregar dados do banco de dados
- const fetchData = async (userId) => {
-  try {
-    const despesasResponse = await axios.get(
-      `/api/ServerOne/tabledespesas/${userId}`,
-      { withCredentials: true }
-    );
-    setDespesas(despesasResponse.data.InfoTabela);
-  } catch (error) {
-    console.error('Erro ao carregar dados', error);
-  }
-};
+  // Função para carregar dados do banco de dados
+  const fetchData = async (userId) => {
+    try {
+      const despesasResponse = await axios.get(
+        `/api/ServerOne/tabledespesas/${userId}`,
+        { withCredentials: true }
+      );
+      setDespesas(despesasResponse.data.InfoTabela);
+    } catch (error) {
+      console.error('Erro ao carregar dados', error);
+    }
+  };
 
   // Calcular total das despesas não finalizadas
   const calcularTotalDespesasNaoFinalizadas = () => {
@@ -192,48 +192,73 @@ function Despesas() {
   const abrirModal = () => setShowModal(true);
   const fecharModal = () => setShowModal(false);
 
-// Função para atualizar o estado finalizado para 1
-const UpdateFinalizado1 = async (id) => {
-  const id_EmpresaDb = parseInt(userInfo.id_user); // Alterado para userInfo.id_user
+  // Função para atualizar o estado finalizado para 1
+  const UpdateFinalizado1 = async (id) => {
+    const id_EmpresaDb = parseInt(userInfo.id_user); // Alterado para userInfo.id_user
 
-  try {
-    const response = await axios.put(
-      `/api/ServerOne/tableDespesasFinalizado/${id}`,
-      { id_EmpresaDb }, // Se não há dados a enviar, mantenha o corpo vazio
-      { withCredentials: true }
-    );
+    try {
+      const response = await axios.put(
+        `/api/ServerOne/tableDespesasFinalizado/${id}`,
+        { id_EmpresaDb }, // Se não há dados a enviar, mantenha o corpo vazio
+        { withCredentials: true }
+      );
 
-    if (response.status === 200) {
-      console.log('Despesa atualizada com sucesso');
-      await fetchData(id_EmpresaDb); // Atualize os dados após a atualização
-    } else {
-      console.error('Erro ao atualizar a despesa');
+      if (response.status === 200) {
+        console.log('Despesa atualizada com sucesso');
+        await fetchData(id_EmpresaDb); // Atualize os dados após a atualização
+      } else {
+        console.error('Erro ao atualizar a despesa');
+      }
+    } catch (err) {
+      console.error('Erro ao atualizar a despesa', err);
     }
-  } catch (err) {
-    console.error('Erro ao atualizar a despesa', err);
-  }
-};
+  };
 
-// Função para atualizar o estado finalizado para 1
-const UpdateFinalizado0 = async (id) => {
-  const id_EmpresaDb = parseInt(userInfo.id_user); // Alterado para userInfo.id_user
+  // Função para atualizar o estado finalizado para 1
+  const UpdateFinalizado0 = async (id) => {
+    const id_EmpresaDb = parseInt(userInfo.id_user); // Alterado para userInfo.id_user
 
-  try {
-    const response = await axios.put(
-      `/api/ServerOne/tableDespesasNaoFinalizado/${id}`,
-      { id_EmpresaDb }, // Se não há dados a enviar, mantenha o corpo vazio
-      { withCredentials: true }
-    );
+    try {
+      const response = await axios.put(
+        `/api/ServerOne/tableDespesasNaoFinalizado/${id}`,
+        { id_EmpresaDb }, // Se não há dados a enviar, mantenha o corpo vazio
+        { withCredentials: true }
+      );
 
-    if (response.status === 200) {
-      console.log('Despesa atualizada com sucesso');
-      await fetchData(id_EmpresaDb); // Atualize os dados após a atualização
-    } else {
-      console.error('Erro ao atualizar a despesa');
+      if (response.status === 200) {
+        console.log('Despesa atualizada com sucesso');
+        await fetchData(id_EmpresaDb); // Atualize os dados após a atualização
+      } else {
+        console.error('Erro ao atualizar a despesa');
+      }
+    } catch (err) {
+      console.error('Erro ao atualizar a despesa', err);
     }
-  } catch (err) {
-    console.error('Erro ao atualizar a despesa', err);
-  }
+  };
+
+  // Função para exportar a tabela de despesas para Excel
+const exportToExcel = () => {
+  // Cria uma cópia dos dados, modificando a coluna 'Finalizado'
+  const modifiedDespesas = Despesas.map((despesa) => ({
+    ...despesa,
+    Finalizado: despesa.Finalizado === 1 ? 'Sim' : 'Não', // Substitui 1 por 'Sim' e 0 por 'Não'
+  }));
+
+  // Cria um novo workbook e uma nova worksheet
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.json_to_sheet(modifiedDespesas, {
+    header: ["Nome", "Valor", "DataExpiracao", "Finalizado"],
+    // Define o formato das células para valores monetários
+    cellStyles: {
+      Valor: { numFmt: 'R$ #,##0.00' },
+    },
+  });
+
+  // Adiciona a worksheet ao workbook
+  XLSX.utils.book_append_sheet(wb, ws, "Despesas");
+
+  // Exporta o workbook como um arquivo Excel
+  XLSX.writeFile(wb, "despesas.xlsx");
 };
 
   return (
@@ -256,6 +281,10 @@ const UpdateFinalizado0 = async (id) => {
         <button className="Button-Menu">
           Excluir
           <FaTrashCan />
+        </button>
+        <button className="Button-Menu" onClick={exportToExcel}>
+          Exportar 
+          <FaFileExport />
         </button>
       </div>
 
@@ -317,7 +346,7 @@ const UpdateFinalizado0 = async (id) => {
 
       {/* Div para tabela com as despesas detalhadas */}
       <div className="Despesas_List">
-        <table>
+        <table id="table-to-export">
           <caption>Registro de Despesas</caption>
           <thead>
             <tr>
@@ -328,32 +357,31 @@ const UpdateFinalizado0 = async (id) => {
             </tr>
           </thead>
           <tbody>
-          {Despesas.map((despesa) => (
-  <tr key={despesa.id}>
-    <td>{despesa.Nome}</td>
-    <td>R$ {Number(despesa.Valor || 0).toFixed(2)}</td>
-    <td>{despesa.DataExpiracao}</td>
-    <td>
-      <button
-        className={`despesas_opc_btn ${
-          despesa.Finalizado === 1 ? "sim" : "nao"
-        }`}
-        onClick={() => {
-          if (despesa.Finalizado === 0) {
-            UpdateFinalizado1(despesa.id);
-          } else {
-            UpdateFinalizado0(despesa.id);
-          }
-        }}
-      >
-        {despesa.Finalizado === 0
-          ? "Marcar como Sim"
-          : "Marcar como Não"}
-      </button>
-    </td>
-  </tr>
-))}
-
+            {Despesas.map((despesa) => (
+              <tr key={despesa.id}>
+                <td>{despesa.Nome}</td>
+                <td>R$ {Number(despesa.Valor || 0).toFixed(2)}</td>
+                <td>{despesa.DataExpiracao}</td>
+                <td>
+                  <button
+                    className={`despesas_opc_btn ${
+                      despesa.Finalizado === 1 ? "sim" : "nao"
+                    }`}
+                    onClick={() => {
+                      if (despesa.Finalizado === 0) {
+                        UpdateFinalizado1(despesa.id);
+                      } else {
+                        UpdateFinalizado0(despesa.id);
+                      }
+                    }}
+                  >
+                    {despesa.Finalizado === 0
+                      ? "Marcar como Sim"
+                      : "Marcar como Não"}
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

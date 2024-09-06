@@ -6,6 +6,7 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { FaFileExport } from "react-icons/fa";
+import * as XLSX from "xlsx"; // Importando a biblioteca xlsx
 
 function Pagamentos() {
   const [showModal, setShowModal] = useState(false);
@@ -19,21 +20,23 @@ function Pagamentos() {
   useEffect(() => {
     const verifyToken = async () => {
       try {
-        const response = await axios.get('/api/ServerTwo/verifyToken', { withCredentials: true });
-        
-        if (typeof response.data.token === 'string') {
+        const response = await axios.get("/api/ServerTwo/verifyToken", {
+          withCredentials: true,
+        });
+
+        if (typeof response.data.token === "string") {
           const decodedToken = jwtDecode(response.data.token);
           setUserInfo(decodedToken);
         } else {
-          console.error('Token não é uma string:', response.data.token);
-          navigate('/login');
+          console.error("Token não é uma string:", response.data.token);
+          navigate("/login");
         }
       } catch (error) {
-        console.error('Token inválido', error);
-        navigate('/login');
+        console.error("Token inválido", error);
+        navigate("/login");
       }
     };
-    
+
     verifyToken();
   }, [navigate]);
 
@@ -41,20 +44,20 @@ function Pagamentos() {
   useEffect(() => {
     const fetchPagaments = async (id) => {
       try {
-        const response = await axios.get(`/api/ServerOne/tablepagamentos/${id}`, { withCredentials: true });
-        // Garantir que a resposta seja um array
+        const response = await axios.get(`/api/ServerOne/tablepagamentos/${id}`, {
+          withCredentials: true,
+        });
         setPagaments(Array.isArray(response.data) ? response.data : []);
       } catch (error) {
         console.error("Erro ao buscar pagamentos:", error);
         setPagaments([]); // Em caso de erro, garantir que pagaments seja um array
       }
-    };   
+    };
 
-    // Só buscar pagamentos se userInfo estiver definido
     if (userInfo && userInfo.id_user) {
       fetchPagaments(userInfo.id_user);
     }
-  }, [userInfo]); // Dependência adicionada para garantir que o efeito seja reexecutado quando userInfo mudar
+  }, [userInfo]);
 
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
@@ -67,6 +70,14 @@ function Pagamentos() {
   const handleCloseInfo = () => {
     setSelectedPagament(null);
     setShowModalInfo(false);
+  };
+
+  // Função para exportar os pagamentos para Excel
+  const exportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(pagaments); // Convertendo os dados de pagamentos para a planilha
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Pagamentos");
+    XLSX.writeFile(workbook, "PagamentosProgramados.xlsx"); // Gerando o arquivo
   };
 
   return (
@@ -88,10 +99,10 @@ function Pagamentos() {
           Excluir
           <FaTrashCan />
         </button>
-        <button className="Button-Menu">
-            Exportar
-            <FaFileExport />
-          </button>
+        <button className="Button-Menu" onClick={exportToExcel}>
+          Exportar
+          <FaFileExport />
+        </button>
       </div>
 
       <div className="Estoque_List">
@@ -181,14 +192,14 @@ function Pagamentos() {
         show={showModalInfo}
         onHide={handleCloseInfo}
       >
-        <div className="DivModalCont" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <div className="DivModalCont" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
           <div className="HeaderModal">
             <h1>Informação do beneficiário</h1>
           </div>
 
           {selectedPagament && (
-            <div className="corpoInfoProduto" style={{ overflowY: 'auto', flex: 1, padding: '20px' }}>
-              <ul style={{ listStyleType: 'none', padding: 0 }}>
+            <div className="corpoInfoProduto" style={{ overflowY: "auto", flex: 1, padding: "20px" }}>
+              <ul style={{ listStyleType: "none", padding: 0 }}>
                 <li>
                   <img src={VenturoImg} alt="Imagem do Produto" className="ImagemInfoProduto" />
                 </li>

@@ -7,7 +7,7 @@ import VenturoImg from "../../../images/Venturo.png";
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-import InputMask from 'react-input-mask';
+import * as XLSX from 'xlsx'; // Adiciona a importação da biblioteca xlsx
 
 function RegistroProduto() {
   const navigate = useNavigate();
@@ -78,7 +78,6 @@ function RegistroProduto() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    // Formata o valor para duas casas decimais
     const formattedValue = name === 'ValorUnitario' ? parseFloat(value).toFixed(2) : value;
     setRegisterProdutos({ ...RegisterProdutos, [name]: formattedValue });
   };
@@ -92,13 +91,11 @@ function RegistroProduto() {
     e.preventDefault();
     const data = new FormData();
 
-    // Adiciona os campos do formulário ao FormData
     Object.keys(RegisterProdutos).forEach(key => {
-      console.log(`Adicionando ${key}:`, RegisterProdutos[key]); // Verifique o que está sendo adicionado
+      console.log(`Adicionando ${key}:`, RegisterProdutos[key]);
       data.append(key, RegisterProdutos[key]);
     });
 
-    // Determina o valor da string 'id' conforme a condição
     const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
 
     try {
@@ -108,13 +105,20 @@ function RegistroProduto() {
         }
       });
 
-      // Exibe o alerta e verifica se o usuário clicou em "OK"
       alert('Informações enviadas com sucesso!');
-      window.location.reload(); // Recarrega a página
+      window.location.reload();
     } catch (error) {
       console.error('Erro ao enviar formulário:', error);
       alert('Erro ao enviar formulário.');
     }
+  };
+
+  // Função para exportar para Excel
+  const exportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(ProductsEstoque); // Converte os dados do estoque para um worksheet
+    const workbook = XLSX.utils.book_new(); // Cria uma nova pasta de trabalho
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Produtos"); // Adiciona a planilha
+    XLSX.writeFile(workbook, "produtos_estoque.xlsx"); // Gera o arquivo Excel
   };
 
   return (
@@ -137,14 +141,14 @@ function RegistroProduto() {
             Excluir
             <FaTrashCan />
           </button>
-          <button className="Button-Menu">
+          <button className="Button-Menu" onClick={exportToExcel}> {/* Função exportToExcel aqui */}
             Exportar
             <FaFileExport />
           </button>
         </div>
 
         <div className="Estoque_List">
-          <table>
+          <table id="table-to-export">
             <caption>Registro de Produtos</caption>
             <thead>
               <tr>
@@ -200,13 +204,13 @@ function RegistroProduto() {
             <input type="text" name="Fornecedor" placeholder="Fornecedor" onChange={handleChange} />
             <input type="number" name="Quantidade" placeholder="Quantidade" required onChange={handleChange} />
             <input
-  type="number"
-  name="ValorUnitario"
-  placeholder="Preço por Unidade"
-  value={RegisterProdutos.ValorUnitario}
-  onChange={handleChange}
-  required
-/>
+              type="number"
+              name="ValorUnitario"
+              placeholder="Preço por Unidade"
+              value={RegisterProdutos.ValorUnitario}
+              onChange={handleChange}
+              required
+            />
             <input type="text" name="Tamanho" placeholder="Tamanho" required onChange={handleChange} />
             <input type="file" name="Imagem" placeholder="Imagem do produto" onChange={handleFileChange} />
             <div className="FooterButton">
@@ -236,45 +240,17 @@ function RegistroProduto() {
         show={showModalInfo}
         onHide={handleCloseInfo}
       >
-        <div className="DivModalCont" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <div className="DivModalCont">
           <div className="HeaderModal">
-            <h1>Informação do Produto</h1>
+            <img className="LogoTable" src={VenturoImg} alt="Logo Venturo" />
           </div>
-
-          {selectedProduct && (
-            <div className="corpoInfoProduto" style={{ overflowY: 'auto', flex: 1, padding: '20px' }}>
-              <ul style={{ listStyleType: 'none', padding: 0 }}>
-                <li>
-                  {!selectedProduct.Imagem ? (
-                    <img src={VenturoImg} alt="Imagem do Produto" className="ImagemInfoProduto" />
-                  ) : (
-                    <img src={`/api/ServerOne/uploads/ProdutosIMG/${selectedProduct.Imagem}`} alt="Imagem do produto" className="ImagemInfoProduto" style={{width: 50, height: 50}} />
-                  )}
-                </li>
-                <li>
-                  <strong>Nome:</strong> {selectedProduct.Nome}
-                </li>
-                <li>
-                  <strong>Código:</strong> {selectedProduct.Codigo}
-                </li>
-                <li>
-                  <strong>Quantidade:</strong> {selectedProduct.Quantidade}
-                </li>
-                <li>
-                  <strong>Valor Unitário:</strong> R$ {selectedProduct.ValorUnitario}
-                </li>
-                <li>
-                  <strong>Fornecedor:</strong> {selectedProduct.Fornecedor}
-                </li>
-                <li>
-                  <strong>Tamanho:</strong> {selectedProduct.Tamanho}
-                </li>
-              </ul>
-            </div>
-          )}
-
-          <div className="FooterButton">
-            <button className="FecharPr" onClick={handleCloseInfo}>Fechar</button>
+          <div className="FormModal">
+            <h1>Nome: {selectedProduct && selectedProduct.Nome}</h1>
+            <h3>Fornecedor: {selectedProduct && selectedProduct.Fornecedor}</h3>
+            <h3>Preço: {selectedProduct && selectedProduct.ValorUnitario}</h3>
+            <h3>Quantidade: {selectedProduct && selectedProduct.Quantidade}</h3>
+            <h3>Tamanho: {selectedProduct && selectedProduct.Tamanho}</h3>
+            <button className="ButtonBack" onClick={handleCloseInfo}>Fechar</button>
           </div>
         </div>
       </Modal>

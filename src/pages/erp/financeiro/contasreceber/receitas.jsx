@@ -5,7 +5,7 @@ import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { FaFileExport } from "react-icons/fa";
-
+import * as XLSX from "xlsx";
 
 function Receitas() {
   const navigate = useNavigate();
@@ -81,6 +81,16 @@ function Receitas() {
     }
   };
 
+  // Função para exportar dados para Excel
+  const exportToExcel = () => {
+    const ws = XLSX.utils.json_to_sheet(receitas); // Converte os dados de receitas em uma planilha
+    const wb = XLSX.utils.book_new(); // Cria um novo livro de trabalho
+    XLSX.utils.book_append_sheet(wb, ws, "Receitas"); // Adiciona a planilha ao livro
+
+    // Gera o arquivo Excel e inicia o download
+    XLSX.writeFile(wb, `Receitas_${new Date().toLocaleDateString()}.xlsx`);
+  };
+
   return (
     <main className="main-container">
       <div className="main-title">
@@ -100,7 +110,7 @@ function Receitas() {
           Excluir
           <FaTrashCan />
         </button>
-        <button className="Button-Menu">
+        <button className="Button-Menu" onClick={exportToExcel}>
             Exportar
             <FaFileExport />
           </button>

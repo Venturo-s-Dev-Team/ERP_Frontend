@@ -90,7 +90,7 @@ function cad_imposto() {
 
           <form>
             <input type="text" placeholder="Estado" />
-            <input type="number" placeholder="Alícota" />
+            <input type="number" placeholder="Alíquota" />
             {impostos.map(imposto => (
               <div key={imposto.id} style={{ marginBottom: '10px' }}>
                 <select required className="select-preco-final">
