@@ -64,23 +64,21 @@ function Receitas() {
   };
 
   // Função para registrar uma nova receita
-const handleRegisterReceita = async (e) => {
-  e.preventDefault();
-  const id_EmpresaDb = parseInt(userInfo.id_user);
-  try {
-    const response = await axios.post(`/api/ServerTwo/registrarReceitas`, {
-      ...newReceita,
-      id_EmpresaDb // Passa o id_EmpresaDb junto com newReceita
-    }, {
-      withCredentials: true,
-    });
-    alert('Receita registrada com sucesso!');
-    await fetchReceitas(userInfo.id_user);
-  } catch (error) {
-    console.error("Erro ao registrar receita:", error);
-    alert('Erro ao registrar receita.');
-  }
-};
+  const handleRegisterReceita = async (e) => {
+    e.preventDefault();
+    const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
+    try {
+      const response = await axios.post(`/api/ServerTwo/registrarReceitas`, newReceita, {
+        withCredentials: true,
+      });
+
+      alert('Receita registrada com sucesso!');
+      window.location.reload(); // Recarrega a página para atualizar a lista de receitas
+    } catch (error) {
+      console.error("Erro ao registrar receita:", error);
+      alert('Erro ao registrar receita.');
+    }
+  };
 
   // Função para exportar dados para Excel
   const exportToExcel = () => {
@@ -91,6 +89,10 @@ const handleRegisterReceita = async (e) => {
     // Gera o arquivo Excel e inicia o download
     XLSX.writeFile(wb, `Receitas_${new Date().toLocaleDateString()}.xlsx`);
   };
+
+  // Função para calcular o total de receitas
+  const totalReceitas = receitas.reduce((acc, receita) => acc + Number(receita.Valor), 0);
+
   return (
     <main className="main-container">
       <div className="main-title">
@@ -111,9 +113,16 @@ const handleRegisterReceita = async (e) => {
           <FaTrashCan />
         </button>
         <button className="Button-Menu" onClick={exportToExcel}>
-            Exportar
-            <FaFileExport />
-          </button>
+          Exportar
+          <FaFileExport />
+        </button>
+      </div>
+
+      <div className="box_fluxo">
+        <div className="saldo1-box">
+          <h3>Total de receitas acumuladas</h3>
+          <h1>R$ {totalReceitas.toFixed(2)}</h1> 
+        </div>
       </div>
 
       <div className="Despesas_List">
@@ -137,57 +146,57 @@ const handleRegisterReceita = async (e) => {
       </div>
 
       <Modal
-  style={{
-    position: "fixed",
-    top: "50%",
-    bottom: 0,
-    left: "50%",
-    right: 0,
-    zIndex: 1000,
-    width: "70%",
-    height: "73%",
-    borderRadius: 20,
-    transform: "translate(-50%, -50%)",
-    background: "white",
-    boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
-  }}
-  show={showModal}
-  onHide={handleClose}
->
-  <div className="DivModalCont">
-    <div className="HeaderModal">
-      <h1>Registrar Receita</h1>
-    </div>
+        style={{
+          position: "fixed",
+          top: "50%",
+          bottom: 0,
+          left: "50%",
+          right: 0,
+          zIndex: 1000,
+          width: "70%",
+          height: "73%",
+          borderRadius: 20,
+          transform: "translate(-50%, -50%)",
+          background: "white",
+          boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
+        }}
+        show={showModal}
+        onHide={handleClose}
+      >
+        <div className="DivModalCont">
+          <div className="HeaderModal">
+            <h1>Registrar Receita</h1>
+          </div>
 
-    <form onSubmit={handleRegisterReceita}>
-      <input
-        type="text"
-        name="Nome"
-        placeholder="Nome"
-        value={newReceita.Nome}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="number"
-        name="Valor"
-        placeholder="Valor por Mês"
-        value={newReceita.Valor}
-        onChange={handleChange}
-        required
-      />
-      <div className="FooterButton">
-        <button className="RegisterPr" type="submit">
-          Registrar
-        </button>
-      </div>
-    </form>
-    
-    <button className="FecharPr" onClick={handleClose}>
-      Fechar
-    </button>
-  </div>
-</Modal>
+          <form onSubmit={handleRegisterReceita}>
+            <input
+              type="text"
+              name="Nome"
+              placeholder="Nome"
+              value={newReceita.Nome}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="number"
+              name="Valor"
+              placeholder="Valor por Mês"
+              value={newReceita.Valor}
+              onChange={handleChange}
+              required
+            />
+            <div className="FooterButton">
+              <button className="RegisterPr" type="submit">
+                Registrar
+              </button>
+            </div>
+          </form>
+
+          <button className="FecharPr" onClick={handleClose}>
+            Fechar
+          </button>
+        </div>
+      </Modal>
     </main>
   );
 }

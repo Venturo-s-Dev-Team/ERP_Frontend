@@ -56,32 +56,32 @@ function FluxoCaixa() {
     const saldo = receitasDiaAnterior - despesasDiaAnterior;
     setSaldoInicial(saldo);
   };
+// Função para calcular o saldo disponível para o dia seguinte
+const calcularSaldoDisponivel = () => {
+  const hoje = new Date();
 
-  // Função para calcular o saldo disponível para o dia seguinte
-  const calcularSaldoDisponivel = () => {
-    const hoje = new Date();
-    const receitasHoje = fluxos
-      .filter(fluxo => new Date(fluxo.DataExpiracao).toDateString() === hoje.toDateString() && fluxo.entrada > 0)
-      .reduce((acc, fluxo) => acc + fluxo.entrada, 0);
+  // Certifique-se de que os valores são números antes de realizar a soma
+  const receitasHoje = fluxos
+    .filter(fluxo => new Date(fluxo.DataExpiracao).toDateString() === hoje.toDateString() && fluxo.entrada > 0)
+    .reduce((acc, fluxo) => acc + (Number(fluxo.entrada) || 0), 0);
 
-    const despesasHoje = fluxos
-      .filter(fluxo => new Date(fluxo.DataExpiracao).toDateString() === hoje.toDateString() && fluxo.saida > 0)
-      .reduce((acc, fluxo) => acc + fluxo.saida, 0);
+  const despesasHoje = fluxos
+    .filter(fluxo => new Date(fluxo.DataExpiracao).toDateString() === hoje.toDateString() && fluxo.saida > 0)
+    .reduce((acc, fluxo) => acc + (Number(fluxo.saida) || 0), 0);
 
-    const saldoHoje = receitasHoje - despesasHoje;
-    const saldoTotal = saldoInicial + saldoHoje;
-    setSaldoDisponivel(saldoTotal);
-  };
+  // Evite NaN, garantindo que saldoInicial seja numérico
+  const saldoHoje = receitasHoje - despesasHoje;
+  const saldoTotal = (Number(saldoInicial) || 0) + saldoHoje;
+
+  setSaldoDisponivel(saldoTotal);
+};
 
   // Função para carregar dados do banco de dados
   useEffect(() => {
     const fetchData = async (id) => {
-      console.log(id)
       try {
         const receitasResponse = await axios.get(`/api/ServerOne/tablereceitas/${id}`, { withCredentials: true });
-        console.log('Receitas:', receitasResponse.data);
         const despesasResponse = await axios.get(`/api/ServerOne/tabledespesas/${id}`, { withCredentials: true });
-        console.log('Despesas:', despesasResponse.data);
 
         // Transforme os dados recebidos em um formato adequado para a tabela
         const receitas = receitasResponse.data.InfoTabela.map((receita) => ({
@@ -168,6 +168,46 @@ function FluxoCaixa() {
             ))}
           </tbody>
         </table>
+      </div>
+
+      <div>
+        <Modal
+          style={{
+            position: "fixed",
+            top: "50%",
+            bottom: 0,
+            left: "50%",
+            right: 0,
+            zIndex: 1000,
+            width: "70%",
+            height: "73%",
+            borderRadius: 20,
+            transform: "translate(-50%, -50%)",
+            background: "white",
+            boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
+          }}
+          show={showModal}
+          onHide={fecharModal}
+        >
+          <div>
+            <div className="DivModalDesp">
+              <div className="HeaderModal">
+                <h1>Registrar Fluxo de Caixa</h1>
+              </div>
+              <form>
+                <input type="text" placeholder="Descrição" />
+                <input type="number" placeholder="Entrada" />
+                <input type="number" placeholder="Saída" />
+                <div className="FooterButton">
+                  <button className="RegisterPr">Registrar</button>
+                  <button className="FecharPr" onClick={fecharModal}>
+                    Fechar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </Modal>
       </div>
     </main>
   );
