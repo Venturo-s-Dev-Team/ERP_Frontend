@@ -43,11 +43,17 @@ const SuccessPopup = ({ onClose, onSubmit }) => {
         Senha: senha,
         TypeUser: typeUser,
         Email: generateEmail(nome),
-        id: EmpresaId
+        id: EmpresaId,
+
+        // Info para Logs
+        id_EmpresaDb: userInfo.id_EmpresaDb,
+        userId: userInfo.id_user,
+        userName: userInfo.Nome_user
       });
 
       if (response.status === 200) {
         onSubmit(); // Executa a função para fechar o pop-up
+        window.location.reload()
       }
     } catch (error) {
       setErro('Erro ao cadastrar funcionário. Verifique os dados e tente novamente.');

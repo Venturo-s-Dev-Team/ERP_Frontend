@@ -54,6 +54,7 @@ import Pis from "../pages/erp/financeiro/imposto/pis";
 import Balancete from "../pages/erp/financeiro/planocontas/balancete";
 import Dre from "../pages/erp/financeiro/planocontas/dre";
 import Razao from "../pages/erp/financeiro/planocontas/razao";
+import LanContabil from "../pages/erp/financeiro/planocontas/lancontabil/lancontabil";
 
 // VENDAS
 import Vendas from "../pages/erp/vendas/vendas";
@@ -168,6 +169,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           <Route path="/balancete" element={<Balancete />} />// Apenas userInfo.TypeUser === Admin ou Gestor
           <Route path="/dre" element={<Dre />} />// Apenas userInfo.TypeUser === Admin ou Gestor
           <Route path="/razao" element={<Razao />} />
+          <Route path="/lancontabil" element={<LanContabil/>}/>
           <Route path="*" element={<Navigate to="/error" />} />
           </> )}
           <Route path="/error" element={<Error errorCode={404 || 500} />} />

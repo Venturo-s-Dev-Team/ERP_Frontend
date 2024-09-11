@@ -110,8 +110,8 @@ const calcularSaldoDisponivel = () => {
       }
     };
 
-    if (userInfo && userInfo.id_user) {
-      fetchData(userInfo.id_user);
+    if (userInfo && userInfo.id_EmpresaDb) {
+      fetchData(userInfo.id_EmpresaDb);
     }
   }, [userInfo]);
 

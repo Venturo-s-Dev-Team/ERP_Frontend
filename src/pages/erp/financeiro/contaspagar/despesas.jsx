@@ -121,8 +121,8 @@ function Despesas() {
 
   // Carregar dados inicialmente
   useEffect(() => {
-    if (userInfo && userInfo.id_user) {
-      fetchData(userInfo.id_user);
+    if (userInfo && userInfo.id_EmpresaDb) {
+      fetchData(userInfo.id_EmpresaDb);
     }
   }, [userInfo]);
 
@@ -169,13 +169,15 @@ function Despesas() {
   const handleSubmitDespesa = async (event) => {
     event.preventDefault();
 
-    const id_EmpresaDb = parseInt(userInfo.id_user); // Alterado para userInfo.id_user
+    const id_EmpresaDb = parseInt(userInfo.id_EmpresaDb); // Alterado para userInfo.id_user
 
     const despesaData = {
       Valor: valor,
       Nome: nome,
       DataExpiracao: dataExpiracao,
-      id_EmpresaDb
+      id_EmpresaDb,
+      userId: userInfo.id_user,
+      userName: userInfo.Nome_user
     };
 
     try {

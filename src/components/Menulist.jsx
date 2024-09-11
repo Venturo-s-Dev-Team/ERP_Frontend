@@ -159,6 +159,11 @@ const MenuList = ({ darkTheme }) => {
           label: "Plano conta",
           children: [
             {
+              key: "lancamentocontabil",
+              label: "Lançamento Contábil",
+              onClick: () => handleNavigation("/lancontabil"),
+            },
+            {
               key: "balancete",
               label: "Balancete",
               onClick: () => handleNavigation("/balancete"),

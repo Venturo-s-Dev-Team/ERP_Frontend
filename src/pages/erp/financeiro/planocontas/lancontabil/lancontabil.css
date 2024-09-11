@@ -1,0 +1,213 @@
+* input{
+    width: 150px;
+    height: 27px;
+    background-color: white;
+    border-radius: 10;
+}
+
+* h5{
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.lancData{
+    display: flex;
+    flex-direction: row;
+    height: 70px;
+    width: 100%;
+    align-items: center;
+    gap: 17px;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 3px;
+    margin-top: 15px ;
+    background-color: white;
+    box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+    
+
+}
+
+
+.Movimento{
+    display: flex;
+    flex-direction: column;
+    height: 220px;
+    width: 100%;
+    align-items: flex-start;
+    border: 1px solid black;
+    border-radius: 3px;
+    margin-top: 15px ;
+    justify-content: flex-start;
+    padding-left: 120px;
+    box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+
+}
+
+.Movimento h4{
+display: flex;
+position: relative;
+top: -10px;
+background-color: white;
+width: 120px;
+text-align: center;
+align-items: center;
+justify-content: center;
+border-left: black 1px solid;
+border-right: black 1px solid;
+}
+
+
+.ALINHAR{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 100px;
+    padding: 15px;
+}
+
+.LoteMovi{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 10px;
+    justify-content: flex-start;
+}
+
+.UniNgc{
+    align-items: center;
+    flex-direction: row;
+    width: 300px;
+display: flex;
+gap: 20px;
+
+}
+
+.Lote{
+    align-items: center;
+    flex-direction: row;
+    width: 400px;
+    display: flex;
+    gap: 20px;
+}
+
+.Date{
+    align-items: center;
+    flex-direction: row;
+    width: 400px;
+    display: flex;
+    gap: 20px;
+}
+
+.Documento{
+    display: flex ;
+    flex-direction: row;
+    gap: 20px
+}
+
+.Debit{
+    display: flex;
+    flex-direction: column;
+    height: 220px;
+    width: 100%;
+    align-items: flex-start;
+    border: 1px solid black;
+    border-radius: 3px;
+    margin-top: 15px ;
+    justify-content: flex-start;
+    padding-left: 120px;
+    box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+
+}
+
+.Debit h4{
+    display: flex;
+position: relative;
+top: -10px;
+background-color: white;
+width: 120px;
+text-align: center;
+align-items: center;
+justify-content: center;
+border-left: black 1px solid;
+border-right: black 1px solid;
+}
+
+.Debito{
+    display: flex;
+    flex-direction: row;
+    gap:10px;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.DebitMovi{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-top: 10px;
+    justify-content: flex-start;
+}
+
+.Transacao{
+    display: flex;
+    flex-direction: column;
+    height: 120px;
+    width: 100%;
+    align-items: flex-start;
+    border: 1px solid black;
+    border-radius: 3px;
+    margin-top: 15px ;
+    justify-content: center;
+    padding-left: 120px;
+    box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+
+}
+
+.Transacao h4{
+    display: flex;
+    position: relative;
+    top: -26px;
+    background-color: white;
+    width: 120px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    border-left: black 1px solid;
+    border-right: black 1px solid;
+}
+
+.Empresa{
+    display: flex;
+    flex-direction: row;
+    gap:50px;
+    align-items: flex-start;
+    justify-content: center;
+    
+}
+
+.HistoricoEmp{
+    display: flex;
+    flex-direction: column;
+    height: 200px;
+    margin-bottom: 20px;
+    width: 100%;
+    align-items: flex-start;
+    border: 1px solid black;
+    border-radius: 3px;
+    margin-top: 15px ;
+    justify-content: flex-start;
+    padding-left: 120px;
+    box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+
+}
+
+.ButtonLanContabil{
+    width: 200px;
+    height: 45px;
+    background: linear-gradient(to top, #0056b3, #0a5483);
+    color: white;
+    font-weight: bold;
+    font-size: 17px;
+    border-radius: 7px;
+    border: none
+}

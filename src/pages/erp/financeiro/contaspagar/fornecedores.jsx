@@ -23,7 +23,7 @@ function Fornecedores() {
   return (
     <main className="main-container">
       <div className="main-title">
-        <h3> Forncedores</h3>
+        <h3> Fornecedores</h3>
       </div>
 
       <div className="Estoque_Cad">

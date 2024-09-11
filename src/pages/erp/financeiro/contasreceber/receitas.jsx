@@ -43,8 +43,8 @@ function Receitas() {
 
   // Função para carregar receitas do banco de dados
   useEffect(() => {
-    if (userInfo && userInfo.id_user) {
-      fetchReceitas(userInfo.id_user);
+    if (userInfo && userInfo.id_EmpresaDb) {
+      fetchReceitas(userInfo.id_EmpresaDb);
     }
   }, [userInfo]);
 
@@ -68,12 +68,17 @@ function Receitas() {
     e.preventDefault();
     const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
     try {
-      const response = await axios.post(`/api/ServerTwo/registrarReceitas`, newReceita, {
+      const response = await axios.post(`/api/ServerTwo/registrarReceitas`, 
+      {...newReceita, 
+        id_EmpresaDb: id, 
+        userId: userInfo.id_user,
+        userName: userInfo.Nome_user}, 
+        {
         withCredentials: true,
       });
 
-      alert('Receita registrada com sucesso!');
-      window.location.reload(); // Recarrega a página para atualizar a lista de receitas
+      await fetchReceitas(id)
+      handleClose()
     } catch (error) {
       console.error("Erro ao registrar receita:", error);
       alert('Erro ao registrar receita.');
