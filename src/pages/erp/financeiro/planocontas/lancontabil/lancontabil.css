@@ -1,14 +1,20 @@
-* input{
-    width: 150px;
-    height: 27px;
-    background-color: white;
-    border-radius: 10;
+.lancontabil-form input[type="text"],
+.lancontabil-form input[type="number"],
+.lancontabil-form input[type="date"] {
+  width: 200px;
+  height: 30px;
+  background-color: rgba(231, 231, 231, 0.799);
+  border-radius: 3px;
+  border: none;
 }
 
-* h5{
-    font-size: 15px;
-    font-weight: bold;
+.lancontabil-form h5 {
+  font-size: 17px;
+  font-weight: bold;
 }
+
+
+
 
 .lancData{
     display: flex;
@@ -40,7 +46,7 @@
     justify-content: flex-start;
     padding-left: 120px;
     box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
-
+    margin-bottom: 40px;
 }
 
 .Movimento h4{
@@ -116,6 +122,7 @@ gap: 20px;
     justify-content: flex-start;
     padding-left: 120px;
     box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+    margin-bottom: 40px;
 
 }
 
@@ -136,7 +143,7 @@ border-right: black 1px solid;
     display: flex;
     flex-direction: row;
     gap:10px;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
 }
 
@@ -180,7 +187,7 @@ border-right: black 1px solid;
     display: flex;
     flex-direction: row;
     gap:50px;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     
 }

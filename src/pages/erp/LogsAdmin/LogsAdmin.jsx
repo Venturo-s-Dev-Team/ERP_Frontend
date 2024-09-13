@@ -158,7 +158,7 @@ function LogsAdmin() {
                 onClick={() => handleMonthClick(month)}
                 className={month === selectedMonth ? 'selected' : ''}
               >
-                {monthNames[month -2]}
+                {monthNames[month -1]}
               </button>
             ))}
           </div>

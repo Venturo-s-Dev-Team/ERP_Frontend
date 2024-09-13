@@ -194,12 +194,13 @@ function Receitas() {
               <button className="RegisterPr" type="submit">
                 Registrar
               </button>
+              <button className="FecharPr" onClick={handleClose}>
+            Fechar
+          </button>
             </div>
           </form>
 
-          <button className="FecharPr" onClick={handleClose}>
-            Fechar
-          </button>
+        
         </div>
       </Modal>
     </main>

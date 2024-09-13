@@ -78,10 +78,12 @@ function RegistroProduto() {
     Tamanho: "",
     Imagem: null,
     Estoque: "",
+    autorizados: [], // Inicializando como array
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(`Campo: ${name}, Valor: ${value}`); // Debug para verificar os valores
     const formattedValue =
       name === "ValorUnitario" ? parseFloat(value).toFixed(2) : value;
     setRegisterProdutos({ ...RegisterProdutos, [name]: formattedValue });
@@ -95,18 +97,18 @@ function RegistroProduto() {
   const Registro_Produto = async (e) => {
     e.preventDefault();
     const data = new FormData();
-  
+
     Object.keys(RegisterProdutos).forEach((key) => {
-      console.log(`Adicionando ${key}:`, RegisterProdutos[key]);
+      console.log(`Adicionando ${key}:`, RegisterProdutos[key]); // Debug
       data.append(key, RegisterProdutos[key]);
     });
-  
+
     // Adiciona userId e userName ao FormData
     data.append("userId", userInfo.id_user);
     data.append("userName", userInfo.Nome_user);
-  
+
     const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
-  
+
     try {
       const response = await axios.post(
         `/api/ServerTwo/RegistrarProduto/${id}`,
@@ -117,14 +119,14 @@ function RegistroProduto() {
           },
         }
       );
-  
+
       alert("Informações enviadas com sucesso!");
       window.location.reload();
     } catch (error) {
       console.error("Erro ao enviar formulário:", error);
       alert("Erro ao enviar formulário.");
     }
-  };  
+  };
 
   // Função para exportar para Excel
   const exportToExcel = () => {
@@ -132,6 +134,24 @@ function RegistroProduto() {
     const workbook = XLSX.utils.book_new(); // Cria uma nova pasta de trabalho
     XLSX.utils.book_append_sheet(workbook, worksheet, "Produtos"); // Adiciona a planilha
     XLSX.writeFile(workbook, "produtos_estoque.xlsx"); // Gera o arquivo Excel
+  };
+
+  // Função para adicionar mais inputs para autorizados
+  const addAutorizado = () => {
+    setRegisterProdutos((prevData) => ({
+      ...prevData,
+      autorizados: [...prevData.autorizados, ""], // Adiciona um novo input
+    }));
+  };
+
+  // Função para atualizar o valor de um input específico de autorizados
+  const handleAutorizadoChange = (index, value) => {
+    const newAutorizados = [...RegisterProdutos.autorizados];
+    newAutorizados[index] = value; // Atualiza o valor do autorizado no índice específico
+    setRegisterProdutos((prevData) => ({
+      ...prevData,
+      autorizados: newAutorizados,
+    }));
   };
 
   return (
@@ -155,8 +175,6 @@ function RegistroProduto() {
             <FaTrashCan />
           </button>
           <button className="Button-Menu" onClick={exportToExcel}>
-            {" "}
-            {/* Função exportToExcel aqui */}
             Exportar
             <FaFileExport />
           </button>
@@ -261,53 +279,59 @@ function RegistroProduto() {
               placeholder="Imagem do produto"
               onChange={handleFileChange}
             />
-            <div className="FooterButton">
-              <button className="RegisterPr" type="submit">
-                Registrar
-              </button>
-              <button className="FecharPr" onClick={handleClose}>
-                Fechar
-              </button>
-            </div>
+
+            {/* Inputs dinâmicos de autorizados */}
+            {RegisterProdutos.autorizados.map((autorizado, index) => (
+              <input
+                key={index}
+                type="text"
+                value={autorizado}
+                onChange={(e) => handleAutorizadoChange(index, e.target.value)}
+                placeholder="Autorizado"
+              />
+            ))}
+            <button type="button" onClick={addAutorizado}>
+              Adicionar Autorizado
+            </button>
+
+            <button className="submit" type="submit">
+              Enviar
+            </button>
           </form>
         </div>
       </Modal>
 
-      {/* Modal de Informação do Produto */}
-      <Modal
-        style={{
-          position: "fixed",
-          top: "50%",
-          bottom: 0,
-          left: "50%",
-          right: 0,
-          zIndex: 1000,
-          width: "70%",
-          height: "93%",
-          borderRadius: 10,
-          transform: "translate(-50%, -50%)",
-          background: "#fff",
-          boxShadow: "10px 10px 15px rgba(0, 0, 0, 0.6)",
-        }}
-        show={showModalInfo}
-        onHide={handleCloseInfo}
-      >
-        <div className="DivModalCont">
-          <div className="HeaderModal">
-            <img className="LogoTable" src={VenturoImg} alt="Logo Venturo" />
+      {/* Modal de Informações do Produto */}
+      {selectedProduct && (
+        <Modal
+          style={{
+            position: "fixed",
+            top: "50%",
+            bottom: 0,
+            left: "50%",
+            right: 0,
+            zIndex: 1000,
+            width: "50%",
+            height: "auto",
+            borderRadius: 20,
+            transform: "translate(-50%, -50%)",
+            background: "linear-gradient(135deg, #fff, #fff)",
+            boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
+          }}
+          show={showModalInfo}
+          onHide={handleCloseInfo}
+        >
+          <div className="DivModalCont">
+            <div className="HeaderModal">
+              <h1>Informações do Produto</h1>
+            </div>
+            <h3>Nome: {selectedProduct.Nome}</h3>
+            <p>Fornecedor: {selectedProduct.Fornecedor}</p>
+            <p>Quantidade: {selectedProduct.Quantidade}</p>
+            <p>Valor Unitário: R$ {selectedProduct.ValorUnitario}</p>
           </div>
-          <div className="FormModal">
-            <h1>Nome: {selectedProduct && selectedProduct.Nome}</h1>
-            <h3>Fornecedor: {selectedProduct && selectedProduct.Fornecedor}</h3>
-            <h3>Preço: {selectedProduct && selectedProduct.ValorUnitario}</h3>
-            <h3>Quantidade: {selectedProduct && selectedProduct.Quantidade}</h3>
-            <h3>Tamanho: {selectedProduct && selectedProduct.Tamanho}</h3>
-            <button className="ButtonBack" onClick={handleCloseInfo}>
-              Fechar
-            </button>
-          </div>
-        </div>
-      </Modal>
+        </Modal>
+      )}
     </main>
   );
 }

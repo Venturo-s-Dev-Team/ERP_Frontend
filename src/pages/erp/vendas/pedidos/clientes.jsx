@@ -11,26 +11,6 @@ function Clientes() {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({});
   const [Clientes, setClientes] = useState([]);
-  const [formData, setFormData] = useState({
-    id_EmpresaDb: '',
-    razao_social: '',
-    nome_fantasia: '',
-    logradouro: '',
-    bairro: '',
-    cidade: '',
-    cep: '',
-    uf: '',
-    email: '',
-    telefone: '',
-    ativo: '',
-    ie: '',
-    dia_para_faturamento: '',
-    ramo_atividade: '',
-    funcionario: '',
-    limite: '',
-    site: '',
-    autorizados: '',
-  });
   const [showFuncionarioInput, setShowFuncionarioInput] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [formType, setFormType] = useState("");  // Para determinar qual formulário será exibido
@@ -75,9 +55,32 @@ function Clientes() {
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
 
+  const [formData, setFormData] = useState({
+    id_EmpresaDb: '',
+    cpf_cnpj: '',
+    observacoes: '',
+    razao_social: '',
+    nome_fantasia: '',
+    logradouro: '',
+    bairro: '',
+    cidade: '',
+    cep: '',
+    uf: '',
+    email: '',
+    telefone: '',
+    ativo: '',
+    ie: '',
+    dia_para_faturamento: '',
+    ramo_atividade: '',
+    funcionario: '',
+    limite: '',
+    site: '',
+    autorizados: [], // Inicializando como um array
+  });
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData,[e.target.name]: e.target.value });
+    setFormData({ ...formData, [name]: value });
 
     if (name === "funcionario" && value === "SIM") {
       setShowFuncionarioInput(true);
@@ -105,14 +108,40 @@ function Clientes() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Tratando campos vazios ou inválidos
+    const sanitizedFormData = {
+      ...formData,
+      ativo: formData.ativo || null,
+      autorizados: formData.autorizados.length > 0 ? formData.autorizados : null,
+      bairro: formData.bairro || null,
+      cep: formData.cep || null,
+      cidade: formData.cidade || null,
+      dia_para_faturamento: formData.dia_para_faturamento || null,
+      email: formData.email || null,
+      funcionario: formData.funcionario || null,
+      ie: formData.ie || null,
+      limite: formData.limite || null,
+      logradouro: formData.logradouro || null,
+      nome_fantasia: formData.nome_fantasia || null,
+      razao_social: formData.razao_social || null,
+      ramo_atividade: formData.ramo_atividade || null,
+      site: formData.site || null,
+      telefone: formData.telefone || null,
+      uf: formData.uf || null,
+    };
+
     try {
-      const response = await axios.post('/api/ServerTwo/registerCliente', {formData, id_EmpresaDb: userInfo.id_EmpresaDb}, { withCredentials: true });
+      const response = await axios.post('/api/ServerTwo/registerCliente', 
+        { ...sanitizedFormData, id_EmpresaDb: userInfo.id_EmpresaDb }, 
+        { withCredentials: true }
+      );
       if (response.status === 200) {
         console.log("Cliente registrado com sucesso!");
         fetchDados(userInfo.id_user);  // Atualiza a lista de clientes
         handleClose();  // Fecha o modal após o sucesso
       }
     } catch (error) {
+      alert("Erro ao registrar cliente");
       console.error("Erro ao registrar o cliente:", error);
     }
   };
@@ -189,8 +218,8 @@ function Clientes() {
         <div className="DivModalCont">
           <h1>Selecione o Tipo de Cliente</h1>
           <div className="select-form-type">
-            <button onClick={() => handleFormSelection("CPF")}>Pessoa Física (CPF)</button>
-            <button onClick={() => handleFormSelection("CNPJ")}>Pessoa Jurídica (CNPJ)</button>
+            <button className="input-selecionar-clientes1" onClick={() => handleFormSelection("CPF")}>Pessoa Física (CPF)</button>
+            <button className="input-selecionar-clientes2"  onClick={() => handleFormSelection("CNPJ")}>Pessoa Jurídica (CNPJ)</button>
           </div>
         </div>
       </Modal>
@@ -201,10 +230,10 @@ function Clientes() {
           position: "fixed",
           top: "50%",
           bottom: 0,
-          left: "50%",
+          left: "55%",
           right: 0,
           zIndex: 1000,
-          width: "70%",
+          width: "80%",
           height: "73%",
           borderRadius: 20,
           transform: "translate(-50%, -50%)",
@@ -273,20 +302,23 @@ function Clientes() {
               placeholder="E-mail"
               value={formData.email}
               onChange={handleChange}
+              className="input-email"
               required
             />
-            <input
+            <InputMask
               type="text"
               name="telefone"
               placeholder="Telefone"
+              mask="(99)99999-9999"
               value={formData.telefone}
               onChange={handleChange}
               required
             />
-            <input
+            <InputMask
               type="text"
               name="celular"
               placeholder="Celular"
+              mask="(99)99999-9999"
               value={formData.celular}
               onChange={handleChange}
             />
@@ -339,11 +371,11 @@ function Clientes() {
               onChange={handleChange}
               required
             />
-            <select name="ativo" value={formData.ativo} onChange={handleChange}>
+            <select className="select-clientes" name="ativo" value={formData.ativo} onChange={handleChange}>
               <option value="SIM">Ativo</option>
               <option value="NÃO">Inativo</option>
             </select>
-            <select name="funcionario" value={formData.funcionario} onChange={handleChange}>
+            <select className="select-clientes2" name="funcionario" value={formData.funcionario} onChange={handleChange}>
               <option value="NÃO">Não Autorizado</option>
               <option value="SIM">Autorizado</option>
             </select>
@@ -441,21 +473,22 @@ function Clientes() {
               onChange={handleChange}
               required
             />
-            <input
+            <InputMask
               type="text"
               name="telefone"
               placeholder="Telefone"
+              mask="(99)99999-9999"
               value={formData.telefone}
               onChange={handleChange}
               required
             />
-            <input
+            <InputMask
               type="text"
               name="celular"
               placeholder="Celular"
+              mask="(99)99999-9999"
               value={formData.celular}
               onChange={handleChange}
-              required
             />
             <input
               type="text"
@@ -491,7 +524,7 @@ function Clientes() {
               onChange={handleChange}
               required
             />
-            <select name="ativo" value={formData.ativo} onChange={handleChange}>
+            <select className="select-clientes" name="ativo" value={formData.ativo} onChange={handleChange}>
               <option value="SIM">Ativo</option>
               <option value="NÃO">Inativo</option>
             </select>

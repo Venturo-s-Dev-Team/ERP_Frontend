@@ -16,10 +16,10 @@ function LanContabil() {
         <h1>Registrar Lançamento Contabil</h1>
       </div>
 
-      <form>
-        <div className="lancData">
+      <form className="lancontabil-form">
+      <div className="lancData">
           <h5>Mês/Ano:</h5>
-          <input type="data" />
+          <input type="date" />
 
           <h5>Lançamento:</h5>
           <input type="number" />
@@ -131,7 +131,7 @@ function LanContabil() {
           <div className="DebitMovi">
             <div className="ALINHAR">
               <div className="Empresa">
-                <h5>Empresa:</h5>
+                <h5>Empresa</h5>
               </div>
             </div>
           </div>

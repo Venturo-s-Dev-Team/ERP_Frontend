@@ -408,7 +408,7 @@ const exportToExcel = () => {
           show={showModal}
           onHide={fecharModal}
         >
-          <div className="DivModalDesp">
+          <div className="DivModalCont">
             <div className="HeaderModal">
               <h1>Registrar Despesas</h1>
             </div>

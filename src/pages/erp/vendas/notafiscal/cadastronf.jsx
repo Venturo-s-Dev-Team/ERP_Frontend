@@ -144,9 +144,10 @@ function Cad_nf() {
           <input
             type="text"
             name="cpfCnpj"
+            className="input-cpf"
             value={formData.cpfCnpj}
             onChange={handleInputChange}
-            className="input-cpf"
+            
           />
          </div>
 </div>

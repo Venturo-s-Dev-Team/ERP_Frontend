@@ -54,7 +54,7 @@ function Balancete() {
 <div className="search-bar-container">
         <div className="input-wrapper">
 <FaSearch id="search-icon"/>
-<input placeholder="Type to search..."  
+<input placeholder="Digite aqui..."  
 className="input-razao" 
 value={input} 
 onChange={(e) => handleChange(e.target.value)}/>
