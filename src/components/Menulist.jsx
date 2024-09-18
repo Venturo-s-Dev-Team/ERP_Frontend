@@ -249,11 +249,6 @@ const MenuList = ({ darkTheme }) => {
           onClick: () => handleNavigation("/gestaoVendas"),
         },
         {
-          key: "precofinal",
-          label: "Preço final",
-          onClick: () => handleNavigation("/precofinal"),
-        },
-        {
           key: "historicovendas",
           label: "Histórico de Vendas",
           onClick: () => handleNavigation("/vendas"),

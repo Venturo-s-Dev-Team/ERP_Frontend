@@ -3,9 +3,9 @@
 .lancontabil-form input[type="date"] {
   width: 200px;
   height: 30px;
-  background-color: rgba(231, 231, 231, 0.799);
+  background-color: rgba(255, 255, 255, 0.948);
   border-radius: 3px;
-  border: none;
+  border: 1px solid black;
 }
 
 .lancontabil-form h5 {
