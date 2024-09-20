@@ -38,10 +38,7 @@ function cad_imposto() {
             Editar
             <FaPenToSquare />
           </button>
-          <button className="Button-Menu">
-            Excluir
-            <FaTrashCan />
-          </button>
+     
           <button className="Button-Menu">
             Exportar
             <FaFileExport />

@@ -18,15 +18,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
-const data01 = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 300 },
-  { name: "Group D", value: 200 },
-  { name: "Group E", value: 278 },
-  { name: "Group F", value: 189 },
-];
-
 const data02 = [
   {
     name: "Page A",
@@ -80,6 +71,7 @@ function Despesas() {
   const [dataExpiracao, setDataExpiracao] = useState("");
   const [userInfo, setUserInfo] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [dataGrafico, setDataGrafico] = useState([]);
 
   // Função para alternar o valor da coluna "Finalizado"
   const Finalizado = (id) => {
@@ -133,10 +125,41 @@ function Despesas() {
         `/api/ServerOne/tabledespesas/${userId}`,
         { withCredentials: true }
       );
-      setDespesas(despesasResponse.data.InfoTabela);
+
+      const despesas = despesasResponse.data.InfoTabela;
+      setDespesas(despesas);
+
+      // Total em aberto (somando valores)
+      const totalAbertas = despesas
+        .filter((despesa) => despesa.Finalizado === 0)
+        .reduce((acc, despesa) => acc + parseFloat(despesa.Valor || 0), 0);
+
+      // Total atrasadas (somando valores)
+      const totalAtrasadas = despesas
+        .filter((despesa) => {
+          const dataExpiracao = new Date(despesa.DataExpiracao).getTime();
+          return (
+            despesa.Finalizado === 0 && dataExpiracao < new Date().getTime()
+          );
+        })
+        .reduce((acc, despesa) => acc + parseFloat(despesa.Valor || 0), 0);
+
+      // Atualize o estado do gráfico com valores formatados
+      setDataGrafico([
+        { name: "Contas em Aberto", value: totalAbertas },
+        { name: "Contas Atrasadas", value: totalAtrasadas },
+      ]);
     } catch (error) {
-      console.error('Erro ao carregar dados', error);
+      console.error("Erro ao carregar dados", error);
     }
+  };
+
+  // Função para formatar valores em reais
+  const formatCurrency = (value) => {
+    return value.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
   };
 
   // Calcular total das despesas não finalizadas
@@ -158,10 +181,7 @@ function Despesas() {
 
       // Verifica se a despesa não está finalizada e se está atrasada
       return despesa.Finalizado === 0 && dataExpiracao < dateAtual;
-    }).reduce(
-      (acc, despesa) => acc + (parseFloat(despesa.Valor) || 0),
-      0
-    );
+    }).reduce((acc, despesa) => acc + (parseFloat(despesa.Valor) || 0), 0);
 
     return total.toFixed(2);
   };
@@ -177,12 +197,16 @@ function Despesas() {
       DataExpiracao: dataExpiracao,
       id_EmpresaDb,
       userId: userInfo.id_user,
-      userName: userInfo.Nome_user
+      userName: userInfo.Nome_user,
     };
 
     try {
-      const response = await axios.post(`/api/ServerTwo/registrarDespesas`, despesaData, {withCredentials: true})
-      console.log('Dados da despesa:', response);
+      const response = await axios.post(
+        `/api/ServerTwo/registrarDespesas`,
+        despesaData,
+        { withCredentials: true }
+      );
+      console.log("Dados da despesa:", response);
       await fetchData(id_EmpresaDb);
       fecharModal();
     } catch (error) {
@@ -206,13 +230,13 @@ function Despesas() {
       );
 
       if (response.status === 200) {
-        console.log('Despesa atualizada com sucesso');
+        console.log("Despesa atualizada com sucesso");
         await fetchData(id_EmpresaDb); // Atualize os dados após a atualização
       } else {
-        console.error('Erro ao atualizar a despesa');
+        console.error("Erro ao atualizar a despesa");
       }
     } catch (err) {
-      console.error('Erro ao atualizar a despesa', err);
+      console.error("Erro ao atualizar a despesa", err);
     }
   };
 
@@ -228,40 +252,40 @@ function Despesas() {
       );
 
       if (response.status === 200) {
-        console.log('Despesa atualizada com sucesso');
+        console.log("Despesa atualizada com sucesso");
         await fetchData(id_EmpresaDb); // Atualize os dados após a atualização
       } else {
-        console.error('Erro ao atualizar a despesa');
+        console.error("Erro ao atualizar a despesa");
       }
     } catch (err) {
-      console.error('Erro ao atualizar a despesa', err);
+      console.error("Erro ao atualizar a despesa", err);
     }
   };
 
   // Função para exportar a tabela de despesas para Excel
-const exportToExcel = () => {
-  // Cria uma cópia dos dados, modificando a coluna 'Finalizado'
-  const modifiedDespesas = Despesas.map((despesa) => ({
-    ...despesa,
-    Finalizado: despesa.Finalizado === 1 ? 'Sim' : 'Não', // Substitui 1 por 'Sim' e 0 por 'Não'
-  }));
+  const exportToExcel = () => {
+    // Cria uma cópia dos dados, modificando a coluna 'Finalizado'
+    const modifiedDespesas = Despesas.map((despesa) => ({
+      ...despesa,
+      Finalizado: despesa.Finalizado === 1 ? "Sim" : "Não", // Substitui 1 por 'Sim' e 0 por 'Não'
+    }));
 
-  // Cria um novo workbook e uma nova worksheet
-  const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.json_to_sheet(modifiedDespesas, {
-    header: ["Nome", "Valor", "DataExpiracao", "Finalizado"],
-    // Define o formato das células para valores monetários
-    cellStyles: {
-      Valor: { numFmt: 'R$ #,##0.00' },
-    },
-  });
+    // Cria um novo workbook e uma nova worksheet
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(modifiedDespesas, {
+      header: ["Nome", "Valor", "DataExpiracao", "Finalizado"],
+      // Define o formato das células para valores monetários
+      cellStyles: {
+        Valor: { numFmt: "R$ #,##0.00" },
+      },
+    });
 
-  // Adiciona a worksheet ao workbook
-  XLSX.utils.book_append_sheet(wb, ws, "Despesas");
+    // Adiciona a worksheet ao workbook
+    XLSX.utils.book_append_sheet(wb, ws, "Despesas");
 
-  // Exporta o workbook como um arquivo Excel
-  XLSX.writeFile(wb, "despesas.xlsx");
-};
+    // Exporta o workbook como um arquivo Excel
+    XLSX.writeFile(wb, "despesas.xlsx");
+  };
 
   return (
     <main className="main-container">
@@ -280,12 +304,9 @@ const exportToExcel = () => {
           Editar
           <FaPenToSquare />
         </button>
-        <button className="Button-Menu">
-          Excluir
-          <FaTrashCan />
-        </button>
+
         <button className="Button-Menu" onClick={exportToExcel}>
-          Exportar 
+          Exportar
           <FaFileExport />
         </button>
       </div>
@@ -301,7 +322,6 @@ const exportToExcel = () => {
           <h1>R$ {calcularTotalDespesasAtrasadas()}</h1>
         </div>
       </div>
-
       {/* Gráficos representativos */}
       <div className="gráficos">
         <div className="gráfico1">
@@ -309,14 +329,15 @@ const exportToExcel = () => {
             <Pie
               dataKey="value"
               isAnimationActive={false}
-              data={data01}
+              data={dataGrafico}
               cx="50%"
               cy="50%"
               outerRadius={80}
               fill="#02416D"
-              label
+              label={({ value }) => formatCurrency(value)} // Formata os valores no gráfico
               className="pie1"
             />
+
             <Tooltip />
           </PieChart>
           <h4 className="legenda_despesas1">Gráfico representativo</h4>
@@ -432,10 +453,7 @@ const exportToExcel = () => {
                 value={dataExpiracao}
               />
               <div className="FooterButton">
-                <button
-                  type="submit"
-                  className="RegisterPr"
-                >
+                <button type="submit" className="RegisterPr">
                   Registrar
                 </button>
                 <button

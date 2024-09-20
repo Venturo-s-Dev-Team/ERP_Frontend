@@ -66,28 +66,70 @@ function Cad_nf() {
     const doc = new jsPDF('p', 'mm', 'a4');
   
     const img = new Image();
-    img.src = '/src/images/Venturo.png';
+    img.src = '../../../../../src/images/Venturo.png'; // Substitua pelo caminho correto da imagem do logotipo
   
     img.onload = () => {
-      doc.addImage(img, 'PNG', 10, 10, 50, 30);
-  
       // Cabeçalho
-      doc.setFontSize(12);
-      doc.text('NOTA FISCAL', 105, 10, { align: 'center' });
-      
-      doc.setFontSize(10);
-      doc.text(`Razão Social: ${formData.razaoSocial}`, 10, 20);
-      doc.text(`CPF/CNPJ: ${formData.cpfCnpj}`, 10, 25);
-      doc.text(`Endereço: ${formData.endereco.logradouro}, ${formData.endereco.numero}, ${formData.endereco.complemento}`, 10, 30);
-      doc.text(`Cidade: ${formData.endereco.cidade} - ${formData.endereco.estado}`, 10, 35);
-      
-      // Produtos
-      doc.text('Produtos:', 10, 45);
       autoTable(doc, {
-        startY: 50,
+        startY: 10,
+        head: [['', 'NOTA FISCAL']], // Cabeçalho principal
+        body: [
+          [
+            {
+              content: () => doc.addImage(img, 'PNG', doc.autoTable.previous.finalX, doc.autoTable.previous.finalY, 30, 30),
+              styles: { valign: 'middle', halign: 'left' },
+            },
+            {
+              content: 'NOTA FISCAL',
+              styles: { fontSize: 16, valign: 'middle', halign: 'center' },
+            },
+          ],
+        ],
+        theme: 'plain', // Sem bordas
+        styles: {
+          halign: 'center',
+          fillColor: [179, 179, 179],  // Cor de fundo do cabeçalho
+          textColor: [0, 0, 0],  // Cor do texto
+        },
+      });
+  
+      // Informações da empresa e cliente
+      autoTable(doc, {
+        startY: doc.autoTable.previous.finalY + 10,
+        head: [['Razão Social', 'CPF/CNPJ', 'Endereço', 'Cidade/Estado']],
+        body: [
+          [
+            formData.razaoSocial || '-',
+            formData.cpfCnpj || '-',
+            `${formData.endereco.logradouro}, ${formData.endereco.numero}, ${formData.endereco.complemento}` || '-',
+            `${formData.endereco.cidade} - ${formData.endereco.estado}` || '-',
+          ],
+        ],
+        styles: {
+          fillColor: [255, 255, 255],
+          textColor: [0, 0, 0],
+          fontSize: 10,
+          halign: 'left',
+        },
+      });
+  
+      // Produtos - Personalizar a tabela com cores
+      autoTable(doc, {
+        startY: doc.autoTable.previous.finalY + 10,
         head: [['Produto', 'Preço']],
         body: formData.produtos.map(produto => [produto.nome, `R$ ${parseFloat(produto.preco).toFixed(2)}`]),
         theme: 'grid',
+        styles: {
+          halign: 'center',
+          fillColor: [179, 179, 179],  // Cor de fundo cinza claro
+          textColor: [0, 0, 0],  // Texto preto
+        },
+        headStyles: {
+          fillColor: [0, 0, 0],  // Fundo preto no cabeçalho
+          textColor: [255, 255, 255],  // Texto branco no cabeçalho
+          fontSize: 10,  // Tamanho da fonte no cabeçalho
+        },
+        alternateRowStyles: { fillColor: [224, 224, 224] },  // Alternar cor nas linhas
       });
   
       // Resumo de valores
@@ -103,6 +145,17 @@ function Cad_nf() {
           ['Preço Final', `R$ ${parseFloat(formData.precoFinal).toFixed(2)}`],
         ],
         theme: 'grid',
+        styles: {
+          halign: 'right',
+          fillColor: [179, 179, 179],  // Mesma cor de fundo cinza claro
+          textColor: [0, 0, 0],  // Texto preto
+        },
+        headStyles: {
+          fillColor: [0, 0, 0],  // Cabeçalho preto
+          textColor: [255, 255, 255],  // Texto branco
+          fontSize: 10,
+        },
+        alternateRowStyles: { fillColor: [224, 224, 224] },
       });
   
       // Rodapé
@@ -112,7 +165,7 @@ function Cad_nf() {
       doc.save('nota_fiscal.pdf');
     };
   };
-
+    
   const handleSubmit = (e) => {
     e.preventDefault();
     calculateValues();
@@ -127,8 +180,10 @@ function Cad_nf() {
       </div>
       
       <form onSubmit={handleSubmit} className="formulario">
+
         <div className="emitente">
           <h5 className="mini-titulo-nf"> Emitente </h5>
+          <div className='emitente-novo'>
          <div className="razao-social">
           <label className="letras-nf">Razão Social:</label>
           <input
@@ -139,6 +194,7 @@ function Cad_nf() {
             className="input-rs"
           />
         </div>
+
         <div className="cpf">
           <label className="letras-nf">CPF/CNPJ:</label>
           <input
@@ -150,9 +206,11 @@ function Cad_nf() {
             
           />
          </div>
+         </div>
 </div>
 <div className="endereço">
         <h5 className="mini-titulo-nf">Endereço</h5>
+        <div className='endereço-novo1'>
         <div className="logradouro">
           <label>Logradouro:</label>
           <input
@@ -183,6 +241,8 @@ function Cad_nf() {
             className="input-complemento"
           />
         </div>
+        </div>
+        <div className='endereço-novo2'>
         <div className="cidade">
           <label>Cidade:</label>
           <input
@@ -219,11 +279,13 @@ function Cad_nf() {
           </select>
         </div>
         </div>
+        </div>
 
 <div className="produto-geral">
 <h5 className="mini-titulo-nf">Venda</h5>
-       
 
+<div className='produto-novo'>
+  
         <div className="frete">
           <label>Frete:</label>
           <input
@@ -258,11 +320,55 @@ function Cad_nf() {
             className="input-código"
           />
           </div>
+          </div>
+          {formData.produtos.map((produto, index) => (
+    <div className="produto" key={index}>
+      
+<div className='produto-btn-novo'>
+      <div>
+        <label>Produto:</label>
+        <input
+          type="text"
+          name="nome"
+          value={produto.nome}
+          onChange={(e) => handleProdutoChange(index, e)}
+          className="input-produto"
+        />
+      </div>
+
+      <div className="preco">
+        <label>Preço:</label>
+        <input
+          type="number"
+          name="preco"
+          value={produto.preco}
+          onChange={(e) => handleProdutoChange(index, e)}
+          className="input-preco"
+        />
+      </div>
+
+      <div className="btn-div">
+        <button type="button" className="btn-remover-produto" onClick={() => removeProduto(index)}>
+          Remover Produto
+        </button>
+      </div>
+      
+</div>
+    </div>
+  ))}
+
+<div className="btn-adicionar-container">
+  <button type="button" className="btn-adicionar-produto" onClick={addProduto}>
+    Adicionar Produto <FaPlus />
+  </button>
+</div>
              </div>
 
 
 <div className="impostos">
 <h5 className="mini-titulo-nf-especial">Cálculo de Impostos</h5>
+
+<div className='impostos-novo'>
         <div className="icms">
           <label>ICMS (18%):</label>
           <input type="number" name="icms" value={formData.icms} readOnly className="input-icms"/>
@@ -272,10 +378,12 @@ function Cad_nf() {
           <label>IPI (5%):</label>
           <input className="input-ipi" type="number" name="ipi" value={formData.ipi} readOnly />
         </div>
+        </div>
 </div>
 
 <div className="resumo">
 <h5 className="mini-titulo-nf-especial">Resumo de Preços</h5>
+<div className='resumo-novo'>
         <div className="preco-bruto">
           <label>Preço Bruto:</label>
           <input className="input-preco-bruto" type="number" name="precoBruto" value={formData.precoBruto} readOnly />
@@ -284,6 +392,7 @@ function Cad_nf() {
           <label>Preço Final:</label>
           <input className="input-preco-final" type="number" name="precoFinal" value={formData.precoFinal} readOnly />
         </div>  </div>
+        </div>
 
         <button className="emitir" type="submit">Emitir Nota Fiscal</button>
       </form>

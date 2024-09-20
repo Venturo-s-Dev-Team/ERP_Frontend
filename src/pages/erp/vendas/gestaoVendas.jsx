@@ -5,6 +5,7 @@ import {
   FaPlus,
   FaTrashCan,
   FaFileExport,
+  FaTrash,
 } from "react-icons/fa6";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +22,7 @@ const GestaoVendas = () => {
   const [selectedVenda, setSelectedVenda] = useState(null);
   const [newVenda, setNewVenda] = useState({
     razaoSocial: "",
-    produto: "",
+    produtos: [],
     quantidade: "",
     desconto: "",
     precoFinal: "",
@@ -69,7 +70,7 @@ const GestaoVendas = () => {
 
   const fetchVendas = async (id) => {
     try {
-      const response = await axios.get(`/api/ServerOne/tableVendas/${id}`, {
+      const response = await axios.get(`/api/ServerOne/tableVenda/${id}`, {
         withCredentials: true,
       });
       setVendas(response.data.InfoTabela);
@@ -82,6 +83,24 @@ const GestaoVendas = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setNewVenda({ ...newVenda, [name]: value });
+  };
+
+  // Função para lidar com mudanças nos produtos
+  const handleProductChange = (index, value) => {
+    const produtos = [...newVenda.produtos];
+    produtos[index] = value; // Atualiza o produto específico
+    setNewVenda({ ...newVenda, produtos });
+  };
+
+  // Função para adicionar um novo produto
+  const addProductInput = () => {
+    setNewVenda({ ...newVenda, produtos: [...newVenda.produtos, ""] });
+  };
+
+  // Função para remover um produto
+  const removeProductInput = (index) => {
+    const produtos = newVenda.produtos.filter((_, i) => i !== index);
+    setNewVenda({ ...newVenda, produtos });
   };
 
   // Função para registrar uma nova venda
@@ -116,6 +135,7 @@ const GestaoVendas = () => {
     XLSX.writeFile(wb, `venda_${new Date().toLocaleDateString()}.xlsx`);
   };
 
+  
   return (
     <main className="main-container">
       <div className="main-title">
@@ -131,10 +151,7 @@ const GestaoVendas = () => {
           Editar
           <FaPenToSquare />
         </button>
-        <button className="Button-Menu">
-          Excluir
-          <FaTrashCan />
-        </button>
+    
         <button className="Button-Menu" onClick={exportToExcel}>
           Exportar
           <FaFileExport />
@@ -146,27 +163,18 @@ const GestaoVendas = () => {
           <caption>Registro de Pedidos</caption>
           <thead>
             <tr>
+              <th>Id</th>
               <th>Razão Social</th>
-              <th>Produto</th>
-              <th>Quantidade</th>
-              <th>Desconto</th>
               <th>Preço Final</th>
-              <th>Forma de Pagamento</th>
-              <th>Garantia</th>
-              <th>Vendedor</th>
+              <th>Info.</th>
             </tr>
           </thead>
           <tbody>
             {vendas.map((venda) => (
               <tr key={venda.id}>
+                <td>{venda.id}</td>
                 <td>{venda.nome_cliente}</td>
-                <td>{venda.produto}</td>
-                <td>{venda.quantidade}</td>
-                <td>{venda.desconto}</td>
                 <td>{venda.total}</td>
-                <td>{venda.forma_pagamento}</td>
-                <td>{venda.garantia}</td>
-                <td>{venda.vendedor}</td>
                 <td>
                   <button
                     className="btn-ver-mais"
@@ -211,11 +219,13 @@ const GestaoVendas = () => {
                 Nome da Empresa: {selectedVenda.razaoSocial}
               </h4>
               <div className="textos-modal">
-                <p>Código da Venda: {selectedVenda.codigo}</p>
-                <p>Descrição: {selectedVenda.descricao}</p>
-                <p>Preço: {selectedVenda.preco}</p>
-                <p>Preço Bruto: {selectedVenda.precoBruto}</p>
-                <p>Preço Final: {selectedVenda.precoFinal}</p>
+                <p>Código da Venda: {selectedVenda.id}</p>
+                <p>Quantidade: {selectedVenda.quantidade}</p>
+                <p>Desconto: {selectedVenda.desconto}</p>
+                <p>Vendedor: {selectedVenda.vendedor}</p>
+                <p>Cliente: {selectedVenda.cliente}</p>
+                <p>Preço Final: {selectedVenda.total}</p>
+                <p>Tipo do Pagamento: {selectedVenda.tipoPagamento}</p>
               </div>
             </div>
           ) : (
@@ -239,7 +249,7 @@ const GestaoVendas = () => {
           position: "fixed",
           top: "50%",
           bottom: 0,
-          left: "50%",
+          left: "55%",
           right: 0,
           zIndex: 1000,
           width: "80%",
@@ -253,8 +263,8 @@ const GestaoVendas = () => {
         onHide={handleCloseGestao}
       >
 
-<div className="DivModalCont">
-            <h1>Registrar Cliente (CPF)</h1>
+<div className="DivModalCont2">
+            <h1>Registrar Pedido</h1>
             <form >
             <input
             placeholder="Razão Social"
@@ -264,111 +274,91 @@ const GestaoVendas = () => {
                   onChange={handleChange}
                   required
                 />
-              </form>
-              </div>
-        <div style={{ padding: 20 }}>
-          <div className="formulario">
-            {/* Emitente */}
-            <div className="emitente">
-              <h5 className="mini-titulo-nf"> Emitente </h5>
-
-              {/* Emitente - razão social */}
-              <div className="razao-social">
-                <label className="letras-nf">Razão Social:</label>
+                 
                 <input
-                  className="input-nf"
-                  type="text"
-                  name="razaoSocial"
-                  value={newVenda.razaoSocial}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              {/* Produto */}
-              <div className="produto">
-                <label className="letras-nf">Produto:</label>
-                <input
-                  className="input-nf"
-                  type="text"
-                  name="produto"
-                  value={newVenda.produto}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              {/* Quantidade */}
-              <div className="quantidade">
-                <label className="letras-nf">Quantidade:</label>
-                <input
-                  className="input-nf"
+            placeholder="Quantidade"
                   type="number"
                   name="quantidade"
                   value={newVenda.quantidade}
                   onChange={handleChange}
                   required
                 />
-              </div>
-
-              {/* Desconto */}
-              <div className="desconto">
-                <label className="letras-nf">Desconto:</label>
-                <input
-                  className="input-nf"
+                 <input
+            placeholder="Desconto"
                   type="number"
                   name="desconto"
                   value={newVenda.desconto}
                   onChange={handleChange}
                   required
-                />
-              </div>
-
-              {/* Preço Final */}
-              <div className="preco-final">
-                <label className="letras-nf">Preço Final:</label>
+                /> 
+                 <input
+                placeholder="Preço Final"
+                      type="number"
+                      name="precoFinal"
+                      value={newVenda.precoFinal}
+                      onChange={handleChange}
+                      required
+                    />
+                     <select
+                className="select-clientes"
+                name="tipoPagamento"
+                placeholder="Tipo de Pagamento"
+                value={newVenda.tipoPagamento}
+                onChange={handleChange}
+                required
+              >
+                <option>Tipos de Pagamento</option>
+                <option>Pix</option>
+                <option>À vista</option>
+                <option>Cartão</option>
+                <option>Permuta</option>
+                <option>Cheque</option>
+              </select>
+                     <input
+                placeholder="Vendedor"
+                      type="text"
+                      name="vendedor"
+                      value={newVenda.vendedor}
+                      onChange={handleChange}
+                      required
+                    />
+                    
+                    {/* Renderiza inputs de produtos */}
+            {newVenda.produtos.map((produto, index) => (
+              <div key={index} className="product-input">
                 <input
-                  className="input-nf"
-                  type="number"
-                  name="precoFinal"
-                  value={newVenda.precoFinal}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              {/* Tipo de Pagamento */}
-              <div className="tipo-pagamento">
-                <label className="letras-nf">Tipo de Pagamento:</label>
-                <input
-                  className="input-nf"
+                  placeholder="Produto"
                   type="text"
-                  name="tipoPagamento"
-                  value={newVenda.tipoPagamento}
-                  onChange={handleChange}
+                  value={produto}
+                  onChange={(e) => handleProductChange(index, e.target.value)}
                   required
                 />
+               
+                <FaTrash
+                        onClick={() => removeProductInput(index)}
+                        style={{ cursor: "pointer", marginLeft: 8 }}
+                      />
               </div>
-
-              {/* Vendedor */}
-              <div className="vendedor">
-                <label className="letras-nf">Vendedor:</label>
-                <input
-                  className="input-nf"
-                  type="text"
-                  name="vendedor"
-                  value={newVenda.vendedor}
-                  onChange={handleChange}
-                  required
-                />
-              </div>
-
-              <Button className="button-registrar" onClick={handleRegisterVenda}>
+            ))}
+            <div>
+            <button
+              type="button"
+              onClick={addProductInput}
+              className="btn-adicionar-produto"
+            >
+              Adicionar Produto
+            </button>
+                      
+            <Button className="RegisterGt" onClick={handleRegisterVenda}>
                 Registrar Venda
               </Button>
-            </div>
-          </div>
-        </div>
+              </div>
+
+              </form>
+    
+              
+              </div>
+    
       </Modal>
     </main>
   );

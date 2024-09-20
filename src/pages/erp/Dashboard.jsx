@@ -79,7 +79,8 @@ function Home() {
   const [userInfo, setUserInfo] = useState('');
   //Informações das tabelas
   const [SelectedTotalEstoque, setSelectedTotalEstoque] = useState(0) 
-  const [SelectedTotalFuncionario, setSelectedTotalFuncionario] = useState(0) 
+  const [SelectedTotalFuncionario, setSelectedTotalFuncionario] = useState(0)
+  const [SelectedTotalVenda, setSelectedTotalVenda] = useState(0) 
 
   const fetchDadosEstoque = async (id) => {
     try {
@@ -105,6 +106,18 @@ function Home() {
     }
   };
 
+  const fetchDadosPedidos = async (id) => {
+    try {
+      const response = await axios.get(`/api/ServerOne/tableVenda/${id}`, { withCredentials: true });
+      if (response.status === 200) {
+        setSelectedTotalVenda(response.data.vendaI.length);
+      }
+    } catch (error) {
+      console.log('Não foi possível requerir as informações: ', error);
+      setSelectedTotalVenda(0)
+    }
+  };
+
   useEffect(() => {
     const verifyToken = async () => {
       try {
@@ -127,11 +140,12 @@ function Home() {
   }, [navigate]);
   
   useEffect(() => {
-    if (userInfo.id_user) {
-      fetchDadosEstoque(userInfo.id_user);
-      fetchDadosFuncionarios(userInfo.id_user)
+    if (userInfo.id_EmpresaDb) {
+      fetchDadosEstoque(userInfo.id_EmpresaDb);
+      fetchDadosFuncionarios(userInfo.id_EmpresaDb)
+      fetchDadosPedidos(userInfo.id_EmpresaDb)
     }
-  }, [userInfo.id_user]);
+  }, [userInfo.id_EmpresaDb]);
   
 
 
@@ -157,10 +171,10 @@ function Home() {
         </div>
         <div className="card">
           <div className="card-inner">
-            <h3>TAREFAS</h3>
+            <h3>PEDIDOS</h3>
             <BsListCheck className="card_icon" />
           </div>
-          <h1>12</h1>
+          <h1>{SelectedTotalVenda}</h1>
         </div>
         <div className="card">
           <div className="card-inner">

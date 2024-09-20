@@ -28,8 +28,8 @@ function Clientes() {
   }, []);
 
   useEffect(() => {
-    if (userInfo.id_user) {
-      fetchDados(userInfo.id_user);
+    if (userInfo.id_EmpresaDb) {
+      fetchDados(userInfo.id_EmpresaDb);
     }
   }, [userInfo]);
 
@@ -76,6 +76,7 @@ function Clientes() {
     observacoes: "",
     razao_social: "",
     nome_fantasia: "",
+    endereco: "",
     logradouro: "",
     bairro: "",
     cidade: "",
@@ -212,10 +213,7 @@ function Clientes() {
           Editar
           <FaPenToSquare />
         </button>
-        <button className="Button-Menu">
-          Excluir
-          <FaTrashCan />
-        </button>
+    
         <button className="Button-Menu">
           Exportar
           <FaFileExport />
@@ -390,6 +388,14 @@ function Clientes() {
                 name="uf"
                 placeholder="UF"
                 value={formData.uf}
+                onChange={handleChange}
+                required
+              />
+              <input
+                type="text"
+                name="endereco"
+                placeholder="Endereço"
+                value={formData.endereco}
                 onChange={handleChange}
                 required
               />
@@ -608,6 +614,14 @@ function Clientes() {
                 onChange={handleChange}
                 required
               />
+              <input
+                type="text"
+                name="endereco"
+                placeholder="Endereço"
+                value={formData.endereco}
+                onChange={handleChange}
+                required
+              />
               <InputMask
                 type="text"
                 name="telefone"
@@ -717,6 +731,7 @@ function Clientes() {
       <p><strong>Cidade:</strong> {SelectedCliente.cidade}</p>
       <p><strong>CEP:</strong> {SelectedCliente.cep}</p>
       <p><strong>UF:</strong> {SelectedCliente.uf}</p>
+      <p><strong>Endereço:</strong> {SelectedCliente.endereco}</p>
     </div>
 
     <div className="info-card">

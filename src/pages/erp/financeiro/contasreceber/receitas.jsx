@@ -113,10 +113,7 @@ function Receitas() {
           Editar
           <FaPenToSquare />
         </button>
-        <button className="Button-Menu">
-          Excluir
-          <FaTrashCan />
-        </button>
+    
         <button className="Button-Menu" onClick={exportToExcel}>
           Exportar
           <FaFileExport />

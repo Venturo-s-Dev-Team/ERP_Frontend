@@ -55,9 +55,7 @@ function RegistroProduto() {
     setShowModalEdit(true);
   };
 
-  const handleCloseEdit = () => {
-    setShowModalEdit(false);
-  };
+  const handleCloseEdit = () => setShowModalEdit(false);
 
   useEffect(() => {
     verifyToken();
@@ -111,41 +109,45 @@ function RegistroProduto() {
     const { name } = e.target;
     setRegisterProdutos({ ...RegisterProdutos, [name]: e.target.files[0] });
   };
-
-  const UPDATE_Produto = async (e) => {
-    e.preventDefault();
-    const data = new FormData();
-
-    Object.keys(RegisterProdutos).forEach((key) => {
-      data.append(key, RegisterProdutos[key]);
-    });
-
-    data.append("userId", userInfo.id_user);
-    data.append("userName", userInfo.Nome_user);
-
-    const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
-
-    try {
-      const response = await axios.post(
-        `/api/ServerOne/updateProduct/${id}`,
-        data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-
-      alert("Informações enviadas com sucesso!");
-      window.location.reload();
-    } catch (error) {
-      console.error("Erro ao enviar formulário:", error);
-      alert("Erro ao enviar formulário.");
-    }
-  };
+    
 
   // UPDATE DO PRODUTO
+  const updateProdutoAPI = async (e) => {
+    e.preventDefault();
+    const data = new FormData();
+    
+    // Adiciona todos os campos do produto ao FormData
+    Object.entries(RegisterProdutos).forEach(([key, value]) => {
+      if (value) data.append(key, value);
+    });
+    
+    // Inclui o ID do banco de dados (ou usuário)
+    const id = selectedProduct.Codigo;
+    const database_id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
 
+      // Adiciona o database_id ao FormData
+  data.append("database_id", database_id);
+  
+    try {
+      // Faz a requisição PUT para atualizar o produto
+      await axios.put(`/api/ServerOne/updateProduct/${id}`, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        withCredentials: true,
+      });
+  
+      alert("Produto atualizado com sucesso!");
+      handleCloseEdit();
+      fetchDados(userInfo.id_EmpresaDb);
+    } catch (error) {
+      console.error("Erro ao atualizar produto:", error);
+      alert("Erro ao atualizar produto.");
+    }
+  };
+  
+
+  // REGISTRO DO PRODUTO
   const Registro_Produto = async (e) => {
     e.preventDefault();
   
@@ -195,7 +197,7 @@ function RegistroProduto() {
   return (
     <main className="main-container">
       <div className="main-title">
-        <h3>Cadastrar Produto</h3>
+        <h3>Estoque</h3>
       </div>
 
       <div className="Estoque_Cad">
@@ -208,10 +210,7 @@ function RegistroProduto() {
             Editar
             <FaPenToSquare />
           </button>
-          <button className="Button-Menu">
-            Excluir
-            <FaTrashCan />
-          </button>
+     
           <button className="Button-Menu" onClick={exportToExcel}>
             Exportar
             <FaFileExport />
@@ -249,12 +248,17 @@ function RegistroProduto() {
                     </button>
                   </td>
                   <td>
-                    <input
-                      type="radio"
-                      name="selectedProduct"
-                      value={product.id}
-                      onChange={() => setSelectedProduct(product)}
-                    />
+                  <label className="custom-radio">
+  <input
+    type="radio"
+    name="selectedProduct"
+    value={product.id}
+    onChange={() => setSelectedProduct(product)}
+  />
+  <span className="radio-checkmark"></span>
+  {product.name} {/* Exibe o nome do produto ao lado */}
+</label>
+
                   </td>
                 </tr>
               ))}
@@ -332,6 +336,9 @@ function RegistroProduto() {
               <button className="RegisterPr" type="submit">
                 Cadastrar
               </button>
+              <button className="FecharPr" onClick={handleClose}>
+Fechar
+                </button>
             </div>
           </form>
         </div>
@@ -339,67 +346,84 @@ function RegistroProduto() {
 
       {/* Modal de Edição */}
       <Modal 
-      style={{
-        position: "fixed",
-        top: "50%",
-        bottom: 0,
-        left: "50%",
-        right: 0,
-        zIndex: 1000,
-        width: "50%",
-        height: "auto",
-        borderRadius: 20,
-        transform: "translate(-50%, -50%)",
-        background: "linear-gradient(135deg, #fff, #fff)",
-        boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
-      }}
-      show={showModalEdit} onHide={handleCloseEdit}>
-        <Modal.Header closeButton>
-          <Modal.Title>Editar Produto</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <form onSubmit={UPDATE_Produto}>
-            <input
-              type="text"
-              name="Nome"
-              placeholder="Nome do produto"
-              value={RegisterProdutos.Nome}
-              onChange={handleChange}
-            />
-            <input
-              type="text"
-              name="Fornecedor"
-              placeholder="Fornecedor"
-              value={RegisterProdutos.Fornecedor}
-              onChange={handleChange}
-            />
-            <input
-              type="number"
-              name="Quantidade"
-              placeholder="Quantidade"
-              value={RegisterProdutos.Quantidade}
-              onChange={handleChange}
-            />
-            <input
-              type="number"
-              name="ValorUnitario"
-              placeholder="Preço por Unidade"
-              value={RegisterProdutos.ValorUnitario}
-              onChange={handleChange}
-            />
-            <input
-              type="text"
-              name="Tamanho"
-              placeholder="Tamanho"
-              value={RegisterProdutos.Tamanho}
-              onChange={handleChange}
-            />
-            <Button variant="primary" type="submit">
-              Salvar Alterações
-            </Button>
-          </form>
-        </Modal.Body>
-      </Modal>
+  style={{
+    position: "fixed",
+    top: "50%",
+    left: "50%",
+    zIndex: 1000,
+    width: "50%",
+    height: "70%",
+    borderRadius: "20px",
+    transform: "translate(-50%, -50%)",
+    background: "linear-gradient(135deg, #ffffff, #f7f7f7)",
+    boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
+  }}
+  show={showModalEdit} 
+  onHide={handleCloseEdit}
+>
+  <div className="FormsEdit">
+    <div className="TitleEditProdut">
+      <h1>Editar Produto</h1>
+    </div>
+    <div className="FormsEditProdut">
+      <form onSubmit={updateProdutoAPI}>
+        <input
+          type="text"
+          name="Nome"
+          placeholder="Nome do produto"
+          value={RegisterProdutos.Nome}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="Fornecedor"
+          placeholder="Fornecedor"
+          value={RegisterProdutos.Fornecedor}
+          onChange={handleChange}
+        />
+        <input
+          type="number"
+          name="Quantidade"
+          placeholder="Quantidade"
+          value={RegisterProdutos.Quantidade}
+          onChange={handleChange}
+        />
+        <input
+          type="number"
+          name="ValorUnitario"
+          placeholder="Preço por Unidade"
+          value={RegisterProdutos.ValorUnitario}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="Tamanho"
+          placeholder="Tamanho"
+          value={RegisterProdutos.Tamanho}
+          onChange={handleChange}
+        />
+
+<input
+      type="file"
+      name="Imagem"
+      accept="image/*"
+      onChange={handleFileChange}
+    />
+
+        <div className="buttons">
+        <button variant="primary" type="submit" className="RegisterPr">
+          Salvar
+        </button>
+        <button onClick={handleCloseEdit} className="FecharPr">
+          Fechar
+        </button>
+          </div>
+      
+      </form>
+    </div>
+  </div>
+</Modal>
+
 
       {/* Modal de Informações do Produto */}
       <Modal           
@@ -433,7 +457,7 @@ function RegistroProduto() {
 
         
           <div className="ImgEstoqueProduct">
-          <img src={VenturoImg} style={{width: 100, height: 100}}/>
+          <img src={`/api/ServerOne/uploads/ProdutosIMG/${selectedProduct.Imagem}`} style={{width: 100, height: 100}}/>
             </div>
               </div>
 

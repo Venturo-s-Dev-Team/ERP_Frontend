@@ -141,7 +141,7 @@ useEffect(() => {
           >
             <motion.div className="div-titulos-card">
               <motion.h5>{item.subtitle}</motion.h5>
-              <motion.h2>{item.title}</motion.h2>
+              <motion.h2 className="nome-da-empresa-dashboard">{item.title}</motion.h2>
               <motion.h6>Status: {itemStatus[item.id]}</motion.h6>
             </motion.div>
             <motion.div>
@@ -239,7 +239,7 @@ useEffect(() => {
                 )} </motion.div>
 
                 <motion.div className="btn-ver-mais-div">
-                  <motion.button className="btn-ver-mais">
+                  <motion.button className="btn-ver-mais-dashboard">
                     Ver mais
                     </motion.button>
                   </motion.div>

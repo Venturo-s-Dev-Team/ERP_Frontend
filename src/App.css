@@ -31,12 +31,14 @@ html, body {
   display: flex;
   flex: 1;
   height: 100%;
+  flex-grow: 1;
   height: 100vh;
 }
 
 .content {
   width: 100%;
   height: 100%;
+  flex-grow: 1;
 }
 
 .titulo{
@@ -498,6 +500,9 @@ width: 100%;
   margin-top: 25px;
 }
 
+.nome-da-empresa-dashboard{
+  color: white;
+}
 
 .logo-container {
   display: flex;
@@ -508,11 +513,10 @@ width: 100%;
   left: 90%;
   margin-left: 500px;
   margin-top: -35px;
-  
 }
 
 
-.btn-ver-mais{
+.btn-ver-mais-dashboard{
   background-color: #000;
   border: none;
   padding: 10px 30px;
@@ -833,6 +837,100 @@ justify-content: center;
 display: flex;
 }
 
+
+.custom-radio {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 10px;
+  justify-content: center;
+}
+
+.custom-radio input[type="radio"] {
+  display: none; /* Oculta o input padrão */
+  align-items: center;
+  justify-content: center;
+}
+
+.radio-checkmark {
+  width: 20px; /* Largura do círculo */
+  height: 20px; /* Altura do círculo */
+  border: 2px solid #0056b3; /* Cor da borda */
+  border-radius: 50%; /* Faz o círculo */
+  position: relative;
+  margin-right: 10px; /* Espaço entre o círculo e o texto */
+  transition: background-color 0.3s;
+}
+
+.custom-radio input[type="radio"]:checked + .radio-checkmark {
+  background-color: #0056b3; /* Cor do círculo quando selecionado */
+}
+
+.radio-checkmark::after {
+  content: '';
+  display: none; /* Inicialmente oculto */
+}
+
+.custom-radio input[type="radio"]:checked + .radio-checkmark::after {
+  display: block;
+  width: 10px; /* Tamanho do ponto interno */
+  height: 10px; /* Tamanho do ponto interno */
+  background: #fff; /* Cor do ponto interno */
+  border-radius: 50%; /* Faz o ponto interno redondo */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Centraliza o ponto */
+}
+
+
+.FormsEdit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.TitleEditProdut {
+  margin-bottom: 20px;
+}
+
+.TitleEditProdut h1 {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+  margin: 0;
+}
+
+.FormsEditProdut {
+  width: 100%;
+}
+
+.FormsEditProdut form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+input[type="text"],
+input[type="number"] {
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 15px;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+
+
 /* Despesas */
 .despesa1-box {
   width: 290px;
@@ -1122,7 +1220,7 @@ margin-top: -18px;
   }
 
 .razao-social{
-margin-top: 15px;
+margin-top: 25px;
 }
 
 .emitente{
@@ -1138,6 +1236,12 @@ margin-top: 15px;
   box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
 }
 
+.emitente-novo{
+  display: flex;
+  align-items: center; 
+  gap: 10px;
+}
+
 .input-rs{
   margin-left: 10px;
 width: 500px;
@@ -1147,13 +1251,13 @@ border-radius: 2px;
 }
 
 .cpf{
-  margin-left: 800px;
-  margin-top: -25px;
+  margin-left: 80px;
+  margin-top: 25px;
 }
 
 .input-cpf{
   margin-left: 10px;
-  width: 300px;
+  width: 380px;
   height: 25px;
   padding: 5px;
   border-radius: 2px;
@@ -1173,6 +1277,18 @@ border-radius: 2px;
   box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
 }
 
+.endereço-novo1{
+  display: flex;
+  align-items: center; 
+  gap: 10px;
+}
+
+.endereço-novo2{
+  display: flex;
+  align-items: center; 
+  gap: 10px;
+}
+
 .logradouro{
 margin-top: 15px;
 }
@@ -1183,25 +1299,24 @@ margin-top: 15px;
   height: 25px;
   padding: 5px;
   border-radius: 2px;
-
 }
 
 .numero{
-  margin-left: 650px;
-  margin-top: -25px;
+  margin-left: 20px;
+  margin-top: 15px;
 }
 
 .input-numero{
   margin-left: 10px;
-  width: 100px;
+  width: 160px;
   height: 25px;
   padding: 5px;
   border-radius: 2px;
 }
 
 .complemento{
-  margin-left: 864px;
-  margin-top: -25px;
+  margin-left: 30px;
+  margin-top: 15px;
 }
 
 .input-complemento{
@@ -1225,8 +1340,8 @@ margin-top: 15px;
 }
 
 .estado{
-  margin-left: 300px;
-  margin-top: -25px;
+  margin-left: 30px;
+  margin-top: 18px;
 }
 
 .input-estado{
@@ -1238,8 +1353,8 @@ margin-top: 15px;
 }
 
 .tipo{
-  margin-left: 600px;
-  margin-top: -23px;
+  margin-left: 60px;
+  margin-top: 13px;
 }
 
 .select-tipo{
@@ -1247,6 +1362,10 @@ background-color: #ffffff;
 margin-left: 10px;
 height: 25px;
 border-radius: 2px;
+width: 200px;
+border-color: rgba(0, 0, 0, 0.523);
+border-style: solid;
+border-width: 1px;
 }
 
 .DivModalCont2 {
@@ -1301,19 +1420,7 @@ border-radius: 2px;
   margin-top: 20px;
 }
 
-.input-produto{ margin-left: 10px;
-  width: 200px;
-  height: 25px;
-  padding: 5px;
-  border-radius: 2px;
-}
-
-.preco{
-  margin-left: 300px;
-  margin-top: -25px;
-}
-
-.input-preco{
+.input-produto{ 
   margin-left: 10px;
   width: 200px;
   height: 25px;
@@ -1321,10 +1428,19 @@ border-radius: 2px;
   border-radius: 2px;
 }
 
-.btn-div{
-margin-left: 600px;
-margin-top: -29px;
+.preco{
+  margin-left: 30px;
+  margin-top: 0px;
 }
+
+.input-preco{
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+  margin-left: 10px;
+}
+
 
 .btn-remover-produto{
 border-radius:8px;
@@ -1335,6 +1451,8 @@ border-color:rgba(255, 0, 0, 0.19) ;
 border-width: 1;
 border-style: solid;
 color: white;
+margin-left: 10px;
+margin-top: -18px;
 }
 
 .btn-remover-produto:hover {
@@ -1356,6 +1474,18 @@ color: white;
 .btn-adicionar-produto:hover{
   background-color: #0a5583f4 ;
 }
+
+.produto-novo{
+  display: flex;
+  align-items: center; 
+  gap: 10px;
+}
+
+.produto-btn-novo{
+  display: flex;
+  align-items: center; 
+  gap: 10px;
+}
  
 .frete{
   margin-top: 10px;
@@ -1369,9 +1499,10 @@ color: white;
   border-radius: 2px;
 }
 
+
 .desconto{
-margin-left: 290px;
-margin-top: -25px;
+margin-left: 20px;
+margin-top: 11px;
 }
 
 .input-desconto{
@@ -1384,8 +1515,8 @@ margin-top: -25px;
 
 
 .código{
-  margin-left: 620px;
-  margin-top: -25px;
+  margin-left: 40px;
+  margin-top: 11px;
   }
   
   .input-código{
@@ -1410,10 +1541,15 @@ margin-top: -25px;
   box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
 }
 
+.impostos-novo{
+  display: flex;
+  align-items: center; 
+  gap: 10px;
+}
+
 .icms{
 margin-top: 10px;
 }
-
 
 .input-icms{
   margin-left: 10px;
@@ -1424,8 +1560,8 @@ margin-top: 10px;
 }
 
 .ipi{
-margin-left: 330px;
-margin-top: -25px;
+margin-left: 50px;
+margin-top: 12px;
 }
 
 .input-ipi{
@@ -1450,6 +1586,12 @@ margin-top: -25px;
   box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
 }
 
+.resumo-novo{
+  display: flex;
+  align-items: center; 
+  gap: 10px;
+}
+
 .preco-bruto{
   margin-top: 10px;
 }
@@ -1463,8 +1605,8 @@ margin-top: -25px;
 }
 
 .preco-final{
-margin-left: 340px;
-margin-top: -25px;
+margin-left: 30px;
+margin-top: 12px;
 }
 
 .input-preco-final{
@@ -1956,7 +2098,7 @@ margin-top: -25px;
 }
 
 .containerLogs {
-  flex: 1; /* Preenche o espaço restante */
+  flex: 1; 
   display: flex;
   flex-direction: row;
   padding-top: 20px;
@@ -1971,7 +2113,6 @@ margin-top: -25px;
   align-items: center;
 }
 
-
 .optionsLogs button {
   background-color: white;
   height: 35px;
@@ -1984,16 +2125,14 @@ margin-top: -25px;
   cursor: pointer;
 }
 
-
 .optionsLogs button:hover {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
 }
 
-
 .ConteudoLogs {
-  flex: 1; /* Preenche o espaço restante */
-  padding-left: 20px; /* Adiciona algum espaçamento interno */
+  flex: 1; 
+  padding-left: 20px; 
 }
 
 .Log{
@@ -2145,6 +2284,38 @@ margin-left: 5px;
   border-radius: 2px;
 }
 
+.btn-adicionar-produto{
+  background-color: #02416D;
+  width: 200px;
+  height: 40px;
+  border-radius: 5px;
+  color: white;
+  border-width: 0;
+}
+
+.RegisterGt{
+    width: 198px;
+    height: 40px;
+    border-radius: 5px;
+    background: linear-gradient(to top, #22963d, #28a745);
+    margin-top: 15px;
+    border-color: transparent;
+    color: #fff;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+    margin-left: 30px;
+}
+  .RegisterGt:hover {
+    opacity: 0.8;
+    background-color: #000000;
+  }
+  
+.div-botoes{
+  margin-left: 10px;
+}
 
 .Gestao-List {
   align-items: center;
@@ -2197,3 +2368,117 @@ margin-left: 5px;
   margin-top: -5px;
   font-weight: 500;
 }
+
+.footer {
+  background-color: #333; 
+  color: white; 
+  padding: 20px; 
+  text-align: center; 
+  position: relative; 
+  bottom: 0; 
+  width: 100%;
+}
+
+/* Caixa */
+.titulo-temporario{
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+}
+
+.btn-abrir{
+  height: 40px;
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  width: 160px;
+  background-color: #02416D;
+  border-radius: 5px;
+  border-color: #02416D;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+}
+
+.btn-abrir:hover{
+  opacity: 0.8;
+  background-color: #02406da7;
+}
+
+/* Página depois da Caixa */
+    .card_caixa{
+      width: 95%;
+      height: 200px;
+      box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+      margin-left: 2%;
+      margin-top: 50px;
+      border-color: #00000029;
+      border-width: 1px;
+      border-style: solid;
+    }
+    
+    .card_caixa-titulo{
+      padding: 20px;
+      text-align: left;
+      margin-left: 10px;
+    }
+
+    .card {
+      border: 1px solid #ccc; /* Borda do card */
+      border-radius: 8px; /* Arredondar os cantos */
+      padding: 20px; /* Espaçamento interno */
+      width: 300px; /* Largura do card */
+      background-color: #f9f9f9; /* Cor de fundo do card */
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra do card */
+    }
+    
+    .radio-group {
+      display: flex; /* Coloca os itens lado a lado */
+      flex-direction: column; /* Alinha verticalmente */
+      gap: 10px; /* Espaço entre as opções */
+    }
+    
+    .custom-radio {
+      position: relative;
+      padding-left: 30px; /* Espaço para o botão de rádio */
+      cursor: pointer;
+      user-select: none; /* Impede a seleção de texto ao clicar */
+    }
+    
+    .custom-radio input {
+      display: none; /* Oculta o input original */
+    }
+    
+    .radio-btn {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      width: 20px; /* Largura do botão de rádio */
+      height: 20px; /* Altura do botão de rádio */
+      border: 2px solid #007bff; /* Cor da borda */
+      border-radius: 50%; /* Faz o botão ser circular */
+      background-color: #fff; /* Cor de fundo do botão */
+      transition: background-color 0.3s, border-color 0.3s; /* Transição suave */
+    }
+    
+    .custom-radio input:checked + .radio-btn {
+      background-color: #007bff; /* Cor de fundo quando selecionado */
+      border-color: #007bff; /* Cor da borda quando selecionado */
+    }
+    
+    .radio-btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 10px; /* Largura do ponto interno */
+      height: 10px; /* Altura do ponto interno */
+      border-radius: 50%; /* Faz o ponto ser circular */
+      background-color: #fff; /* Cor do ponto interno */
+      transform: translate(-50%, -50%) scale(0); /* Oculto inicialmente */
+      transition: transform 0.3s; /* Transição suave */
+    }
+    
+    .custom-radio input:checked + .radio-btn::after {
+      transform: translate(-50%, -50%) scale(1); /* Mostra o ponto interno quando selecionado */
+    }

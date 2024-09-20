@@ -5,6 +5,7 @@ import ToggleThemeButton from "./ToggleThemeButton";
 import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
 import LogoWhite from "../images/LogoVenturoV.png"
 import LogoBlack from "../images/LogoVenturoBlackV.png"
+import FooterComponent from "./Footer.jsx"
 
 const { Header, Sider } = Layout;
 function Sidebar({ openSidebarToggle, OpenSidebar }) {
@@ -54,6 +55,7 @@ function Sidebar({ openSidebarToggle, OpenSidebar }) {
         </Layout>
       </Layout>
     </aside>
+    
   );
 }
 

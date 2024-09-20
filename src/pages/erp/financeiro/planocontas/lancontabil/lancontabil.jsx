@@ -67,7 +67,7 @@ function LanContabil() {
 </div>
 
 <div className="ALINHAR">
-  <h5>TIPO:</h5>
+  <h5>Tipo:</h5>
   <select>
     <option value="ativo">ATIVO</option>
     <option value="passivo">PASSIVO</option>

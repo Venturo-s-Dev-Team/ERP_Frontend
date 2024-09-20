@@ -189,41 +189,6 @@ const MenuList = ({ darkTheme }) => {
               label: "Cadastrar imposto",
               onClick: () => handleNavigation("/cad_imposto"),
             },
-            {
-              key: "cofins",
-              label: "Cofins",
-              onClick: () => handleNavigation("/cofins"),
-            },
-            {
-              key: "csll",
-              label: "Csll",
-              onClick: () => handleNavigation("/csll"),
-            },
-            {
-              key: "icms",
-              label: "Icms",
-              onClick: () => handleNavigation("/icms"),
-            },
-            {
-              key: "ipi",
-              label: "Ipi",
-              onClick: () => handleNavigation("/ipi"),
-            },
-            {
-              key: "irpj",
-              label: "Irpj",
-              onClick: () => handleNavigation("/irpj"),
-            },
-            {
-              key: "iss",
-              label: "Iss",
-              onClick: () => handleNavigation("/iss"),
-            },
-            {
-              key: "pis",
-              label: "Pis",
-              onClick: () => handleNavigation("/pis"),
-            },
           ],
         },
       ],
@@ -244,14 +209,24 @@ const MenuList = ({ darkTheme }) => {
           onClick: () => handleNavigation("/clientes"),
         },
         {
-          key: "gestaoVendas",
-          label: "Gestão de Vendas",
-          onClick: () => handleNavigation("/gestaoVendas"),
+          key: "GestaoPedidos",
+          label: "Gestão de Pedidos",
+          onClick: () => handleNavigation("/gestaoPedidos"),
         },
         {
           key: "historicovendas",
           label: "Histórico de Vendas",
           onClick: () => handleNavigation("/vendas"),
+        },
+        {
+          key: "caixa",
+          label: "Caixa",
+          onClick: () => handleNavigation("/caixa"),
+        }, 
+        {
+          key: "caixa_pagamento",
+          label: "Caixa/Pagamentos",
+          onClick: () => handleNavigation("/caixa_pagamento"),
         },
       ],
     },
@@ -269,6 +244,7 @@ const MenuList = ({ darkTheme }) => {
       className="menu-bar"
       items={menuItems.filter(Boolean)} // Filtra os itens nulos
     />
+  
   );
 }
 
