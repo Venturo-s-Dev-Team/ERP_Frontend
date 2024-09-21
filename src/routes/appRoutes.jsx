@@ -102,6 +102,8 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           <Route path="/Perfil" element={<Perfil />} />
           <Route path="/CadastroEmpresa" element={<CadastroEmpresa />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path='/E-mail_Caixa_Saida' element={<Caixa_Saida />} />
+          <Route path="/E-mail_Caixa_Entrada" element={<Caixa_Entrada />} /> 
           {userInfo?.Status !== "NO" && (
             <>
               <Route path="/logs_admin" element={<LogsAdmin />} />
