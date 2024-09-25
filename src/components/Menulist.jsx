@@ -159,6 +159,11 @@ const MenuList = ({ darkTheme }) => {
           label: "Plano conta",
           children: [
             {
+              key: "planodcontas",
+              label: "Plano de Contas",
+              onClick: () => handleNavigation("/planodcontas"),
+            },
+            {
               key: "lancamentocontabil",
               label: "Lançamento Contábil",
               onClick: () => handleNavigation("/lancontabil"),
@@ -227,6 +232,11 @@ const MenuList = ({ darkTheme }) => {
           key: "caixa_pagamento",
           label: "Caixa/Pagamentos",
           onClick: () => handleNavigation("/caixa_pagamento"),
+        },
+        {
+          key: "caixa_modal",
+          label: "Caixa/Modal",
+          onClick: () => handleNavigation("/caixa_modal"),
         },
       ],
     },

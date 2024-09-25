@@ -5,6 +5,7 @@ import axios from "axios";
 import {jwtDecode} from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { CgCloseR } from "react-icons/cg";
+import "./DashboardAdmin.css";
 
 
 function DashboardAdmin() {
@@ -82,6 +83,9 @@ useEffect(() => {
         const Info = await axios.get("/api/ServerOne/tableEmpresas", {
           withCredentials: true,
         });
+
+        console.log(Info)
+
         if (Info.status === 200) {
           const fetchedData = Info.data.InfoTabela.map((item) => ({
             id: item.id,
@@ -183,7 +187,6 @@ useEffect(() => {
                   />
                 ) : (
                   <div style={{ width: 100, height: 100 }}></div>
-                 // <div className="logo-placeholder"></div>
                 )}
 
              </motion.div>
@@ -195,11 +198,11 @@ useEffect(() => {
 
                {/* Botão de autorizar */}
   {/* Dados da empresa */}
-  <motion.div className="centro">
+  <motion.div >
           <motion.div className="dados">
               <details>
                 <summary className="dados-titulo">Dados da empresa</summary>
-                <motion.div className="div-informacoes-adicionais">
+                <motion.div >
                   <motion.p className="letras-more-info1"><strong>ID:</strong> {selectedItem.id}</motion.p>
                   <motion.p className="letras-more-info2"><strong>Gestor:</strong> {selectedItem.gestor}</motion.p>
                   <motion.p className="letras-more-info3"><strong>CNPJ:</strong> {selectedItem.cnpj}</motion.p>

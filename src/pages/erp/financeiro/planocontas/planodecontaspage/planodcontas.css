@@ -1,0 +1,210 @@
+
+
+.header-plano{
+    width: 100%;
+    height: 60px;
+    border-bottom: solid 1px rgba(0, 0, 0, 0.299);
+    border-radius: 5px;
+    gap: 1px;
+    justify-content: flex-start;
+    align-items: flex-end;
+    display: flex;
+    color: black;
+}
+
+.button-plano {
+    width: 120px;
+    height:35px;
+    border: none;
+    border-top-right-radius: 30px;
+    background: #00346a;
+color: rgb(0, 0, 0);
+font-weight: bold;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 5px;
+cursor: pointer;
+color: white;
+}
+
+.button-plano :hover{
+    opacity: 0.9;
+}
+
+.DadosPlano {
+    width: 100%;
+    height: 150px;
+    background-color: rgba(254, 254, 254, 0.874);
+    box-shadow: 7px 8px 7px -3px rgba(0, 0, 0, 0.35);
+margin-top: 10px;
+border: 1px solid gainsboro;
+border-radius: 7px;
+color: black;
+}
+
+.title-dados{
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    height: 30px;
+    display: flex;
+    border-bottom: solid 1px rgba(0, 0, 0, 0.299);
+}
+
+.nome-dados{
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding: 20px;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.select{
+    width: 220px;
+    height: 32px;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.select :hover{
+    background-color: rgb(218, 218, 218);
+    border-bottom: solid 1px rgba(0, 0, 0, 0.299);
+
+}
+
+.items-planos{
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    gap: 18px;
+    color: black;
+}
+
+.planodecontas-item{
+    width: 49%;
+    height: 400px;
+    background-color: rgba(254, 254, 254, 0.874);
+    box-shadow: 7px 8px 7px -3px rgba(0, 0, 0, 0.35);
+margin-top: 25px;
+border: 1px solid gainsboro;
+border-radius: 7px;
+padding: 20px;
+color: black;
+}
+
+.edit-item{
+    width: 49%;
+    height: 400px;
+    background-color: rgba(254, 254, 254, 0.874);
+    box-shadow: 7px 8px 7px -3px rgba(0, 0, 0, 0.35);
+margin-top: 25px;
+border: 1px solid gainsboro;
+border-radius: 7px;
+padding: 20px;
+}
+
+.header-item{
+    border-bottom: solid 1px rgba(0, 0, 0, 0.299);
+    padding-top: 5px;
+}
+
+.form-item{
+    flex-direction: column;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 10px;
+}
+
+.form-item label{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 15px;
+    color: black;
+}
+
+.form-item h3{
+color: black;
+margin-bottom: 20px;
+}
+
+.form-item input{
+    width: 380px;
+    height: 30px;
+    border-radius: 3px;
+    border: solid 1px rgba(0, 0, 0, 0.299);
+}
+
+.form-item select{
+    width: 280px;
+    height: 30px;
+    border: solid 1px rgba(0, 0, 0, 0.299);
+}
+
+.form-item select:hover{
+background-color: rgb(218, 218, 218);
+}
+
+.categoria {
+    margin: 10px 0;
+  }
+  
+  .categoria-titulo {
+    font-size: 18px;
+    font-weight: bold;
+    position: relative;
+  }
+  
+  .ramificacao {
+    position: relative;
+    padding-left: 20px; /* Espaço para a linha vertical */
+  }
+  
+  .linha-vertical {
+    position: absolute;
+    left: 0;
+    top: 10px; /* Ajuste a posição vertical */
+    height: 100%; /* A altura da linha vertical */
+    width: 1px; /* Largura da linha */
+    background-color: black; /* Cor da linha */
+  }
+  
+  .tipos {
+    list-style: none;
+    padding-left: 20px; /* Indentação para os tipos */
+  }
+  
+  .tipo {
+    position: relative;
+    margin: 10px 0; /* Espaço entre os tipos */
+  }
+  
+  .linha-horizontal {
+    position: absolute;
+    left: -10px; /* Posição da linha horizontal */
+    top: 50%; /* Centraliza verticalmente */
+    height: 1px; /* Largura da linha horizontal */
+    width: 10px; /* Comprimento da linha horizontal */
+    background-color: black; /* Cor da linha */
+  }
+  
+  .planodecontas-item{
+    overflow: auto;
+    max-height: 400px;
+  }
+
+  .button-update{
+    background-color: rgb(48, 182, 48);
+    color: white;
+    width: 100px;
+    height: 35px;
+    border: none;
+    border-radius: 3px;
+    font-weight: bold;
+   margin-left: 120px;
+  }
+  
+  

@@ -1,9 +1,8 @@
 html, body {
   height: 100%;
   width: 100%;
-  color: #000;
   font-family: 'Montserrat', sans-serif;
-  
+  color: black;
 }
 
 .icon {
@@ -110,10 +109,8 @@ html, body {
 height: 100dvh;
 width: 100%;
     padding: 20px 20px;
-  color: rgba(255, 255, 255, 0.95);
   /*background: linear-gradient(to right, #02416D, #010a2a);*/
   background-color: #ffffff;
-
 }
 
 
@@ -526,622 +523,18 @@ width: 100%;
   border-radius: 3px;
   transition: background-color 0.3s ease;
 }
+ 
+/* terminou o estoque*/
 
-/* Estoque Cadastro */
-.Button_Cad{
-  gap: 20px;
-  border-bottom: solid 1px;
-  border-color: #0a5483;
-  flex-direction: row;
-}
-
-.Button_Cad button{
-  width: 120px;
-  height: 40px;
-  border-radius: 5px;
-  background: linear-gradient(to top, #0056b3, #0a5483);
-  margin: 15px;
-  border-color: transparent;
-  color: #fff;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  cursor: pointer;
-  box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
-  font-weight: bold;
-  }
-
-  .Button_Cad button:hover{
-    opacity: 0.8;
-    background-color: #000000;
-  }
-
-
-  .DivInfoEstoq {
-    cursor: pointer;
-    box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
-    height: 190px;
-    width: 100dvh;
-    border-radius: 10px;
-display: flex;
-align-items: center;
-text-align: center;
-flex-direction: column;
-justify-content: center;
-
-  }
-
-.Estoque_List {
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  padding: 13px;
-}
-
-.Produtos {
-  margin: 10px;
-  width: 98%;
-  height: 50px;
-  background: linear-gradient(to bottom, rgb(233, 233, 233), #f2f2f2);
-
-}
-
-.thead{
-  flex-direction: row;
-}
-
-.title-table{
- margin: 10px;
- font-size: 10px;
- flex-direction: row;
-
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
-  font-size: 18px;
-  text-align: left;
-}
-
-caption {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-th, td {
-  padding: 12px;
-  border-bottom: 1px solid #ddd;
-}
-
-thead {
-  background-color: #f4f4f4;
-}
-
-th {
-  background: linear-gradient(to top, #0056b3, #0a5483);
-  color: #ffffff;
-  text-align: center;
-}
-
-tbody tr:hover {
-  background: linear-gradient(to top, #AEDD2B, #d4ff5f);
-}
-
-tbody td {
-  text-align: center;
-}
-
-.DivModalCont {
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  display: flex;
-  top: 20%;
-  padding-top: 5%;
-  padding-left: 7%;
-}
-
-.DivModalCont input[type="text"],
-.DivModalCont input[type="number"],
-.DivModalCont input[type="date"],
-.DivModalCont input[type="CNPJ"],
-.DivModalCont input[type="email"]
-{
-  margin: 10px;
-  width: 350px;
-  height: 35px;
-  border-radius: 3px;
-  border: 1px solid black;
-  background-color: #fff;
-  padding-left: 30px;
-
-}
-
-.perfil-cliente {
-
-  background-color: #ffffff;
- padding: 40px;
-  
-}
-
-h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.container-infos {
-  display: flex;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.info-card {
-  background: #ffffff;
-  border-radius: 8px;
-  padding: 15px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-  flex: 1;
-}
-
-.info-card h3 {
-  margin-bottom: 10px;
-  color: #0056b3;
-}
-
-.info-card p {
-  font-size: 16px;
-  margin: 5px 0;
-}
-
-strong {
-  color: #555;
-}
-
-.buttons {
-  text-align: center;
-  margin-top: 20px;
-}
-
-.fechar-btn {
-  padding: 10px 20px;
-  background-color: #0056b3;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.fechar-btn:hover {
-  background-color: #0056b3;
-}
-
-
-.observacoes{ 
-  resize: none;
-  width: 760px;
-  height: 100px;
-  box-sizing: border-box; 
-  margin-left: 11px;
-  margin-top: 10px;
-  border-radius: 3px;
-  border: 1px solid black;
-  background-color: #fff;
-  padding: 20px;
-}
-
-
-
-.DivModalCont h1{
-  color: #0a5483;
-  margin-bottom: 20px;
-}
-
-
-.RegisterPr {
-  width: 120px;
-  height: 40px;
-  border-radius: 5px;
-  background: linear-gradient(to top, #22963d, #28a745);
-  margin: 15px;
-  border-color: transparent;
-  color: #fff;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  cursor: pointer;
-}
-
-.RegisterPr:hover {
-  opacity: 0.8;
-  background-color: #000000;
-}
-
-.FecharPr {
-  width: 120px;
-  height: 40px;
-  border-radius: 5px;
-  background: linear-gradient(to top, #dc3545, #ff0e26);
-  margin: 15px;
-  border-color: transparent;
-  color: #fff;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  cursor: pointer;
-}
-
-.FecharPr:hover{
-  opacity: 0.8;
-  background-color: #000000;
-}
-
-.ImageModal {
-  position: relative;
-  left: 700px;
-}
-
-.ButtonInfoProduct {
-  width: 60px;
-  height: 35px;
-  background: linear-gradient(to top, #bcbcbc, #d8d8d8);
-  color: #000000;
-  border-radius: 5px;
-  border: transparent;
-  font-weight: bold;
-  cursor: pointer;
-
-}
-
-.ButtonInfoProduct:hover{
-opacity: 0.8;
-}
-
-.corpoInfoProduto{
-  text-align: flex-start;
-  font-size: 30px;
-  padding: 25px;
-  flex-direction: column;
-  width: 70%;
-  height: 500px;
-}
-
-.corpoInfoProduto i{
-  flex-direction: column;
-  display: flex;
-}
-
-.ImagemInfoProduto {
-  border: 1px solid black;
-  border-radius: 10px;
-  
-}
-
-.AlinhandoInfos{
-display: flex;
-flex-direction: row;
-justify-content: center;
-gap: 100px;
-align-items: center;
-}
-
-.ImgEstoqueProduct{
-align-items: center;
-justify-content: center;
-display: flex;
-}
-
-
-.custom-radio {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  margin-bottom: 10px;
-  justify-content: center;
-}
-
-.custom-radio input[type="radio"] {
-  display: none; /* Oculta o input padrão */
-  align-items: center;
-  justify-content: center;
-}
-
-.radio-checkmark {
-  width: 20px; /* Largura do círculo */
-  height: 20px; /* Altura do círculo */
-  border: 2px solid #0056b3; /* Cor da borda */
-  border-radius: 50%; /* Faz o círculo */
-  position: relative;
-  margin-right: 10px; /* Espaço entre o círculo e o texto */
-  transition: background-color 0.3s;
-}
-
-.custom-radio input[type="radio"]:checked + .radio-checkmark {
-  background-color: #0056b3; /* Cor do círculo quando selecionado */
-}
-
-.radio-checkmark::after {
-  content: '';
-  display: none; /* Inicialmente oculto */
-}
-
-.custom-radio input[type="radio"]:checked + .radio-checkmark::after {
-  display: block;
-  width: 10px; /* Tamanho do ponto interno */
-  height: 10px; /* Tamanho do ponto interno */
-  background: #fff; /* Cor do ponto interno */
-  border-radius: 50%; /* Faz o ponto interno redondo */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%); /* Centraliza o ponto */
-}
-
-
-.FormsEdit {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-}
-
-.TitleEditProdut {
-  margin-bottom: 20px;
-}
-
-.TitleEditProdut h1 {
-  font-size: 28px;
-  font-weight: bold;
-  color: #333;
-  text-align: center;
-  margin: 0;
-}
-
-.FormsEditProdut {
-  width: 100%;
-}
-
-.FormsEditProdut form {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-}
-
-input[type="text"],
-input[type="number"] {
-  border: 1px solid #ced4da;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 15px;
-  font-size: 16px;
-  transition: border-color 0.3s ease;
-}
-
-input[type="text"]:focus,
-input[type="number"]:focus {
-  border-color: #007bff;
-  outline: none;
-}
 
 
 
 /* Despesas */
-.despesa1-box {
-  width: 290px;
-  height: 150px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  padding: 10px;
-  text-align: center;
-  color: #000;
-}
-
-.despesa1-box:hover {
-  opacity: 0.8;
-
-  background-color: #0000001c;
-}
-
-.despesa-letras{
-  color: #000;
-}
-
-.despesa2-box {
-  width: 290px;
-  height: 150px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  padding: 10px;
-  text-align: center;
-}
-
-.despesa2-box:hover {
-  opacity: 0.8;
-  background-color: #0000001a;
-}
-
-.box_desp {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.despesa1-box,
-.despesa2-box {
-  flex: 1;
-  margin: 0 10px;
-}
-
-.gráficos{  
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.gráfico1,
-.gráfico02 {
-  flex: 1;
-  margin-right: 20px;
-}
-
-.gráfico1 {
-  width: 50%;
-}
-.gráfico02 {
-  width: 50%;
-}
-
-.pie1 {
-  margin-left: 200px;
-}
-
-.legenda_despesas1{
-  margin-left: 255px;
-  margin-top: 20px;
-}
-.legenda_despesas2{
-  margin-left: 195px;
-  margin-top: 20px;
-}
-
-.Despesas_List {
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  padding: 13px;
-  margin-top: 60px;
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-th {
-  background-color: #f4f4f4;
-  text-align: center;
-  border-radius: 0;
-  padding: 8px;
-
-}
-
-th:hover {
-  background-color: #e2e2e2;
-}
-
-caption {
-  font-size: 1.2em;
-  margin: 10px 0;
-}
-
-table {
-  margin: 0 auto;
-  border-spacing: 0;
-  width: 100%;
-}
-
-.despesas_opc_btn {
-  border: none;
-  padding: 5px 10px;
-  color: white;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 3px;
-  transition: background-color 0.3s ease;
-  margin-left: 30px;
-}
-
-.despesas_opc_btn.sim{
-  background-color: rgba(255, 0, 0, 0.427);
-}
-
-.despesas_opc_btn.nao{
-background-color: #22963d83;
-}
-
-.DivModalDesp {
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  display: flex;
-  top: 20%;
-  padding-top: 5%;
-  padding-left: 7%;
-}
-
-
-.DivModalDesp input{
-  margin: 10px;
-  width: 350px;
-  height: 40px;
-  border-radius: 3px;
-  border: transparent;
-  background-color: #fff;
-  padding-left: 30px;
-  border-color: #000;
-  border-width: 1px;
-  border-style: solid;
-}
-
-
-.DivModalDesp h1{
-  color: #0a5483;
-  margin-bottom: 20px;
-}
 
 
 
 /*PAGAMENTOS */
-.divEstatistcPgFunc {
-width: 100%;
-height: 40%;
-align-items: center;
-justify-content: center;
-display: flex;
-gap: 100px;
-}
 
-.divEstatistcPgFunc button{
-background-color: #fff;
-border-radius: 10px;
-height: 150px;
-width: 520px;
-box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
-border: transparent;
-flex-direction: row;
-display: flex;
-justify-content: center;
-align-items: center;
-gap: 15px
-;
-cursor: pointer;
-}
-
-.divEstatistcPgFunc button:hover{
-  opacity: 0.8;
-  background-color: #0000001a;
-  }
-
-.icon-PagFunc{
- width: 30px;
- height: 30px; 
-}
 
 /* Fluxo de caixa */
 
@@ -2407,7 +1800,7 @@ margin-left: 5px;
 /* Página depois da Caixa */
     .card_caixa{
       width: 95%;
-      height: 200px;
+      height: 270px;
       box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
       margin-left: 2%;
       margin-top: 50px;
@@ -2422,63 +1815,74 @@ margin-left: 5px;
       margin-left: 10px;
     }
 
-    .card {
-      border: 1px solid #ccc; /* Borda do card */
-      border-radius: 8px; /* Arredondar os cantos */
-      padding: 20px; /* Espaçamento interno */
-      width: 300px; /* Largura do card */
-      background-color: #f9f9f9; /* Cor de fundo do card */
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Sombra do card */
+    .input-radio-caixa-card{
+      margin-top: -20px;
+ 
+    }
+
+    .input-radio-caixa{
+      margin-bottom: 10px;
+      margin-left: 30px;
+      font-size: 18px;
+    }
+
+    .radio-caixa{
+      margin-right: 10px;
+      height: 20px;
+      width: 20px;
+    }
+
+    .informacoes-caixa{
+      border-top-color: #000;
+      border-top-width: 1px;
+      border-top-style: solid;
+      margin-top: 40px;
     }
     
-    .radio-group {
-      display: flex; /* Coloca os itens lado a lado */
-      flex-direction: column; /* Alinha verticalmente */
-      gap: 10px; /* Espaço entre as opções */
+    .titulo-informacoes-caixa{
+      text-align: left;
+      margin-top: 10px;
+    }
+
+    .p-caixas{
+      margin-bottom: 10px;
+      font-size: 17px;
+    }
+
+    .valor-caixa{
+      border-bottom-color: #000;
+      border-bottom-width: 1px;
+      border-bottom-style: solid;
+      margin-top: 20px;
+    }
+
+    .caixa-modal-h{
+      text-align: left;
+    }
+
+    .btn-caixa{    
+      border-radius: 8px;
+      margin-top: 10px;
+      width: 200px;
+      height: 40px;
+      background-color: #02416D ;
+      border-color: #02416D;
+      border-width: 1;
+      border-style: solid;
+      color: white;
     }
     
-    .custom-radio {
-      position: relative;
-      padding-left: 30px; /* Espaço para o botão de rádio */
-      cursor: pointer;
-      user-select: none; /* Impede a seleção de texto ao clicar */
-    }
-    
-    .custom-radio input {
-      display: none; /* Oculta o input original */
-    }
-    
-    .radio-btn {
-      position: absolute;
-      top: 50%;
-      left: 0;
-      transform: translateY(-50%);
-      width: 20px; /* Largura do botão de rádio */
-      height: 20px; /* Altura do botão de rádio */
-      border: 2px solid #007bff; /* Cor da borda */
-      border-radius: 50%; /* Faz o botão ser circular */
-      background-color: #fff; /* Cor de fundo do botão */
-      transition: background-color 0.3s, border-color 0.3s; /* Transição suave */
-    }
-    
-    .custom-radio input:checked + .radio-btn {
-      background-color: #007bff; /* Cor de fundo quando selecionado */
-      border-color: #007bff; /* Cor da borda quando selecionado */
-    }
-    
-    .radio-btn::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 10px; /* Largura do ponto interno */
-      height: 10px; /* Altura do ponto interno */
-      border-radius: 50%; /* Faz o ponto ser circular */
-      background-color: #fff; /* Cor do ponto interno */
-      transform: translate(-50%, -50%) scale(0); /* Oculto inicialmente */
-      transition: transform 0.3s; /* Transição suave */
-    }
-    
-    .custom-radio input:checked + .radio-btn::after {
-      transform: translate(-50%, -50%) scale(1); /* Mostra o ponto interno quando selecionado */
-    }
+.btn-caixa:hover{
+  background-color: #0a5583cf;
+}
+
+.input-caixas-modal{
+  margin: 10px;
+  width: 420px;
+  height: 35px;
+  border-radius: 3px;
+  border: 1px solid black;
+  background-color: #fff;
+  padding-left: 30px;
+  margin-left: 0px;
+}

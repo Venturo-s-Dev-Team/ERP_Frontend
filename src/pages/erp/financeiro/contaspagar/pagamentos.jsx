@@ -6,7 +6,8 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { FaFileExport } from "react-icons/fa";
-import * as XLSX from "xlsx"; // Importando a biblioteca xlsx
+import * as XLSX from "xlsx";
+import "./pagamentos.css"
 
 function Pagamentos() {
   const [showModal, setShowModal] = useState(false);
@@ -14,9 +15,17 @@ function Pagamentos() {
   const [selectedPagament, setSelectedPagament] = useState(null);
   const [pagaments, setPagaments] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
+  const [newPagament, setNewPagament] = useState({
+    Nome: "",
+    Valor: "",
+    Data: "",
+    Conta: "",
+    TipoPagamento: "",
+    Descricao: "",
+  });
   const navigate = useNavigate();
 
-  // Função para verificar o token
+  // Verificar o token
   useEffect(() => {
     const verifyToken = async () => {
       try {
@@ -40,17 +49,20 @@ function Pagamentos() {
     verifyToken();
   }, [navigate]);
 
-  // Função para buscar os pagamentos do banco de dados
+  // Buscar pagamentos
   useEffect(() => {
     const fetchPagaments = async (id) => {
       try {
-        const response = await axios.get(`/api/ServerOne/tablepagamentos/${id}`, {
-          withCredentials: true,
-        });
-        setPagaments(Array.isArray(response.data) ? response.data : []);
+        const response = await axios.get(
+          `/api/ServerOne/tablepagamentos/${id}`,
+          {
+            withCredentials: true,
+          }
+        );
+        setPagaments(response.data.InfoTabela);
       } catch (error) {
         console.error("Erro ao buscar pagamentos:", error);
-        setPagaments([]); // Em caso de erro, garantir que pagaments seja um array
+        setPagaments([]);
       }
     };
 
@@ -59,6 +71,7 @@ function Pagamentos() {
     }
   }, [userInfo]);
 
+  // Mostrar e fechar modal
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
 
@@ -72,12 +85,55 @@ function Pagamentos() {
     setShowModalInfo(false);
   };
 
-  // Função para exportar os pagamentos para Excel
+  // Função para exportar pagamentos para Excel
   const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(pagaments); // Convertendo os dados de pagamentos para a planilha
+    const worksheet = XLSX.utils.json_to_sheet(pagaments);
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Pagamentos");
-    XLSX.writeFile(workbook, "PagamentosProgramados.xlsx"); // Gerando o arquivo
+    XLSX.writeFile(workbook, "PagamentosProgramados.xlsx");
+  };
+
+  const registerPagament = async (e) => {
+    e.preventDefault();
+    const id_EmpresaDb = userInfo.id_EmpresaDb
+      ? userInfo.id_EmpresaDb
+      : userInfo.id_user;
+
+    try {
+      const response = await axios.post(
+        `/api/ServerTwo/registrarPagamento`,
+        {
+          ...newPagament,
+          id_EmpresaDb,
+          userId: userInfo.id_user,
+          userName: userInfo.username,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.status === 200 || response.status === 201) {
+        setPagaments((prev) => [...prev, response.data]);
+        handleClose();
+        setNewPagament({
+          Nome: "",
+          Valor: "",
+          Data: "",
+          Conta: "",
+          TipoPagamento: "",
+          Descricao: "",
+        });
+      }
+    } catch (error) {
+      console.error("Erro ao registrar pagamento:", error);
+    }
+  };
+
+  // Função para lidar com mudanças nos inputs do formulário
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNewPagament((prev) => ({ ...prev, [name]: value }));
   };
 
   return (
@@ -95,7 +151,6 @@ function Pagamentos() {
           Editar
           <FaPenToSquare />
         </button>
-    
         <button className="Button-Menu" onClick={exportToExcel}>
           Exportar
           <FaFileExport />
@@ -109,22 +164,24 @@ function Pagamentos() {
             <tr>
               <th>Nome</th>
               <th>Valor</th>
-              <th>Data</th>
               <th>Conta</th>
-              <th>Tipo</th>
               <th>Info.</th>
             </tr>
           </thead>
           <tbody>
             {pagaments.map((pagament) => (
               <tr key={pagament.id}>
-                <td>{pagament.name}</td>
-                <td>{pagament.valor}</td>
-                <td>{pagament.data}</td>
-                <td>{pagament.conta}</td>
-                <td>{pagament.tipo}</td>
+                <td>{pagament.Nome}</td>
+                <td>{pagament.Valor}</td>
+                <td>{pagament.Conta}</td>
+
                 <td>
-                  <button className="ButtonInfoProduct" onClick={() => handleShowInfo(pagament)}>Abrir</button>
+                  <button
+                    className="ButtonInfoProduct"
+                    onClick={() => handleShowInfo(pagament)}
+                  >
+                    Abrir
+                  </button>
                 </td>
               </tr>
             ))}
@@ -154,15 +211,54 @@ function Pagamentos() {
           <div className="HeaderModal">
             <h1>Registrar Pagamento</h1>
           </div>
-          <form>
-            <input type="number" placeholder="ID" />
-            <input type="text" placeholder="Nome" />
-            <input type="text" placeholder="Valor" />
-            <input type="date" placeholder="Data" />
-            <input type="text" placeholder="Conta" />
-            <input type="text" placeholder="Tipo" />
+          <form onSubmit={registerPagament}>
+            <input
+              type="text"
+              name="Nome"
+              placeholder="Nome"
+              value={newPagament.Nome}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="Valor"
+              placeholder="Valor"
+              value={newPagament.Valor}
+              onChange={handleChange}
+            />
+            <input
+              type="date"
+              name="Data"
+              placeholder="Data"
+              value={newPagament.Data}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="Conta"
+              placeholder="Conta"
+              value={newPagament.Conta}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="TipoPagamento"
+              placeholder="Tipo"
+              value={newPagament.TipoPagamento}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="Descricao"
+              placeholder="Descrição"
+              value={newPagament.Descricao}
+              onChange={handleChange}
+            />
+
             <div className="FooterButton">
-              <button className="RegisterPr">Registrar</button>
+              <button className="RegisterPr" type="submit">
+                Registrar
+              </button>
               <button className="FecharPr" onClick={handleClose}>
                 Fechar
               </button>
@@ -189,31 +285,37 @@ function Pagamentos() {
         show={showModalInfo}
         onHide={handleCloseInfo}
       >
-        <div className="DivModalCont" style={{ display: "flex", flexDirection: "column", height: "100%" }}>
+        <div
+          className="DivModalCont"
+          style={{ display: "flex", flexDirection: "column", height: "100%" }}
+        >
           <div className="HeaderModal">
             <h1>Informação do beneficiário</h1>
           </div>
 
           {selectedPagament && (
-            <div className="corpoInfoProduto" style={{ overflowY: "auto", flex: 1, padding: "20px" }}>
+            <div
+              className="corpoInfoProduto"
+              style={{ overflowY: "auto", flex: 1, padding: "20px" }}
+            >
               <ul style={{ listStyleType: "none", padding: 0 }}>
                 <li>
-                  <img src={VenturoImg} alt="Imagem do Produto" className="ImagemInfoProduto" />
+                  <strong>Nome:</strong> {selectedPagament.Nome}
                 </li>
                 <li>
-                  <strong>Nome:</strong> {selectedPagament.name}
+                  <strong>Valor:</strong> R$ {selectedPagament.Valor}
                 </li>
                 <li>
-                  <strong>Valor:</strong> R$ {selectedPagament.valor}
+                  <strong>Data:</strong> {selectedPagament.Data}
                 </li>
                 <li>
-                  <strong>Data:</strong> {selectedPagament.data}
+                  <strong>Conta:</strong> {selectedPagament.Conta}
                 </li>
                 <li>
-                  <strong>Conta:</strong> {selectedPagament.conta}
+                  <strong>Tipo:</strong> {selectedPagament.TipoPagamento}
                 </li>
                 <li>
-                  <strong>Tipo:</strong> {selectedPagament.tipo}
+                  <strong>Descrição:</strong> {selectedPagament.Descricao}
                 </li>
               </ul>
             </div>

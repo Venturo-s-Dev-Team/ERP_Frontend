@@ -42,6 +42,8 @@ import LogsAdmin from "../pages/erp/LogsAdmin/LogsAdmin";
 import Logout from "../components/Logout";
 import Caixa from "../pages/erp/vendas/pedidosEmAberto";
 import Caixa_Pagamento from "../pages/erp/vendas/caixa_Pagamento";
+import Caixa_Modal from "../pages/erp/vendas/caixa_Modal";
+import PlanoDContas from "../pages/erp/financeiro/planocontas/planodecontaspage/planodcontas";
 
 function AppRoutes() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
@@ -116,6 +118,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
               <Route path="/vendas" element={<Vendas />} />
               <Route path="/caixa" element={<Caixa />} />
               <Route path="/caixa_pagamento" element={<Caixa_Pagamento />} />
+              <Route path="/caixa_modal" element={<Caixa_Modal />} />
               <Route path="/gestaoPedidos" element={<GestaoVendas />} />
               <Route path="/despesas" element={<Despesas />} />
               <Route path="/fornecedores" element={<Fornecedores />} />
@@ -128,6 +131,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
               <Route path="/razao" element={<Razao />} />
               <Route path="/lancontabil" element={<LanContabil />} />
               <Route path="*" element={<Navigate to="/error" />} />
+              <Route path="/planodcontas" element={<PlanoDContas/>}/> 
             </>
           )}
           <Route path="/error" element={<Error errorCode={404 || 500} />} />

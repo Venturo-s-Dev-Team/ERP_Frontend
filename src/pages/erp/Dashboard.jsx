@@ -86,7 +86,7 @@ function Home() {
     try {
       const response = await axios.get(`/api/ServerOne/tableEstoque/${id}`, { withCredentials: true });
       if (response.status === 200) {
-        setSelectedTotalEstoque(response.data.InfoTabela.length);
+        setSelectedTotalEstoque(response.data.N_Registros);
       }
     } catch (error) {
       console.log('Não foi possível requerir as informações: ', error);
@@ -98,7 +98,7 @@ function Home() {
     try {
       const response = await axios.get(`/api/ServerOne/tableFuncionario/${id}`, { withCredentials: true });
       if (response.status === 200) {
-        setSelectedTotalFuncionario(response.data.InfoTabela.length);
+        setSelectedTotalFuncionario(response.data.N_Registros);
       }
     } catch (error) {
       console.log('Não foi possível requerir as informações: ', error);
@@ -110,7 +110,7 @@ function Home() {
     try {
       const response = await axios.get(`/api/ServerOne/tableVenda/${id}`, { withCredentials: true });
       if (response.status === 200) {
-        setSelectedTotalVenda(response.data.vendaI.length);
+        setSelectedTotalVenda(response.data.N_Registros);
       }
     } catch (error) {
       console.log('Não foi possível requerir as informações: ', error);

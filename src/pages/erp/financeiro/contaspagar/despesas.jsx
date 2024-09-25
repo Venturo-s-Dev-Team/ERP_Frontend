@@ -17,6 +17,7 @@ import { Modal } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import "./despesas.css"
 
 const data02 = [
   {
@@ -72,6 +73,7 @@ function Despesas() {
   const [userInfo, setUserInfo] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [dataGrafico, setDataGrafico] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para armazenar o termo de pesquisa
 
   // Função para alternar o valor da coluna "Finalizado"
   const Finalizado = (id) => {

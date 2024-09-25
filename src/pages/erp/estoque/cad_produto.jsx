@@ -2,12 +2,13 @@ import { Button, Modal } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
 import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
 import { FaFileExport } from "react-icons/fa";
-import "../../../App.css";
+import "./cad_produto.css";
 import VenturoImg from "../../../images/ChatBotAssist.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import * as XLSX from "xlsx"; // Adiciona a importação da biblioteca xlsx
+
 
 function RegistroProduto() {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ function RegistroProduto() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [ProductsEstoque, setSelectedEstoque] = useState([]);
   const [userInfo, setUserInfo] = useState({});
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para armazenar o termo de pesquisa
   const [RegisterProdutos, setRegisterProdutos] = useState({
     Nome: "",
     Quantidade: "",
@@ -97,6 +99,16 @@ function RegistroProduto() {
       console.log("Não foi possível requerir as informações: ", error);
     }
   };
+
+    // Filtro dos produtos
+    const handleSearchChange = (e) => {
+      setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
+    };
+  
+    const filteredProducts = ProductsEstoque.filter((product) =>
+      product.Nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.Fornecedor.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -184,7 +196,6 @@ function RegistroProduto() {
       alert("Erro ao enviar formulário.");
     }
   };
-  
 
   // Função para exportar para Excel
   const exportToExcel = () => {
@@ -217,6 +228,17 @@ function RegistroProduto() {
           </button>
         </div>
 
+       {/* Input de pesquisa */}
+       <div>
+          <input
+            type="text"
+            placeholder="Pesquisar produtos..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="SearchInput"
+          />
+        </div>
+
         <div className="Estoque_List">
           <table id="table-to-export">
             <caption>Registro de Produtos</caption>
@@ -232,7 +254,7 @@ function RegistroProduto() {
               </tr>
             </thead>
             <tbody>
-              {ProductsEstoque.map((product) => (
+              {filteredProducts.map((product) => (
                 <tr key={product.id}>
                   <td>{product.Codigo}</td>
                   <td>{product.Nome}</td>
@@ -248,17 +270,16 @@ function RegistroProduto() {
                     </button>
                   </td>
                   <td>
-                  <label className="custom-radio">
-  <input
-    type="radio"
-    name="selectedProduct"
-    value={product.id}
-    onChange={() => setSelectedProduct(product)}
-  />
-  <span className="radio-checkmark"></span>
-  {product.name} {/* Exibe o nome do produto ao lado */}
-</label>
-
+                    <label className="custom-radio">
+                      <input
+                        type="radio"
+                        name="selectedProduct"
+                        value={product.id}
+                        onChange={() => setSelectedProduct(product)}
+                      />
+                      <span className="radio-checkmark"></span>
+                      {product.Nome}
+                    </label>
                   </td>
                 </tr>
               ))}
@@ -414,7 +435,7 @@ Fechar
         <button variant="primary" type="submit" className="RegisterPr">
           Salvar
         </button>
-        <button onClick={handleCloseEdit} className="FecharPr">
+        <button type="button" onClick={handleCloseEdit} className="FecharPr">
           Fechar
         </button>
           </div>

@@ -13,6 +13,7 @@ function CadastroFuncionario() {
   const [showPopup, setShowPopup] = useState(false);
   const [userInfo, setUserInfo] = useState('');
   const [Funcionarios, setFuncionarios] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para armazenar o termo de pesquisa
 
   // Função para verificar o token
   useEffect(() => {
@@ -52,6 +53,16 @@ function CadastroFuncionario() {
       console.log('Não foi possível requerir as informações: ', error);
     }
   };
+
+      // Filtro dos produtos
+      const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
+      };
+    
+      const filteredFuncionarios = Funcionarios.filter((funcionarios) =>
+        funcionarios.Nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        funcionarios.TypeUser.toLowerCase().includes(searchTerm.toLowerCase())
+      );
 
   const openPopup = () => {
     setShowPopup(true);
@@ -98,6 +109,17 @@ function CadastroFuncionario() {
       {/* Exibir o pop-up se showPopup for verdadeiro */}
       {showPopup && <SuccessPopup onClose={closePopup} onSubmit={handleSuccess} />}
 
+             {/* Input de pesquisa */}
+             <div>
+          <input
+            type="text"
+            placeholder="Pesquisar Funcionários ou Setor..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="SearchInput"
+          />
+        </div>
+
       <div className="Estoque_List">
         <table>
           <caption>Listagem de Funcionários</caption>
@@ -109,7 +131,7 @@ function CadastroFuncionario() {
             </tr>
           </thead>
           <tbody>
-            {Funcionarios.map((funcionario) => (
+            {filteredFuncionarios.map((funcionario) => (
               <tr key={funcionario.id}>
                 <td>{funcionario.Nome}</td>
                 <td>{funcionario.email}</td>
