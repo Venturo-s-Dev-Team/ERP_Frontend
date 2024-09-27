@@ -32,13 +32,15 @@ import Dre from "../pages/erp/financeiro/planocontas/dre";
 import Razao from "../pages/erp/financeiro/planocontas/razao";
 import LanContabil from "../pages/erp/financeiro/planocontas/lancontabil/lancontabil";
 import Vendas from "../pages/erp/vendas/vendas";
-import GestaoVendas from "../pages/erp/vendas/gestaoVendas";
+import GestaoVendas from "../pages/erp/vendas/GestaoDeVendas/gestaoVendas.jsx";
+import Abas from "../pages/erp/vendas/GestaoDeVendas/Abas.jsx";
 import Cadastronf from "../pages/erp/vendas/notafiscal/cadastronf";
 import Clientes from "../pages/erp/vendas/pedidos/clientes";
 import Precofinal from "../pages/erp/vendas/pedidos/precofinal";
 import Error from "../pages/erro/error";
 import Landpage from "../pages/erp/landpage/landpage";
 import LogsAdmin from "../pages/erp/LogsAdmin/LogsAdmin";
+import LogsEmpresa from "../pages/erp/LogsAdmin/LogsEmpresa.jsx";
 import Logout from "../components/Logout";
 import Caixa from "../pages/erp/vendas/pedidosEmAberto";
 import Caixa_Pagamento from "../pages/erp/vendas/caixa_Pagamento";
@@ -109,6 +111,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           {userInfo?.Status !== "NO" && (
             <>
               <Route path="/logs_admin" element={<LogsAdmin />} />
+              <Route path="/logs_empresa" element={<LogsEmpresa />} />
               <Route path="/dashboard_admin" element={<DashboardAdmin />} />
               <Route path="/CadastroFuncionario" element={<CadastroFuncionario />} />
               <Route path="/cad_produto" element={<Cad_produto />} />
@@ -132,6 +135,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
               <Route path="/lancontabil" element={<LanContabil />} />
               <Route path="*" element={<Navigate to="/error" />} />
               <Route path="/planodcontas" element={<PlanoDContas/>}/> 
+              <Route path="/abas" element={<Abas/>}/>
             </>
           )}
           <Route path="/error" element={<Error errorCode={404 || 500} />} />

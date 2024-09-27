@@ -2,6 +2,7 @@ import { Button, Modal, Form } from "react-bootstrap";
 import React, { useState } from "react";
 import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
 import { FaFileExport } from "react-icons/fa";
+import "./vendas.css";
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,  ComposedChart,
   Area,
@@ -101,15 +102,15 @@ function Hist_vendas() {
       </div>
        {/* Botões para cadastrar despesas, excluir ou editar */}
        <div className="Button_Cad">
-       <button className="Button-Menu" onClick={handleShow}>
+       <button onClick={handleShow}>
             Adicionar
             <FaPlus />
           </button>
-          <button className="Button-Menu">
+          <button>
             Editar
             <FaPenToSquare />
           </button>
-          <button className="Button-Menu">
+          <button>
             Exportar
             <FaFileExport />
           </button>
@@ -208,8 +209,8 @@ function Hist_vendas() {
         show={showModal}
         onHide={handleClose}
       >
-        <div className="DivModalCont">
-          <div className="HeaderModal">
+        <div className="DivModal">
+          <div>
             <h1>Registrar Venda</h1>
           </div>
 
@@ -217,7 +218,7 @@ function Hist_vendas() {
             <input type="text" placeholder="Nome" />
             <input type="number" placeholder="Valor" />
             <input type="text" placeholder="Data" />
-            <div className="FooterButton">
+            <div>
               <button className="RegisterPr">Registrar</button>
               <button className="FecharPr" onClick={handleClose}>
                 Fechar

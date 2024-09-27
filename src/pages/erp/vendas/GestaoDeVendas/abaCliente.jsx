@@ -1,11 +1,13 @@
 import React from "react"
 
-function AbaProduto () {
+function AbaClientes () {
+
+
     return(
         <main>
-            Produto
+          
             </main>
     ) 
 }
 
-export default AbaProduto
+export default AbaClientes

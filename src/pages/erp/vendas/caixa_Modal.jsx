@@ -1,6 +1,6 @@
 import { Button, Modal, Form } from "react-bootstrap";
 import React, { useState } from "react";
-
+import "./caixa_Modal.css";
 
 function Caixa_Modal() {
 

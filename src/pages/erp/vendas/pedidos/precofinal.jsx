@@ -2,6 +2,7 @@ import { Button, Modal } from "react-bootstrap";
 import React, { useState } from "react";
 import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
 import { FaFileExport } from "react-icons/fa";
+import "./precofinal.css";
 
 
 const precos = [
@@ -32,24 +33,24 @@ function Precofinal() {
         <h3>Cálcular Preço Final</h3>
       </div>
 
-      <div className="Estoque_Cad">
+      <div>
         <div className="Button_Cad">
-          <button className="Button-Menu" onClick={handleShow}>
+          <button onClick={handleShow}>
             Adicionar
             <FaPlus />
           </button>
-          <button className="Button-Menu">
+          <button>
             Editar
             <FaPenToSquare />
           </button>
      
-          <button className="Button-Menu">
+          <button>
             Exportar
             <FaFileExport />
           </button>
         </div>
 
-        <div className="Estoque_List">
+        <div className="Preco_List">
           <table>
             <caption>Preço Final</caption>
             <thead>
@@ -94,8 +95,8 @@ function Precofinal() {
         show={showModal}
         onHide={handleClose}
       >
-        <div className="DivModalCont">
-          <div className="HeaderModal">
+        <div className="DivModal">
+          <div>
             <h1>Cálcular Preço Final</h1>
           </div>
 
@@ -122,7 +123,7 @@ function Precofinal() {
 
             <button type="button" onClick={addImposto} className="btn-adicionar-produto">Adicionar Imposto</button>
 
-            <div className="FooterButton">
+            <div>
               <button className="RegisterPr">Calcular</button>
               <button className="FecharPr" onClick={handleClose}>
                 Fechar

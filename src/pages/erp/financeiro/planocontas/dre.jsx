@@ -1,5 +1,6 @@
 import React from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import "./dre.css";
 
 const data = [
   {
@@ -60,7 +61,7 @@ function Dre() {
       <div className="main-title">
         <h3>Demonstrativo de resultado</h3>
       </div>
-      <div className="Razao_List">
+      <div className="Dre_List">
           <table>
             <caption>Relatório Demonstrativo de Resultado</caption>
             <thead>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import {  FaPlus } from "react-icons/fa6";
+import "./cadastronf.css";
 
 function Cad_nf() {
   const [formData, setFormData] = useState({
@@ -174,7 +175,7 @@ function Cad_nf() {
   };
 
   return (
-    <main className="main-container">
+    <main className="main-nota">
       <div className="main-title">
         <h3>Emissão de Nota Fiscal</h3>
       </div>
@@ -347,7 +348,7 @@ function Cad_nf() {
         />
       </div>
 
-      <div className="btn-div">
+      <div>
         <button type="button" className="btn-remover-produto" onClick={() => removeProduto(index)}>
           Remover Produto
         </button>
@@ -357,7 +358,7 @@ function Cad_nf() {
     </div>
   ))}
 
-<div className="btn-adicionar-container">
+<div>
   <button type="button" className="btn-adicionar-produto" onClick={addProduto}>
     Adicionar Produto <FaPlus />
   </button>

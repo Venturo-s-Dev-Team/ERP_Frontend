@@ -1,0 +1,33 @@
+/* Dre */
+
+.main-container {
+    height: 100dvh;
+    width: 100%;
+    padding: 20px 20px;
+    background-color: #ffffff;
+    }
+    
+.main-title {
+    display: flex;
+    justify-content: space-between;
+    color: #000000;
+    }
+
+.Dre_List {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    padding: 13px;
+    margin-top: 60px;
+    }
+    
+.dre-graficos {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    bottom: 10px;
+    width: 40%;
+    margin-top: 30px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 30%;
+    }

@@ -1,5 +1,6 @@
 import { Button, Modal, Form } from "react-bootstrap";
 import React, { useState } from "react";
+import "./caixa_Pagamento.css";
 
 const vendas = [
   { id: 1, name: "Bárbara", valor: 2143, condicao: "ATIVO" },

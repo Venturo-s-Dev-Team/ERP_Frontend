@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {FaSearch} from "react-icons/fa";
+import "./balancete.css";
 
 const tabelas = [
   { id: 1,  grupo: "Ativo", descricao: "Venda", conta: 111, saldo: 5656, entrada: 181, saida: 282  },
@@ -55,7 +56,7 @@ function Balancete() {
         <div className="input-wrapper">
 <FaSearch id="search-icon"/>
 <input placeholder="Digite aqui..."  
-className="input-razao" 
+className="input-balancete" 
 value={input} 
 onChange={(e) => handleChange(e.target.value)}/>
 
@@ -72,7 +73,7 @@ onChange={(e) => handleChange(e.target.value)}/>
       </div>
 
       {/* Search Bar termina */}
-      <div className="Razao_List">
+      <div className="Balancete_List">
           <table>
             <caption>Relatório Balancete</caption>
             <thead>

@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import * as XLSX from "xlsx";
-import "../../../App.css";
+import "./pedidosEmAberto.css";
 
 const Caixa = () => {
   const navigate = useNavigate();
@@ -128,14 +128,13 @@ const Caixa = () => {
     XLSX.writeFile(wb, `venda_${new Date().toLocaleDateString()}.xlsx`);
   };
 
-  
+ 
   return (
+
     <main className="main-container">
       <div className="main-title">
         <h3>Pedidos Em Aberto no Caixa</h3>
       </div>
-
-      
 
       <div className="Gestao-List">
         <table>

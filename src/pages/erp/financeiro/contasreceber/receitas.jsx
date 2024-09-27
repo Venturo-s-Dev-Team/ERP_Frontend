@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { FaFileExport } from "react-icons/fa";
 import * as XLSX from "xlsx";
+import "./receitas.css";
 
 function Receitas() {
   const navigate = useNavigate();
@@ -105,29 +106,29 @@ function Receitas() {
       </div>
 
       <div className="Button_Cad">
-        <button className="Button-Menu" onClick={handleShow}>
+        <button onClick={handleShow}>
           Adicionar
           <FaPlus />
         </button>
-        <button className="Button-Menu">
+        <button>
           Editar
           <FaPenToSquare />
         </button>
     
-        <button className="Button-Menu" onClick={exportToExcel}>
+        <button onClick={exportToExcel}>
           Exportar
           <FaFileExport />
         </button>
       </div>
 
-      <div className="box_fluxo">
-        <div className="saldo1-box">
+      <div className="box_receitas">
+        <div className="total-box">
           <h3>Total de receitas acumuladas</h3>
           <h1>R$ {totalReceitas.toFixed(2)}</h1> 
         </div>
       </div>
 
-      <div className="Despesas_List">
+      <div className="Receitas_List">
         <table>
           <caption>Registro de Receita</caption>
           <thead>
@@ -165,8 +166,8 @@ function Receitas() {
         show={showModal}
         onHide={handleClose}
       >
-        <div className="DivModalCont">
-          <div className="HeaderModal">
+        <div className="DivModal">
+          <div>
             <h1>Registrar Receita</h1>
           </div>
 
@@ -187,7 +188,7 @@ function Receitas() {
               onChange={handleChange}
               required
             />
-            <div className="FooterButton">
+            <div>
               <button className="RegisterPr" type="submit">
                 Registrar
               </button>
@@ -196,8 +197,6 @@ function Receitas() {
           </button>
             </div>
           </form>
-
-        
         </div>
       </Modal>
     </main>

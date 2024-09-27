@@ -5,6 +5,7 @@ import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { FaFileExport } from "react-icons/fa";
 import { jwtDecode } from "jwt-decode";
+import "./cad_imposto.css";
 
 function CadImposto() {
   const [showModal, setShowModal] = useState(false);
@@ -110,27 +111,26 @@ function CadImposto() {
         <h3>Cadastrar imposto</h3>
       </div>
 
-      <div className="Estoque_Cad">
+      <div>
         <div className="Button_Cad">
           <button
-            className="Button-Menu"
             onClick={handleShow}
             disabled={!userInfo}
           >
             Adicionar
             <FaPlus />
           </button>
-          <button className="Button-Menu" disabled={!userInfo}>
+          <button  disabled={!userInfo}>
             Editar
             <FaPenToSquare />
           </button>
-          <button className="Button-Menu" disabled={!userInfo}>
+          <button  disabled={!userInfo}>
             Exportar
             <FaFileExport />
           </button>
         </div>
 
-        <div className="Estoque_List">
+        <div className="Impostos_List">
           <table>
             <caption>Impostos Cadastrados</caption>
             <thead>
@@ -179,8 +179,8 @@ function CadImposto() {
         show={showModal}
         onHide={handleClose}
       >
-        <div className="DivModalCont">
-          <div className="HeaderModal">
+        <div className="DivModal">
+          <div>
             <h1>Cadastrar imposto</h1>
           </div>
 
@@ -218,7 +218,7 @@ function CadImposto() {
               <option value="Pis">Pis</option>
             </select>
 
-            <div className="FooterButton">
+            <div>
               <button type="submit" className="RegisterPr">
                 Cadastrar
               </button>

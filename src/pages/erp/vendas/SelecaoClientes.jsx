@@ -6,12 +6,12 @@ import {
   FaFileExport,
   FaTrash,
 } from "react-icons/fa6";
-import "../../../App.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { Button, Modal } from "react-bootstrap";
 import InputMask from "react-input-mask";
+import "./SelecaoClientes.css";
 
 
 function SelecaoCliente() {

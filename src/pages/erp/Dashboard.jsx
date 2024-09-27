@@ -20,7 +20,7 @@ import {
   LineChart,
   Line,
 } from "recharts";
-import "../../App.css";
+import "./Dashboard.css";
 
 // Componentes XAxis e YAxis modificados para usar parâmetros padrão em vez de defaultProps
 const XAxisWithDefault = (props) => <XAxis {...props} />;

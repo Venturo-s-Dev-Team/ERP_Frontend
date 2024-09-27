@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import {FaSearch} from "react-icons/fa";
+import "./razao.css";
 
 function razao() {
   const [input, setInput] = useState("");

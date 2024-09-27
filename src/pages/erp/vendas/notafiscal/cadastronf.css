@@ -1,0 +1,414 @@
+/* Cadastro Nota Fiscal */
+
+.main-nota {
+    height: 100dvh;
+    width: 100%;
+    padding: 20px 20px;
+    background-color: #ffffff;
+    }
+    
+.main-title {
+    display: flex;
+    justify-content: space-between;
+    color: #000000;
+    }
+
+.formulario{
+    margin-top: 10px;
+    }
+        
+.emitente{
+    border-color: #000;
+    border-width: 1px;
+    border-style: solid;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    padding-bottom: 20px;
+    padding-left: 40px;
+    box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+    }
+    
+.mini-titulo-nf{
+    background-color: #ffffff;
+    width: 90px;
+    text-align: center;
+    margin-top: -18px;
+    }
+
+.emitente-novo{
+    display: flex;
+    align-items: center; 
+    gap: 10px;
+    }
+    
+.razao-social{
+    margin-top: 25px;
+    }
+
+.letras-nf{
+    font-weight: 400;
+    }
+
+.input-rs{
+    margin-left: 10px;
+    width: 500px;
+    height: 25px;
+    padding: 5px;
+    border-radius: 2px;
+    }
+
+.cpf{
+    margin-left: 80px;
+    margin-top: 25px;
+    }
+
+.input-cpf{
+    margin-left: 10px;
+    width: 380px;
+    height: 25px;
+    padding: 5px;
+    border-radius: 2px;
+    }
+
+.endereço{
+    border-color: #000;
+    border-width: 1px;
+    border-style: solid;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    padding-bottom: 20px;
+    margin-top: 20px;
+    padding-left: 40px;
+    box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+    }
+
+ .endereço-novo1{
+    display: flex;
+    align-items: center; 
+    gap: 10px;
+    }
+
+.logradouro{
+    margin-top: 15px;
+    }
+
+.input-logra{
+    margin-left: 10px;
+    width: 460px;
+    height: 25px;
+    padding: 5px;
+    border-radius: 2px;
+    }
+      
+.numero{
+    margin-left: 20px;
+    margin-top: 15px;
+    }
+
+.input-numero{
+    margin-left: 10px;
+    width: 160px;
+    height: 25px;
+    padding: 5px;
+    border-radius: 2px;
+    }
+    
+.complemento{
+    margin-left: 30px;
+    margin-top: 15px;
+    }
+    
+.input-complemento{
+    margin-left: 10px;
+    width: 200px;
+    height: 25px;
+    padding: 5px;
+    border-radius: 2px;
+    }
+
+.endereço-novo2{
+    display: flex;
+    align-items: center; 
+    gap: 10px;
+    }
+    
+.cidade{
+    margin-top: 20px;
+    }
+   
+.input-cidade{
+    margin-left: 10px;
+    width: 200px;
+    height: 25px;
+    padding: 5px;
+    border-radius: 2px;
+    } 
+
+.estado{
+    margin-left: 30px;
+    margin-top: 18px;
+    }
+     
+.input-estado{
+    margin-left: 10px;
+    width: 200px;
+    height: 25px;
+    padding: 5px;
+    border-radius: 2px;
+    } 
+    
+.tipo{
+    margin-left: 60px;
+    margin-top: 13px;
+    }
+    
+.select-tipo{
+    background-color: #ffffff;
+    margin-left: 10px;
+    height: 25px;
+    border-radius: 2px;
+    width: 200px;
+    border-color: rgba(0, 0, 0, 0.523);
+    border-style: solid;
+    border-width: 1px;
+    }
+    
+.produto-geral{
+    border-color: #000;
+    border-width: 1px;
+    border-style: solid;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    padding-bottom: 20px;
+    margin-top: 20px;
+    padding-left: 40px;
+    box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+    }
+
+.produto-novo{
+    display: flex;
+    align-items: center; 
+    gap: 10px;
+    }
+    
+.frete{
+    margin-top: 10px;
+    }
+    
+.input-frete{
+    margin-left: 10px;
+    width: 200px;
+    height: 25px;
+    padding: 5px;
+    border-radius: 2px;
+    }
+    
+.desconto{
+    margin-left: 20px;
+    margin-top: 11px;
+    }
+    
+.input-desconto{
+    margin-left: 10px;
+    width: 200px;
+    height: 25px;
+    padding: 5px;
+    border-radius: 2px;
+    }
+    
+.código{
+    margin-left: 40px;
+    margin-top: 11px;
+    }
+
+.input-código{
+    margin-left: 10px;
+    width: 200px;
+    height: 25px;
+    padding: 5px;
+    border-radius: 2px;
+    }
+    
+.produto{
+    margin-top: 20px;
+    }
+    
+.produto-btn-novo{
+    display: flex;
+    align-items: center; 
+    gap: 10px;
+    }
+
+.input-produto{ 
+    margin-left: 10px;
+    width: 200px;
+    height: 25px;
+    padding: 5px;
+    border-radius: 2px;
+    }
+    
+.preco{
+    margin-left: 30px;
+    margin-top: 0px;
+    }
+
+.input-preco{
+    width: 200px;
+    height: 25px; 
+    padding: 5px;
+    border-radius: 2px;
+    margin-left: 10px;
+    }
+    
+.btn-remover-produto{
+    border-radius:8px;
+    width: 150px;
+    height: 35px;
+    background-color: rgba(255, 0, 0, 0.603);
+    border-color:rgba(255, 0, 0, 0.19) ;
+    border-width: 1;
+    border-style: solid;
+    color: white;
+    margin-left: 10px;
+    margin-top: -18px;
+    }
+    
+.btn-remover-produto:hover {
+    background-color: rgba(255, 0, 0, 0.427);
+    }
+    
+.btn-adicionar-produto{
+    border-radius:8px;
+    margin-top: 10px;
+    width: 200px;
+    height: 35px;
+    background-color: #0a5583cf;
+    border-color: #0a5583cf ;
+    border-width: 1;
+    border-style: solid;
+    color: white;
+    }
+    
+.btn-adicionar-produto:hover{
+    background-color: #0a5583f4 ;
+    }
+    
+.impostos{
+    border-color: #000;
+    border-width: 1px;
+    border-style: solid;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    padding-bottom: 20px;
+    margin-top: 20px;
+    padding-left: 40px;
+    box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+    }
+    
+.mini-titulo-nf-especial{
+    background-color: #ffffff;
+    width: 160px;
+    text-align: center;
+    margin-top: -18px;
+    }
+    
+.impostos-novo{
+    display: flex;
+    align-items: center; 
+    gap: 10px;
+    }
+    
+.icms{
+    margin-top: 10px;
+    }
+    
+.input-icms{
+    margin-left: 10px;
+    width: 200px;
+    height: 25px;
+    padding: 5px;
+    border-radius: 2px;
+    }
+    
+.ipi{
+    margin-left: 50px;
+    margin-top: 12px;
+    }
+    
+.input-ipi{
+    margin-left: 10px;
+    width: 200px;
+    height: 25px;
+    padding: 5px;
+    border-radius: 2px;
+    }
+    
+.resumo{
+    border-color: #000;
+    border-width: 1px;
+    border-style: solid;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    padding-bottom: 20px;
+    margin-top: 20px;
+    padding-left: 40px;
+    box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+    }
+    
+.resumo-novo{
+    display: flex;
+    align-items: center; 
+    gap: 10px;
+    }
+    
+.preco-bruto{
+    margin-top: 10px;
+    }
+    
+.input-preco-bruto{
+    margin-left: 10px;
+    width: 200px;
+    height: 25px;
+    padding: 5px;
+    border-radius: 2px;
+    }
+    
+.preco-final{
+    margin-left: 30px;
+    margin-top: 12px;
+    }
+    
+.input-preco-final{
+    margin-left: 10px;
+    width: 200px;
+    height: 25px;
+    padding: 5px;
+    border-radius: 2px;
+    }
+    
+.emitir{
+    border-radius:8px;
+    margin-top: 10px;
+    width: 200px;
+    height: 35px;
+    background-color:  #0a5583f4;
+    border-color: #0a5583cf ;
+    border-width: 1;
+    border-style: solid;
+    color: white;
+    }
+  
+.emitir:hover{
+    background-color: #0a5583cf ;
+    }
+    

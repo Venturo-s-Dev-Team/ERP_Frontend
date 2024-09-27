@@ -4,6 +4,7 @@ import { Modal } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import "./fluxodecaixa.css";
 
 function FluxoCaixa() {
   const navigate = useNavigate();
@@ -133,7 +134,7 @@ const calcularSaldoDisponivel = () => {
         <h3>Fluxo de Caixa</h3>
       </div>
 
-      <div className="Button_Cad">
+      <div>
         <br />
       </div>
 
@@ -148,7 +149,7 @@ const calcularSaldoDisponivel = () => {
         </div>
       </div>
 
-      <div className="Despesas_List">
+      <div className="Fluxos_List">
         <table>
           <caption>Fluxo de Caixa - Diário</caption>
           <thead>
@@ -168,46 +169,6 @@ const calcularSaldoDisponivel = () => {
             ))}
           </tbody>
         </table>
-      </div>
-
-      <div>
-        <Modal
-          style={{
-            position: "fixed",
-            top: "50%",
-            bottom: 0,
-            left: "50%",
-            right: 0,
-            zIndex: 1000,
-            width: "70%",
-            height: "73%",
-            borderRadius: 20,
-            transform: "translate(-50%, -50%)",
-            background: "white",
-            boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
-          }}
-          show={showModal}
-          onHide={fecharModal}
-        >
-          <div>
-            <div className="DivModalDesp">
-              <div className="HeaderModal">
-                <h1>Registrar Fluxo de Caixa</h1>
-              </div>
-              <form>
-                <input type="text" placeholder="Descrição" />
-                <input type="number" placeholder="Entrada" />
-                <input type="number" placeholder="Saída" />
-                <div className="FooterButton">
-                  <button className="RegisterPr">Registrar</button>
-                  <button className="FecharPr" onClick={fecharModal}>
-                    Fechar
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </Modal>
       </div>
     </main>
   );

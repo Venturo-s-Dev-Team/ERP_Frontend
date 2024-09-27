@@ -2,12 +2,12 @@ import { Button, Modal } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
 import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
 import { FaFileExport } from "react-icons/fa";
-import "../../../App.css";
 import VenturoImg from "../../../images/ChatBotAssist.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import * as XLSX from "xlsx"; // Adiciona a importação da biblioteca xlsx
+import "./componenteEstoque.css";
 
 function SelecaoDoProduto() {
   const navigate = useNavigate();
@@ -138,12 +138,12 @@ function SelecaoDoProduto() {
             boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
           }} show={showModalInfo} onHide={handleCloseInfo}>
           {selectedProduct && (
-            <div className="DivModalCont">
-            <div className="HeaderModal">
+            <div className="DivModal">
+            <div>
               <h1>Informações do Produto</h1>
             </div>
             <div className="AlinhandoInfos">
-            <div className="CorpoEtoque">
+            <div>
             <h3>Nome: {selectedProduct.Nome}</h3>
             <p>Fornecedor: {selectedProduct.Fornecedor}</p>
             <p>Quantidade: {selectedProduct.Quantidade}</p>

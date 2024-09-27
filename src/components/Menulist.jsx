@@ -87,6 +87,12 @@ const MenuList = ({ darkTheme }) => {
       label: 'Perfil',
       onClick: () => handleNavigation("/Perfil"),
     },
+     !isRestricted && !isSuperAdmin && {
+      key: "logs_empresa",
+      icon: <RiContactsBook3Fill />,
+      label: "Logs",
+      onClick: () => handleNavigation("/logs_empresa"),
+    },
     !isRestricted && !isSuperAdmin && {
       key: 'funcionarios',
       icon: <BsPeopleFill />,

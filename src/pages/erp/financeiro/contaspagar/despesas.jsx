@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaPenToSquare, FaPlus, FaTrashCan, FaFileExport } from "react-icons/fa6";
 import * as XLSX from 'xlsx'; // Importa a biblioteca xlsx
+import "./despesas.css";
 
 import {
   PieChart,
@@ -298,16 +299,16 @@ function Despesas() {
 
       {/* Botões para cadastrar despesas, excluir ou editar */}
       <div className="Button_Cad">
-        <button className="Button-Menu" onClick={abrirModal}>
+        <button onClick={abrirModal}>
           Adicionar
           <FaPlus />
         </button>
-        <button className="Button-Menu">
+        <button>
           Editar
           <FaPenToSquare />
         </button>
 
-        <button className="Button-Menu" onClick={exportToExcel}>
+        <button onClick={exportToExcel}>
           Exportar
           <FaFileExport />
         </button>
@@ -431,8 +432,8 @@ function Despesas() {
           show={showModal}
           onHide={fecharModal}
         >
-          <div className="DivModalCont">
-            <div className="HeaderModal">
+          <div className="DivModal">
+            <div>
               <h1>Registrar Despesas</h1>
             </div>
             <form onSubmit={handleSubmitDespesa}>
@@ -454,7 +455,7 @@ function Despesas() {
                 onChange={(e) => setDataExpiracao(e.target.value)}
                 value={dataExpiracao}
               />
-              <div className="FooterButton">
+              <div>
                 <button type="submit" className="RegisterPr">
                   Registrar
                 </button>

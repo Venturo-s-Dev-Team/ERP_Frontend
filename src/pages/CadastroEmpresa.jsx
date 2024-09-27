@@ -4,7 +4,7 @@ import axios from 'axios';
 import "../styles/CadastroEmpresa.css";
 import { jwtDecode } from "jwt-decode";
 import InputMask from 'react-input-mask';
-import "../App.css";
+import "./cadastroEmpresa.css";
 
 
 function CadastroEmpresa() {

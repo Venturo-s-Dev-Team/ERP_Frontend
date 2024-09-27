@@ -1,12 +1,12 @@
 import { Button, Modal, Form } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
 import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
-import "../../../../App.css";
 import { useNavigate } from "react-router-dom";
 import { FaFileExport } from "react-icons/fa";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import InputMask from "react-input-mask";
+import "./fornecedores.css";
 
 function Fornecedores() {
   const navigate = useNavigate();
@@ -15,6 +15,7 @@ function Fornecedores() {
   const [Fornecedores, setFornecedores] = useState([]);
   const [showModalFornecedores, setShowModalFornecedores] = useState(false);
   const [SelectedFornecedor, setSelectedFornecedor] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para armazenar o termo de pesquisa
 
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
@@ -63,6 +64,19 @@ function Fornecedores() {
     }
   };
 
+      // Filtro dos produtos
+      const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
+      };
+      
+      const filteredFornecedores = Fornecedores.filter(
+        (fornecedores =>
+          fornecedores.razao_social.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          fornecedores.cpf_cnpj.toLowerCase().includes(searchTerm.toLowerCase())
+      ));
+  
+
+
   const [formData, setFormData] = useState({
     id_EmpresaDb: "",
     cpf_cnpj: "",
@@ -82,6 +96,45 @@ function Fornecedores() {
     site: "",
     observacoes: "",
   });
+
+  const buscarCep = async (cep) => {
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await response.json();
+
+      if (!data.erro) {
+        // Atualiza os campos com os valores retornados da API
+        setFormData({
+          ...formData,
+          logradouro: data.logradouro,
+          bairro: data.bairro,
+          cidade: data.localidade,
+          uf: data.uf,
+        });
+
+        console.log(response)
+      } else {
+        alert("CEP não encontrado.");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar CEP:", error);
+      alert("Erro ao buscar o CEP.");
+    }
+  };
+
+  // Função para lidar com o evento de perder o foco (onBlur) no campo CEP
+  const handleCepBlur = (e) => {
+    const cep = e.target.value.replace(/\D/g, ""); // Remove qualquer caractere não numérico
+
+    if (cep.length === 8) {
+      // Chama a função de busca do CEP se o formato for válido
+      buscarCep(cep);
+      console.log(cep)
+    } else {
+      alert("Por favor, insira um CEP válido.");
+    }
+  };
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -125,24 +178,36 @@ function Fornecedores() {
         <h3> Fornecedores</h3>
       </div>
 
-      <div className="Estoque_Cad">
+      <div>
         <div className="Button_Cad">
-          <button className="Button-Menu" onClick={handleShow}>
+          <button  onClick={handleShow}>
             Adicionar
             <FaPlus />
           </button>
-          <button className="Button-Menu">
+          <button>
             Editar
             <FaPenToSquare />
           </button>
 
-          <button className="Button-Menu">
+          <button>
             Exportar
             <FaFileExport />
           </button>
         </div>
 
-        <div className="Estoque_List">
+        
+        {/* Input de pesquisa */}
+        <div>
+          <input
+            type="text"
+            placeholder="Pesquisar fornecedor..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="SearchInput"
+          />
+        </div>
+
+        <div className="Fornecedores_List">
           <table>
             <caption>Listagem de fornecedores</caption>
             <thead>
@@ -153,7 +218,7 @@ function Fornecedores() {
               </tr>
             </thead>
             <tbody>
-              {Fornecedores.map((Fornecedor) => (
+              {filteredFornecedores.map((Fornecedor) => (
                 <tr key={Fornecedor.id}>
                   <td>{Fornecedor.razao_social}</td>
                   <td>{Fornecedor.cpf_cnpj}</td>
@@ -193,8 +258,8 @@ function Fornecedores() {
         show={showModal}
         onHide={handleClose}
       >
-        <div className="DivModalCont">
-          <div className="HeaderModal">
+        <div className="DivModal">
+          <div>
             <h1>Registrar Fornecedor</h1>
           </div>
           <form onSubmit={handleSubmit}>
@@ -244,6 +309,7 @@ function Fornecedores() {
               placeholder="CEP"
               value={formData.cep}
               onChange={handleChange}
+              onBlur={handleCepBlur}
               required
             />
 
@@ -299,7 +365,6 @@ function Fornecedores() {
               placeholder="E-mail"
               value={formData.email}
               onChange={handleChange}
-              className="input-email"
               required
             />
 
@@ -347,7 +412,7 @@ function Fornecedores() {
               placeholder="Observações"
             />
 
-            <div className="FooterButton">
+            <div>
               <button type="submit" className="RegisterPr">
                 Registrar
               </button>

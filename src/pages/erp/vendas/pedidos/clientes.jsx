@@ -6,12 +6,12 @@ import {
   FaFileExport,
   FaTrash,
 } from "react-icons/fa6";
-import "../../../../App.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { Button, Modal } from "react-bootstrap";
 import InputMask from "react-input-mask";
+import "./clientes.css";
 
 function Clientes() {
   const navigate = useNavigate();
@@ -140,6 +140,45 @@ function Clientes() {
     }));
   };
 
+  // Função para buscar o CEP na API ViaCEP
+  const buscarCep = async (cep) => {
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await response.json();
+
+      if (!data.erro) {
+        // Atualiza os campos com os valores retornados da API
+        setFormData({
+          ...formData,
+          logradouro: data.logradouro,
+          bairro: data.bairro,
+          cidade: data.localidade,
+          uf: data.uf,
+        });
+
+        console.log(response)
+      } else {
+        alert("CEP não encontrado.");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar CEP:", error);
+      alert("Erro ao buscar o CEP.");
+    }
+  };
+
+  // Função para lidar com o evento de perder o foco (onBlur) no campo CEP
+  const handleCepBlur = (e) => {
+    const cep = e.target.value.replace(/\D/g, ""); // Remove qualquer caractere não numérico
+
+    if (cep.length === 8) {
+      // Chama a função de busca do CEP se o formato for válido
+      buscarCep(cep);
+      console.log(cep)
+    } else {
+      alert("Por favor, insira um CEP válido.");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -205,16 +244,16 @@ function Clientes() {
 
       {/* Botões do header */}
       <div className="Button_Cad">
-        <button className="Button-Menu" onClick={handleShow}>
+        <button  onClick={handleShow}>
           Adicionar
           <FaPlus />
         </button>
-        <button className="Button-Menu">
+        <button >
           Editar
           <FaPenToSquare />
         </button>
     
-        <button className="Button-Menu">
+        <button >
           Exportar
           <FaFileExport />
         </button>
@@ -269,9 +308,9 @@ function Clientes() {
         show={showModal}
         onHide={handleClose}
       >
-        <div className="DivModalCont">
+        <div className="DivModal">
           <h1>Selecione o Tipo de Cliente</h1>
-          <div className="select-form-type">
+          <div>
             <button
               className="input-selecionar-clientes1"
               onClick={() => handleFormSelection("CPF")}
@@ -311,7 +350,7 @@ function Clientes() {
           show={showModal}
           onHide={handleClose}
         >
-          <div className="DivModalCont2">
+          <div className="DivModal2">
             <h1>Registrar Cliente (CNPJ)</h1>
             <form onSubmit={handleSubmit}>
               <input
@@ -356,6 +395,7 @@ function Clientes() {
                 placeholder="CEP"
                 value={formData.cep}
                 onChange={handleChange}
+                onBlur={handleCepBlur}
                 required
               />
               <input
@@ -405,7 +445,6 @@ function Clientes() {
                 placeholder="E-mail"
                 value={formData.email}
                 onChange={handleChange}
-                className="input-email"
                 required
               />
               <InputMask
@@ -478,7 +517,7 @@ function Clientes() {
                 name="observacoes"
                 value={formData.observacoes}
                 onChange={handleChange}
-                className="observacoes2"
+                className="observacoes"
                 placeholder="Observações"
               />
 
@@ -508,7 +547,7 @@ function Clientes() {
                 </>
               )}
 
-              <div className="FooterButton">
+              <div>
                 <button type="submit" className="RegisterPr">
                   Registrar
                 </button>
@@ -544,7 +583,7 @@ function Clientes() {
           show={showModal}
           onHide={handleClose}
         >
-          <div className="DivModalCont">
+          <div className="DivModal">
             <h1>Registrar Cliente (CPF)</h1>
             <form onSubmit={handleSubmit}>
               <input
@@ -579,6 +618,7 @@ function Clientes() {
                 placeholder="CEP"
                 value={formData.cep}
                 onChange={handleChange}
+                onBlur={handleCepBlur}
                 required
               />
               <input
@@ -666,15 +706,15 @@ function Clientes() {
             <div>
             <textarea
               name="observacoes"
-              className="observacoes"
               value={formData.observacoes}
+              className="observacoes"
               onChange={handleChange}
               placeholder="Observações"
             />
               </div>
             
              
-              <div className="FooterButton">
+              <div>
                 <button type="submit" className="RegisterPr">
                   Registrar
                 </button>
