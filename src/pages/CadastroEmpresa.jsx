@@ -49,6 +49,44 @@ function CadastroEmpresa() {
     CertificadoMEI: null,
   });
 
+  // Busca do CEP
+  const buscarCep = async (cep) => {
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await response.json();
+
+      if (!data.erro) {
+        // Atualiza os campos com os valores retornados da API
+        setFormData({
+          ...formData,
+          Logradouro: data.logradouro,
+          Municipio: data.localidade,
+          UF: data.uf,
+        });
+
+        console.log(response)
+      } else {
+        alert("CEP não encontrado.");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar CEP:", error);
+      alert("Erro ao buscar o CEP.");
+    }
+  };
+
+  // Função para lidar com o evento de perder o foco (onBlur) no campo CEP
+  const handleCepBlur = (e) => {
+    const cep = e.target.value.replace(/\D/g, ""); // Remove qualquer caractere não numérico
+
+    if (cep.length === 8) {
+      // Chama a função de busca do CEP se o formato for válido
+      buscarCep(cep);
+      console.log(cep)
+    } else {
+      alert("Por favor, insira um CEP válido.");
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -181,6 +219,7 @@ function CadastroEmpresa() {
                   name="CEP"
                   value={formData.CEP}
                   onChange={handleChange}
+                  onBlur={handleCepBlur}
                   className="input-cep"
                   required
                 />

@@ -185,8 +185,8 @@ const GestaoVendas = () => {
           </thead>
           <tbody>
             {vendas.map((venda) => (
-              <tr key={venda.id_pedido}>
-                <td>{venda.id_pedido}</td>
+              <tr key={venda.id_produto}>
+                <td>{venda.id_produto}</td>
                 <td>{venda.nome_cliente}</td>
                 <td>{venda.total}</td>
                 <td>
@@ -234,7 +234,7 @@ const GestaoVendas = () => {
                 Nome da Empresa: {selectedVenda.razaoSocial}
               </h4>
               <div className="textos-modal">
-                <p>Código da Venda: {selectedVenda.id}</p>
+                <p>Código da Venda: {selectedVenda.id_prrodutoroduto}</p>
                 <p>Quantidade: {selectedVenda.quantidade}</p>
                 <p>Desconto: {selectedVenda.desconto}</p>
                 <p>Vendedor: {selectedVenda.vendedor}</p>

@@ -45,21 +45,15 @@ function Abas() {
   const [desconto, setDesconto] = useState(0);
   const [lineColors, setLineColors] = useState(["#ccc", "#ccc"]);
 
-  const handleClientSelect = (cliente) => {
-    const isSelected = selectedClient && selectedClient.id === cliente.id;
-    setSelectedClient(isSelected ? null : cliente);
-    
-    setLineColors([
-      isSelected ? "#ccc" : "#0a5483",
-      lineColors[1]
-    ]);
-  };
-
   const handleProductSelect = (product) => {
     const isSelected = selectedProducts.some((p) => p.Codigo === product.Codigo);
-    setSelectedProducts((prev) =>
-      isSelected ? prev.filter((p) => p.Codigo !== product.Codigo) : [...prev, product]
-    );
+    if (isSelected) {
+      // Remove o produto da seleção
+      setSelectedProducts((prev) => prev.filter((p) => p.Codigo !== product.Codigo));
+    } else {
+      // Adiciona o produto à seleção com quantidade 1
+      setSelectedProducts((prev) => [...prev, { ...product, quantidade: 1 }]);
+    }
 
     setLineColors([
       lineColors[0],
@@ -67,15 +61,36 @@ function Abas() {
     ]);
   };
 
+  const handleQuantityChange = (codigo, quantidade) => {
+    setSelectedProducts((prev) =>
+      prev.map((product) =>
+        product.Codigo === codigo ? { ...product, quantidade: parseInt(quantidade) } : product
+      )
+    );
+  };
+
+  const handleClientSelect = (cliente) => {
+    // Permite selecionar ou desmarcar o cliente, mas sem alertas
+    const isSelected = selectedClient && selectedClient.id === cliente.id;
+    setSelectedClient(isSelected ? null : cliente);
+  
+    setLineColors([
+      isSelected ? "#ccc" : "#0a5483",
+      lineColors[1]
+    ]);
+  };
+  
   const canGoToNextPage = () => {
     if (registroAtivo === "clientes") {
-      return selectedClient !== null;
+      // Verifica se o cliente está selecionado e se é ativo
+      return selectedClient !== null && selectedClient.ativo === "SIM";
     }
     if (registroAtivo === "estoque") {
       return selectedProducts.length > 0;
     }
     return false;
-  };
+  };  
+  
 
 
     // INFORMAÇÕES DOS CLIENTES
@@ -116,10 +131,11 @@ function Abas() {
     // OUTRAS FUNÇÕES
 
       // Função para calcular o valor total dos produtos
-  const calcularValorTotal = () => {
-    const total = selectedProducts.reduce((acc, product) => acc + parseFloat(product.ValorUnitario), 0);
-    return total-(total*(desconto/100));
-  };
+      const calcularValorTotal = () => {
+        const total = selectedProducts.reduce((acc, product) => acc + (parseFloat(product.ValorUnitario) * product.quantidade), 0);
+        return total - (total * (desconto / 100));
+      };
+    
   
 
   const enviarPedido = async () => {
@@ -142,12 +158,8 @@ function Abas() {
       const response = await axios.post(`/api/ServerTwo/registrarPedido/${id}`, dadosVenda, {
         withCredentials: true,
       });
-      if (response.status === 200) {
         alert("Venda registrada com sucesso!");
-        // Resetar estados ou redirecionar após o sucesso
-      } else {
-        console.error("Erro ao registrar venda: ", response.data);
-      }
+        navigate("/gestaopedidos")
     } catch (error) {
       console.error("Erro ao enviar os dados da venda: ", error);
       alert("Erro ao registrar a venda.");
@@ -166,7 +178,7 @@ function Abas() {
                   <tr>
                     <th>Nome</th>
                     <th>CNPJ/CPF</th>
-                    <th>Status</th>
+                    <th>Ativo</th>
                     <th>Selecionar</th>
                   </tr>
                 </thead>
@@ -231,6 +243,15 @@ function Abas() {
                           checked={selectedProducts.some((p) => p.Codigo === product.Codigo)}
                           onChange={() => handleProductSelect(product)}
                         />
+                        {selectedProducts.some((p) => p.Codigo === product.Codigo) && (
+                          <input
+                            type="number"
+                            min="1"
+                            max={product.Quantidade}
+                            defaultValue={1}
+                            onChange={(e) => handleQuantityChange(product.Codigo, e.target.value)}
+                          />
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -265,12 +286,11 @@ function Abas() {
                 <ul className="produtos-list">
                   {selectedProducts.map((product) => (
                     <li key={product.Codigo}>
-                      Nome: {product.Nome} | Valor Unitário: R$ {product.ValorUnitario}
-                    </li>
+                    {product.Nome} - {product.quantidade} x R$ {product.ValorUnitario} = R$ {(product.ValorUnitario * product.quantidade).toFixed(2)}
+                  </li>
                   ))}
                 </ul>
-                <h4>Valor total:</h4>
-                <p>R$ {calcularValorTotal().toFixed(2)}</p>
+                <h4>Total: R$ {calcularValorTotal().toFixed(2)}</h4>
                 <div className="desconto-container">
                   <label htmlFor="desconto">Desconto:</label>
                   <input

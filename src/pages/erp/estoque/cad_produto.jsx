@@ -25,7 +25,7 @@ function RegistroProduto() {
     Fornecedor: "",
     Tamanho: "",
     Imagem: null,
-    Estoque: "",
+    Estoque: "0",
     autorizados: [], // Inicializando como array
   });
 
@@ -50,7 +50,7 @@ function RegistroProduto() {
       Fornecedor: product.Fornecedor,
       Tamanho: product.Tamanho,
       Imagem: null,
-      Estoque: "",
+      Estoque: "0",
       autorizados: [], // Adicionar se necessário
     });
     setShowModalEdit(true);
