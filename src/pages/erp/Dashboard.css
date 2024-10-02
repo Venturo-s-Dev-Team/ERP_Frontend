@@ -1,17 +1,10 @@
 html, body {
     height: 100%;
-    width: 100%;
     color: #000000;
     font-family: 'Montserrat', sans-serif; 
   }
 
-  .main-container {
-    height: 100dvh;
-    width: 100%;
-    padding: 20px 20px;
-    background-color: #ffffff;
-    }
-    
+
   .icon {
     vertical-align: middle;
     line-height: 1px;

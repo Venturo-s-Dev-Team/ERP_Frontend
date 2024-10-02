@@ -237,6 +237,7 @@ function Abas() {
                       <td>{product.Quantidade}</td>
                       <td>R$ {product.ValorUnitario}</td>
                       <td>
+                        <div className="alinhandoInputsTab">
                         <input
                           type="checkbox"
                           className="custom-checkbox"
@@ -245,14 +246,23 @@ function Abas() {
                         />
                         {selectedProducts.some((p) => p.Codigo === product.Codigo) && (
                           <input
-                            type="number"
-                            min="1"
-                            max={product.Quantidade}
-                            defaultValue={1}
-                            onChange={(e) => handleQuantityChange(product.Codigo, e.target.value)}
-                          />
+                          type="number"
+                          min="1"
+                          max={Math.min(product.Quantidade)}
+                          defaultValue={1}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            // Permite apenas números ou deixa em branco
+                            if (value === '' || /^\d+$/.test(value)) {
+                              const quantity = Math.max(1, Math.min(Math.min(product.Quantidade, 10), Number(value))); // Limita entre 1 e o menor valor entre 10 e product.Quantidade
+                              handleQuantityChange(product.Codigo, quantity);
+                            }
+                          }}
+                        />
                         )}
+                           </div>
                       </td>
+                      
                     </tr>
                   ))}
                 </tbody>

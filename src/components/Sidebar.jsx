@@ -6,6 +6,7 @@ import { MenuUnfoldOutlined, MenuFoldOutlined } from "@ant-design/icons";
 import LogoWhite from "../images/LogoVenturoV.png"
 import LogoBlack from "../images/LogoVenturoBlackV.png"
 import FooterComponent from "./Footer.jsx"
+import "./Sidebar.css";
 
 const { Header, Sider } = Layout;
 function Sidebar({ openSidebarToggle, OpenSidebar }) {
@@ -30,17 +31,14 @@ function Sidebar({ openSidebarToggle, OpenSidebar }) {
   );
   
   return (
-    <aside>
-      <Layout>
-        <Sider
+    <aside className="aside">
+      <Layout className="sider">
+        <Sider 
           collapsed={collapsed}
           trigger={null}
           theme={darkTheme ? "dark" : "light"}
-          className="menu"
         >
-          <div className="titulo-box">
             <Logo/>
-          </div>
           <MenuList darkTheme={darkTheme} />
           <ToggleThemeButton darkTheme={darkTheme} toggleTheme={toggleTheme} />
         </Sider>

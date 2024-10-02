@@ -263,7 +263,21 @@ function RegistroProduto() {
                   <td>{product.Codigo}</td>
                   <td>{product.Nome}</td>
                   <td>{product.Fornecedor}</td>
-                  <td>{product.Quantidade}</td>
+                  {/* Lógica para colorir a quantidade */}
+                  <td
+                    style={{
+                      color:
+                        product.Quantidade === 0
+                          ? "red"
+                          : product.Quantidade <= 5
+                          ? "#e0861e"
+                          : product.Quantidade <= 10
+                          ? "#e0bf1e"
+                          : "#6bbf1e", // Cor padrão se a quantidade for maior que 10
+                    }}
+                  >
+                    {product.Quantidade}
+                  </td>
                   <td>R$ {product.ValorUnitario}</td>
                   <td>
                     <button
@@ -274,14 +288,14 @@ function RegistroProduto() {
                     </button>
                   </td>
                   <td>
-                        <label className="custom-radio">
+                    <label className="custom-radio">
                       <input
                         type="radio"
                         name="selectedProduct"
                         value={product.id}
                         onChange={() => setSelectedProduct(product)}
                       />
-                      <span className="radio-checkmark"></span>     
+                      <span className="radio-checkmark"></span>
                     </label>
                   </td>
                 </tr>

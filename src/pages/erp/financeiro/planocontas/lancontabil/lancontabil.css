@@ -1,3 +1,10 @@
+
+.main-lanContabil{
+    padding: 20px;
+    overflow: scroll;
+    max-height: 100vh;
+}
+
 .lancontabil-form input[type="text"],
 .lancontabil-form input[type="number"],
 .lancontabil-form input[type="date"] {
@@ -36,7 +43,7 @@
 .Movimento{
     display: flex;
     flex-direction: column;
-    height: 220px;
+    max-height: 300px;
     width: 100%;
     align-items: flex-start;
     border: 1px solid black;
@@ -68,6 +75,7 @@ border-right: black 1px solid;
     align-items: center;
     gap: 100px;
     padding: 15px;
+    justify-content: center;
 }
 
 .LoteMovi{
@@ -81,9 +89,11 @@ border-right: black 1px solid;
 .UniNgc{
     align-items: center;
     flex-direction: row;
-    width: 300px;
+    width: 400px;
 display: flex;
-gap: 20px;
+gap: 12px;
+align-items: center;
+justify-content: center;
 
 }
 
@@ -194,7 +204,7 @@ border-right: black 1px solid;
 .HistoricoEmp{
     display: flex;
     flex-direction: column;
-    height: 200px;
+    max-height: 400px;
     margin-bottom: 20px;
     width: 100%;
     align-items: flex-start;

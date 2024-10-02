@@ -112,7 +112,7 @@ const Caixa_Saida = () => {
                         </div>
                     ))
             ) : (
-                <div>Você não enviou nenhuma mensagem.</div>
+                <div className="mensagem-sem-envio">Você não enviou nenhuma mensagem.</div>
             )}
         </div>
     );

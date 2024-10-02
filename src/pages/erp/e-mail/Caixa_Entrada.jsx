@@ -133,7 +133,7 @@ const Caixa_Entrada = () => {
                         </div>
                     ))
             ) : (
-                <div>Não há mensagens para você</div>
+                <div className="mensagem-sem-envio">Não há mensagens para você</div>
             )}
         </div>
     );

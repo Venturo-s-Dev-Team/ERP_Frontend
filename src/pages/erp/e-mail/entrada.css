@@ -5,8 +5,9 @@
     color: #333;
     width: 100%;
     height: 100%;
-   
 }
+
+.
 
 .titleEmail{
     width: 100%;
@@ -58,6 +59,9 @@ font-size: 25px;
 
 }
 
+.mensagem-sem-envio{
+  padding: 15px ;
+}
 
 
 .LogoEmail{

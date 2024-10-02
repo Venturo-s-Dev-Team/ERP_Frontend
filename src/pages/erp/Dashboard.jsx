@@ -80,7 +80,8 @@ function Home() {
   //Informações das tabelas
   const [SelectedTotalEstoque, setSelectedTotalEstoque] = useState(0) 
   const [SelectedTotalFuncionario, setSelectedTotalFuncionario] = useState(0)
-  const [SelectedTotalVenda, setSelectedTotalVenda] = useState(0) 
+  const [SelectedTotalVenda, setSelectedTotalVenda] = useState(0)
+  const [SelectedTotalLogs, setSelectedTotalLogs] = useState(0)
 
   const fetchDadosEstoque = async (id) => {
     try {
@@ -118,6 +119,18 @@ function Home() {
     }
   };
 
+  const fetchDadosHistoricLogs = async (id) => {
+    try {
+      const response = await axios.get(`/api/ServerTwo/EmpresaHistoricLogs/${id}`, {
+        withCredentials: true
+      });
+      setSelectedTotalLogs(response.data.N_Registros)
+    } catch (err) {
+      console.log(err);
+      setSelectedTotalLogs(0)
+    }
+  };
+
   useEffect(() => {
     const verifyToken = async () => {
       try {
@@ -144,6 +157,7 @@ function Home() {
       fetchDadosEstoque(userInfo.id_EmpresaDb);
       fetchDadosFuncionarios(userInfo.id_EmpresaDb)
       fetchDadosPedidos(userInfo.id_EmpresaDb)
+      fetchDadosHistoricLogs(userInfo.id_EmpresaDb)
     }
   }, [userInfo.id_EmpresaDb]);
   
@@ -156,7 +170,7 @@ function Home() {
   }
 
   return (
-    <div className="main-container">
+    <div >
       <div className="main-title">
         <h3>DASHBOARD - BEM VINDO {userInfo.Nome_user}</h3>
       </div>
@@ -188,7 +202,7 @@ function Home() {
             <h3>ALTERAÇÕES</h3>
             <BsFillBellFill className="card_icon" />
           </div>
-          <h1>42</h1>
+          <h1>{SelectedTotalLogs}</h1>
         </div>
       </div>
 

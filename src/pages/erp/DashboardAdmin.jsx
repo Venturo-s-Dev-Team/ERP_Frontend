@@ -143,14 +143,12 @@ useEffect(() => {
             layoutId={item.id}
             onClick={() => setSelectedId(item.id)}
           >
-            <motion.div className="div-titulos-card">
+            <motion.div>
               <motion.h5>{item.subtitle}</motion.h5>
               <motion.h2 className="nome-da-empresa-dashboard">{item.title}</motion.h2>
-              <motion.h6>Status: {itemStatus[item.id]}</motion.h6>
+              <motion.h6 className="status">Status: {itemStatus[item.id]}</motion.h6>
             </motion.div>
-            <motion.div>
-              <motion.img src={Venturo} className="logo-cards" alt="Logo do Venturo" />
-            </motion.div>
+          
           </motion.div>
         ))}
 

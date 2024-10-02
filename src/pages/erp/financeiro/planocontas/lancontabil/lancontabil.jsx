@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./lancontabil.css";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 
 function LanContabil() {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({});
+  const [debitoContas, setDebitoContas] = useState([]); // Contas de débito
+  const [creditoContas, setCreditoContas] = useState([]); // Contas de crédito
   const [lanContabilData, setLanContabilData] = useState({
     mesAno: "",
     lancamento: "",
@@ -15,22 +16,29 @@ function LanContabil() {
     data: "",
     documento: "",
     tipoDocumento: "",
-    debitoValor: "",      // deve ser "debito_valor"
-    debitoTipo: "",       // deve ser "debito_tipo"
-    debitoConta: "",      // deve ser "debito_conta"
-    creditoValor: "",     // deve ser "credito_valor"
-    creditoTipo: "",      // deve ser "credito_tipo"
-    creditoConta: "",     // deve ser "credito_conta"
+    debitoValor: "",
+    debitoTipo: "",
+    debitoConta: "",
+    creditoValor: "",
+    creditoTipo: "",
+    creditoConta: "",
     transacao: "",
     empresa: "",
-    valorEmpresa: "",     // deve ser "empresa_valor"
-    codigoHistorico: "",  // deve ser "codigo_historico"
-    historicoCompleto: "", // deve ser "historico_completo"
+    valorEmpresa: "",
+    codigoHistorico: "",
+    historicoCompleto: "",
   });
 
   useEffect(() => {
     verifyToken();
   }, []);
+
+  useEffect(() => {
+    if (userInfo.id_EmpresaDb) {
+      fetchContas("Débito", setDebitoContas); // Busca contas de débito
+      fetchContas("Crédito", setCreditoContas); // Busca contas de crédito
+    }
+  }, [userInfo]);
 
   const verifyToken = async () => {
     try {
@@ -50,7 +58,19 @@ function LanContabil() {
     }
   };
 
-  // Função para lidar com alterações nos campos do formulário
+  // Função para buscar contas com base na orientação
+  const fetchContas = async (orientacao, setContas) => {
+    const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
+    try {
+      const response = await axios.get(
+        `/api/ServerOne/tableContas/${id}/${orientacao}`
+      );
+      setContas(response.data);
+    } catch (error) {
+      console.error(`Erro ao buscar contas (${orientacao}):`, error);
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setLanContabilData({
@@ -59,40 +79,30 @@ function LanContabil() {
     });
   };
 
-  // REGISTRO DO LANÇAMENTO
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const data = new FormData();
-
-    // Apenas adicionar os campos que não são nulos
     Object.keys(lanContabilData).forEach((key) => {
       if (lanContabilData[key] !== "" && lanContabilData[key] !== null) {
-        data.append(key.replace(/([A-Z])/g, "_$1").toLowerCase(), lanContabilData[key]); // Converte camelCase para snake_case
+        data.append(
+          key.replace(/([A-Z])/g, "_$1").toLowerCase(),
+          lanContabilData[key]
+        );
       }
     });
 
-    // Adiciona o ID do usuário para identificação
     data.append("userId", userInfo.id_user);
     data.append("userName", userInfo.Nome_user);
 
     const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
 
-    // Debugging logs
-    console.log("userInfo:", userInfo);
-    console.log("id:", id);
-
     try {
       const response = await axios.post(
         `/api/ServerTwo/registroContabil/${id}`,
         data,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
-
       alert("Informações enviadas com sucesso!");
       window.location.reload();
     } catch (error) {
@@ -102,13 +112,9 @@ function LanContabil() {
   };
 
   return (
-    <main className="main-container">
+    <main className="main-lanContabil">
       <div className="main-title">
         <h3>Lançamento Contabil</h3>
-      </div>
-
-      <div className="HeaderModal">
-        <h1>Registrar Lançamento Contábil</h1>
       </div>
 
       <form className="lancontabil-form" onSubmit={handleSubmit}>
@@ -194,92 +200,36 @@ function LanContabil() {
           </div>
         </div>
 
-        {/* Campos de Débito */}
         <div className="Debit">
           <h4>Débito</h4>
           <div className="DebitMovi">
-            <div className="ALINHAR">
-              <h5>Valor:</h5>
-              <input
-                type="number"
-                name="debitoValor"
-                value={lanContabilData.debitoValor}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="ALINHAR">
-              <h5>Tipo:</h5>
-              <select
-                name="debitoTipo"
-                value={lanContabilData.debitoTipo}
-                onChange={handleChange}
-              >
-                <option value="ativo">ATIVO</option>
-                <option value="passivo">PASSIVO</option>
-              </select>
-            </div>
-
-            <div className="ALINHAR">
-              <h5>Conta:</h5>
-              <select
-                name="debitoConta"
-                value={lanContabilData.debitoConta}
-                onChange={handleChange}
-              >
-                <option value="bancos_cta_movimento">
-                  BANCOS CTA MOVIMENTO
+            <h5>Conta:</h5>
+            <select name="debitoConta" value={lanContabilData.debitoConta} onChange={handleChange} required>
+              <option value="">Selecione a conta</option>
+              {debitoContas.map((conta) => (
+                <option key={conta.codigo_reduzido} value={conta.codigo_reduzido}>
+                  {conta.descricao}
                 </option>
-                <option value="outra_conta">OUTRA CONTA</option>
-              </select>
-            </div>
+              ))}
+            </select>
           </div>
         </div>
 
-        {/* Campos de Crédito */}
-        <div className="Debit">
+        <div className="Credito">
           <h4>Crédito</h4>
-          <div className="DebitMovi">
-            <div className="ALINHAR">
-              <h5>Valor:</h5>
-              <input
-                type="number"
-                name="creditoValor"
-                value={lanContabilData.creditoValor}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <div className="ALINHAR">
-              <h5>Tipo:</h5>
-              <select
-                name="creditoTipo"
-                value={lanContabilData.creditoTipo}
-                onChange={handleChange}
-              >
-                <option value="ativo">ATIVO</option>
-                <option value="passivo">PASSIVO</option>
-              </select>
-            </div>
-
-            <div className="ALINHAR">
-              <h5>Conta:</h5>
-              <select
-                name="creditoConta"
-                value={lanContabilData.creditoConta}
-                onChange={handleChange}
-              >
-                <option value="bancos_cta_movimento">
-                  BANCOS CTA MOVIMENTO
+          <div className="CreditoMovi">
+            <h5>Conta:</h5>
+            <select name="creditoConta" value={lanContabilData.creditoConta} onChange={handleChange} required>
+              <option value="">Selecione a conta</option>
+              {creditoContas.map((conta) => (
+                <option key={conta.codigo_reduzido} value={conta.codigo_reduzido}>
+                  {conta.descricao}
                 </option>
-                <option value="outra_conta">OUTRA CONTA</option>
-              </select>
-            </div>
+              ))}
+            </select>
           </div>
         </div>
-
+        
         {/* Restante dos campos */}
         <div className="HistoricoEmp">
           <div className="DebitMovi">
