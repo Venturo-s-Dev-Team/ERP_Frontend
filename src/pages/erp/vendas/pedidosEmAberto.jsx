@@ -12,7 +12,6 @@ const Caixa = () => {
   const [vendas, setVendas] = useState([]);
   const [showModalInfo, setShowModalInfo] = useState(false);
   const [showModalGestao, setShowModalGestao] = useState(false);
-  const [selectedVenda, setSelectedVenda] = useState(null);
   const [newVenda, setNewVenda] = useState({
     razaoSocial: "",
     produtos: [],
@@ -25,10 +24,7 @@ const Caixa = () => {
 
   const handleShowGestao = () => setShowModalGestao(true);
   const handleCloseGestao = () => setShowModalGestao(false);
-  const handleShowInfo = (venda) => {
-    setSelectedVenda(venda);
-    setShowModalInfo(true);
-  };
+
   const handleCloseInfo = () => setShowModalInfo(false);
 
   // Função para verificar o token
@@ -120,6 +116,19 @@ const Caixa = () => {
     }
   };
 
+// Processo de venda - Ajuste para passar um array, mesmo que seja um array com uma única venda
+const handleShowInfo = (venda) => {
+
+  if (venda) {
+    // Passa um array com a venda selecionada
+    navigate("/caixa_pagamento", { state: { VendaSelecionada: [venda] } });
+  } else {
+    alert('Erro ao abrir venda');
+    console.error('Venda não encontrada');
+  }
+};
+
+
   // Função para exportar dados para Excel
   const exportToExcel = () => {
     const ws = XLSX.utils.json_to_sheet(vendas); // Converte os dados de vendas em uma planilha
@@ -149,8 +158,8 @@ const Caixa = () => {
           </thead>
           <tbody>
             {vendas.map((venda) => (
-              <tr key={venda.id}>
-                <td>{venda.id}</td>
+              <tr key={venda.id_pedido}>
+                <td>{venda.id_pedido}</td>
                 <td>{venda.nome_cliente}</td>
                 <td>{venda.total}</td>
                 <td>

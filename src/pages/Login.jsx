@@ -42,6 +42,8 @@ function Login() {
         navigate('/dashboard_admin')
       } else if (response.data.TypeUser === 'Gestor' && 'Admin') {
         navigate('/dashboard')
+      } else if (response.data.TypeUser === 'Venda') {
+        navigate('/vendas')
       } else {
         alert("Usuário desconhecido");
       }

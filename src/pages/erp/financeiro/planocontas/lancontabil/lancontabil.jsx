@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {jwtDecode} from "jwt-decode";
+import {jwtDecode} from "jwt-decode"; // Corrigi o import do jwtDecode
 
 function LanContabil() {
   const navigate = useNavigate();
@@ -71,6 +71,7 @@ function LanContabil() {
     }
   };
 
+  // Função que lida com mudanças nos campos do formulário
   const handleChange = (e) => {
     const { name, value } = e.target;
     setLanContabilData({
@@ -200,11 +201,31 @@ function LanContabil() {
           </div>
         </div>
 
+        {/* Campos de Débito */}
         <div className="Debit">
           <h4>Débito</h4>
           <div className="DebitMovi">
+            <h5>Tipo:</h5>
+            <select
+              name="debitoTipo"
+              value={lanContabilData.debitoTipo}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Selecione o tipo</option>
+              <option value="ativo">Ativo</option>
+              <option value="passivo">Passivo</option>
+            </select>
+          </div>
+
+          <div className="DebitMovi">
             <h5>Conta:</h5>
-            <select name="debitoConta" value={lanContabilData.debitoConta} onChange={handleChange} required>
+            <select
+              name="debitoConta"
+              value={lanContabilData.debitoConta}
+              onChange={handleChange}
+              required
+            >
               <option value="">Selecione a conta</option>
               {debitoContas.map((conta) => (
                 <option key={conta.codigo_reduzido} value={conta.codigo_reduzido}>
@@ -215,11 +236,31 @@ function LanContabil() {
           </div>
         </div>
 
+        {/* Campos de Crédito */}
         <div className="Credito">
           <h4>Crédito</h4>
           <div className="CreditoMovi">
+            <h5>Tipo:</h5>
+            <select
+              name="creditoTipo"
+              value={lanContabilData.creditoTipo}
+              onChange={handleChange}
+              required
+            >
+              <option value="">Selecione o tipo</option>
+              <option value="ativo">Ativo</option>
+              <option value="passivo">Passivo</option>
+            </select>
+          </div>
+
+          <div className="CreditoMovi">
             <h5>Conta:</h5>
-            <select name="creditoConta" value={lanContabilData.creditoConta} onChange={handleChange} required>
+            <select
+              name="creditoConta"
+              value={lanContabilData.creditoConta}
+              onChange={handleChange}
+              required
+            >
               <option value="">Selecione a conta</option>
               {creditoContas.map((conta) => (
                 <option key={conta.codigo_reduzido} value={conta.codigo_reduzido}>
@@ -229,7 +270,7 @@ function LanContabil() {
             </select>
           </div>
         </div>
-        
+
         {/* Restante dos campos */}
         <div className="HistoricoEmp">
           <div className="DebitMovi">
@@ -248,7 +289,7 @@ function LanContabil() {
             <div className="ALINHAR">
               <h5>Valor Empresa:</h5>
               <input
-                type="number"
+                type="text"
                 name="valorEmpresa"
                 value={lanContabilData.valorEmpresa}
                 onChange={handleChange}
@@ -258,7 +299,7 @@ function LanContabil() {
 
           <div className="DebitMovi">
             <div className="ALINHAR">
-              <h5>Código Histórico:</h5>
+              <h5>Código do Histórico:</h5>
               <input
                 type="text"
                 name="codigoHistorico"
@@ -271,8 +312,7 @@ function LanContabil() {
           <div className="DebitMovi">
             <div className="ALINHAR">
               <h5>Histórico Completo:</h5>
-              <input
-                type="text"
+              <textarea
                 name="historicoCompleto"
                 value={lanContabilData.historicoCompleto}
                 onChange={handleChange}
@@ -281,9 +321,9 @@ function LanContabil() {
           </div>
         </div>
 
-        <button type="submit" className="btn btn-primary">
-          Registrar Lançamento
-        </button>
+        <div className="submit-button">
+          <button type="submit">Enviar</button>
+        </div>
       </form>
     </main>
   );
