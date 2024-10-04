@@ -34,7 +34,7 @@ function Login() {
   const [Logo, setLogo] = useState(null);
 
   return (
-    <main className="BodyDiv">
+    <div className="BodyDiv">
       <div className={`container ${isSignUp ? "active" : ""}`}>
         <div className={`form-container ${isSignUp ? "sign-up" : "sign-in"}`}>
           {isSignUp ? (
@@ -103,7 +103,11 @@ function Login() {
                   required
                 />
                 <div>{erro}</div>
-                <button className="buttonSignIn" type="submit">
+                <button
+                  className="buttonSignIn"
+                  type="submit"
+                  onClick={() => navigate("/dashboard")}
+                >
                   Entrar
                 </button>
               </form>
@@ -142,7 +146,7 @@ function Login() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
 

@@ -1,0 +1,68 @@
+/* Balancete */
+
+/*.main-containerBC {
+  height: 100dvh;
+  width: 100%;
+  padding: 20px 20px;
+  background-color: #ffffff;
+}*/
+
+.main-titleBC {
+  display: flex;
+  justify-content: space-between;
+  color: #000000;
+}
+
+.PlanoSelect-Div {
+  margin-top: 10px;
+}
+
+.LabelSelect-BC {
+  font-size: 16px;
+}
+
+.Select-BC {
+  width: 290px;
+  height: 30px;
+}
+
+th {
+  background: linear-gradient(to top, #0056b3, #0a5483);
+  text-align: center;
+  color: white;
+  display: table-cell;
+  vertical-align: inherit;
+  font-weight: bold;
+  text-align: -internal-center;
+  unicode-bidi: isolate;
+}
+
+th,
+td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+table {
+  border-spacing: 0;
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 18px;
+  text-align: center;
+  text-indent: initial;
+  border-spacing: 2px;
+}
+
+.Balancete_List {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  padding: 13px;
+  margin-top: 60px;
+}
+
+.Caption-BC {
+  font-size: 25px;
+  font-weight: 500;
+}

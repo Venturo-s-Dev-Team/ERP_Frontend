@@ -10,6 +10,9 @@ import {
 
 import Landpage from "../pages/LandPage/landpage";
 import Login from "../pages/Login/Login";
+import Balancete from "../pages/Balancete/balancete";
+import Home from "../pages/Dashboard/dashboard";
+import HomeAdmin from "../pages/Dashboard Admin/dashboardAdmin";
 
 function AppRoutes() {
   return (
@@ -17,6 +20,9 @@ function AppRoutes() {
       <Routes>
         <Route path="/" element={<Landpage />} />
         <Route path="login" element={<Login />} />
+        <Route path="/balancete" element={<Balancete />} />
+        <Route path="/dashboard" element={<Home />} />
+        <Route path="/dashboardAdmin" element={<HomeAdmin />} />
       </Routes>
     </Router>
   );

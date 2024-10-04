@@ -8,7 +8,7 @@ function Landpage() {
   const navigate = useNavigate();
 
   return (
-    <main className="main-containerLandPg">
+    <div className="main-containerLandPg">
       <div className="main-titlePg">
         <h1>Boas-Vindas</h1>
         <img src={LogoV} className="Logo" />
@@ -40,7 +40,7 @@ function Landpage() {
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
 
