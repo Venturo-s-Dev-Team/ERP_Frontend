@@ -22,6 +22,7 @@ const GestaoVendas = () => {
   const [showModalGestao, setShowModalGestao] = useState(false);
   const [Clientes, setClientes] = useState([]);
   const [selectedVenda, setSelectedVenda] = useState(null);
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para armazenar o termo de pesquisa
   const [newVenda, setNewVenda] = useState({
     razaoSocial: "",
     produtos: [],
@@ -94,6 +95,17 @@ const GestaoVendas = () => {
       console.error("Erro ao carregar vendas", error);
     }
   };
+
+    // Filtro dos produtos
+    const handleSearchChange = (e) => {
+      setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
+    };
+  
+    const filteredvenda = vendas.filter(
+      (venda) =>
+        venda.nome_cliente.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        String(venda.id_pedido).toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
   // Função para lidar com mudanças nos campos de input
   const handleChange = (e) => {
@@ -172,19 +184,29 @@ const GestaoVendas = () => {
           <FaFileExport />
         </button>
       </div>
+                    {/* Input de pesquisa */}
+                    <div>
+          <input
+            type="text"
+            placeholder="Pesquisar clientes..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="SearchInput"
+          />
+        </div>
       <div className="Gestao-List">
         <table>
           <caption>Registro de Pedidos</caption>
           <thead>
             <tr>
               <th>Id</th>
-              <th>Razão Social</th>
+              <th>Cliente</th>
               <th>Preço Final</th>
               <th>Info.</th>
             </tr>
           </thead>
           <tbody>
-            {vendas.map((venda) => (
+            {filteredvenda.map((venda) => (
               <tr key={venda.id_pedido}>
                 <td>{venda.id_pedido}</td>
                 <td>{venda.nome_cliente}</td>

@@ -22,6 +22,7 @@ function Clientes() {
   const [showModalClientes, setShowModalClientes] = useState(false);
   const [formType, setFormType] = useState(""); // Para determinar qual formulário será exibido
   const [SelectedCliente, setSelectedCliente] = useState([]);
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para armazenar o termo de pesquisa
 
   useEffect(() => {
     verifyToken();
@@ -63,6 +64,17 @@ function Clientes() {
       console.log("Não foi possível requerir as informações: ", error);
     }
   };
+
+  // Filtro dos produtos
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
+  };
+
+  const filteredclientes = Clientes.filter(
+    (cliente) =>
+      cliente.razao_social.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      String(cliente.id).toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
@@ -244,7 +256,7 @@ function Clientes() {
 
       {/* Botões do header */}
       <div className="Button_Cad">
-        <button  onClick={handleShow}>
+        <button onClick={handleShow}>
           Adicionar
           <FaPlus />
         </button>
@@ -252,11 +264,22 @@ function Clientes() {
           Editar
           <FaPenToSquare />
         </button>
-    
+
         <button >
           Exportar
           <FaFileExport />
         </button>
+      </div>
+
+      {/* Input de pesquisa */}
+      <div>
+        <input
+          type="text"
+          placeholder="Pesquisar clientes..."
+          value={searchTerm}
+          onChange={handleSearchChange}
+          className="SearchInput"
+        />
       </div>
 
       <div className="Clientes_List">
@@ -264,20 +287,22 @@ function Clientes() {
           <caption>Listagem de Clientes</caption>
           <thead>
             <tr>
+              <th>Id</th>
               <th>Nome</th>
               <th>CNPJ/CPF</th>
               <th>Informações</th>
             </tr>
           </thead>
           <tbody>
-            {Clientes.map((cliente) => (
+            {filteredclientes.map((cliente) => (
               <tr key={cliente.id}>
+                <td>{cliente.id}</td>
                 <td>{cliente.razao_social}</td>
                 <td>{cliente.cpf_cnpj}</td>
                 <td>
                   <button
                     onClick={() => SelecionandoCliente(cliente)}
-                    className="ButtonInfoProduct"
+                    className="ButtonInfocliente"
                   >
                     {" "}
                     Info{" "}
@@ -479,12 +504,11 @@ function Clientes() {
                 onChange={handleChange}
                 required
               />
-              <input
+              <InputMask
                 type="date"
                 name="faturamento"
                 value={formData.dia_para_faturamento}
                 onChange={handleChange}
-                placeholder="Faturamento"
               />
               <input
                 type="text"
@@ -537,13 +561,13 @@ function Clientes() {
                         onClick={() => removeAutorizadoInput(index)}
                         style={{ cursor: "pointer", marginLeft: 8 }}
                       />
-                      <FaPlus  
-                      onClick={() => addAutorizadoInput(index)}
-                      style={{ cursor: "pointer", marginLeft: 8 }}  />
+                      <FaPlus
+                        onClick={() => addAutorizadoInput(index)}
+                        style={{ cursor: "pointer", marginLeft: 8 }} />
                     </div>
                   ))}
 
-               
+
                 </>
               )}
 
@@ -687,14 +711,13 @@ function Clientes() {
                 onChange={handleChange}
                 required
               />
-              <input
+              <InputMask
                 type="date"
                 name="faturamento"
                 value={formData.dia_para_faturamento}
                 onChange={handleChange}
-                placeholder="Faturamento"
-              /> 
-                <select
+              />
+              <select
                 className="select-clientes"
                 name="ativo"
                 value={formData.ativo}
@@ -703,17 +726,17 @@ function Clientes() {
                 <option value="SIM">Ativo</option>
                 <option value="NÃO">Inativo</option>
               </select>
-            <div>
-            <textarea
-              name="observacoes"
-              value={formData.observacoes}
-              className="observacoes"
-              onChange={handleChange}
-              placeholder="Observações"
-            />
+              <div>
+                <textarea
+                  name="observacoes"
+                  value={formData.observacoes}
+                  className="observacoes"
+                  onChange={handleChange}
+                  placeholder="Observações"
+                />
               </div>
-            
-             
+
+
               <div>
                 <button type="submit" className="RegisterPr">
                   Registrar
@@ -751,48 +774,48 @@ function Clientes() {
           show={showModalClientes}
           onHide={handleCloseClientes}
         >
-         <div className="perfil-cliente">
-  <h2>Informações do Cliente</h2>
-  <div className="container-infos">
-    <div className="info-card">
-      <h3>Dados Básicos</h3>
-      <p><strong>Nome:</strong> {SelectedCliente.razao_social}</p>
-      <p><strong>CNPJ/CPF:</strong> {SelectedCliente.cpf_cnpj}</p>
-      <p><strong>Ativo:</strong> {SelectedCliente.ativo}</p>
-      <p><strong>Telefone:</strong> {SelectedCliente.telefone}</p>
-      <p><strong>E-mail:</strong> {SelectedCliente.email}</p>
-      <p><strong>Nome Fantasia:</strong> {SelectedCliente.nome_fantasia}</p>
-    </div>
+          <div className="perfil-cliente">
+            <h2>Informações do Cliente</h2>
+            <div className="container-infos">
+              <div className="info-card">
+                <h3>Dados Básicos</h3>
+                <p><strong>Nome:</strong> {SelectedCliente.razao_social}</p>
+                <p><strong>CNPJ/CPF:</strong> {SelectedCliente.cpf_cnpj}</p>
+                <p><strong>Ativo:</strong> {SelectedCliente.ativo}</p>
+                <p><strong>Telefone:</strong> {SelectedCliente.telefone}</p>
+                <p><strong>E-mail:</strong> {SelectedCliente.email}</p>
+                <p><strong>Nome Fantasia:</strong> {SelectedCliente.nome_fantasia}</p>
+              </div>
 
-    <div className="info-card">
-      <h3>Endereço</h3>
-      <p><strong>Logradouro:</strong> {SelectedCliente.logradouro}</p>
-      <p><strong>Bairro:</strong> {SelectedCliente.bairro}</p>
-      <p><strong>Cidade:</strong> {SelectedCliente.cidade}</p>
-      <p><strong>CEP:</strong> {SelectedCliente.cep}</p>
-      <p><strong>UF:</strong> {SelectedCliente.uf}</p>
-      <p><strong>Endereço:</strong> {SelectedCliente.endereco}</p>
-    </div>
+              <div className="info-card">
+                <h3>Endereço</h3>
+                <p><strong>Logradouro:</strong> {SelectedCliente.logradouro}</p>
+                <p><strong>Bairro:</strong> {SelectedCliente.bairro}</p>
+                <p><strong>Cidade:</strong> {SelectedCliente.cidade}</p>
+                <p><strong>CEP:</strong> {SelectedCliente.cep}</p>
+                <p><strong>UF:</strong> {SelectedCliente.uf}</p>
+                <p><strong>Endereço:</strong> {SelectedCliente.endereco}</p>
+              </div>
 
-    <div className="info-card">
-      <h3>Informações Adicionais</h3>
-      <p><strong>Inscrição Estadual:</strong> {SelectedCliente.ie}</p>
-      <p><strong>Dia para Faturamento:</strong> {SelectedCliente.dia_para_faturamento}</p>
-      <p><strong>Ramo de Atividade:</strong> {SelectedCliente.ramo_atividade}</p>
-      <p><strong>Funcionário:</strong> {SelectedCliente.funcionario}</p>
-      <p><strong>Limite:</strong> {SelectedCliente.limite}</p>
-      <p><strong>Site:</strong> {SelectedCliente.site}</p>
-      <p><strong>Autorizados:</strong> {SelectedCliente.autorizados}</p>
-      <p><strong>Observações:</strong> {SelectedCliente.observacoes}</p>
-    </div>
-  </div>
+              <div className="info-card">
+                <h3>Informações Adicionais</h3>
+                <p><strong>Inscrição Estadual:</strong> {SelectedCliente.ie}</p>
+                <p><strong>Dia para Faturamento:</strong> {SelectedCliente.dia_para_faturamento}</p>
+                <p><strong>Ramo de Atividade:</strong> {SelectedCliente.ramo_atividade}</p>
+                <p><strong>Funcionário:</strong> {SelectedCliente.funcionario}</p>
+                <p><strong>Limite:</strong> {SelectedCliente.limite}</p>
+                <p><strong>Site:</strong> {SelectedCliente.site}</p>
+                <p><strong>Autorizados:</strong> {SelectedCliente.autorizados}</p>
+                <p><strong>Observações:</strong> {SelectedCliente.observacoes}</p>
+              </div>
+            </div>
 
-  <div className="buttons">
-    <button onClick={handleCloseClientes} className="FecharPr">
-      FECHAR
-    </button>
-  </div>
-</div>
+            <div className="buttons">
+              <button onClick={handleCloseClientes} className="FecharPr">
+                FECHAR
+              </button>
+            </div>
+          </div>
 
         </Modal>
       )}

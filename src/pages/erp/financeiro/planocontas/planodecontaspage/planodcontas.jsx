@@ -86,8 +86,8 @@ function PlanoDContas() {
   }, []);
 
   useEffect(() => {
-    if (userInfo.id_user) {
-      fetchPlanos(userInfo.id_user);
+    if (userInfo.id_EmpresaDb) {
+      fetchPlanos(userInfo.id_EmpresaDb);
     }
   }, [userInfo]);
 
@@ -130,7 +130,7 @@ function PlanoDContas() {
   // Submete o formulário para adicionar uma nova conta
   const handleContaSubmit = async (e) => {
     e.preventDefault();
-    const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
+    const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_EmpresaDb;
 
     if (!id) {
       alert("ID da empresa não encontrado.");
@@ -190,7 +190,7 @@ function PlanoDContas() {
                 <div className="header-item">
                   <h4>Item do Plano de Conta</h4>
                 </div>
-                <PlanoDeContas empresaId={userInfo.id_user} />
+                <PlanoDeContas empresaId={userInfo.id_EmpresaDb} />
               </div>
               <div className="edit-item">
                 <div className="header-item">

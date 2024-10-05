@@ -59,7 +59,7 @@ const Caixa = () => {
 
   const fetchVendas = async (id) => {
     try {
-      const response = await axios.get(`/api/ServerOne/tableVenda/${id}`, {
+      const response = await axios.get(`/api/ServerOne/VendasEmAberto/${id}`, {
         withCredentials: true,
       });
       setVendas(response.data.InfoTabela);
