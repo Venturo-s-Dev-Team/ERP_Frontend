@@ -34,6 +34,7 @@ import LanContabil from "../pages/erp/financeiro/planocontas/lancontabil/lancont
 import Vendas from "../pages/erp/vendas/vendas";
 import GestaoVendas from "../pages/erp/vendas/GestaoDeVendas/gestaoVendas.jsx";
 import Abas from "../pages/erp/vendas/GestaoDeVendas/Abas.jsx";
+import AbasForUpdate from "../pages/erp/vendas/GestaoDeVendas/AbasForUpdate.jsx"
 import Cadastronf from "../pages/erp/vendas/notafiscal/cadastronf";
 import Clientes from "../pages/erp/vendas/pedidos/clientes";
 import Precofinal from "../pages/erp/vendas/pedidos/precofinal";
@@ -330,6 +331,16 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
             element={
               <ProtectedRoute allowedRoles={['Venda', 'Sócio', 'Gestor']}>
                 <Abas />
+              </ProtectedRoute>
+            }
+          />
+
+                    {/* Venda, Sócio e Gestor podem acessar AbasForUpdate */}
+                    <Route
+            path="/abasForUpdate"
+            element={
+              <ProtectedRoute allowedRoles={['Venda', 'Sócio', 'Gestor']}>
+                <AbasForUpdate />
               </ProtectedRoute>
             }
           />

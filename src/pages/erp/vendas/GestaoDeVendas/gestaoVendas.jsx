@@ -155,6 +155,21 @@ const GestaoVendas = () => {
     }
   };
 
+  // PARA EDITAR
+  const handleShowEdit = (venda) => {
+    if (venda) {
+      setSelectedVenda(venda);
+      navigate("/AbasForUpdate", {
+        state: {
+          VendaForUpdate: venda, // Verifique se 'venda' não está nulo
+        },
+      });
+    } else {
+      console.error("Nenhuma venda selecionada.");
+    }
+  };
+  
+
   // Função para exportar dados para Excel
   const exportToExcel = () => {
     const ws = XLSX.utils.json_to_sheet(vendas); // Converte os dados de vendas em uma planilha
@@ -174,10 +189,13 @@ const GestaoVendas = () => {
           Adicionar
           <FaPlus />
         </button>
-        <button >
-          Editar
-          <FaPenToSquare />
-        </button>
+        <button
+            className="Button-Menu"
+            onClick={() => handleShowEdit(selectedVenda)}
+          >
+            Editar
+            <FaPenToSquare />
+          </button>
     
         <button  onClick={exportToExcel}>
           Exportar
@@ -202,6 +220,7 @@ const GestaoVendas = () => {
               <th>Id</th>
               <th>Cliente</th>
               <th>Preço Final</th>
+              <th>Selecionar</th>
               <th>Info.</th>
             </tr>
           </thead>
@@ -211,6 +230,17 @@ const GestaoVendas = () => {
                 <td>{venda.id_pedido}</td>
                 <td>{venda.nome_cliente}</td>
                 <td>{venda.total}</td>
+                <td>
+                    <label className="custom-radio">
+                      <input
+                        type="radio"
+                        name="selectedProduct"
+                        value={venda.id}
+                        onChange={() => setSelectedVenda(venda)}
+                      />
+                      <span className="radio-checkmark"></span>
+                    </label>
+                  </td>
                 <td>
                   <button
                     className="btn-ver-mais"

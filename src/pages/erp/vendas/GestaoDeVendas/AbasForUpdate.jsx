@@ -1,12 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import "./Abas.css";
 
-function Abas() {
+function AbasForUpdate() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [userInfo, setUserInfo] = useState({});
+  const { VendaForUpdate } = location.state || {};
+
+useEffect(() => {
+  console.log(JSON.stringify(VendaForUpdate))
+  if (!VendaForUpdate) {
+    console.error("VendaForUpdate não encontrado.");
+    navigate("/gestaoVendas"); // Redirecionar caso não haja dados
+  }
+}, [VendaForUpdate, navigate]);
+
 
   // TOKEN
   useEffect(() => {
@@ -40,10 +51,12 @@ function Abas() {
   }, [userInfo]);
 
   const [registroAtivo, setRegistroAtivo] = useState("clientes");
-  const [selectedClient, setSelectedClient] = useState(null);
+  const [selectedClient, setSelectedClient] = useState(VendaForUpdate.nome_cliente);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [desconto, setDesconto] = useState(0);
   const [lineColors, setLineColors] = useState(["#ccc", "#ccc"]);
+
+  console.log(selectedClient)
 
   const handleProductSelect = (product) => {
     const isSelected = selectedProducts.some((p) => p.Codigo === product.Codigo);
@@ -406,4 +419,4 @@ function Abas() {
   );
 }
 
-export default Abas;
+export default AbasForUpdate;
