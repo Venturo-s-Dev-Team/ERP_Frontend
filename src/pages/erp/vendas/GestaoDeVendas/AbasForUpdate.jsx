@@ -10,15 +10,6 @@ function AbasForUpdate() {
   const [userInfo, setUserInfo] = useState({});
   const { VendaForUpdate } = location.state || {};
 
-useEffect(() => {
-  console.log(JSON.stringify(VendaForUpdate))
-  if (!VendaForUpdate) {
-    console.error("VendaForUpdate não encontrado.");
-    navigate("/gestaoVendas"); // Redirecionar caso não haja dados
-  }
-}, [VendaForUpdate, navigate]);
-
-
   // TOKEN
   useEffect(() => {
     verifyToken();
@@ -51,12 +42,27 @@ useEffect(() => {
   }, [userInfo]);
 
   const [registroAtivo, setRegistroAtivo] = useState("clientes");
-  const [selectedClient, setSelectedClient] = useState(VendaForUpdate.nome_cliente);
+  const [selectedClient, setSelectedClient] = useState("");
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [desconto, setDesconto] = useState(0);
   const [lineColors, setLineColors] = useState(["#ccc", "#ccc"]);
 
-  console.log(selectedClient)
+  useEffect(() => {
+    console.log(JSON.stringify(VendaForUpdate))
+    if (!VendaForUpdate) {
+      console.error("VendaForUpdate não encontrado.");
+      navigate("/gestaoVendas"); // Redirecionar caso não haja dados
+    } else {
+      setSelectedClient(VendaForUpdate.nome_cliente);
+      setSelectedProducts(VendaForUpdate.produto);
+      setDesconto(VendaForUpdate.desconto);
+
+      console.log(selectedClient)
+    }
+    
+  }, [VendaForUpdate, navigate]);
+
+  
 
   const handleProductSelect = (product) => {
     const isSelected = selectedProducts.some((p) => p.Codigo === product.Codigo);
@@ -203,6 +209,8 @@ useEffect(() => {
       alert("Erro ao registrar a venda.");
     }
   };
+
+  console.log("2",selectedClient)
   
   const renderizarPedidos = () => {
     switch (registroAtivo) {
@@ -309,7 +317,7 @@ useEffect(() => {
                           type="number"
                           min="1"
                           max={Math.min(product.Quantidade)}
-                          defaultValue={1}
+                          defaultValue={selectedProducts.find((p) => p.Codigo === product.Codigo)?.quantidade || 1}
                           onChange={(e) => {
                             const value = e.target.value;
                             // Permite apenas números ou deixa em branco
