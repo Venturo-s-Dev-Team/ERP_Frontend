@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {jwtDecode} from "jwt-decode"; // Corrigi o import do jwtDecode
+import { jwtDecode } from "jwt-decode"; // Corrigi o import do jwtDecode
 
 function LanContabil() {
   const navigate = useNavigate();
@@ -234,6 +234,18 @@ function LanContabil() {
               ))}
             </select>
           </div>
+
+          {/* Campo para o valor do débito */}
+          <div className="DebitMovi">
+            <h5>Valor do Débito:</h5>
+            <input
+              type="number"
+              name="debitoValor"
+              value={lanContabilData.debitoValor}
+              onChange={handleChange}
+              required
+            />
+          </div>
         </div>
 
         {/* Campos de Crédito */}
@@ -269,12 +281,24 @@ function LanContabil() {
               ))}
             </select>
           </div>
+
+          {/* Campo para o valor do crédito */}
+          <div className="CreditoMovi">
+            <h5>Valor do Crédito:</h5>
+            <input
+              type="number"
+              name="creditoValor"
+              value={lanContabilData.creditoValor}
+              onChange={handleChange}
+              required
+            />
+          </div>
         </div>
 
-        {/* Restante dos campos */}
-        <div className="HistoricoEmp">
-          <div className="DebitMovi">
-            <div className="ALINHAR">
+        <div className="Empresaa">
+          <h4>Empresa</h4>
+          <div className="ALINHAR">
+            <div>
               <h5>Empresa:</h5>
               <input
                 type="text"
@@ -283,47 +307,39 @@ function LanContabil() {
                 onChange={handleChange}
               />
             </div>
-          </div>
-
-          <div className="DebitMovi">
-            <div className="ALINHAR">
-              <h5>Valor Empresa:</h5>
+            <div>
+              <h5>Valor:</h5>
               <input
-                type="text"
+                type="number"
                 name="valorEmpresa"
                 value={lanContabilData.valorEmpresa}
                 onChange={handleChange}
               />
             </div>
           </div>
-
-          <div className="DebitMovi">
-            <div className="ALINHAR">
-              <h5>Código do Histórico:</h5>
-              <input
-                type="text"
-                name="codigoHistorico"
-                value={lanContabilData.codigoHistorico}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
-
-          <div className="DebitMovi">
-            <div className="ALINHAR">
-              <h5>Histórico Completo:</h5>
-              <textarea
-                name="historicoCompleto"
-                value={lanContabilData.historicoCompleto}
-                onChange={handleChange}
-              />
-            </div>
-          </div>
         </div>
 
-        <div className="submit-button">
-          <button type="submit">Enviar</button>
+        <div className="Historico">
+          <h5>Histórico:</h5>
+          <input
+            type="number"
+            name="codigoHistorico"
+            value={lanContabilData.codigoHistorico}
+            onChange={handleChange}
+          />
+          <textarea
+            name="historicoCompleto"
+            value={lanContabilData.historicoCompleto}
+            onChange={handleChange}
+            rows="4"
+            placeholder="Digite o histórico completo aqui..."
+            required
+          ></textarea>
         </div>
+
+        <button type="submit" className="btn-submit">
+          Enviar
+        </button>
       </form>
     </main>
   );

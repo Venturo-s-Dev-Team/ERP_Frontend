@@ -301,7 +301,7 @@ function Abas() {
                             const value = e.target.value;
                             // Permite apenas números ou deixa em branco
                             if (value === '' || /^\d+$/.test(value)) {
-                              const quantity = Math.max(1, Math.min(Math.min(product.Quantidade, 10), Number(value))); // Limita entre 1 e o menor valor entre 10 e product.Quantidade
+                              const quantity = Math.max(1, Math.min(Math.min(product.Quantidade), Number(value))); // Limita entre 1 e o menor valor entre 10 e product.Quantidade
                               handleQuantityChange(product.Codigo, quantity);
                             }
                           }}

@@ -168,7 +168,41 @@ const GestaoVendas = () => {
       console.error("Nenhuma venda selecionada.");
     }
   };
+
+// PARA CANCELAR
+const CancelarVenda = async (venda) => {
+  const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
   
+  // Verificar se 'venda.produto' está definido e é um array
+  if (!venda.produto || !Array.isArray(venda.produto)) {
+    console.error("Produtos do pedido estão indefinidos ou não são um array.");
+    alert("Erro: Produtos do pedido inválidos.");
+    return;
+  }
+
+  console.log("Enviando CancelarVenda com dados:", {
+    id_pedido: venda.id_pedido,
+    produto: venda.produto,
+  });
+
+  try {
+    await axios.put(
+      `/api/ServerTwo/CancelarVenda/${id}`,
+      {
+        id_pedido: venda.id_pedido,
+        produto: venda.produto, // Enviar diretamente como array
+      },
+      { withCredentials: true }
+    );
+
+    fetchVendas(id); // Atualiza a lista de vendas
+    handleCloseGestao();
+    alert("Venda cancelada com sucesso!");
+  } catch (error) {
+    console.error("Erro ao cancelar venda:", error);
+    alert("Erro ao cancelar venda.");
+  }
+};
 
   // Função para exportar dados para Excel
   const exportToExcel = () => {
@@ -196,7 +230,13 @@ const GestaoVendas = () => {
             Editar
             <FaPenToSquare />
           </button>
-    
+          <button
+            className="Button-Menu"
+            onClick={() => CancelarVenda(selectedVenda)}
+          >
+            Cancelar
+            <FaPenToSquare />
+          </button>
         <button  onClick={exportToExcel}>
           Exportar
           <FaFileExport />

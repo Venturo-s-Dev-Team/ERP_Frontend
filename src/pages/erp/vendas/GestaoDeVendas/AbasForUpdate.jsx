@@ -1,14 +1,24 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
-import { jwtDecode } from "jwt-decode";
-import "./Abas.css";
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import {jwtDecode} from 'jwt-decode';
 
-function AbasForUpdate() {
-  const navigate = useNavigate();
+const AbasForUpdate = () => {
   const location = useLocation();
-  const [userInfo, setUserInfo] = useState({});
+  const navigate = useNavigate();
   const { VendaForUpdate } = location.state || {};
+
+  const [userInfo, setUserInfo] = useState({});
+  const [Clientes, setClientes] = useState([]);
+  const [ProductsEstoque, setSelectedEstoque] = useState([]);
+  const [registroAtivo, setRegistroAtivo] = useState("clientes");
+  const [selectedClient, setSelectedClient] = useState(null);
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [desconto, setDesconto] = useState(0);
+  const [lineColors, setLineColors] = useState(["#ccc", "#ccc"]);
+
+  const [searchTermCliente, setSearchTermCliente] = useState("");
+  const [searchTermProduto, setSearchTermProduto] = useState("");
 
   // TOKEN
   useEffect(() => {
@@ -37,41 +47,102 @@ function AbasForUpdate() {
   useEffect(() => {
     if (userInfo.id_EmpresaDb) {
       fetchDadosClientes(userInfo.id_EmpresaDb);
-      fetchDadosEstoque(userInfo.id_EmpresaDb)
+      fetchDadosEstoque(userInfo.id_EmpresaDb);
     }
   }, [userInfo]);
 
-  const [registroAtivo, setRegistroAtivo] = useState("clientes");
-  const [selectedClient, setSelectedClient] = useState("");
-  const [selectedProducts, setSelectedProducts] = useState([]);
-  const [desconto, setDesconto] = useState(0);
-  const [lineColors, setLineColors] = useState(["#ccc", "#ccc"]);
-
   useEffect(() => {
-    console.log(JSON.stringify(VendaForUpdate))
     if (!VendaForUpdate) {
       console.error("VendaForUpdate não encontrado.");
       navigate("/gestaoVendas"); // Redirecionar caso não haja dados
     } else {
-      setSelectedClient(VendaForUpdate.nome_cliente);
-      setSelectedProducts(VendaForUpdate.produto);
-      setDesconto(VendaForUpdate.desconto);
-
-      console.log(selectedClient)
+      try {
+        const produtosParseados = JSON.parse(VendaForUpdate.produto).map(produto => ({
+          ...produto,
+          quantidade: produto.quantidade || 1, // Garante que 'quantidade' esteja presente
+        }));
+        setSelectedProducts(produtosParseados);
+        // Definir o cliente como objeto completo, se necessário
+        const clienteAtual = Clientes.find(c => c.razao_social === VendaForUpdate.nome_cliente);
+        if (clienteAtual) {
+          setSelectedClient(clienteAtual);
+        }
+      } catch (error) {
+        console.error("Erro ao parsear os produtos do pedido:", error);
+        navigate("/gestaoVendas"); // Redirecionar caso haja erro no parse
+      }
     }
-    
-  }, [VendaForUpdate, navigate]);
+  }, [VendaForUpdate, navigate, Clientes]);
 
-  
+  const fetchDadosClientes = async (id) => {
+    try {
+      const response = await axios.get(`/api/ServerOne/tableCliente/${id}`, {
+        withCredentials: true,
+      });
+      if (response.status === 200) {
+        setClientes(response.data);
+      }
+    } catch (error) {
+      console.log("Não foi possível requerir as informações: ", error);
+    }
+  };
 
-  const handleProductSelect = (product) => {
-    const isSelected = selectedProducts.some((p) => p.Codigo === product.Codigo);
+  const fetchDadosEstoque = async (id) => {
+    try {
+      const response = await axios.get(`/api/ServerOne/tableEstoque/${id}`, {
+        withCredentials: true,
+      });
+      if (response.status === 200) {
+        setSelectedEstoque(response.data.InfoTabela);
+      }
+    } catch (error) {
+      console.log("Não foi possível requerir as informações: ", error);
+    }
+  };
+
+  // Filtro dos clientes e produtos
+  const handleSearchChangeCliente = (e) => {
+    setSearchTermCliente(e.target.value);
+  };
+
+  const filteredClientes = Clientes.filter(
+    (cliente) =>
+      cliente.razao_social.toLowerCase().includes(searchTermCliente.toLowerCase()) ||
+      String(cliente.id).toLowerCase().includes(searchTermCliente.toLowerCase())
+  );
+
+  const handleSearchChangeProduto = (e) => {
+    setSearchTermProduto(e.target.value);
+  };
+
+  const filteredProdutos = ProductsEstoque.filter(
+    (product) =>
+      product.Nome.toLowerCase().includes(searchTermProduto.toLowerCase()) ||
+      String(product.Codigo).toLowerCase().includes(searchTermProduto.toLowerCase())
+  );
+
+  // Seleção do Cliente
+  const handleClientSelect = (cliente) => {
+    if (selectedClient && selectedClient.razao_social === cliente.razao_social) {
+      // Desmarcar cliente
+      setSelectedClient(null);
+      setLineColors(["#ccc", "#ccc"]);
+    } else {
+      // Selecionar novo cliente
+      setSelectedClient(cliente);
+      setLineColors(["#0a5483", "#ccc"]);
+    }
+  };
+
+  // Seleção de Produtos
+  const handleProductSelect = (produto) => {
+    const isSelected = selectedProducts.some((p) => p.Codigo === produto.Codigo);
     if (isSelected) {
       // Remove o produto da seleção
-      setSelectedProducts((prev) => prev.filter((p) => p.Codigo !== product.Codigo));
+      setSelectedProducts((prev) => prev.filter((p) => p.Codigo !== produto.Codigo));
     } else {
       // Adiciona o produto à seleção com quantidade 1
-      setSelectedProducts((prev) => [...prev, { ...product, quantidade: 1 }]);
+      setSelectedProducts((prev) => [...prev, { ...produto, quantidade: 1 }]);
     }
 
     setLineColors([
@@ -83,22 +154,12 @@ function AbasForUpdate() {
   const handleQuantityChange = (codigo, quantidade) => {
     setSelectedProducts((prev) =>
       prev.map((product) =>
-        product.Codigo === codigo ? { ...product, quantidade: parseInt(quantidade) } : product
+        product.Codigo === codigo ? { ...product, quantidade } : product
       )
     );
   };
 
-  const handleClientSelect = (cliente) => {
-    // Permite selecionar ou desmarcar o cliente, mas sem alertas
-    const isSelected = selectedClient && selectedClient.id === cliente.id;
-    setSelectedClient(isSelected ? null : cliente);
-  
-    setLineColors([
-      isSelected ? "#ccc" : "#0a5483",
-      lineColors[1]
-    ]);
-  };
-  
+  // Verifica se pode ir para a próxima aba
   const canGoToNextPage = () => {
     if (registroAtivo === "clientes") {
       // Verifica se o cliente está selecionado e se é ativo
@@ -108,125 +169,61 @@ function AbasForUpdate() {
       return selectedProducts.length > 0;
     }
     return false;
-  };  
-  
-
-
-    // INFORMAÇÕES DOS CLIENTES
-
-    const [Clientes, setClientes] = useState([]);
-
-    const fetchDadosClientes = async (id) => {
-      try {
-        const response = await axios.get(`/api/ServerOne/tableCliente/${id}`, {
-          withCredentials: true,
-        });
-        if (response.status === 200) {
-          setClientes(response.data);
-        }
-      } catch (error) {
-        console.log("Não foi possível requerir as informações: ", error);
-      }
-    };
-
-
-    // INFORMAÇÕES DOS PRODUTOS
-
-    const [ProductsEstoque, setSelectedEstoque] = useState([]);
-
-    const fetchDadosEstoque = async (id) => {
-      try {
-        const response = await axios.get(`/api/ServerOne/tableEstoque/${id}`, {
-          withCredentials: true,
-        });
-        if (response.status === 200) {
-          setSelectedEstoque(response.data.InfoTabela);
-        }
-      } catch (error) {
-        console.log("Não foi possível requerir as informações: ", error);
-      }
-    };
-
-    // OUTRAS FUNÇÕES
-
-    // Filtro
-    const [searchTermCliente, setSearchTermCliente] = useState(""); // Estado para armazenar o termo de pesquisa
-    const [searchTermProduto, setSearchTermProduto] = useState(""); // Estado para armazenar o termo de pesquisa
-
-        // Filtro dos clientes e produtos
-        const handleSearchChangeCliente = (e) => {
-          setSearchTermCliente(e.target.value); // Atualiza o termo de pesquisa
-        };
-      
-        const filteredClientes = Clientes.filter(
-          (cliente) =>
-            cliente.razao_social.toLowerCase().includes(searchTermCliente.toLowerCase()) ||
-            String(cliente.id).toLowerCase().includes(searchTermCliente.toLowerCase())
-        );
-
-        const handleSearchChangeProduto = (e) => {
-          setSearchTermProduto(e.target.value); // Atualiza o termo de pesquisa
-        };
-      
-        const filteredProdutos = ProductsEstoque.filter(
-          (product) =>
-            product.Nome.toLowerCase().includes(searchTermProduto.toLowerCase()) ||
-            String(product.Codigo).toLowerCase().includes(searchTermProduto.toLowerCase())
-        );
-
-      // Função para calcular o valor total dos produtos
-      const calcularValorTotal = () => {
-        const total = selectedProducts.reduce((acc, product) => acc + (parseFloat(product.ValorUnitario) * product.quantidade), 0);
-        return total - (total * (desconto / 100));
-      };
-    
-  
-
-  const enviarPedido = async () => {
-    if (!selectedClient || selectedProducts.length === 0) {
-      alert("Selecione um cliente e pelo menos um produto.");
-      return;
-    }
-  
-    const dadosVenda = {
-      nome_cliente: selectedClient.razao_social,    // Cliente selecionado
-      produto: JSON.stringify(selectedProducts),    // Produtos em formato JSON
-      desconto: desconto,                           // Desconto aplicado
-      total: calcularValorTotal().toFixed(2),                 // Valor total, formatado com 2 casas decimais
-      vendedor: userInfo.Nome_user                  // Nome do vendedor que está logado
-    };
-
-    const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
-  
-    try {
-      const response = await axios.post(`/api/ServerTwo/registrarPedido/${id}`, dadosVenda, {
-        withCredentials: true,
-      });
-        alert("Venda registrada com sucesso!");
-        navigate("/gestaopedidos")
-    } catch (error) {
-      console.error("Erro ao enviar os dados da venda: ", error);
-      alert("Erro ao registrar a venda.");
-    }
   };
 
-  console.log("2",selectedClient)
-  
+  // Calcula o valor total com desconto
+  const calcularValorTotal = () => {
+    const total = selectedProducts.reduce((acc, product) => acc + (parseFloat(product.ValorUnitario) * product.quantidade), 0);
+    return total - (total * (desconto / 100));
+  };
+
+// Função para atualizar o pedido
+const enviarPedido = async () => {
+  if (!selectedClient || selectedProducts.length === 0) {
+    alert("Selecione um cliente e pelo menos um produto.");
+    return;
+  }
+
+  const dadosVenda = {
+    id_pedido: VendaForUpdate.id_pedido,  // ID do pedido para atualizar
+    nome_cliente: selectedClient.razao_social,    // Cliente selecionado
+    produto: JSON.stringify(selectedProducts),    // Produtos em formato JSON
+    desconto: desconto,                           // Desconto aplicado
+    total: calcularValorTotal().toFixed(2),       // Valor total, formatado com 2 casas decimais
+    vendedor: userInfo.Nome_user                  // Nome do vendedor que está logado
+  };
+
+  const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
+
+  try {
+    const response = await axios.put(`/api/ServerTwo/UpdatePedido/${id}`, dadosVenda, {
+      withCredentials: true,
+    });
+    alert("Pedido atualizado com sucesso!");
+    navigate("/gestaopedidos");
+  } catch (error) {
+    console.error("Erro ao enviar os dados da venda: ", error);
+    alert("Erro ao atualizar o pedido.");
+  }
+};
+
+
+  // Renderização das abas
   const renderizarPedidos = () => {
     switch (registroAtivo) {
       case "clientes":
         return (
           <div>
-                                              {/* Input de pesquisa */}
-                                              <div>
-          <input
-            type="text"
-            placeholder="Pesquisar clientes..."
-            value={searchTermCliente}
-            onChange={handleSearchChangeCliente}
-            className="SearchInput"
-          />
-        </div>
+            {/* Input de pesquisa */}
+            <div>
+              <input
+                type="text"
+                placeholder="Pesquisar clientes..."
+                value={searchTermCliente}
+                onChange={handleSearchChangeCliente}
+                className="SearchInput"
+              />
+            </div>
             <div className="Clientes_List">
               <table>
                 <caption>Listagem de Clientes</caption>
@@ -248,9 +245,10 @@ function AbasForUpdate() {
                       <td>{cliente.ativo}</td>
                       <td>
                         <input
-                          type="checkbox"
-                          className="custom-checkbox"
-                          checked={selectedClient && selectedClient.id === cliente.id}
+                          type="radio" // Alterado para radio button
+                          name="cliente"
+                          className="custom-radio"
+                          checked={selectedClient?.razao_social === cliente.razao_social}
                           onChange={() => handleClientSelect(cliente)}
                         />
                       </td>
@@ -270,79 +268,74 @@ function AbasForUpdate() {
             </div>
           </div>
         );
+
       case "estoque":
         return (
           <div>
-                                                  {/* Input de pesquisa */}
-                                                  <div>
-          <input
-            type="text"
-            placeholder="Pesquisar clientes..."
-            value={searchTermProduto}
-            onChange={handleSearchChangeProduto}
-            className="SearchInput"
-          />
-        </div>
-            <div className="Estoque_List">
-              <table id="table-to-export">
-                <caption>Listagens de Produtos</caption>
-                <thead>
-                  <tr>
-                    <th>Código do produto</th>
-                    <th>Nome</th>
-                    <th>Fornecedor</th>
-                    <th>Quantidade</th>
-                    <th>Valor Unitário</th>
-                    <th>Selecionar</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredProdutos.map((product) => (
-                    <tr key={product.Codigo}>
-                      <td>{product.Codigo}</td>
-                      <td>{product.Nome}</td>
-                      <td>{product.Fornecedor}</td>
-                      <td>{product.Quantidade}</td>
-                      <td>R$ {product.ValorUnitario}</td>
-                      <td>
-                        <div className="alinhandoInputsTab">
-                        <input
-                          type="checkbox"
-                          className="custom-checkbox"
-                          checked={selectedProducts.some((p) => p.Codigo === product.Codigo)}
-                          onChange={() => handleProductSelect(product)}
-                        />
-                        {selectedProducts.some((p) => p.Codigo === product.Codigo) && (
-                          <input
-                          type="number"
-                          min="1"
-                          max={Math.min(product.Quantidade)}
-                          defaultValue={selectedProducts.find((p) => p.Codigo === product.Codigo)?.quantidade || 1}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            // Permite apenas números ou deixa em branco
-                            if (value === '' || /^\d+$/.test(value)) {
-                              const quantity = Math.max(1, Math.min(Math.min(product.Quantidade, 10), Number(value))); // Limita entre 1 e o menor valor entre 10 e product.Quantidade
-                              handleQuantityChange(product.Codigo, quantity);
-                            }
-                          }}
-                        />
-                        )}
-                           </div>
-                      </td>
-                      
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            {/* Input de pesquisa de produtos */}
+            <div>
+              <input
+                type="text"
+                placeholder="Pesquisar produtos..."
+                value={searchTermProduto}
+                onChange={handleSearchChangeProduto}
+                className="SearchInput"
+              />
             </div>
-
-            <div className="Div-ButtonProxEstoque">
-              <button className="ButtonSendEnv" onClick={() => setRegistroAtivo("clientes")}>
-                Voltar
-              </button>
+            <div className="Estoque_List">
+            <table id="table-to-export">
+  <caption>Listagens de Produtos</caption>
+  <thead>
+    <tr>
+      <th>Código do produto</th>
+      <th>Nome</th>
+      <th>Fornecedor</th>
+      <th>Quantidade Disponível</th>
+      <th>Valor Unitário</th>
+      <th>Selecionado</th>
+    </tr>
+  </thead>
+  <tbody>
+    {filteredProdutos.map((product) => (
+      <tr key={product.Codigo}>
+        <td>{product.Codigo}</td>
+        <td>{product.Nome}</td>
+        <td>{product.Fornecedor}</td>
+        <td>{product.Quantidade}</td>
+        <td>R$ {product.ValorUnitario}</td>
+        <td>
+          <div className="alinhandoInputsTab">
+            <input
+              type="checkbox"
+              className="custom-checkbox"
+              checked={selectedProducts.some((p) => p.Codigo === product.Codigo)}
+              onChange={() => handleProductSelect(product)}
+            />
+            {selectedProducts.some((p) => p.Codigo === product.Codigo) && (
+              <input
+                type="number"
+                min="1"
+                max={Math.min(product.Quantidade)}
+                defaultValue={selectedProducts.find((p) => p.Codigo === product.Codigo)?.quantidade || 1}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (value === '' || /^\d+$/.test(value)) {
+                    const quantity = Math.max(1, Math.min(product.Quantidade, Number(value))); // Limita a quantidade correta
+                    handleQuantityChange(product.Codigo, quantity);
+                  }
+                }}
+              />
+            )}
+          </div>
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+            </div>
+            <div className="Div-ButtonProx">
               <button 
-                onClick={() => setRegistroAtivo("Resumo")}
+                onClick={() => setRegistroAtivo("resumo")}
                 disabled={!canGoToNextPage()}
                 className={`ButtonSendEnv ${canGoToNextPage() ? '' : 'disabled'}`}
               >
@@ -351,7 +344,8 @@ function AbasForUpdate() {
             </div>
           </div>
         );
-      case "Resumo":
+
+      case "resumo":
         return (
           <div className="resumo-container">
             {selectedClient && selectedProducts.length > 0 ? (
@@ -364,8 +358,8 @@ function AbasForUpdate() {
                 <ul className="produtos-list">
                   {selectedProducts.map((product) => (
                     <li key={product.Codigo}>
-                    {product.Nome} - {product.quantidade} x R$ {product.ValorUnitario} = R$ {(product.ValorUnitario * product.quantidade).toFixed(2)}
-                  </li>
+                      {product.Nome} - {product.quantidade} x R$ {parseFloat(product.ValorUnitario).toFixed(2)} = R$ {(parseFloat(product.ValorUnitario) * product.quantidade).toFixed(2)}
+                    </li>
                   ))}
                 </ul>
                 <h4>Total: R$ {calcularValorTotal().toFixed(2)}</h4>
@@ -376,13 +370,13 @@ function AbasForUpdate() {
                     placeholder="Desconto"
                     type="number"
                     value={desconto}
-                    onChange={(e) => setDesconto(e.target.value)}
+                    onChange={(e) => setDesconto(parseFloat(e.target.value) || 0)}
                     required
                   />
                 </div>
                 <div className="button-container">
-                <button className="ButtonSendEnv" onClick={() => setRegistroAtivo("estoque")}>Voltar</button>
-                <button className="ButtonSendEnv" onClick={enviarPedido}>Enviar</button>
+                  <button className="ButtonSendEnv" onClick={() => setRegistroAtivo("estoque")}>Voltar</button>
+                  <button className="ButtonSendEnv" onClick={enviarPedido}>Enviar</button>
                 </div>
               </div>
             ) : (
@@ -390,6 +384,7 @@ function AbasForUpdate() {
             )}
           </div>
         );
+
       default:
         return null;
     }
@@ -398,25 +393,22 @@ function AbasForUpdate() {
   return (
     <main className="main-container">
       <div>
-        <h2>Adicionar Pedidos</h2>
+        <h2>Editar Pedido</h2>
         <div className="DivButtonsSequence">
           <div
-            className={`buttonSequencia ${selectedClient ? 'active' : ''}`}
-
+            className={`buttonSequencia ${registroAtivo === "clientes" ? 'active' : ''}`}
           >
             1
           </div>
           <div className="line" style={{ backgroundColor: lineColors[0] }}></div>
           <div
-            className={`buttonSequencia ${selectedProducts.length > 0 ? 'active' : ''}`}
-      
+            className={`buttonSequencia ${registroAtivo === "estoque" ? 'active' : ''}`}
           >
             2
           </div>
           <div className="line" style={{ backgroundColor: lineColors[1] }}></div>
           <div
-            className={`buttonSequencia ${selectedClient && selectedProducts.length > 0 ? 'active' : ''}`}
-          
+            className={`buttonSequencia ${registroAtivo === "resumo" ? 'active' : ''}`}
           >
             3
           </div>
