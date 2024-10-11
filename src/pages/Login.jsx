@@ -40,10 +40,14 @@ function Login() {
 
       if (response.data.TypeUser === 'SuperAdmin') {
         navigate('/dashboard_admin')
-      } else if (response.data.TypeUser === 'Gestor' && 'Admin') {
+      } else if (response.data.TypeUser === 'Gestor' || 'Socio' || 'Gerente' || 'Financeiro') {
         navigate('/dashboard')
       } else if (response.data.TypeUser === 'Venda') {
         navigate('/vendas')
+      } else if (response.data.TypeUser === 'Estoque') {
+        navigate('/cad_produto')
+      } else if (response.data.TypeUser === 'Caixa') {
+        navigate('/caixa')
       } else {
         alert("Usuário desconhecido");
       }

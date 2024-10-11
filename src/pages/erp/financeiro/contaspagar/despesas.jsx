@@ -223,7 +223,7 @@ function Despesas() {
 
   // Função para atualizar o estado finalizado para 1
   const UpdateFinalizado1 = async (id) => {
-    const id_EmpresaDb = parseInt(userInfo.id_user); // Alterado para userInfo.id_user
+    const id_EmpresaDb = parseInt(userInfo.id_EmpresaDb); // Alterado para userInfo.id_user
 
     try {
       const response = await axios.put(
@@ -245,7 +245,7 @@ function Despesas() {
 
   // Função para atualizar o estado finalizado para 1
   const UpdateFinalizado0 = async (id) => {
-    const id_EmpresaDb = parseInt(userInfo.id_user); // Alterado para userInfo.id_user
+    const id_EmpresaDb = parseInt(userInfo.id_EmpresaDb); // Alterado para userInfo.id_user
 
     try {
       const response = await axios.put(

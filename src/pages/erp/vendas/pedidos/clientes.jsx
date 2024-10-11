@@ -230,9 +230,9 @@ function Clientes() {
       );
       if (response.status === 200) {
         console.log("Cliente registrado com sucesso!");
-        fetchDados(userInfo.id_user); // Atualiza a lista de clientes
         handleClose(); // Fecha o modal após o sucesso
       }
+      await fetchDados(userInfo.id_EmpresaDb); // Atualiza a lista de clientes
     } catch (error) {
       alert("Erro ao registrar cliente");
       console.error("Erro ao registrar o cliente:", error);

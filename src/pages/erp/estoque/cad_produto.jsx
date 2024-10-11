@@ -63,8 +63,8 @@ function RegistroProduto() {
   }, []);
 
   useEffect(() => {
-    if (userInfo.id_user) {
-      fetchDados(userInfo.id_user);
+    if (userInfo.id_EmpresaDb) {
+      fetchDados(userInfo.id_EmpresaDb);
     }
   }, [userInfo]);
 

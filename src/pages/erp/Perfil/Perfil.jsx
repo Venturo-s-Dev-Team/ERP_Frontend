@@ -42,7 +42,7 @@ const Perfil = () => {
             </div>
           </div>
         );
-      } else if (userInfo.TypeUser === 'Admin') {
+      } else if (userInfo.TypeUser === 'Financeiro' || 'Estoque' || 'Venda' || 'Socio' || 'Gerente') {
         return (
           <div className="perfil-body">
             <footer className="perfil-footer">

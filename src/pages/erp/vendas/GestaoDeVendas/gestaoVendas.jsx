@@ -157,7 +157,9 @@ const GestaoVendas = () => {
 
   // PARA EDITAR
   const handleShowEdit = (venda) => {
-    if (venda) {
+    if (venda.Status === "CANCELADA" || "VENDA CONCLUÍDA") {
+      alert("Esta venda não está em aberto para edições")
+    } else if (venda) {
       setSelectedVenda(venda);
       navigate("/AbasForUpdate", {
         state: {
@@ -169,16 +171,13 @@ const GestaoVendas = () => {
     }
   };
 
-// PARA CANCELAR
+// Função para cancelar uma venda
 const CancelarVenda = async (venda) => {
+
+  if(venda.Status != "EM ABERTO") {
+    alert('Este pedido não pode ser cancelado')
+  } else {
   const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
-  
-  // Verificar se 'venda.produto' está definido e é um array
-  if (!venda.produto || !Array.isArray(venda.produto)) {
-    console.error("Produtos do pedido estão indefinidos ou não são um array.");
-    alert("Erro: Produtos do pedido inválidos.");
-    return;
-  }
 
   console.log("Enviando CancelarVenda com dados:", {
     id_pedido: venda.id_pedido,
@@ -201,8 +200,9 @@ const CancelarVenda = async (venda) => {
   } catch (error) {
     console.error("Erro ao cancelar venda:", error);
     alert("Erro ao cancelar venda.");
-  }
+  }}
 };
+
 
   // Função para exportar dados para Excel
   const exportToExcel = () => {
@@ -260,8 +260,9 @@ const CancelarVenda = async (venda) => {
               <th>Id</th>
               <th>Cliente</th>
               <th>Preço Final</th>
-              <th>Selecionar</th>
+              <th>Status</th>
               <th>Info.</th>
+              <th>Selecionar</th>
             </tr>
           </thead>
           <tbody>
@@ -270,6 +271,15 @@ const CancelarVenda = async (venda) => {
                 <td>{venda.id_pedido}</td>
                 <td>{venda.nome_cliente}</td>
                 <td>{venda.total}</td>
+                <td>{venda.Status}</td>
+                <td>
+                  <button
+                    className="btn-ver-mais"
+                    onClick={() => handleShowInfo(venda)}
+                  >
+                    Ver Mais
+                  </button>
+                </td>
                 <td>
                     <label className="custom-radio">
                       <input
@@ -281,14 +291,6 @@ const CancelarVenda = async (venda) => {
                       <span className="radio-checkmark"></span>
                     </label>
                   </td>
-                <td>
-                  <button
-                    className="btn-ver-mais"
-                    onClick={() => handleShowInfo(venda)}
-                  >
-                    Ver Mais
-                  </button>
-                </td>
               </tr>
             ))}
           </tbody>

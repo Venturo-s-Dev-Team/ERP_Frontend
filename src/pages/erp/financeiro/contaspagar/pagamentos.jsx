@@ -51,25 +51,25 @@ function Pagamentos() {
 
   // Buscar pagamentos
   useEffect(() => {
-    const fetchPagaments = async (id) => {
-      try {
-        const response = await axios.get(
-          `/api/ServerOne/tablepagamentos/${id}`,
-          {
-            withCredentials: true,
-          }
-        );
-        setPagaments(response.data.InfoTabela);
-      } catch (error) {
-        console.error("Erro ao buscar pagamentos:", error);
-        setPagaments([]);
-      }
-    };
-
-    if (userInfo && userInfo.id_user) {
-      fetchPagaments(userInfo.id_user);
+    if (userInfo && userInfo.id_EmpresaDb) {
+      fetchPagaments(userInfo.id_EmpresaDb);
     }
   }, [userInfo]);
+
+  const fetchPagaments = async (id) => {
+    try {
+      const response = await axios.get(
+        `/api/ServerOne/tablepagamentos/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
+      setPagaments(response.data.InfoTabela);
+    } catch (error) {
+      console.error("Erro ao buscar pagamentos:", error);
+      setPagaments([]);
+    }
+  };
 
   // Mostrar e fechar modal
   const handleShow = () => setShowModal(true);
@@ -125,6 +125,7 @@ function Pagamentos() {
           Descricao: "",
         });
       }
+      await fetchPagaments(id_EmpresaDb)
     } catch (error) {
       console.error("Erro ao registrar pagamento:", error);
     }

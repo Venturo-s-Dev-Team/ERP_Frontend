@@ -3,7 +3,7 @@ import "./planodcontas.css";
 import PlanosForm from "./planos.jsx";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 // Componente para cada categoria (Receitas ou Despesas)
 const Categoria = ({ nome, tipos }) => {
@@ -39,23 +39,32 @@ const Categoria = ({ nome, tipos }) => {
 };
 
 // Componente principal que renderiza o plano de contas
-const PlanoDeContas = ({ empresaId }) => {
+const PlanoDeContas = ({ empresaId, selectedPlano }) => {
   const [receitas, setReceitas] = useState([]);
   const [despesas, setDespesas] = useState([]);
 
   useEffect(() => {
-    fetchContas('Crédito', setReceitas); // Busca as contas de crédito para receitas
-    fetchContas('Débito', setDespesas); // Busca as contas de débito para despesas
-  }, [empresaId]);
-
-  const fetchContas = async (orientacao, setState) => {
+    fetchContas("Crédito", setReceitas); // Busca as contas de crédito para receitas
+    fetchContas("Débito", setDespesas); // Busca as contas de débito para despesas
+  }, [empresaId, selectedPlano]); // Adiciona selectedPlano como dependência
+  
+  const fetchContas = async (tipo, setContas) => { // Adicione setContas aqui
+    if (!selectedPlano || !selectedPlano.codigo_plano) {
+      console.error("Plano não selecionado");
+      return; // Saia da função se o plano não for selecionado
+    }
+  
     try {
-      const response = await axios.get(`/api/ServerOne/tableContas/${empresaId}/${orientacao}`);
-      setState(response.data); // Altera o estado com as contas retornadas
+      const response = await axios.get(
+        `http://10.144.170.50:5173/api/ServerOne/tableContas/${empresaId}/${selectedPlano.codigo_plano}/${encodeURIComponent(tipo)}`
+      );
+      setContas(response.data); // Atualiza o estado com os dados recebidos
     } catch (error) {
-      console.error(`Erro ao buscar contas de ${orientacao}:`, error);
+      console.error(`Erro ao buscar contas (${tipo}):`, error);
     }
   };
+  
+
 
   return (
     <div>
@@ -79,6 +88,7 @@ function PlanoDContas() {
     userName: "", // Preencher com o nome do usuário logado
   });
   const [planos, setPlanos] = useState([]); // Estado para armazenar os planos
+  const [selectedPlano, setSelectedPlano] = useState(""); // Estado para o plano selecionado
 
   // Carrega as informações do token e busca os planos ao carregar o componente
   useEffect(() => {
@@ -113,7 +123,7 @@ function PlanoDContas() {
   // Função para buscar os planos da API
   const fetchPlanos = async (id) => {
     try {
-      const response = await axios.get(`/api/ServerOne/tablePlanos/${id}`); // Ajuste para incluir o ID da empresa
+      const response = await axios.get(`/api/ServerOne/tablePlanos/${id}`);
       setPlanos(response.data); // Agora pegamos a resposta completa e colocamos no estado
     } catch (error) {
       console.error("Erro ao buscar os planos:", error);
@@ -130,7 +140,9 @@ function PlanoDContas() {
   // Submete o formulário para adicionar uma nova conta
   const handleContaSubmit = async (e) => {
     e.preventDefault();
-    const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_EmpresaDb;
+    const id = userInfo.id_EmpresaDb
+      ? userInfo.id_EmpresaDb
+      : userInfo.id_EmpresaDb;
 
     if (!id) {
       alert("ID da empresa não encontrado.");
@@ -140,7 +152,7 @@ function PlanoDContas() {
     try {
       const response = await axios.post(
         `/api/ServerTwo/registrarContas/${id}`,
-        contaData
+        { ...contaData, plano: selectedPlano } // Adiciona o plano automaticamente
       );
       alert(response.data.message);
       // Limpar os campos após o envio
@@ -172,10 +184,22 @@ function PlanoDContas() {
               </div>
               <div className="nome-dados">
                 <h4>Nome</h4>
-                <select className="select">
+                <select
+                  className="select"
+                  onChange={(e) => {
+                    const selected = planos.find(
+                      (plano) => plano.codigo_plano === e.target.value
+                    );
+                    setSelectedPlano(selected); // Armazena o plano selecionado corretamente
+                  }}
+                  value={selectedPlano ? selectedPlano.codigo_plano : ""}
+                >
                   {planos && planos.length > 0 ? (
                     planos.map((plano) => (
-                      <option key={planos.codigo_plano} value={planos.codigo_plano}>
+                      <option
+                        key={plano.codigo_plano}
+                        value={plano.codigo_plano}
+                      >
                         {plano.descricao}
                       </option>
                     ))
@@ -190,7 +214,10 @@ function PlanoDContas() {
                 <div className="header-item">
                   <h4>Item do Plano de Conta</h4>
                 </div>
-                <PlanoDeContas empresaId={userInfo.id_EmpresaDb} />
+                <PlanoDeContas
+                  empresaId={userInfo.id_EmpresaDb}
+                  selectedPlano={selectedPlano}
+                />
               </div>
               <div className="edit-item">
                 <div className="header-item">
@@ -255,25 +282,21 @@ function PlanoDContas() {
       case "Planos":
         return <PlanosForm />;
       default:
-        return null;
+        return <div>Conteúdo padrão</div>;
     }
   };
 
   return (
-    <main className="main-container">
-      <div className="header-plano">
-        <button
-          className="button-plano"
-          onClick={() => setAbaAtiva("Planos de Contas")}
-        >
-          Plano de Contas
+    <div className="planos">
+      <h1>Planos e Contas</h1>
+      <div className="abas">
+        <button onClick={() => setAbaAtiva("Planos de Contas")}>
+          Planos de Contas
         </button>
-        <button className="button-plano" onClick={() => setAbaAtiva("Planos")}>
-          Cadastrar Planos
-        </button>
+        <button onClick={() => setAbaAtiva("Planos")}>Planos</button>
       </div>
       {renderizarConteudo()}
-    </main>
+    </div>
   );
 }
 

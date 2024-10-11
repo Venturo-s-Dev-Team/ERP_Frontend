@@ -37,13 +37,14 @@ const SuccessPopup = ({ onClose, onSubmit }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
     try {
       const response = await axios.post('/api/ServerTwo/cadastro_funcionario', {
         Nome: nome,
         Senha: senha,
         TypeUser: typeUser,
         Email: generateEmail(nome),
-        id: EmpresaId,
+        id: userInfo.id_EmpresaDb,
 
         // Info para Logs
         id_EmpresaDb: userInfo.id_EmpresaDb,
@@ -91,8 +92,10 @@ const SuccessPopup = ({ onClose, onSubmit }) => {
               <option value="">Selecione o cargo</option>
               <option value="Socio">Sócio</option>
               <option value="Gerente">Gerente</option>
+              <option value="Financeiro">Financeiro</option>
               <option value="Estoque">Estoque</option>
               <option value="Venda">Venda</option>
+              <option value="Caixa">Caixa</option>
             </select>
             {erro && <p className="error">{erro}</p>}
             <div className="popup-footer">

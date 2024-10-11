@@ -129,7 +129,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
                     <Route
             path="/dashboard"
             element={
-              <ProtectedRoute allowedRoles={['Gestor']}>
+              <ProtectedRoute allowedRoles={['Gestor', 'Gerente', 'Socio', 'Financeiro']}>
                 <Dashboard />
               </ProtectedRoute>
             }
@@ -145,11 +145,11 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
             }
           />
 
-          {/* Gestor e Sócio podem acessar logs_empresa */}
+          {/* Gestor e Socio podem acessar logs_empresa */}
           <Route
             path="/logs_empresa"
             element={
-              <ProtectedRoute allowedRoles={['Gestor', 'Sócio']}>
+              <ProtectedRoute allowedRoles={['Gestor', 'Gerente', 'Socio']}>
                 <LogsEmpresa />
               </ProtectedRoute>
             }
@@ -165,11 +165,11 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
             }
           />
 
-          {/* Caixa, Gestor e Sócio têm acesso às rotas de caixa */}
+          {/* Caixa, Gestor e Socio têm acesso às rotas de caixa */}
           <Route
             path="/caixa"
             element={
-              <ProtectedRoute allowedRoles={['Caixa', 'Gestor', 'Sócio']}>
+              <ProtectedRoute allowedRoles={['Caixa', 'Gestor', 'Socio']}>
                 <Caixa />
               </ProtectedRoute>
             }
@@ -177,7 +177,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           <Route
             path="/caixa_pagamento"
             element={
-              <ProtectedRoute allowedRoles={['Caixa', 'Gestor', 'Sócio']}>
+              <ProtectedRoute allowedRoles={['Caixa', 'Gestor', 'Socio']}>
                 <Caixa_Pagamento />
               </ProtectedRoute>
             }
@@ -185,47 +185,47 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           <Route
             path="/caixa_modal"
             element={
-              <ProtectedRoute allowedRoles={['Caixa', 'Gestor', 'Sócio']}>
+              <ProtectedRoute allowedRoles={['Caixa', 'Gestor', 'Socio']}>
                 <Caixa_Modal />
               </ProtectedRoute>
             }
           />
 
-          {/* Estoque, Gestor e Sócio podem acessar cad_produto */}
+          {/* Estoque, Gestor e Socio podem acessar cad_produto */}
           <Route
             path="/cad_produto"
             element={
-              <ProtectedRoute allowedRoles={['Estoque', 'Gestor', 'Sócio']}>
+              <ProtectedRoute allowedRoles={['Estoque', 'Gestor', 'Socio']}>
                 <Cad_produto />
               </ProtectedRoute>
             }
           />
 
-          {/* Gestor, Venda, Sócio podem acessar gestaoPedidos */}
+          {/* Gestor, Venda, Socio podem acessar gestaoPedidos */}
           <Route
             path="/gestaoPedidos"
             element={
-              <ProtectedRoute allowedRoles={['Gestor', 'Venda', 'Sócio']}>
+              <ProtectedRoute allowedRoles={['Gestor', 'Gerente', 'Venda', 'Socio']}>
                 <GestaoVendas />
               </ProtectedRoute>
             }
           />
 
-          {/* Sócio, Gestor, Venda podem acessar vendas */}
+          {/* Socio, Gestor, Venda podem acessar vendas */}
           <Route
             path="/vendas"
             element={
-              <ProtectedRoute allowedRoles={['Sócio', 'Gestor', 'Venda']}>
+              <ProtectedRoute allowedRoles={['Socio', 'Gestor', 'Venda']}>
                 <Vendas />
               </ProtectedRoute>
             }
           />
 
-          {/* Sócio, Gestor, Venda podem acessar fornecedores e clientes */}
+          {/* Socio, Gestor, Venda podem acessar fornecedores e clientes */}
           <Route
             path="/fornecedores"
             element={
-              <ProtectedRoute allowedRoles={['Sócio', 'Gestor', 'Venda']}>
+              <ProtectedRoute allowedRoles={['Socio', 'Gestor', 'Venda']}>
                 <Fornecedores />
               </ProtectedRoute>
             }
@@ -233,27 +233,27 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           <Route
             path="/clientes"
             element={
-              <ProtectedRoute allowedRoles={['Sócio', 'Gestor', 'Venda']}>
+              <ProtectedRoute allowedRoles={['Socio', 'Gestor', 'Venda']}>
                 <Clientes />
               </ProtectedRoute>
             }
           />
 
-          {/* Sócio e Gestor podem acessar CadastroFuncionario */}
+          {/* Socio e Gestor podem acessar CadastroFuncionario */}
           <Route
             path="/CadastroFuncionario"
             element={
-              <ProtectedRoute allowedRoles={['Sócio', 'Gestor']}>
+              <ProtectedRoute allowedRoles={['Socio', 'Gestor']}>
                 <CadastroFuncionario />
               </ProtectedRoute>
             }
           />
 
-          {/* Financeiro, Sócio, Gestor podem acessar despesas, pagamentos, balancete, lacontabil, dre, planoscontas, receitas, razao */}
+          {/* Financeiro, Socio, Gestor podem acessar despesas, pagamentos, balancete, lacontabil, dre, planoscontas, receitas, razao */}
           <Route
             path="/despesas"
             element={
-              <ProtectedRoute allowedRoles={['Financeiro', 'Sócio', 'Gestor']}>
+              <ProtectedRoute allowedRoles={['Financeiro', 'Socio', 'Gestor']}>
                 <Despesas />
               </ProtectedRoute>
             }
@@ -261,7 +261,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           <Route
             path="/pagamentos"
             element={
-              <ProtectedRoute allowedRoles={['Financeiro', 'Sócio', 'Gestor']}>
+              <ProtectedRoute allowedRoles={['Financeiro', 'Socio', 'Gestor']}>
                 <Pagamentos />
               </ProtectedRoute>
             }
@@ -269,7 +269,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           <Route
             path="/balancete"
             element={
-              <ProtectedRoute allowedRoles={['Financeiro', 'Sócio', 'Gestor']}>
+              <ProtectedRoute allowedRoles={['Financeiro', 'Socio', 'Gestor']}>
                 <Balancete />
               </ProtectedRoute>
             }
@@ -277,7 +277,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           <Route
             path="/lancontabil"
             element={
-              <ProtectedRoute allowedRoles={['Financeiro', 'Sócio', 'Gestor']}>
+              <ProtectedRoute allowedRoles={['Financeiro', 'Socio', 'Gestor']}>
                 <LanContabil />
               </ProtectedRoute>
             }
@@ -285,7 +285,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           <Route
             path="/dre"
             element={
-              <ProtectedRoute allowedRoles={['Financeiro', 'Sócio', 'Gestor']}>
+              <ProtectedRoute allowedRoles={['Financeiro', 'Socio', 'Gestor']}>
                 <Dre />
               </ProtectedRoute>
             }
@@ -293,7 +293,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           <Route
             path="/planodcontas"
             element={
-              <ProtectedRoute allowedRoles={['Financeiro', 'Sócio', 'Gestor']}>
+              <ProtectedRoute allowedRoles={['Financeiro', 'Socio', 'Gestor']}>
                 <PlanoDContas />
               </ProtectedRoute>
             }
@@ -301,7 +301,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           <Route
             path="/receitas"
             element={
-              <ProtectedRoute allowedRoles={['Financeiro', 'Sócio', 'Gestor']}>
+              <ProtectedRoute allowedRoles={['Financeiro', 'Socio', 'Gestor']}>
                 <Receitas />
               </ProtectedRoute>
             }
@@ -309,37 +309,37 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           <Route
             path="/razao"
             element={
-              <ProtectedRoute allowedRoles={['Financeiro', 'Sócio', 'Gestor']}>
+              <ProtectedRoute allowedRoles={['Financeiro', 'Socio', 'Gestor']}>
                 <Razao />
               </ProtectedRoute>
             }
           />
 
-          {/* Gestor, Sócio, Financeiro e Caixa podem acessar fluxodecaixa */}
+          {/* Gestor, Socio, Financeiro e Caixa podem acessar fluxodecaixa */}
           <Route
             path="/fluxodecaixa"
             element={
-              <ProtectedRoute allowedRoles={['Gestor', 'Sócio', 'Financeiro', 'Caixa']}>
+              <ProtectedRoute allowedRoles={['Gestor', 'Gerente', 'Socio', 'Financeiro', 'Caixa']}>
                 <Fluxodecaixa />
               </ProtectedRoute>
             }
           />
 
-          {/* Venda, Sócio e Gestor podem acessar Abas */}
+          {/* Venda, Socio e Gestor podem acessar Abas */}
           <Route
             path="/abas"
             element={
-              <ProtectedRoute allowedRoles={['Venda', 'Sócio', 'Gestor']}>
+              <ProtectedRoute allowedRoles={['Venda', 'Socio', 'Gestor']}>
                 <Abas />
               </ProtectedRoute>
             }
           />
 
-                    {/* Venda, Sócio e Gestor podem acessar AbasForUpdate */}
+                    {/* Venda, Socio e Gestor podem acessar AbasForUpdate */}
                     <Route
             path="/abasForUpdate"
             element={
-              <ProtectedRoute allowedRoles={['Venda', 'Sócio', 'Gestor']}>
+              <ProtectedRoute allowedRoles={['Venda', 'Socio', 'Gestor']}>
                 <AbasForUpdate />
               </ProtectedRoute>
             }

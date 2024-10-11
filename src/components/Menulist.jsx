@@ -235,16 +235,6 @@ const MenuList = ({ darkTheme }) => {
           label: "Caixa",
           onClick: () => handleNavigation("/caixa"),
         }, 
-        {
-          key: "caixa_pagamento",
-          label: "Caixa/Pagamentos",
-          onClick: () => handleNavigation("/caixa_pagamento"),
-        },
-        {
-          key: "caixa_modal",
-          label: "Caixa/Modal",
-          onClick: () => handleNavigation("/caixa_modal"),
-        },
       ],
     },
     {

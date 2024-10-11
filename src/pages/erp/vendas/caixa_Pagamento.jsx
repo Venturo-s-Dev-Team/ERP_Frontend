@@ -63,7 +63,11 @@ function Caixa_Pagamento() {
   const handleClose = () => setShowModal(false);
 
   const handlePaymentChange = (paymentMethod) => {
+    if (paymentMethod === "À vista") {
     setSelectedPayment(paymentMethod);
+  } else {
+    alert("Esta forma de pagamento está sendo desenvolvida")
+  }
   };
 
   const handleCpfCnpjChange = (event) => {

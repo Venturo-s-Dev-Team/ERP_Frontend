@@ -183,7 +183,7 @@ function Abas() {
       const response = await axios.post(`/api/ServerTwo/registrarPedido/${id}`, dadosVenda, {
         withCredentials: true,
       });
-        alert("Venda registrada com sucesso!");
+        alert("Pedido registrado com sucesso!");
         navigate("/gestaopedidos")
     } catch (error) {
       console.error("Erro ao enviar os dados da venda: ", error);

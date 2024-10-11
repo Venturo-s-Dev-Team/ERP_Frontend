@@ -38,8 +38,8 @@ function CadastroFuncionario() {
   }, [navigate]);
 
   useEffect(() => {
-    if (userInfo.id_user) {
-      fetchFuncionarios(userInfo.id_user);
+    if (userInfo.id_EmpresaDb) {
+      fetchFuncionarios(userInfo.id_EmpresaDb);
     }
   }, [userInfo]);
 
