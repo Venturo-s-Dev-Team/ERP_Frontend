@@ -1,0 +1,46 @@
+/* Perfil User */
+.Body-PerfUser {
+  background-color: #f2f2f2;
+  width: 65%;
+  justify-content: center;
+  margin-left: 18%;
+  height: 271px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.164);
+}
+
+.Footer-PerfUser {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.Summary-PerfUser img {
+  border: 1px solid #000000;
+  margin-right: 73%;
+}
+
+.DadosPerfil-PerfUser {
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin-top: -230px;
+  font-size: 22px;
+  margin-left: 300px;
+  text-align: left;
+  width: 380px;
+}
+
+.DadosPerfil-PerfUser h2 {
+  margin-bottom: 15px;
+  color: #000000da;
+}
+
+.DadosPerfil-PerfUser p {
+  margin-bottom: 2px;
+  font-weight: 400;
+}
+
+.Titulo-PerfUser {
+  font-size: 30px;
+  text-align: center;
+  color: #000000cf;
+}

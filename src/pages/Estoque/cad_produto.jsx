@@ -70,20 +70,15 @@ function RegistroProduto() {
             Adicionar
             <FaPlus />
           </button>
-          <button
-            className="Button-Menu"
-            onClick={() => handleShowEdit(selectedProduct)}
-          >
+          <button onClick={() => handleShowEdit(selectedProduct)}>
             Editar
             <FaPenToSquare />
           </button>
-
           <button className="Button-Menu">
             Exportar
             <FaFileExport />
           </button>
         </div>
-
         {/* Input de pesquisa */}
         <div>
           <input
@@ -92,7 +87,6 @@ function RegistroProduto() {
             className="SearchInput"
           />
         </div>
-
         <div className="Estoque_List">
           <table id="table-to-export">
             <caption>Registro de Produtos</caption>

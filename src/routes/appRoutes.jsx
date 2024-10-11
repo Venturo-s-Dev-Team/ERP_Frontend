@@ -17,6 +17,11 @@ import RegistroProduto from "../pages/Estoque/cad_produto";
 import Error from "../pages/Error/Erros";
 import Caixa_Entrada from "../pages/Email/caixaEntrada";
 import Caixa_Saida from "../pages/Email/caixaSaida";
+import Perfil_User from "../pages/Perfil/perfilUser";
+import Fornecedores from "../pages/Fornecedores/fornecedores";
+import Pagamentos from "../pages/Pagamentos/pagamentos";
+import Perfil_Admin from "../pages/Perfil/perfilAdmin";
+import Cad_Empresa from "../pages/Cadastrar Empresa/cad_empresa";
 
 function AppRoutes() {
   return (
@@ -31,6 +36,11 @@ function AppRoutes() {
         <Route path="/error" element={<Error />} />
         <Route path="email_entrada" element={<Caixa_Entrada />} />
         <Route path="/email_saida" element={<Caixa_Saida />} />
+        <Route path="/perfil_user" element={<Perfil_User />} />
+        <Route path="/fornecedores" element={<Fornecedores />} />
+        <Route path="/pagamentos" element={<Pagamentos />} />
+        <Route path="/perfil_admin" element={<Perfil_Admin />} />
+        <Route path="/cad_empresa" element={<Cad_Empresa />} />
       </Routes>
     </Router>
   );
