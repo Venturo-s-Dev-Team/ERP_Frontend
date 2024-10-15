@@ -1,13 +1,15 @@
 import { Button, Modal, Form } from "react-bootstrap";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
 import { FaFileExport } from "react-icons/fa";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import "./vendas.css";
 
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend,  ComposedChart,
-  Area,
-  Bar,
- } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ComposedChart, Area, Bar } from 'recharts';
+import moment from 'moment'; // Para manipulação de datas
+
 
 const data01 = [
   {
@@ -82,18 +84,99 @@ const data02 = [
  
 ];
 
-const vendas = [
-  { id: 1, name: "Venda 1", valor: 2143, data: "09/10/23", },
-  { id: 2, name: "Venda 2", valor: 1311, data: "20/04/20", },
-  { id: 3, name: "Venda 3", valor: 1232, data: "30/04/23", },
-];
-
 function Hist_vendas() {
+  const navigate = useNavigate();
+  const [userInfo, setUserInfo] = useState({});
+  const [vendas, setVendas] = useState([]);
+  const [dadosPorSemana, setDadosPorSemana] = useState([]);
+  const [maxVendaMes, setMaxVendaMes] = useState(0);
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para armazenar o termo de pesquisa
 
   const [showModal, setShowModal] = useState(false);
 
   const handleShow = () => setShowModal(true);
   const handleClose = () => setShowModal(false);
+
+  // Função para verificar o token
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const response = await axios.get("/api/ServerTwo/verifyToken", {
+          withCredentials: true,
+        });
+        if (typeof response.data.token === "string") {
+          const decodedToken = jwtDecode(response.data.token);
+          setUserInfo(decodedToken);
+        } else {
+          console.error("Token não é uma string:", response.data.token);
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Token inválido", error);
+        navigate("/login");
+      }
+    };
+
+    verifyToken();
+  }, [navigate]);
+
+  // Função para carregar vendas do banco de dados
+  useEffect(() => {
+    if (userInfo && userInfo.id_EmpresaDb) {
+      fetchVendas(userInfo.id_EmpresaDb);
+    }
+  }, [userInfo]);
+
+
+  const fetchVendas = async (id) => {
+    try {
+      const response = await axios.get(`/api/ServerOne/VendasConcluidas/${id}`, {
+        withCredentials: true,
+      });
+      setVendas(response.data.InfoTabela);
+      processarDadosPorSemana(response.data.InfoTabela); // Processa os dados para o gráfico
+    } catch (error) {
+      console.error("Erro ao carregar vendas", error);
+    }
+  };
+
+      // Filtro dos produtos
+      const handleSearchChange = (e) => {
+        setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
+      };
+    
+      const filteredvenda = vendas.filter(
+        (venda) =>
+          String(venda.id_pedido).toLowerCase().includes(searchTerm.toLowerCase())
+      );
+
+
+      // Função para processar as vendas por semana
+  const processarDadosPorSemana = (vendas) => {
+    const vendasPorSemana = {};
+    let maxVenda = 0;
+
+    vendas.forEach((venda) => {
+      const semana = moment(venda.Data).week(); // Obtém a semana da data
+      if (!vendasPorSemana[semana]) {
+        vendasPorSemana[semana] = 0;
+      }
+      vendasPorSemana[semana] += venda.total;
+
+      if (vendasPorSemana[semana] > maxVenda) {
+        maxVenda = vendasPorSemana[semana]; // Armazena a venda com maior valor
+      }
+    });
+
+    const dadosFormatados = Object.keys(vendasPorSemana).map((semana) => ({
+      name: `Semana ${semana}`,
+      total: vendasPorSemana[semana],
+    }));
+
+    setMaxVendaMes(maxVenda); // Define o maior valor vendido no mês
+    setDadosPorSemana(dadosFormatados); // Define os dados processados para o gráfico
+  };
+  
 
   return (
     <main className="main-container">
@@ -102,47 +185,41 @@ function Hist_vendas() {
       </div>
        {/* Botões para cadastrar despesas, excluir ou editar */}
        <div className="Button_Cad">
-       <button onClick={handleShow}>
-            Adicionar
-            <FaPlus />
-          </button>
-          <button>
-            Editar
-            <FaPenToSquare />
-          </button>
           <button>
             Exportar
             <FaFileExport />
           </button>
         </div>
+                            {/* Input de pesquisa */}
+                            <div>
+          <input
+            type="text"
+            placeholder="Pesquisar clientes..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="SearchInput"
+          />
+          </div>
 
 <div className="gráficos-vendas">
-  <div className="gráfico1-vendas">
-        <LineChart
-          width={500}
-          height={310}
-          data={data01}
-          margin={{
-            top: 5,
-            right: 30,
-            left: 20,
-            bottom: 5,
-          }}
-          className="grafico01-item"
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis yAxisId="left" />
-          <YAxis yAxisId="right" orientation="right" />
-          <Tooltip />
-          <Legend />
-          <Line yAxisId="left" type="monotone" dataKey="pv" stroke="#AEDD2B" activeDot={{ r: 8 }} />
-          <Line yAxisId="right" type="monotone" dataKey="uv" stroke="#0a5483" />
-        </LineChart>
-        <h4 className="legenda_vendas1">Gráfico representativo</h4>
-        </div>
+<div className="gráfico1-vendas">
+      <LineChart
+        width={500}
+        height={310}
+        data={dadosPorSemana} // Utiliza os dados processados por semana
+        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis domain={[0, maxVendaMes]} /> {/* Eixo Y com limite baseado no valor máximo */}
+        <Tooltip />
+        <Legend />
+        <Line type="monotone" dataKey="total" stroke="#0a5483" activeDot={{ r: 8 }} />
+      </LineChart>
+      <h4 className="legenda_vendas1">Total de vendas por semana</h4>
+    </div>
 
-        <div className="gráfico02-vendas">
+       {/* <div className="gráfico02-vendas">
         <ComposedChart
           width={600}
           height={330}
@@ -165,68 +242,29 @@ function Hist_vendas() {
           <Line type="monotone" dataKey="uv" stroke="#ff7300" />
         </ComposedChart>
         <h4 className="legenda_vendas2">Gráfico representativo</h4>
-          </div>
+          </div>*/}
         </div>
         <div className="tabela-vendas">
         <table>
             <caption>Histórico de Vendas</caption>
             <thead>
               <tr>
-                <th>Nome</th>
-                <th>Valor</th>
+                <th>Id</th>
+                <th>Valor Total</th>
                 <th>Data</th>
               </tr>
             </thead>
             <tbody>
-              {vendas.map((venda) => (
-                <tr key={venda.id}>
-                  <td>{venda.name}</td>
-                  <td>R$ {venda.valor.toFixed(2)}</td>
-                  <td>{venda.data}</td>
+              {filteredvenda.map((venda) => (
+                <tr key={venda.id_venda}>
+                  <td>{venda.nome_cliente}</td>
+                  <td>R$ {venda.total}</td>
+                  <td>{venda.Data}</td>
                 </tr>
               ))}
             </tbody>
           </table>
           </div>
-
-           {/* Modal de Adicionar Produto */}
-
-      <Modal
-        style={{
-          position: "fixed",
-          top: "50%",
-          bottom: 0,
-          left: "50%",
-          right: 0,
-          zIndex: 1000,
-          width: "70%",
-          height: "73%",
-          borderRadius: 20,
-          transform: "translate(-50%, -50%)",
-          background: "white",
-          boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
-        }}
-        show={showModal}
-        onHide={handleClose}
-      >
-        <div className="DivModal">
-          <div>
-            <h1>Registrar Venda</h1>
-          </div>
-
-          <form>            
-            <input type="text" placeholder="Nome" />
-            <input type="number" placeholder="Valor" />
-            <input type="text" placeholder="Data" />
-            <div>
-              <button className="RegisterPr">Registrar</button>
-              <button className="FecharPr" onClick={handleClose}>
-                Fechar
-              </button>
-            </div>
-          </form>
-        </div>
-      </Modal>
     </main>
   );
 }

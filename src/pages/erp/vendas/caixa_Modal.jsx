@@ -55,6 +55,9 @@ function Caixa_Modal() {
    const handleSubmit = async () => {
     const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
     console.log(id)
+    if (valorRecebido >= VendaSelecionada[0]?.total) {
+      alert("O valor recebido é menor do que o valor da compra")
+    } else {
     try {
       const response = await axios.put(`/api/ServerTwo/RegisterVenda/${VendaSelecionada[0].id_pedido}`, 
         {formData: JSON.stringify({
@@ -73,7 +76,7 @@ function Caixa_Modal() {
     } catch (error) {
       console.error("Erro ao enviar os dados:", error);
       alert("Erro ao atualizar a venda.");
-    }
+    }}
   };
 
 
