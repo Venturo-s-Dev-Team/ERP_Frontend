@@ -33,6 +33,7 @@ import Razao from "../pages/erp/financeiro/planocontas/razao";
 import LanContabil from "../pages/erp/financeiro/planocontas/lancontabil/lancontabil";
 import Vendas from "../pages/erp/vendas/vendas";
 import GestaoVendas from "../pages/erp/vendas/GestaoDeVendas/gestaoVendas.jsx";
+import PedidosCancelados from "../pages/erp/vendas/GestaoDeVendas/gestaoPedidosCancelados.jsx";
 import Abas from "../pages/erp/vendas/GestaoDeVendas/Abas.jsx";
 import AbasForUpdate from "../pages/erp/vendas/GestaoDeVendas/AbasForUpdate.jsx"
 import Cadastronf from "../pages/erp/vendas/notafiscal/cadastronf";
@@ -207,6 +208,15 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
             element={
               <ProtectedRoute allowedRoles={['Gestor', 'Gerente', 'Venda', 'Socio']}>
                 <GestaoVendas />
+              </ProtectedRoute>
+            }
+          />
+
+<Route
+            path="/gestaoPedidosCancelados"
+            element={
+              <ProtectedRoute allowedRoles={['Gestor', 'Gerente', 'Venda', 'Socio']}>
+                <PedidosCancelados />
               </ProtectedRoute>
             }
           />

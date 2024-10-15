@@ -107,9 +107,9 @@ function Home() {
     }
   };
 
-  const fetchDadosPedidos = async (id) => {
+  const fetchDadosVendas = async (id) => {
     try {
-      const response = await axios.get(`/api/ServerOne/tableVenda/${id}`, { withCredentials: true });
+      const response = await axios.get(`/api/ServerOne/VendasConcluidas/${id}`, { withCredentials: true });
       if (response.status === 200) {
         setSelectedTotalVenda(response.data.N_Registros);
       }
@@ -156,7 +156,7 @@ function Home() {
     if (userInfo.id_EmpresaDb) {
       fetchDadosEstoque(userInfo.id_EmpresaDb);
       fetchDadosFuncionarios(userInfo.id_EmpresaDb)
-      fetchDadosPedidos(userInfo.id_EmpresaDb)
+      fetchDadosVendas(userInfo.id_EmpresaDb)
       fetchDadosHistoricLogs(userInfo.id_EmpresaDb)
     }
   }, [userInfo.id_EmpresaDb]);
@@ -185,7 +185,7 @@ function Home() {
         </div>
         <div className="card">
           <div className="card-inner">
-            <h3>PEDIDOS</h3>
+            <h3>VENDAS TOTAIS</h3>
             <BsListCheck className="card_icon" />
           </div>
           <h1>{SelectedTotalVenda}</h1>

@@ -54,31 +54,37 @@ function Caixa_Modal() {
    // Função para enviar os dados para o backend
    const handleSubmit = async () => {
     const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
-    console.log(id)
-    if (valorRecebido >= VendaSelecionada[0]?.total) {
-      alert("O valor recebido é menor do que o valor da compra")
+    const recebido = parseFloat(valorRecebido);
+  
+    // Verifica se o valor recebido é vazio, não é um número ou é menor que o total da venda
+    if (isNaN(recebido) || recebido < VendaSelecionada[0]?.total) {
+      alert("O valor recebido é inválido ou menor do que o valor da compra.");
     } else {
-    try {
-      const response = await axios.put(`/api/ServerTwo/RegisterVenda/${VendaSelecionada[0].id_pedido}`, 
-        {formData: JSON.stringify({
-        cpf_cnpj: cpf_cnpj,
-        forma_pagamento: selectedPayment,
-        valor_total: VendaSelecionada[0]?.total,
-        selectedCliente,
-        id: parseInt(id)
-      }),},
-       { withCredentials: true });
-
-       if ( response.status === 200) {
-        alert('Venda concluída');
-        navigate("/caixa")
-       }
-    } catch (error) {
-      console.error("Erro ao enviar os dados:", error);
-      alert("Erro ao atualizar a venda.");
-    }}
+      try {
+        const response = await axios.put(`/api/ServerTwo/RegisterVenda/${VendaSelecionada[0].id_pedido}`, 
+          {
+            formData: JSON.stringify({
+              cpf_cnpj: cpf_cnpj,
+              forma_pagamento: selectedPayment,
+              valor_total: VendaSelecionada[0]?.total,
+              selectedCliente,
+              id: parseInt(id)
+            }),
+          },
+          { withCredentials: true }
+        );
+  
+        if (response.status === 200) {
+          alert('Venda concluída');
+          navigate("/caixa");
+        }
+      } catch (error) {
+        console.error("Erro ao enviar os dados:", error);
+        alert("Erro ao atualizar a venda.");
+      }
+    }
   };
-
+  
 
 
   return (

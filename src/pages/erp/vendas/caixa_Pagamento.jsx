@@ -1,5 +1,6 @@
 import { Button, Modal, Form } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
+import InputMask from 'react-input-mask';
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -147,13 +148,12 @@ function Caixa_Pagamento() {
         ) : (
           <p>Carregando informações do cliente...</p>
         )}
-        <input
+        <InputMask
           type="text"
           className="input-caixas-modal"
           placeholder="CPF/CNPJ"
           value={cpf_cnpj}
           onChange={handleCpfCnpjChange}
-          disabled={cpf_cnpj !== ''} // Bloqueia o campo se o CPF/CNPJ estiver preenchido
         />
       </div>
 

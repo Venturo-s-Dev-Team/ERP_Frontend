@@ -226,6 +226,11 @@ const MenuList = ({ darkTheme }) => {
           onClick: () => handleNavigation("/gestaoPedidos"),
         },
         {
+          key: "PedidosCancelados",
+          label: "Pedidos Cancelados",
+          onClick: () => handleNavigation("/gestaoPedidosCancelados"),
+        },
+        {
           key: "historicovendas",
           label: "Histórico de Vendas",
           onClick: () => handleNavigation("/vendas"),
