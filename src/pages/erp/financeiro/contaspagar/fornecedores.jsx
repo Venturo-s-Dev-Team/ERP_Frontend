@@ -4,7 +4,7 @@ import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { FaFileExport } from "react-icons/fa";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode"; // Importação correta
 import InputMask from "react-input-mask";
 import "./fornecedores.css";
 
@@ -12,13 +12,18 @@ function Fornecedores() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [userInfo, setUserInfo] = useState("");
-  const [Fornecedores, setFornecedores] = useState([]);
+  const [fornecedores, setFornecedores] = useState([]);
+  const [isEditMode, setIsEditMode] = useState(false); // Modo de edição
   const [showModalFornecedores, setShowModalFornecedores] = useState(false);
-  const [SelectedFornecedor, setSelectedFornecedor] = useState([]);
-  const [searchTerm, setSearchTerm] = useState(""); // Estado para armazenar o termo de pesquisa
+  const [selectedFornecedor, setSelectedFornecedor] = useState(null); // Fornecedor selecionado
+  const [searchTerm, setSearchTerm] = useState(""); // Termo de pesquisa
 
   const handleShow = () => setShowModal(true);
-  const handleClose = () => setShowModal(false);
+  const handleClose = () => {
+    setShowModal(false);
+    setIsEditMode(false);
+    setFormData(initialFormData);
+  };
 
   const handleShowFornecedores = () => setShowModalFornecedores(true);
   const handleCloseFornecedores = () => setShowModalFornecedores(false);
@@ -64,20 +69,19 @@ function Fornecedores() {
     }
   };
 
-      // Filtro dos produtos
-      const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
-      };
-      
-      const filteredFornecedores = Fornecedores.filter(
-        (fornecedores =>
-          fornecedores.razao_social.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          fornecedores.cpf_cnpj.toLowerCase().includes(searchTerm.toLowerCase())
-      ));
-  
+  // Função de busca
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
+  const filteredFornecedores = fornecedores.filter(
+    (fornecedor) =>
+      fornecedor.razao_social.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      fornecedor.cpf_cnpj.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  const [formData, setFormData] = useState({
+  // Dados iniciais do formulário
+  const initialFormData = {
     id_EmpresaDb: "",
     cpf_cnpj: "",
     observacoes: "",
@@ -94,8 +98,10 @@ function Fornecedores() {
     ie: "",
     ramo_atividade: "",
     site: "",
-    observacoes: "",
-  });
+    // Adicione mais campos conforme necessário
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
 
   const buscarCep = async (cep) => {
     try {
@@ -104,15 +110,15 @@ function Fornecedores() {
 
       if (!data.erro) {
         // Atualiza os campos com os valores retornados da API
-        setFormData({
-          ...formData,
+        setFormData((prevData) => ({
+          ...prevData,
           logradouro: data.logradouro,
           bairro: data.bairro,
           cidade: data.localidade,
           uf: data.uf,
-        });
+        }));
 
-        console.log(response)
+        console.log(response);
       } else {
         alert("CEP não encontrado.");
       }
@@ -129,13 +135,13 @@ function Fornecedores() {
     if (cep.length === 8) {
       // Chama a função de busca do CEP se o formato for válido
       buscarCep(cep);
-      console.log(cep)
+      console.log(cep);
     } else {
       alert("Por favor, insira um CEP válido.");
     }
   };
 
-
+  // Função para lidar com mudanças nos inputs do formulário
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -144,33 +150,84 @@ function Fornecedores() {
     }));
   };
 
+  // Função para submeter o formulário (Adicionar ou Editar)
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    try {
-      const response = await axios.post(
-        "/api/ServerTwo/registerFornecedor",
-        { ...formData, id_EmpresaDb: userInfo.id_EmpresaDb }, // Enviando o id_EmpresaDb junto aos outros dados
-        { withCredentials: true }
-      );
-      
-      if (response.status === 200) {
-        console.log("Fornecedor registrado com sucesso!");
-        fetchDados(userInfo.id_EmpresaDb); // Atualiza a lista de Fornecedores
-        handleClose(); // Fecha o modal após o sucesso
+
+    if (isEditMode) {
+      try {
+        const response = await axios.put(
+          `/api/ServerTwo/UpdateFornecedor/${selectedFornecedor.id}`,
+          { ...formData, id_EmpresaDb: userInfo.id_EmpresaDb },
+          {
+            withCredentials: true,
+          }
+        );
+        if (response.status === 200) {
+          // Atualiza a lista de fornecedores após a edição
+          fetchDados(userInfo.id_EmpresaDb);
+          alert("Fornecedor atualizado com sucesso!");
+          handleClose();
+        }
+      } catch (error) {
+        console.error("Erro ao atualizar o fornecedor:", error);
+        alert("Não foi possível atualizar o fornecedor.");
       }
-    } catch (error) {
-      alert("Erro ao registrar Fornecedor");
-      console.error("Erro ao registrar o Fornecedor:", error);
+    } else {
+      try {
+        const response = await axios.post(
+          "/api/ServerTwo/registerFornecedor",
+          { ...formData, id_EmpresaDb: userInfo.id_EmpresaDb }, // Enviando o id_EmpresaDb junto aos outros dados
+          { withCredentials: true }
+        );
+
+        if (response.status === 200 || response.status === 201) {
+          console.log("Fornecedor registrado com sucesso!");
+          alert("Fornecedor registrado com sucesso!");
+          fetchDados(userInfo.id_EmpresaDb); // Atualiza a lista de fornecedores
+          handleClose(); // Fecha o modal após o sucesso
+        }
+      } catch (error) {
+        alert("Erro ao registrar Fornecedor");
+        console.error("Erro ao registrar o Fornecedor:", error);
+      }
     }
   };
-  
 
-  const SelecionandoFornecedor = (Fornecedor) => {
-    setSelectedFornecedor(Fornecedor);
+  // Função para selecionar um fornecedor e abrir o modal de informações
+  const SelecionandoFornecedor = (fornecedor) => {
+    setSelectedFornecedor(fornecedor);
     handleShowFornecedores(); // Abre o modal de informações do fornecedor
   };
-  
+
+  // Função para abrir o modal de edição com dados pré-preenchidos
+  const handleShowEditModal = () => {
+    if (!selectedFornecedor) {
+      alert("Por favor, selecione um fornecedor para editar.");
+      return;
+    }
+    setIsEditMode(true); // Define o modo de edição
+    setFormData({
+      id_EmpresaDb: selectedFornecedor.id_EmpresaDb || "",
+      cpf_cnpj: selectedFornecedor.cpf_cnpj || "",
+      observacoes: selectedFornecedor.observacoes || "",
+      razao_social: selectedFornecedor.razao_social || "",
+      nome_fantasia: selectedFornecedor.nome_fantasia || "",
+      endereco: selectedFornecedor.endereco || "",
+      logradouro: selectedFornecedor.logradouro || "",
+      bairro: selectedFornecedor.bairro || "",
+      cidade: selectedFornecedor.cidade || "",
+      cep: selectedFornecedor.cep || "",
+      uf: selectedFornecedor.uf || "",
+      email: selectedFornecedor.email || "",
+      telefone: selectedFornecedor.telefone || "",
+      ie: selectedFornecedor.ie || "",
+      ramo_atividade: selectedFornecedor.ramo_atividade || "",
+      site: selectedFornecedor.site || "",
+      // Adicione mais campos conforme necessário
+    });
+    handleShow(); // Abre o modal
+  };
 
   return (
     <main className="main-container">
@@ -180,56 +237,60 @@ function Fornecedores() {
 
       <div>
         <div className="Button_Cad">
-          <button  onClick={handleShow}>
-            Adicionar
-            <FaPlus />
+          <button onClick={handleShow}>
+            Adicionar <FaPlus />
+          </button>
+          <button onClick={handleShowEditModal} disabled={!selectedFornecedor}>
+            Editar <FaPenToSquare />
           </button>
           <button>
-            Editar
-            <FaPenToSquare />
-          </button>
-
-          <button>
-            Exportar
-            <FaFileExport />
+            Exportar <FaFileExport />
           </button>
         </div>
 
-        
         {/* Input de pesquisa */}
         <div>
           <input
             type="text"
-            placeholder="Pesquisar fornecedor..."
+            placeholder="Pesquisar Fornecedor..."
             value={searchTerm}
             onChange={handleSearchChange}
             className="SearchInput"
           />
         </div>
 
+        {/* Tabela de fornecedores */}
         <div className="Fornecedores_List">
           <table>
-            <caption>Listagem de fornecedores</caption>
+            <caption>Listagem de Fornecedores</caption>
             <thead>
               <tr>
                 <th>Nome</th>
                 <th>CNPJ/CPF</th>
                 <th>Informações</th>
+                <th>Selecionar</th>
               </tr>
             </thead>
             <tbody>
-              {filteredFornecedores.map((Fornecedor) => (
-                <tr key={Fornecedor.id}>
-                  <td>{Fornecedor.razao_social}</td>
-                  <td>{Fornecedor.cpf_cnpj}</td>
+              {filteredFornecedores.map((fornecedor) => (
+                <tr key={fornecedor.id}>
+                  <td>{fornecedor.razao_social}</td>
+                  <td>{fornecedor.cpf_cnpj}</td>
                   <td>
                     <button
-                      onClick={() => SelecionandoFornecedor(Fornecedor)}
+                      onClick={() => SelecionandoFornecedor(fornecedor)}
                       className="ButtonInfoProduct"
                     >
-                      {" "}
-                      Info{" "}
+                      Info
                     </button>
+                  </td>
+                  <td>
+                    <input
+                      type="radio"
+                      name="selectedFornecedor"
+                      onChange={() => setSelectedFornecedor(fornecedor)}
+                      checked={selectedFornecedor?.id === fornecedor.id}
+                    />
                   </td>
                 </tr>
               ))}
@@ -238,29 +299,28 @@ function Fornecedores() {
         </div>
       </div>
 
-      {/* Modal de Adicionar Produto */}
-
+      {/* Modal de Adicionar/Editar Fornecedor */}
       <Modal
-          style={{
-            position: "fixed",
-            top: "50%",
-            bottom: 0,
-            left: "55%",
-            right: 0,
-            zIndex: 1000,
-            width: "80%",
-            height: "80%",
-            borderRadius: 20,
-            transform: "translate(-50%, -50%)",
-            background: "white",
-            boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
-          }}
+        style={{
+          position: "fixed",
+          top: "50%",
+          bottom: 0,
+          left: "55%",
+          right: 0,
+          zIndex: 1000,
+          width: "80%",
+          height: "80%",
+          borderRadius: 20,
+          transform: "translate(-50%, -50%)",
+          background: "white",
+          boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
+        }}
         show={showModal}
         onHide={handleClose}
       >
         <div className="DivModal">
           <div>
-            <h1>Registrar Fornecedor</h1>
+            <h1>{isEditMode ? "Atualizar Informações" : "Registrar Fornecedor"}</h1>
           </div>
           <form onSubmit={handleSubmit}>
             <input
@@ -285,7 +345,7 @@ function Fornecedores() {
               mask="99.999.999/9999-99"
               type="text"
               name="cpf_cnpj"
-              placeholder="CNPJ"
+              placeholder="CNPJ/CPF"
               value={formData.cpf_cnpj}
               onChange={handleChange}
               required
@@ -414,7 +474,7 @@ function Fornecedores() {
 
             <div>
               <button type="submit" className="RegisterPr">
-                Registrar
+                {isEditMode ? "Salvar Alterações" : "Registrar"}
               </button>
               <button type="button" className="FecharPr" onClick={handleClose}>
                 Fechar
@@ -424,66 +484,65 @@ function Fornecedores() {
         </div>
       </Modal>
 
+      {/* Modal de Visualização de Fornecedor */}
       <Modal
-          style={{
-            position: "fixed",
-            top: "50%",
-            bottom: 0,
-            left: "50%",
-            right: 0,
-            zIndex: 1000,
-            width: "70%",
-            height: "73%",
-            borderRadius: 20,
-            transform: "translate(-50%, -50%)",
-            background: "white",
-            boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
-            padding: 2,
-          }}
-          show={showModalFornecedores}
-          onHide={handleCloseFornecedores}
-        >
-         <div className="perfil-cliente">
-  <h2>Informações do Cliente</h2>
-  <div className="container-infos">
-    <div className="info-card">
-      <h3>Dados Básicos</h3>
-      <p><strong>Nome:</strong> {SelectedFornecedor.razao_social}</p>
-      <p><strong>CNPJ:</strong> {SelectedFornecedor.cpf_cnpj}</p>
-      <p><strong>Telefone:</strong> {SelectedFornecedor.telefone}</p>
-      <p><strong>E-mail:</strong> {SelectedFornecedor.email}</p>
-      <p><strong>Nome Fantasia:</strong> {SelectedFornecedor.nome_fantasia}</p>
-    </div>
+        style={{
+          position: "fixed",
+          top: "50%",
+          bottom: 0,
+          left: "50%",
+          right: 0,
+          zIndex: 1000,
+          width: "70%",
+          height: "73%",
+          borderRadius: 20,
+          transform: "translate(-50%, -50%)",
+          background: "white",
+          boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
+          padding: 2,
+        }}
+        show={showModalFornecedores}
+        onHide={handleCloseFornecedores}
+      >
+        <div className="perfil-fornecedor">
+          <h2>Informações do Fornecedor</h2>
+          <div className="container-infos">
+            <div className="info-card">
+              <h3>Dados Básicos</h3>
+              <p><strong>Nome:</strong> {selectedFornecedor?.razao_social}</p>
+              <p><strong>CNPJ/CPF:</strong> {selectedFornecedor?.cpf_cnpj}</p>
+              <p><strong>Telefone:</strong> {selectedFornecedor?.telefone}</p>
+              <p><strong>E-mail:</strong> {selectedFornecedor?.email}</p>
+              <p><strong>Nome Fantasia:</strong> {selectedFornecedor?.nome_fantasia}</p>
+            </div>
 
-    <div className="info-card">
-      <h3>Endereço</h3>
-      <p><strong>Logradouro:</strong> {SelectedFornecedor.logradouro}</p>
-      <p><strong>Bairro:</strong> {SelectedFornecedor.bairro}</p>
-      <p><strong>Cidade:</strong> {SelectedFornecedor.cidade}</p>
-      <p><strong>CEP:</strong> {SelectedFornecedor.cep}</p>
-      <p><strong>UF:</strong> {SelectedFornecedor.uf}</p>
-      <p><strong>Endereço:</strong> {SelectedFornecedor.endereco}</p>
-    </div>
+            <div className="info-card">
+              <h3>Endereço</h3>
+              <p><strong>Logradouro:</strong> {selectedFornecedor?.logradouro}</p>
+              <p><strong>Bairro:</strong> {selectedFornecedor?.bairro}</p>
+              <p><strong>Cidade:</strong> {selectedFornecedor?.cidade}</p>
+              <p><strong>CEP:</strong> {selectedFornecedor?.cep}</p>
+              <p><strong>UF:</strong> {selectedFornecedor?.uf}</p>
+              <p><strong>Endereço:</strong> {selectedFornecedor?.endereco}</p>
+            </div>
 
-    <div className="info-card">
-      <h3>Informações Adicionais</h3>
-      <p><strong>Inscrição Estadual:</strong> {SelectedFornecedor.ie}</p>
-      <p><strong>Ramo de Atividade:</strong> {SelectedFornecedor.ramo_atividade}</p>
-      <p><strong>Funcionário:</strong> {SelectedFornecedor.funcionario}</p>
-      <p><strong>Site:</strong> {SelectedFornecedor.site}</p>
-      <p><strong>Observações:</strong> {SelectedFornecedor.observacoes}</p>
-    </div>
-  </div>
+            <div className="info-card">
+              <h3>Informações Adicionais</h3>
+              <p><strong>Inscrição Estadual:</strong> {selectedFornecedor?.ie}</p>
+              <p><strong>Ramo de Atividade:</strong> {selectedFornecedor?.ramo_atividade}</p>
+              <p><strong>Funcionário:</strong> {selectedFornecedor?.funcionario}</p>
+              <p><strong>Site:</strong> {selectedFornecedor?.site}</p>
+              <p><strong>Observações:</strong> {selectedFornecedor?.observacoes}</p>
+            </div>
+          </div>
 
-  <div className="buttons">
-    <button onClick={handleCloseFornecedores} className="FecharPr">
-      FECHAR
-    </button>
-  </div>
-</div>
-
-        </Modal>
-
+          <div className="buttons">
+            <button onClick={handleCloseFornecedores} className="FecharPr">
+              FECHAR
+            </button>
+          </div>
+        </div>
+      </Modal>
     </main>
   );
 }

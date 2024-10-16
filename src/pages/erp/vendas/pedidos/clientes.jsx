@@ -20,6 +20,8 @@ function Clientes() {
   const [showFuncionarioInput, setShowFuncionarioInput] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showModalClientes, setShowModalClientes] = useState(false);
+  const [selectedClient, setSelectedClient] = useState(null); // Cliente selecionado para edição
+  const [isEditMode, setIsEditMode] = useState(false); // Determina se está no modo de edição  
   const [formType, setFormType] = useState(""); // Para determinar qual formulário será exibido
   const [SelectedCliente, setSelectedCliente] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); // Estado para armazenar o termo de pesquisa
@@ -77,7 +79,34 @@ function Clientes() {
   );
 
   const handleShow = () => setShowModal(true);
-  const handleClose = () => setShowModal(false);
+  const handleClose = () => {
+    setShowModal(false);
+    setFormType("");
+    setIsEditMode(false);
+    setFormData({
+      id_EmpresaDb: "",
+      cpf_cnpj: "",
+      observacoes: "",
+      razao_social: "",
+      nome_fantasia: "",
+      endereco: "",
+      logradouro: "",
+      bairro: "",
+      cidade: "",
+      cep: "",
+      uf: "",
+      email: "",
+      telefone: "",
+      ativo: "NÃO",
+      ie: "",
+      dia_para_faturamento: "",
+      ramo_atividade: "",
+      funcionario: [], // Reset para array
+      limite: "",
+      site: "",
+      autorizados: "NÃO",
+    });
+  };  
 
   const handleShowClientes = () => setShowModalClientes(true);
   const handleCloseClientes = () => setShowModalClientes(false);
@@ -193,24 +222,25 @@ function Clientes() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Concatenando os funcionários em uma string separada por vírgula
-    const concatenatedFuncionarios = formData.funcionario
-      .filter((func) => func.trim() !== "")
-      .join(", ");
-
+  
+    // Concatenando os funcionários em uma string separada por vírgula, apenas se for CNPJ
+    const concatenatedFuncionarios = formType === "CNPJ" && Array.isArray(formData.funcionario)
+      ? formData.funcionario
+          .filter((func) => func.trim() !== "")
+          .join(", ")
+      : null;
+  
     // Tratando campos vazios ou inválidos
     const sanitizedFormData = {
       ...formData,
       ativo: formData.ativo || null,
-      autorizados:
-        formData.autorizados.length > 0 ? formData.autorizados : null,
+      autorizados: formData.autorizados.length > 0 ? formData.autorizados : null,
       bairro: formData.bairro || null,
       cep: formData.cep || null,
       cidade: formData.cidade || null,
       dia_para_faturamento: formData.dia_para_faturamento || null,
       email: formData.email || null,
-      funcionario: concatenatedFuncionarios || null, // Atribuindo a string concatenada dos funcionários
+      funcionario: concatenatedFuncionarios, // Pode ser string ou null
       ie: formData.ie || null,
       limite: formData.limite || null,
       logradouro: formData.logradouro || null,
@@ -221,23 +251,48 @@ function Clientes() {
       telefone: formData.telefone || null,
       uf: formData.uf || null,
     };
-
-    try {
-      const response = await axios.post(
-        "/api/ServerTwo/registerCliente",
-        { ...sanitizedFormData, id_EmpresaDb: userInfo.id_EmpresaDb },
-        { withCredentials: true }
-      );
-      if (response.status === 200) {
-        console.log("Cliente registrado com sucesso!");
-        handleClose(); // Fecha o modal após o sucesso
+  
+    if (isEditMode) {
+      // Lógica para editar o cliente
+      try {
+        const response = await axios.put(
+          `/api/ServerTwo/UpdateCliente/${selectedClient.id}`,
+          { ...sanitizedFormData, id_EmpresaDb: userInfo.id_EmpresaDb },
+          {
+            withCredentials: true,
+          }
+        );
+        if (response.status === 200) {
+          // Atualize a lista de clientes após a edição
+          fetchDados(userInfo.id_EmpresaDb);
+          alert("Cliente atualizado com sucesso!");
+          handleClose();
+        }
+      } catch (error) {
+        console.error("Erro ao atualizar o cliente:", error);
+        alert("Não foi possível atualizar o cliente.");
       }
-      await fetchDados(userInfo.id_EmpresaDb); // Atualiza a lista de clientes
-    } catch (error) {
-      alert("Erro ao registrar cliente");
-      console.error("Erro ao registrar o cliente:", error);
+    } else {
+      // Lógica para adicionar um novo cliente
+      try {
+        const response = await axios.post(
+          "/api/ServerTwo/registerCliente",
+          { ...sanitizedFormData, id_EmpresaDb: userInfo.id_EmpresaDb },
+          { withCredentials: true }
+        );
+        if (response.status === 201 || response.status === 200) { // Verifique se o backend retorna 201 ou 200
+          console.log("Cliente registrado com sucesso!");
+          alert("Cliente registrado com sucesso!");
+          handleClose(); // Fecha o modal após o sucesso
+        }
+        await fetchDados(userInfo.id_EmpresaDb); // Atualiza a lista de clientes
+      } catch (error) {
+        alert("Erro ao registrar cliente");
+        console.error("Erro ao registrar o cliente:", error);
+      }
     }
   };
+  
 
   const handleFormSelection = (type) => {
     setFormType(type); // Define se é CPF ou CNPJ
@@ -247,6 +302,29 @@ function Clientes() {
     setSelectedCliente(cliente);
     handleShowClientes();
   };
+
+  const handleEdit = () => {
+    if (!selectedClient) {
+      alert("Por favor, selecione um cliente para editar.");
+      return;
+    }
+  
+    const cpfCnpjDigits = selectedClient.cpf_cnpj.replace(/\D/g, ""); // Remove caracteres não numéricos
+  
+    if (cpfCnpjDigits.length === 11) {
+      setFormType("CPF");
+    } else if (cpfCnpjDigits.length === 14) {
+      setFormType("CNPJ");
+    } else {
+      alert("CPF/CNPJ inválido.");
+      return;
+    }
+  
+    setFormData(selectedClient); // Preenche o formulário com os dados do cliente
+    setIsEditMode(true); // Define o modo de edição
+    setShowModal(true); // Abre o modal
+  };
+  
 
   return (
     <main className="main-container">
@@ -260,11 +338,10 @@ function Clientes() {
           Adicionar
           <FaPlus />
         </button>
-        <button >
+        <button onClick={handleEdit} disabled={!selectedClient}>
           Editar
           <FaPenToSquare />
         </button>
-
         <button >
           Exportar
           <FaFileExport />
@@ -291,6 +368,7 @@ function Clientes() {
               <th>Nome</th>
               <th>CNPJ/CPF</th>
               <th>Informações</th>
+              <th>Selecionar</th>
             </tr>
           </thead>
           <tbody>
@@ -308,6 +386,17 @@ function Clientes() {
                     Info{" "}
                   </button>
                 </td>
+                <td>
+                    <label className="custom-radio">
+                      <input
+                        type="radio"
+                        name="selectedProduct"
+                        value={cliente.id}
+                        onChange={() => setSelectedClient(cliente)}
+                      />
+                      <span className="radio-checkmark"></span>
+                    </label>
+                  </td>
               </tr>
             ))}
           </tbody>
@@ -375,8 +464,9 @@ function Clientes() {
           show={showModal}
           onHide={handleClose}
         >
+      <form onSubmit={handleSubmit}></form>
           <div className="DivModal2">
-            <h1>Registrar Cliente (CNPJ)</h1>
+          <h1>{isEditMode ? "Editar Cliente (CNPJ)" : "Registrar Cliente (CNPJ)"}</h1>
             <form onSubmit={handleSubmit}>
               <input
                 type="text"
@@ -572,9 +662,9 @@ function Clientes() {
               )}
 
               <div>
-                <button type="submit" className="RegisterPr">
-                  Registrar
-                </button>
+              <button type="submit" className="RegisterPr">
+          {isEditMode ? "Salvar Alterações" : "Registrar"}
+        </button>
                 <button
                   type="button"
                   className="FecharPr"
@@ -608,7 +698,7 @@ function Clientes() {
           onHide={handleClose}
         >
           <div className="DivModal">
-            <h1>Registrar Cliente (CPF)</h1>
+          <h1>{isEditMode ? "Editar Cliente (CPF)" : "Registrar Cliente (CPF)"}</h1>
             <form onSubmit={handleSubmit}>
               <input
                 type="text"
@@ -738,9 +828,9 @@ function Clientes() {
 
 
               <div>
-                <button type="submit" className="RegisterPr">
-                  Registrar
-                </button>
+              <button type="submit" className="RegisterPr">
+          {isEditMode ? "Salvar Alterações" : "Registrar"}
+        </button>
                 <button
                   type="button"
                   className="FecharPr"
