@@ -34,7 +34,99 @@ function Cad_Empresa() {
                 <InputMask type="text" required />
               </label>
             </div>
+
+            <div className="Campo-Uf">
+              <label>
+                Uf:
+                <InputMask mask="aa" type="text" required />
+              </label>
+            </div>
+
+            <div className="Campo-Logradouro">
+              <label>
+                Logradouro:
+                <InputMask type="text" required />
+              </label>
+            </div>
+
+            <div className="Campo-Números">
+              <label>
+                Números:
+                <InputMask mask="9999" type="number" required />
+              </label>
+            </div>
+
+            <div className="Campo-Cep">
+              <label>
+                Cep:
+                <InputMask mask="99999-999" type="number" required />
+              </label>
+            </div>
+
+            <div className="Campo-Complemento">
+              <label>
+                Complemento:
+                <InputMask type="text" required />
+              </label>
+            </div>
           </div>
+
+          {/* Parte Empresa */}
+          <div className="EmpresaDiv-CadEmp">
+            <legend>Empresa</legend>
+            <div className="Campo-Telefone">
+              <label>
+                Telefone:
+                <InputMask mask="(99)99999-9999" type="text" required />
+              </label>
+            </div>
+            <div className="Campo-Cpf">
+              <label>
+                CPF:
+                <InputMask mask="999.999.999-99" type="text" required />
+              </label>
+            </div>
+            <div className="Campo-Rg">
+              <label>
+                RG:
+                <InputMask mask="99.999.999-9" type="text" required />
+              </label>
+            </div>
+            <div className="Campo-Site">
+              <label>
+                Site:
+                <InputMask type="url" required />
+              </label>
+            </div>
+          </div>
+
+          {/* Parte Documentos */}
+          <div className="DocumentosDiv-CadEmp">
+            <legend>Documentos</legend>
+            <div className="Campo-Contrato">
+              <label>
+                Contrato Social:
+                <InputMask type="file" required />
+              </label>
+            </div>
+            <div className="Campo-Requerimento">
+              <label>
+                Requerimento de Empresário:
+                <InputMask type="file" required />
+              </label>
+            </div>
+            <div className="Campo-Certificado">
+              <label>
+                Certificado MEI:
+                <InputMask type="file" required />
+              </label>
+            </div>
+          </div>
+
+          {/* Botão de Enviar */}
+          <button className="Enviar-CadEmp" type="submit">
+            Enviar
+          </button>
         </form>
       </div>
     </main>

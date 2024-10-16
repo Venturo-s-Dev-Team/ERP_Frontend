@@ -1,0 +1,25 @@
+/* DRE */
+.main-titleDRE {
+  display: flex;
+  justify-content: space-between;
+  color: #000000;
+}
+
+.Dre_List {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  padding: 20px;
+  margin-top: 0px;
+}
+
+.Dre-Grafico {
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 35%;
+  margin-top: 20px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  margin-left: 30%;
+}

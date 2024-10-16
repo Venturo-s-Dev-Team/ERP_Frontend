@@ -1,0 +1,62 @@
+.box_receitas {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.total-box {
+  width: 100%;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  padding: 10px;
+  text-align: center;
+  color: #000;
+}
+
+.total-box:hover {
+  opacity: 0.8;
+  background-color: #0000001c;
+}
+
+.Receitas_List {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  padding: 13px;
+  margin-top: 60px;
+}
+
+.DivModalReceitas {
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  display: flex;
+  top: 20%;
+  padding-top: 5%;
+  padding-left: 7%;
+}
+
+.DivModalReceitas input[type="text"],
+.DivModalReceitas input[type="number"],
+.DivModalReceitas input[type="date"],
+.DivModalReceitas input[type="CNPJ"],
+.DivModalReceitas input[type="email"] {
+  margin: 10px;
+  width: 350px;
+  height: 35px;
+  border-radius: 3px;
+  border: 1px solid black;
+  background-color: #fff;
+  padding-left: 30px;
+}
+
+.DivModalReceitas h1 {
+  color: #0a5483;
+  margin-bottom: 20px;
+}

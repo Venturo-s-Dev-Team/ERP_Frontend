@@ -1,0 +1,58 @@
+.box_fluxo {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.saldo1-box {
+  width: 290px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  padding: 10px;
+  text-align: center;
+  color: #000;
+}
+
+.saldo1-box:hover {
+  opacity: 0.8;
+  background-color: #0000001c;
+}
+
+.saldo2-box {
+  width: 290px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  padding: 10px;
+  text-align: center;
+}
+
+.saldo2-box:hover {
+  opacity: 0.8;
+  background-color: #0000001a;
+}
+
+.saldo1-box,
+.saldo2-box {
+  flex: 1;
+  margin: 0 10px;
+}
+
+.Fluxos_List {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  padding: 13px;
+  margin-top: 60px;
+}

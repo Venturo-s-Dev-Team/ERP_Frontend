@@ -22,6 +22,13 @@ import Fornecedores from "../pages/Fornecedores/fornecedores";
 import Pagamentos from "../pages/Pagamentos/pagamentos";
 import Perfil_Admin from "../pages/Perfil/perfilAdmin";
 import Cad_Empresa from "../pages/Cadastrar Empresa/cad_empresa";
+import CadastroFuncionario from "../pages/Registrar Funcionário/registrarFuncionario";
+import SideBarPage from "../components/Sidebar/SideBarPage";
+import Despesas from "../pages/Despesas/despesas";
+import FluxoCaixa from "../pages/Fluxo de Caixa/fluxodecaixa";
+import Receitas from "../pages/Receitas/receitas";
+import Dre from "../pages/Dre/dre";
+import NotaFiscal from "../pages/Nota Fiscal/notafiscal";
 
 function AppRoutes() {
   return (
@@ -41,6 +48,13 @@ function AppRoutes() {
         <Route path="/pagamentos" element={<Pagamentos />} />
         <Route path="/perfil_admin" element={<Perfil_Admin />} />
         <Route path="/cad_empresa" element={<Cad_Empresa />} />
+        <Route path="/funcionarios" element={<CadastroFuncionario />} />
+        <Route path="/SideBarPage" element={<SideBarPage />} />
+        <Route path="/despesas" element={<Despesas />} />
+        <Route path="/fluxocaixa" element={<FluxoCaixa />} />
+        <Route path="/receitas" element={<Receitas />} />
+        <Route path="/dre" element={<Dre />} />
+        <Route path="/notafiscal" element={<NotaFiscal />} />
       </Routes>
     </Router>
   );

@@ -1,0 +1,144 @@
+.box_desp {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.despesa1-box {
+  width: 290px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  padding: 10px;
+  text-align: center;
+  color: #000;
+}
+
+.despesa1-box:hover {
+  opacity: 0.8;
+  background-color: #0000001c;
+}
+
+.despesa-letras {
+  color: #000;
+}
+
+.despesa2-box {
+  width: 290px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  padding: 10px;
+  text-align: center;
+}
+
+.despesa2-box:hover {
+  opacity: 0.8;
+  background-color: #0000001a;
+}
+
+.despesa1-box,
+.despesa2-box {
+  flex: 1;
+  margin: 0 10px;
+}
+
+.gráficos {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.gráfico1,
+.gráfico02 {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.gráfico1 {
+  width: 50%;
+}
+
+.gráfico02 {
+  width: 50%;
+}
+
+.pie1 {
+  margin-left: 200px;
+}
+
+.legenda_despesas1 {
+  margin-left: 255px;
+  margin-top: 20px;
+}
+
+.legenda_despesas2 {
+  margin-left: 195px;
+  margin-top: 20px;
+}
+
+.Despesas_List {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  padding: 13px;
+  margin-top: 60px;
+}
+
+.despesas_opc_btn {
+  border: none;
+  padding: 5px 10px;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+  margin-left: 30px;
+}
+
+.despesas_opc_btn.sim {
+  background-color: rgba(255, 0, 0, 0.427);
+}
+
+.despesas_opc_btn.nao {
+  background-color: #22963d83;
+}
+
+.DivModalDespesas {
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  display: flex;
+  top: 20%;
+  padding-top: 5%;
+  padding-left: 7%;
+}
+
+.DivModalDespesas input[type="text"],
+.DivModalDespesas input[type="number"],
+.DivModalDespesas input[type="date"],
+.DivModalDespesas input[type="CNPJ"],
+.DivModalDespesas input[type="email"] {
+  margin: 10px;
+  width: 350px;
+  height: 35px;
+  border-radius: 3px;
+  border: 1px solid black;
+  background-color: #fff;
+  padding-left: 30px;
+}
+
+.DivModalDespesas h1 {
+  color: #0a5483;
+  margin-bottom: 20px;
+}

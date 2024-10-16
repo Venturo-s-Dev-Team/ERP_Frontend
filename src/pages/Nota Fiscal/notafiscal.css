@@ -1,0 +1,10 @@
+/* Nota Fiscal */
+.main-titleNF {
+  display: flex;
+  justify-content: space-between;
+  color: #000000;
+}
+
+.Formulario-NF {
+  margin-top: 10px;
+}
