@@ -8,3 +8,456 @@
 .Formulario-NF {
   margin-top: 10px;
 }
+
+/* Emitente */
+.EmitenteDiv-CadEmp {
+  border-color: #000;
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  padding-bottom: 20px;
+  padding-left: 40px;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+}
+
+.EmitenteDiv-CadEmp legend {
+  background-color: #fff;
+  width: 110px;
+  text-align: center;
+  margin-top: -20px;
+  font-weight: 600;
+}
+
+.Campo-Razão {
+  margin-top: 10px;
+}
+
+.Campo-Razão label {
+  margin-left: -30px;
+}
+
+.Campo-Razão input {
+  margin-left: 10px;
+  width: 500px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.Campo-CNPJ {
+  margin-left: 650px;
+  margin-top: -25px;
+}
+
+.Campo-CNPJ label {
+  margin-left: -30px;
+}
+
+.Campo-CNPJ input {
+  margin-left: 10px;
+  width: 250px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+/* Endereço */
+.EndereçoDiv-CadEmp {
+  border-color: #000;
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  padding-bottom: 20px;
+  margin-top: 20px;
+  padding-left: 40px;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+}
+
+.EndereçoDiv-CadEmp legend {
+  background-color: #fff;
+  width: 120px;
+  text-align: center;
+  margin-top: -20px;
+  font-weight: 600;
+}
+
+.Campo-Logra {
+  margin-top: 10px;
+}
+
+.Campo-Logra label {
+  margin-left: -30px;
+}
+
+.Campo-Logra input {
+  margin-left: 10px;
+  width: 500px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.Campo-Numero {
+  margin-left: 650px;
+  margin-top: -25px;
+}
+
+.Campo-Numero label {
+  margin-left: -30px;
+}
+
+.Campo-Numero input {
+  margin-left: 10px;
+  width: 120px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.Campo-Complemento {
+  margin-left: 890px;
+  margin-top: -25px;
+}
+
+.Campo-Complemento label {
+  margin-left: -30px;
+}
+
+.Campo-Complemento input {
+  margin-left: 10px;
+  width: 350px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.Campo-Cidade {
+  margin-top: 20px;
+}
+
+.Campo-Cidade label {
+  margin-left: -30px;
+}
+
+.Campo-Cidade input {
+  margin-left: 10px;
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.Campo-Estado {
+  margin-top: -25px;
+  margin-left: 290px;
+}
+
+.Campo-Estado label {
+  margin-left: -30px;
+}
+
+.Campo-Estado input {
+  margin-left: 10px;
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.Campo-TipoPagamento {
+  margin-top: -25px;
+  margin-left: 590px;
+}
+
+.Campo-TipoPagamento label {
+  margin-left: -30px;
+}
+
+.Campo-TipoPagamento select {
+  background-color: #ffffff;
+  margin-left: 10px;
+  height: 25px;
+  border-radius: 2px;
+  width: 200px;
+  border-color: rgba(0, 0, 0, 0.523);
+  border-style: solid;
+  border-width: 1px;
+}
+
+/* Venda */
+.VendaDiv-CadEmp {
+  border-color: #000;
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  padding-bottom: 20px;
+  margin-top: 20px;
+  padding-left: 40px;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+}
+
+.VendaDiv-CadEmp legend {
+  background-color: #fff;
+  width: 90px;
+  text-align: center;
+  margin-top: -20px;
+  font-weight: 600;
+}
+
+.Campo-Frete {
+  margin-top: 10px;
+}
+
+.Campo-Frete label {
+  margin-left: -30px;
+}
+
+.Campo-Frete input {
+  margin-left: 10px;
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.Campo-Desconto {
+  margin-left: 280px;
+  margin-top: -25px;
+}
+
+.Campo-Desconto label {
+  margin-left: -30px;
+}
+
+.Campo-Desconto input {
+  margin-left: 10px;
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.Campo-Codigo {
+  margin-left: 600px;
+  margin-top: -25px;
+}
+
+.Campo-Codigo label {
+  margin-left: -30px;
+}
+
+.Campo-Codigo input {
+  margin-left: 10px;
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.Campo-Produto {
+  margin-top: 20px;
+}
+
+.Campo-Produto label {
+  margin-left: -30px;
+}
+
+.Campo-Produto input {
+  margin-left: 10px;
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.Campo-Preço {
+  margin-top: -25px;
+  margin-left: 300px;
+}
+
+.Campo-Preço label {
+  margin-left: -30px;
+}
+
+.Campo-Preço input {
+  margin-left: 10px;
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.Campo-Btn {
+  margin-top: -30px;
+  margin-left: 550px;
+}
+
+.Btn-Remover {
+  border-radius: 8px;
+  width: 150px;
+  height: 35px;
+  background-color: rgba(255, 0, 0, 0.603);
+  border-color: rgba(255, 0, 0, 0.19);
+  border-width: 1;
+  border-style: solid;
+  color: white;
+  margin-left: 10px;
+}
+
+.Btn-Remover:hover {
+  background-color: rgba(255, 0, 0, 0.427);
+}
+
+.Btn-Adicionar {
+  border-radius: 8px;
+  margin-top: 10px;
+  width: 200px;
+  height: 35px;
+  background-color: #0a5583cf;
+  border-color: #0a5583cf;
+  border-width: 1;
+  border-style: solid;
+  color: white;
+}
+
+.Btn-Adicionar:hover {
+  background-color: #0a5583f4;
+}
+
+/* Impostos */
+.ImpostosDiv-CadEmp {
+  border-color: #000;
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  padding-bottom: 20px;
+  margin-top: 20px;
+  padding-left: 40px;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+}
+
+.ImpostosDiv-CadEmp legend {
+  background-color: #fff;
+  width: 120px;
+  text-align: center;
+  margin-top: -20px;
+  font-weight: 600;
+}
+
+.Campo-ICMS {
+  margin-top: 10px;
+}
+
+.Campo-ICMS label {
+  margin-left: -30px;
+}
+
+.Campo-ICMS input {
+  margin-left: 10px;
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+.Campo-IPI {
+  margin-top: -25px;
+  margin-left: 330px;
+}
+
+.Campo-IPI label {
+  margin-left: -30px;
+}
+
+.Campo-IPI input {
+  margin-left: 10px;
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+/* Resumo */
+.ResumoDiv-CadEmp {
+  border-color: #000;
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  padding-bottom: 20px;
+  margin-top: 20px;
+  padding-left: 40px;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+}
+
+.ResumoDiv-CadEmp legend {
+  background-color: #fff;
+  width: 200px;
+  text-align: center;
+  margin-top: -20px;
+  font-weight: 600;
+}
+
+.Campo-PreçoBr {
+  margin-top: 10px;
+}
+
+.Campo-PreçoBr label {
+  margin-left: -30px;
+}
+
+.Campo-PreçoBr input {
+  margin-left: 10px;
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+.Campo-PreçoFn {
+  margin-top: -25px;
+  margin-left: 330px;
+}
+
+.Campo-PreçoFn label {
+  margin-left: -30px;
+}
+
+.Campo-PreçoFn input {
+  margin-left: 10px;
+  width: 200px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+}
+
+/* Botão de Enviar */
+
+.Botao-Emitir {
+  border-radius: 8px;
+  margin-top: 10px;
+  width: 200px;
+  height: 35px;
+  background-color: #0a5583f4;
+  border-color: #0a5583cf;
+  border-width: 1;
+  border-style: solid;
+  color: white;
+}
+
+.Botao-Emitir:hover {
+  background-color: #0a5583cf;
+}

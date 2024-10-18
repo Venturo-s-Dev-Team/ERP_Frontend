@@ -29,6 +29,12 @@ import FluxoCaixa from "../pages/Fluxo de Caixa/fluxodecaixa";
 import Receitas from "../pages/Receitas/receitas";
 import Dre from "../pages/Dre/dre";
 import NotaFiscal from "../pages/Nota Fiscal/notafiscal";
+import LanContabil from "../pages/Lançamento Contábil/lanc_contabil";
+import Razao from "../pages/Razão/razao";
+import Clientes from "../pages/Clientes/clientes";
+import GestaoVendas from "../pages/AbasGestãoPedidos/gestaoVendas";
+import Abas from "../pages/AbasGestãoPedidos/Abas";
+import PedidosCancelados from "../pages/Pedidos Cancelados/pedidosCancelados";
 
 function AppRoutes() {
   return (
@@ -55,6 +61,12 @@ function AppRoutes() {
         <Route path="/receitas" element={<Receitas />} />
         <Route path="/dre" element={<Dre />} />
         <Route path="/notafiscal" element={<NotaFiscal />} />
+        <Route path="/lancontabil" element={<LanContabil />} />
+        <Route path="/razao" element={<Razao />} />
+        <Route path="/clientes" element={<Clientes />} />
+        <Route path="/gestaoVendas" element={<GestaoVendas />} />
+        <Route path="/abas" element={<Abas />} />
+        <Route path="/pedidoscancelados" element={<PedidosCancelados />} />
       </Routes>
     </Router>
   );
