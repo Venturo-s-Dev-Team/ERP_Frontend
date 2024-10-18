@@ -13,12 +13,17 @@ function Receitas() {
   const [userInfo, setUserInfo] = useState({});
   const [receitas, setReceitas] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false); // Determina se está no modo de edição  
+  const [SelectedReceita, setSelectedReceita] = useState("");
   const [newReceita, setNewReceita] = useState({
-    Nome: '',
-    Valor: '',
+    Nome: SelectedReceita.Nome || '',
+    Valor: SelectedReceita.Valor || '',
   });
 
-  const handleShow = () => setShowModal(true);
+    // Modal control
+    const handleShow = () => {
+      setShowModal(true);
+    };
   const handleClose = () => setShowModal(false);
 
   // Função para verificar o token
@@ -86,6 +91,16 @@ function Receitas() {
     }
   };
 
+  const handleEdit = () => {
+    if (!SelectedReceita) {
+      alert("Por favor, selecione uma despesa para editar.");
+      return;
+    }
+  
+    setIsEditMode(true); // Define o modo de edição
+    setShowModal(true); // Abre o modal
+  };
+
   // Função para exportar dados para Excel
   const exportToExcel = () => {
     const ws = XLSX.utils.json_to_sheet(receitas); // Converte os dados de receitas em uma planilha
@@ -110,11 +125,10 @@ function Receitas() {
           Adicionar
           <FaPlus />
         </button>
-        <button>
+        <button onClick={handleEdit} disabled={!SelectedReceita}>
           Editar
           <FaPenToSquare />
         </button>
-    
         <button onClick={exportToExcel}>
           Exportar
           <FaFileExport />
@@ -135,6 +149,8 @@ function Receitas() {
             <tr>
               <th>Nome</th>
               <th>Valor por mês</th>
+              <th>Data de expiração</th>
+              <th>Selecionar</th>
             </tr>
           </thead>
           <tbody>
@@ -142,6 +158,18 @@ function Receitas() {
               <tr key={receita.id}>
                 <td>{receita.Nome}</td>
                 <td>R$ {Number(receita.Valor).toFixed(2)}</td>
+                <td>{receita.DataExpiracao}</td>
+                <td>
+                    <label className="custom-radio">
+                      <input
+                        type="radio"
+                        name="selectedProduct"
+                        value={receita.id}
+                        onChange={() => setSelectedReceita(receita)}
+                      />
+                      <span className="radio-checkmark"></span>
+                    </label>
+                  </td>
               </tr>
             ))}
           </tbody>

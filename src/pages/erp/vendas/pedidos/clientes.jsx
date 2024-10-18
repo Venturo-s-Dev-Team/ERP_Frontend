@@ -594,9 +594,10 @@ function Clientes() {
                 onChange={handleChange}
                 required
               />
-              <InputMask
+              <input
                 type="date"
-                name="faturamento"
+                name="dia_para_faturamento"
+                placeholder="Data de faturamento"
                 value={formData.dia_para_faturamento}
                 onChange={handleChange}
               />
@@ -801,9 +802,10 @@ function Clientes() {
                 onChange={handleChange}
                 required
               />
-              <InputMask
+              <input
                 type="date"
-                name="faturamento"
+                name="dia_para_faturamento"
+                placeholder="Data de faturamento"
                 value={formData.dia_para_faturamento}
                 onChange={handleChange}
               />

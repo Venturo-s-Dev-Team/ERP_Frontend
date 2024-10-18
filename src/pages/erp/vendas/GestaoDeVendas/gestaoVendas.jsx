@@ -157,7 +157,7 @@ const GestaoVendas = () => {
 
   // PARA EDITAR
   const handleShowEdit = (venda) => {
-    if (venda.Status === "CANCELADA" || "VENDA CONCLUÍDA") {
+    if (venda.Status === ("CANCELADA" || "VENDA CONCLUÍDA")) {
       alert("Esta venda não está em aberto para edições")
     } else if (venda) {
       setSelectedVenda(venda);

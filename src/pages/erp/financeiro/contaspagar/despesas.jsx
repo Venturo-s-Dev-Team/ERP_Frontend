@@ -68,11 +68,13 @@ const data02 = [
 function Despesas() {
   const navigate = useNavigate();
   const [Despesas, setDespesas] = useState([]);
-  const [valor, setValor] = useState("");
-  const [nome, setNome] = useState("");
-  const [dataExpiracao, setDataExpiracao] = useState("");
+  const [valor, setValor] = useState(null);
+  const [nome, setNome] = useState(null);
+  const [dataExpiracao, setDataExpiracao] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [SelectedDespesa, setSelectedDespesa] = useState(null);
+  const [isEditMode, setIsEditMode] = useState(false); // Determina se está no modo de edição  
   const [dataGrafico, setDataGrafico] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); // Estado para armazenar o termo de pesquisa
 
@@ -203,6 +205,22 @@ function Despesas() {
       userName: userInfo.Nome_user,
     };
 
+    if (isEditMode === true) {
+      try {
+      const response = await axios.put(
+        `api/ServerTwo/AtualizandoInfoDespesa/${SelectedDespesa.id}`,
+         despesaData,
+        {withCredentials: true
+        }
+      )
+      console.log("Atualizado: ", response)
+      await fetchData(id_EmpresaDb)
+      fecharModal()
+    } catch (error) {
+      console.error("Erro ao atualizar despesa", error);
+    }
+    } else {
+      // Registro da despesa
     try {
       const response = await axios.post(
         `/api/ServerTwo/registrarDespesas`,
@@ -215,10 +233,24 @@ function Despesas() {
     } catch (error) {
       console.error("Erro ao registrar despesa", error);
     }
+  }
   };
 
   // Modal control
-  const abrirModal = () => setShowModal(true);
+  const abrirModal = () => {
+    setShowModal(true);
+    if (isEditMode && SelectedDespesa) {
+      setValor(SelectedDespesa.Valor || "");
+      setNome(SelectedDespesa.Nome || "");
+      setDataExpiracao(SelectedDespesa.DataExpiracao || "");
+    } else {
+      // Reset fields when adding a new despesa or if no despesa is selected
+      setValor("");
+      setNome("");
+      setDataExpiracao("");
+    }
+  };
+
   const fecharModal = () => setShowModal(false);
 
   // Função para atualizar o estado finalizado para 1
@@ -265,6 +297,16 @@ function Despesas() {
     }
   };
 
+  const handleEdit = () => {
+    if (!SelectedDespesa) {
+      alert("Por favor, selecione uma despesa para editar.");
+      return;
+    }
+  
+    setIsEditMode(true); // Define o modo de edição
+    setShowModal(true); // Abre o modal
+  };
+
   // Função para exportar a tabela de despesas para Excel
   const exportToExcel = () => {
     // Cria uma cópia dos dados, modificando a coluna 'Finalizado'
@@ -303,11 +345,10 @@ function Despesas() {
           Adicionar
           <FaPlus />
         </button>
-        <button>
+        <button onClick={handleEdit} disabled={!SelectedDespesa}>
           Editar
           <FaPenToSquare />
         </button>
-
         <button onClick={exportToExcel}>
           Exportar
           <FaFileExport />
@@ -380,6 +421,7 @@ function Despesas() {
               <th>Valor</th>
               <th>Data de Expiração</th>
               <th>Finalizado</th>
+              <th>Selecionar</th>
             </tr>
           </thead>
           <tbody>
@@ -406,6 +448,17 @@ function Despesas() {
                       : "Marcar como Não"}
                   </button>
                 </td>
+                <td>
+                    <label className="custom-radio">
+                      <input
+                        type="radio"
+                        name="selectedProduct"
+                        value={despesa.id}
+                        onChange={() => setSelectedDespesa(despesa)}
+                      />
+                      <span className="radio-checkmark"></span>
+                    </label>
+                  </td>
               </tr>
             ))}
           </tbody>
@@ -414,62 +467,62 @@ function Despesas() {
 
       {/* Modal para adicionar despesas */}
       <div>
-        <Modal
-          style={{
-            position: "fixed",
-            top: "50%",
-            bottom: 0,
-            left: "50%",
-            right: 0,
-            zIndex: 1000,
-            width: "70%",
-            height: "73%",
-            borderRadius: 20,
-            transform: "translate(-50%, -50%)",
-            background: "white",
-            boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
-          }}
-          show={showModal}
-          onHide={fecharModal}
+      <Modal
+  style={{
+    position: "fixed",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    zIndex: 1000,
+    width: "70%",
+    height: "73%",
+    borderRadius: 20,
+    background: "white",
+    boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
+  }}
+  show={showModal}
+  onHide={fecharModal}
+>
+  <div className="DivModal">
+    <div>
+      <h1>{isEditMode ? "Editar despesa" : "Registrar despesa"}</h1>
+    </div>
+    <form onSubmit={handleSubmitDespesa}>
+      <input
+        type="number"
+        placeholder="Valor"
+        onChange={(e) => setValor(e.target.value)}
+        value={isEditMode && SelectedDespesa ? SelectedDespesa.Valor : ""}
+      />
+      <input
+        type="text"
+        placeholder="Nome"
+        onChange={(e) => setNome(e.target.value)}
+        value={isEditMode && SelectedDespesa ? SelectedDespesa.Nome : ""}
+      />
+<input
+  type="date"
+  placeholder="Data de Expiração"
+  onChange={(e) => setDataExpiracao(e.target.value)}
+  value={isEditMode && SelectedDespesa ? new Date(SelectedDespesa.DataExpiracao).toISOString().split("T")[0] : ""}
+/>
+
+      <div>
+        <button type="submit" className="RegisterPr">
+          {isEditMode ? "Salvar Alterações" : "Registrar"}
+        </button>
+        <button
+          type="button"
+          className="FecharPr"
+          onClick={fecharModal}
         >
-          <div className="DivModal">
-            <div>
-              <h1>Registrar Despesas</h1>
-            </div>
-            <form onSubmit={handleSubmitDespesa}>
-              <input
-                type="number"
-                placeholder="Valor"
-                onChange={(e) => setValor(e.target.value)}
-                value={valor}
-              />
-              <input
-                type="text"
-                placeholder="Nome"
-                onChange={(e) => setNome(e.target.value)}
-                value={nome}
-              />
-              <input
-                type="date"
-                placeholder="Data de Expiração"
-                onChange={(e) => setDataExpiracao(e.target.value)}
-                value={dataExpiracao}
-              />
-              <div>
-                <button type="submit" className="RegisterPr">
-                  Registrar
-                </button>
-                <button
-                  type="button"
-                  className="FecharPr"
-                  onClick={fecharModal}
-                >
-                  Fechar
-                </button>
-              </div>
-            </form>
-          </div>
-        </Modal>
+          Fechar
+        </button>
+      </div>
+    </form>
+  </div>
+</Modal>
+
       </div>
     </main>
   );

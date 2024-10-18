@@ -68,6 +68,8 @@ function Caixa_Modal() {
               forma_pagamento: selectedPayment,
               valor_total: VendaSelecionada[0]?.total,
               selectedCliente,
+              nome_cliente: selectedCliente.razao_social,
+              DataExpiracao: selectedCliente.dia_para_faturamento,
               id: parseInt(id)
             }),
           },
