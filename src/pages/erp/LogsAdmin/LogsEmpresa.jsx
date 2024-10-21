@@ -174,22 +174,18 @@ function LogsEmpresa() {
             <table>
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>User ID</th>
-                  <th>User Name</th>
-                  <th>Action</th>
-                  <th>Table Name</th>
-                  <th>Timestamp</th>
+                  <th>ID do usuário</th>
+                  <th>Nome do usuário</th>
+                  <th>Ação</th>
+                  <th>Data e horário</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredLogs.map(log => (
                   <tr key={log.id}>
-                    <td>{log.id}</td>
                     <td>{log.user_id}</td>
                     <td>{log.user_name}</td>
                     <td>{log.action}</td>
-                    <td>{log.table_name}</td>
                     <td>{log.timestamp}</td>
                   </tr>
                 ))}

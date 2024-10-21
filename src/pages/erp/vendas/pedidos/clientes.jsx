@@ -257,7 +257,9 @@ function Clientes() {
       try {
         const response = await axios.put(
           `/api/ServerTwo/UpdateCliente/${selectedClient.id}`,
-          { ...sanitizedFormData, id_EmpresaDb: userInfo.id_EmpresaDb },
+          { ...sanitizedFormData, id_EmpresaDb: userInfo.id_EmpresaDb,
+            userId: userInfo.id_user,
+            userName: userInfo.Nome_user,  },
           {
             withCredentials: true,
           }
@@ -277,7 +279,10 @@ function Clientes() {
       try {
         const response = await axios.post(
           "/api/ServerTwo/registerCliente",
-          { ...sanitizedFormData, id_EmpresaDb: userInfo.id_EmpresaDb },
+          { ...sanitizedFormData, id_EmpresaDb: userInfo.id_EmpresaDb,
+            userId: userInfo.id_user,
+            userName: userInfo.Nome_user,
+           },
           { withCredentials: true }
         );
         if (response.status === 201 || response.status === 200) { // Verifique se o backend retorna 201 ou 200
@@ -307,6 +312,8 @@ function Clientes() {
     if (!selectedClient) {
       alert("Por favor, selecione um cliente para editar.");
       return;
+    } else if (selectedClient.razao_social === "Consumidor") {
+      alert('Não é possível editar "Consumidor", selecione um cliente válido')
     }
   
     const cpfCnpjDigits = selectedClient.cpf_cnpj.replace(/\D/g, ""); // Remove caracteres não numéricos

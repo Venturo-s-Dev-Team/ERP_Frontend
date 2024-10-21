@@ -158,7 +158,9 @@ function Fornecedores() {
       try {
         const response = await axios.put(
           `/api/ServerTwo/UpdateFornecedor/${selectedFornecedor.id}`,
-          { ...formData, id_EmpresaDb: userInfo.id_EmpresaDb },
+          { ...formData, id_EmpresaDb: userInfo.id_EmpresaDb,
+            userId: userInfo.id_user,
+            userName: userInfo.Nome_user, },
           {
             withCredentials: true,
           }
@@ -177,7 +179,9 @@ function Fornecedores() {
       try {
         const response = await axios.post(
           "/api/ServerTwo/registerFornecedor",
-          { ...formData, id_EmpresaDb: userInfo.id_EmpresaDb }, // Enviando o id_EmpresaDb junto aos outros dados
+          { ...formData, id_EmpresaDb: userInfo.id_EmpresaDb,
+            userId: userInfo.id_user,
+            userName: userInfo.Nome_user, }, // Enviando o id_EmpresaDb junto aos outros dados
           { withCredentials: true }
         );
 

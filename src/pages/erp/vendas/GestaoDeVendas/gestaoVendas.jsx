@@ -190,6 +190,8 @@ const CancelarVenda = async (venda) => {
       {
         id_pedido: venda.id_pedido,
         produto: venda.produto, // Enviar diretamente como array
+        userId: userInfo.id_user,
+        userName: userInfo.Nome_user,
       },
       { withCredentials: true }
     );

@@ -141,6 +141,10 @@ function RegistroProduto() {
 
     // Adiciona o database_id ao FormData
     data.append("database_id", database_id);
+    
+        // Adiciona o ID do usuário para identificação
+        data.append("userId", userInfo.id_user);
+        data.append("userName", userInfo.Nome_user);
 
     try {
       // Faz a requisição PUT para atualizar o produto
