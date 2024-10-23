@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Menu } from "antd";
+import { Link } from "react-router-dom";
 import {
   StockOutlined,
   AreaChartOutlined,
@@ -16,13 +17,13 @@ const MenuList = ({ darkTheme }) => {
   return (
     <Menu theme={darkTheme ? "dark" : "light"} className="SideBar-Menu-Bar">
       <Menu.Item key="dashboard" icon={<IoPieChartSharp />}>
-        Dashboard
+        <Link to="/dashboard"> Dashboard</Link>
       </Menu.Item>
       <Menu.Item key="email" icon={<MdOutlineMailOutline />}>
-        E-mail
+        <Link to="/email_entrada"> Email </Link>
       </Menu.Item>
       <Menu.Item key="perfil" icon={<RxAvatar />}>
-        Perfil
+        <Link to="/perfil_user"> Perfil</Link>
       </Menu.Item>
       <Menu.Item key="logs" icon={<RiContactsBook3Fill />}>
         Logs

@@ -1,0 +1,41 @@
+/* Caixa Modal */
+.main-titleCxModal {
+  display: flex;
+  justify-content: space-between;
+  color: #000000;
+}
+
+.Valor-CxModal {
+  border-bottom-color: #000;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  margin-top: 20px;
+}
+
+.Input-CxModal {
+  margin: 10px;
+  width: 420px;
+  height: 35px;
+  border-radius: 3px;
+  border: 1px solid black;
+  background-color: #fff;
+  padding-left: 30px;
+  margin-left: 0px;
+}
+
+.H2-CxModal {
+  text-align: left;
+  margin-top: 10px;
+}
+
+.Btn-CxModal {
+  border-radius: 8px;
+  margin-top: 10px;
+  width: 200px;
+  height: 40px;
+  background-color: #02416d;
+  border-color: #02416d;
+  border-width: 1;
+  border-style: solid;
+  color: white;
+}

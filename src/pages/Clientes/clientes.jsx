@@ -62,7 +62,6 @@ function Clientes() {
   const [formData, setFormData] = useState({
     id_EmpresaDb: "",
     cpf_cnpj: "",
-    observacoes: "",
     razao_social: "",
     nome_fantasia: "",
     endereco: "",

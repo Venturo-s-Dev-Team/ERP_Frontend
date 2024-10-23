@@ -6,7 +6,7 @@ import "./caixaEntradaSaida.css";
 import LogoVenturo from "../../images/LogoVenturoBlackV.png";
 import { FaPen } from "react-icons/fa";
 import { RiInboxUnarchiveFill, RiInboxArchiveFill } from "react-icons/ri";
-
+import SideBarPage from "../../components/Sidebar/SideBarPage";
 // Componentes
 import EmailPopup from "./popupemail";
 
@@ -81,67 +81,69 @@ const Caixa_Entrada = () => {
   );
 
   return (
-    <div className="app">
-      <div className="titleEmail">
-        <div className="TextAssunt">
-          <h1 className="Assunto">
-            E-mail: Caixa de Entrada{" "}
-            <RiInboxArchiveFill
-              style={{ height: 35, width: 35, position: "relative", top: 10 }}
-            />
-          </h1>
+    <SideBarPage>
+      <div className="app">
+        <div className="titleEmail">
+          <div className="TextAssunt">
+            <h1 className="Assunto">
+              E-mail: Caixa de Entrada{" "}
+              <RiInboxArchiveFill
+                style={{ height: 35, width: 35, position: "relative", top: 10 }}
+              />
+            </h1>
+          </div>
+          <div>
+            <img src={LogoVenturo} className="LogoEmail" />
+          </div>
         </div>
-        <div>
-          <img src={LogoVenturo} className="LogoEmail" />
+
+        <div className="alinhar-divs">
+          <div className="buttonsEntrada">
+            <button className="btn-mensagem" onClick={() => setPopupOpen(true)}>
+              {" "}
+              <FaPen style={{ height: 18, width: 18 }} /> Escrever
+            </button>
+
+            <button
+              className={`btn-caixas ${
+                activeButton === "entrada" ? "active" : ""
+              }`}
+              onClick={() => {
+                setActiveButton("entrada");
+                navigate("/E-mail_Caixa_Entrada");
+              }}
+            >
+              {" "}
+              <RiInboxArchiveFill style={{ height: 18, width: 18 }} /> Caixa de
+              Entrada
+            </button>
+
+            <button
+              className={`btn-caixas ${activeButton === "s" ? "active" : ""}`}
+              onClick={() => {
+                setActiveButton("entrada");
+                navigate("/email_saida");
+              }}
+            >
+              {" "}
+              <RiInboxUnarchiveFill style={{ height: 18, width: 18 }} /> Caixa
+              de saída
+            </button>
+
+            {isPopupOpen && (
+              <EmailPopup
+                Email={userInfo?.Email}
+                onClose={() => setPopupOpen(false)}
+              />
+            )}
+          </div>
+
+          <div className="Conteudo">
+            {protocoloErro ? renderError() : renderEmails()}
+          </div>
         </div>
       </div>
-
-      <div className="alinhar-divs">
-        <div className="buttonsEntrada">
-          <button className="btn-mensagem" onClick={() => setPopupOpen(true)}>
-            {" "}
-            <FaPen style={{ height: 18, width: 18 }} /> Escrever
-          </button>
-
-          <button
-            className={`btn-caixas ${
-              activeButton === "entrada" ? "active" : ""
-            }`}
-            onClick={() => {
-              setActiveButton("entrada");
-              navigate("/E-mail_Caixa_Entrada");
-            }}
-          >
-            {" "}
-            <RiInboxArchiveFill style={{ height: 18, width: 18 }} /> Caixa de
-            Entrada
-          </button>
-
-          <button
-            className={`btn-caixas ${activeButton === "s" ? "active" : ""}`}
-            onClick={() => {
-              setActiveButton("entrada");
-              navigate("/email_saida");
-            }}
-          >
-            {" "}
-            <RiInboxUnarchiveFill style={{ height: 18, width: 18 }} /> Caixa de
-            saída
-          </button>
-
-          {isPopupOpen && (
-            <EmailPopup
-              Email={userInfo?.Email}
-              onClose={() => setPopupOpen(false)}
-            />
-          )}
-        </div>
-
-        <div className="Conteudo">
-          {protocoloErro ? renderError() : renderEmails()}
-        </div>
-      </div>
-    </div>
+    </SideBarPage>
   );
 };
 

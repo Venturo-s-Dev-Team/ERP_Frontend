@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import { Layout } from "antd";
+import { Layout, Button } from "antd";
+import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import "./SideBarPage.css";
 import Logo from "./Logo";
 import MenuList from "./MenuList";
 import ToggleThemeButton from "./ToggleThemeButton";
-import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
-import { Button } from "antd";
 
-const { Header, Sider } = Layout;
+const { Header, Sider, Content } = Layout;
 
-function SideBarPage() {
+function SideBarPage({ children }) {
   const [darkTheme, setDarkTheme] = useState(true);
   const [collapsed, setCollapsed] = useState(false);
 
@@ -18,7 +17,7 @@ function SideBarPage() {
   };
 
   return (
-    <Layout>
+    <Layout style={{ minHeight: "100vh" }}>
       <Sider
         collapsed={collapsed}
         collapsible
@@ -32,11 +31,26 @@ function SideBarPage() {
       </Sider>
 
       <Layout>
-        <Button
-          type="text"
-          onClick={() => setCollapsed(!collapsed)}
-          icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-        />
+        <Header
+          style={{
+            background: darkTheme ? "#001529" : "#fff",
+            padding: 0,
+            height: 30,
+            alignItems: "center",
+            justifyContent: "flex-start",
+            display: "flex",
+          }}
+        >
+          <Button
+            type="text"
+            onClick={() => setCollapsed(!collapsed)}
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+            style={{
+              color: darkTheme ? "#fff" : "#001529",
+            }}
+          />
+        </Header>
+        <Content>{children}</Content>
       </Layout>
     </Layout>
   );

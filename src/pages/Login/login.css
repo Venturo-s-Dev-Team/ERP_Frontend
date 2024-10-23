@@ -144,6 +144,12 @@
   cursor: pointer;
   margin: 10px;
   text-transform: uppercase;
+  transition: all 0.3s ease;
+  &:hover {
+    height: 37px;
+    width: 156px;
+    opacity: 0.8;
+  }
 }
 
 .container input[type="text"],
@@ -182,6 +188,13 @@
   border: transparent;
   color: #000;
   font-weight: bold;
+  transition: all 0.5s ease;
+
+  &:hover {
+    height: 37px;
+    width: 147px;
+    opacity: 0.8;
+  }
 }
 
 .container p {

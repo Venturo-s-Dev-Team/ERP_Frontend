@@ -35,6 +35,8 @@ import Clientes from "../pages/Clientes/clientes";
 import GestaoVendas from "../pages/AbasGestãoPedidos/gestaoVendas";
 import Abas from "../pages/AbasGestãoPedidos/Abas";
 import PedidosCancelados from "../pages/Pedidos Cancelados/pedidosCancelados";
+import Caixa_Modal from "../pages/Caixa/caixa_Modal";
+import Caixa_Pagamentos from "../pages/Caixa/caixa_Pagamentos";
 
 function AppRoutes() {
   return (
@@ -67,6 +69,8 @@ function AppRoutes() {
         <Route path="/gestaoVendas" element={<GestaoVendas />} />
         <Route path="/abas" element={<Abas />} />
         <Route path="/pedidoscancelados" element={<PedidosCancelados />} />
+        <Route path="/caixa_Modal" element={<Caixa_Modal />} />
+        <Route path="/caixa_Pagamentos" element={<Caixa_Pagamentos />} />
       </Routes>
     </Router>
   );
