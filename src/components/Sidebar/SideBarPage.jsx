@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { Layout, Button } from "antd";
 import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import "./SideBarPage.css";
-import Logo from "./Logo";
 import MenuList from "./MenuList";
 import ToggleThemeButton from "./ToggleThemeButton";
+import LogoWhite from "../../images/LogoVenturoV.png";
+import LogoBlack from "../../images/LogoVenturoBlackV.png";
 
 const { Header, Sider, Content } = Layout;
 
@@ -16,6 +17,14 @@ function SideBarPage({ children }) {
     setDarkTheme(!darkTheme);
   };
 
+  const LogoTheme = () => (
+    <img
+      src={darkTheme ? LogoWhite : LogoBlack}
+      alt="Logo"
+      style={{ maxWidth: collapsed ? 50 : 65, maxHeight: collapsed ? 50 : 65 }}
+    />
+  );
+
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider
@@ -25,7 +34,9 @@ function SideBarPage({ children }) {
         theme={darkTheme ? "dark" : "light"}
         className="SideBar-Sider"
       >
-        <Logo />
+        <div className="DivLogo-Sider">
+          <LogoTheme />
+        </div>
         <MenuList darkTheme={darkTheme} />
         <ToggleThemeButton darkTheme={darkTheme} toggleTheme={toggleTheme} />
       </Sider>

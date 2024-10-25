@@ -6,6 +6,7 @@ import "./caixaEntradaSaida.css";
 import { FaPen } from "react-icons/fa";
 import { RiInboxUnarchiveFill, RiInboxArchiveFill } from "react-icons/ri";
 import LogoVenturo from "../../images/LogoVenturoBlackV.png";
+import SideBarPage from "../../components/Sidebar/SideBarPage";
 
 // Componentes
 import EmailPopup from "./popupemail";
@@ -74,68 +75,71 @@ const Caixa_Saida = () => {
       )}
     </div>
   );
-
   return (
-    <div className="app">
-      <div className="titleEmail">
-        <h1 className="Assunto">
-          E-mail: Suas mensagens enviadas{" "}
-          <RiInboxUnarchiveFill
-            style={{ height: 35, width: 35, position: "relative", top: 10 }}
-          />
-        </h1>
-        <img src={LogoVenturo} className="LogoEmail" />
-      </div>
-
-      <div className="alinhar-divs">
-        <div className="buttonsEntrada">
-          <button
-            className={`btn-mensagem ${isPopupOpen ? "active" : ""}`}
-            onClick={openPopup}
-          >
-            <FaPen style={{ height: 18, width: 18 }} /> Escrever
-          </button>
-
-          <button
-            className={`btn-caixas ${
-              activeButton === "entrada" ? "active" : ""
-            }`}
-            onClick={() => {
-              setActiveButton("entrada");
-              navigate("/email_entrada");
-            }}
-          >
-            <RiInboxArchiveFill style={{ height: 18, width: 18 }} /> Caixa de
-            Entrada
-          </button>
-
-          <button
-            className={`btn-caixas ${activeButton === "saida" ? "active" : ""}`}
-            onClick={() => {
-              setActiveButton("saida");
-              navigate("/E-mail_Caixa_Saida");
-            }}
-          >
-            <RiInboxUnarchiveFill style={{ height: 18, width: 18 }} /> Caixa de
-            Saída
-          </button>
-
-          {isPopupOpen && (
-            <EmailPopup Email={userInfo?.Email} onClose={closePopup} />
-          )}
+    <SideBarPage>
+      <div className="app">
+        <div className="titleEmail">
+          <h1 className="Assunto">
+            E-mail: Suas mensagens enviadas{" "}
+            <RiInboxUnarchiveFill
+              style={{ height: 35, width: 35, position: "relative", top: 10 }}
+            />
+          </h1>
+          <img src={LogoVenturo} className="LogoEmail" />
         </div>
 
-        <div className="Conteudo">
-          {protocoloErro ? (
-            <div>
-              Erro {protocoloErro}: {msgErro}
-            </div>
-          ) : (
-            <Cards />
-          )}
+        <div className="alinhar-divs">
+          <div className="buttonsEntrada">
+            <button
+              className={`btn-mensagem ${isPopupOpen ? "active" : ""}`}
+              onClick={openPopup}
+            >
+              <FaPen style={{ height: 18, width: 18 }} /> Escrever
+            </button>
+
+            <button
+              className={`btn-caixas ${
+                activeButton === "entrada" ? "active" : ""
+              }`}
+              onClick={() => {
+                setActiveButton("entrada");
+                navigate("/email_entrada");
+              }}
+            >
+              <RiInboxArchiveFill style={{ height: 18, width: 18 }} /> Caixa de
+              Entrada
+            </button>
+
+            <button
+              className={`btn-caixas ${
+                activeButton === "saida" ? "active" : ""
+              }`}
+              onClick={() => {
+                setActiveButton("saida");
+                navigate("/E-mail_Caixa_Saida");
+              }}
+            >
+              <RiInboxUnarchiveFill style={{ height: 18, width: 18 }} /> Caixa
+              de Saída
+            </button>
+
+            {isPopupOpen && (
+              <EmailPopup Email={userInfo?.Email} onClose={closePopup} />
+            )}
+          </div>
+
+          <div className="Conteudo">
+            {protocoloErro ? (
+              <div>
+                Erro {protocoloErro}: {msgErro}
+              </div>
+            ) : (
+              <Cards />
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </SideBarPage>
   );
 };
 

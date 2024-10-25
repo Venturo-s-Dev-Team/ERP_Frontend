@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import "./razao.css";
+import SideBarPage from "../../components/Sidebar/SideBarPage";
 
 function Razao() {
   const [input, setInput] = useState("");
@@ -44,63 +45,65 @@ function Razao() {
   const [results, setResults] = useState([]);
 
   return (
-    <main className="main-container">
-      <div className="main-title">
-        <h3>Razão</h3>
-      </div>
-
-      {/* Search Bar começa aqui */}
-      <div className="search-bar-container">
-        <div className="input-wrapper">
-          <FaSearch id="search-icon" />
-          <input
-            placeholder="Digite aqui..."
-            className="input-razao"
-            value={input}
-            onChange={(e) => handleChange(e.target.value)}
-          />
+    <SideBarPage>
+      <main className="main-container">
+        <div className="main-title">
+          <h3>Razão</h3>
         </div>
 
-        <div className="results-list">
-          {results.map((result, id) => {
-            return (
-              <div
-                key={id}
-                className="search-result"
-                onClick={(e) => alert(`You clicked on ${result.name}`)}
-              >
-                {result.name}
-              </div>
-            );
-          })}
-        </div>
-      </div>
+        {/* Search Bar começa aqui */}
+        <div className="search-bar-container">
+          <div className="input-wrapper">
+            <FaSearch id="search-icon" />
+            <input
+              placeholder="Digite aqui..."
+              className="input-razao"
+              value={input}
+              onChange={(e) => handleChange(e.target.value)}
+            />
+          </div>
 
-      {/* Search Bar termina */}
-      <div className="Razao_List">
-        <table>
-          <caption>Livro Razão</caption>
-          <thead>
-            <tr>
-              <th>Data</th>
-              <th>Descrição</th>
-              <th>Grupo</th>
-              <th>Saldo</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tabelas.map((tabela) => (
-              <tr key={tabela.id}>
-                <td>{tabela.data}</td>
-                <td>{tabela.descricao}</td>
-                <td>{tabela.grupo}</td>
-                <td> {tabela.saldo}</td>
+          <div className="results-list">
+            {results.map((result, id) => {
+              return (
+                <div
+                  key={id}
+                  className="search-result"
+                  onClick={(e) => alert(`You clicked on ${result.name}`)}
+                >
+                  {result.name}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Search Bar termina */}
+        <div className="Razao_List">
+          <table>
+            <caption>Livro Razão</caption>
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Descrição</th>
+                <th>Grupo</th>
+                <th>Saldo</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </main>
+            </thead>
+            <tbody>
+              {tabelas.map((tabela) => (
+                <tr key={tabela.id}>
+                  <td>{tabela.data}</td>
+                  <td>{tabela.descricao}</td>
+                  <td>{tabela.grupo}</td>
+                  <td> {tabela.saldo}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </SideBarPage>
   );
 }
 

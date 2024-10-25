@@ -5,6 +5,14 @@
   width: 250px;
 }
 
+.DivLogo-Sider {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70px;
+}
+
 .SideBar-Logo {
   display: flex;
   align-items: center;

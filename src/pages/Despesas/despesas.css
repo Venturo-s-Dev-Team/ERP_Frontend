@@ -142,3 +142,27 @@
   color: #0a5483;
   margin-bottom: 20px;
 }
+
+.scroll-despesas {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 91vh;
+}
+
+/* Para navegadores baseados em WebKit (Chrome, Safari) */
+.scroll-despesas::-webkit-scrollbar {
+  width: 10px; /* Largura da barra de rolagem */
+}
+
+.scroll-despesas::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Cor do fundo da barra de rolagem */
+}
+
+.scroll-despesas::-webkit-scrollbar-thumb {
+  background: #888; /* Cor da parte deslizante da barra */
+  border-radius: 10px; /* Arredondar os cantos */
+}
+
+.scroll-despesas::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Cor ao passar o mouse */
+}

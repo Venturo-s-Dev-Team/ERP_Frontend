@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FaFileExport } from "react-icons/fa";
 import { IoIosPersonAdd } from "react-icons/io";
 import * as XLSX from "xlsx";
+import SideBarPage from "../../components/Sidebar/SideBarPage";
 
 function CadastroFuncionario() {
   const navigate = useNavigate();
@@ -46,63 +47,65 @@ function CadastroFuncionario() {
   };
 
   return (
-    <main>
-      <div className="main-title">
-        <h3>Cadastrar Funcionário</h3>
-      </div>
-
-      <div className="Estoque_Cad">
-        <div className="Button_Cad">
-          <button onClick={openPopup}>
-            Cadastrar
-            <IoIosPersonAdd />
-          </button>
-
-          <button onClick={exportToExcel}>
-            Exportar
-            <FaFileExport />
-          </button>
+    <SideBarPage>
+      <main>
+        <div className="main-title">
+          <h3>Cadastrar Funcionário</h3>
         </div>
-      </div>
 
-      {/* Exibir o pop-up se showPopup for verdadeiro */}
-      {showPopup && (
-        <SuccessPopup onClose={closePopup} onSubmit={handleSuccess} />
-      )}
+        <div className="Estoque_Cad">
+          <div className="Button_Cad">
+            <button onClick={openPopup}>
+              Cadastrar
+              <IoIosPersonAdd />
+            </button>
 
-      {/* Input de pesquisa */}
-      <div>
-        <input
-          type="text"
-          placeholder="Pesquisar Funcionários ou Setor..."
-          value={searchTerm}
-          onChange={handleSearchChange}
-          className="SearchInput"
-        />
-      </div>
+            <button onClick={exportToExcel}>
+              Exportar
+              <FaFileExport />
+            </button>
+          </div>
+        </div>
 
-      <div className="Estoque_List">
-        <table>
-          <caption>Listagem de Funcionários</caption>
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>E-mail</th>
-              <th>Setor</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredFuncionarios.map((funcionario) => (
-              <tr key={funcionario.id}>
-                <td>{funcionario.Nome}</td>
-                <td>{funcionario.email}</td>
-                <td>{funcionario.TypeUser}</td>
+        {/* Exibir o pop-up se showPopup for verdadeiro */}
+        {showPopup && (
+          <SuccessPopup onClose={closePopup} onSubmit={handleSuccess} />
+        )}
+
+        {/* Input de pesquisa */}
+        <div>
+          <input
+            type="text"
+            placeholder="Pesquisar Funcionários ou Setor..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+            className="SearchInput"
+          />
+        </div>
+
+        <div className="Estoque_List">
+          <table>
+            <caption>Listagem de Funcionários</caption>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>E-mail</th>
+                <th>Setor</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </main>
+            </thead>
+            <tbody>
+              {filteredFuncionarios.map((funcionario) => (
+                <tr key={funcionario.id}>
+                  <td>{funcionario.Nome}</td>
+                  <td>{funcionario.email}</td>
+                  <td>{funcionario.TypeUser}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </SideBarPage>
   );
 }
 

@@ -110,7 +110,7 @@ const Caixa_Entrada = () => {
               }`}
               onClick={() => {
                 setActiveButton("entrada");
-                navigate("/E-mail_Caixa_Entrada");
+                navigate("/email_entrada");
               }}
             >
               {" "}
