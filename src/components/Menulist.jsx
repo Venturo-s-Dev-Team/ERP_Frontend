@@ -50,8 +50,9 @@ const MenuList = ({ darkTheme }) => {
     verifyToken();
   }, [navigate]);
 
+  // Enviar informações do usuário para registro do LOG
   const handleNavigation = (path) => {
-    navigate(path);
+    navigate(path, {state: {userName: userInfo.Nome_user, userId: userInfo.id_user, id_EmpresaDb: userInfo.id_EmpresaDb}});
   };
 
   const isRestricted = userInfo?.Status === 'NO';

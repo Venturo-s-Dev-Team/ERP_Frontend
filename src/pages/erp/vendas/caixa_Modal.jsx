@@ -70,7 +70,9 @@ function Caixa_Modal() {
               selectedCliente,
               nome_cliente: selectedCliente.razao_social,
               DataExpiracao: selectedCliente.dia_para_faturamento,
-              id: parseInt(id)
+              id: parseInt(id),
+              userId: (userInfo.id_user),
+              userName: userInfo.Nome_user
             }),
           },
           { withCredentials: true }

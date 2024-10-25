@@ -190,7 +190,8 @@ const enviarPedido = async () => {
     produto: JSON.stringify(selectedProducts),    // Produtos em formato JSON
     desconto: desconto,                           // Desconto aplicado
     total: calcularValorTotal().toFixed(2),       // Valor total, formatado com 2 casas decimais
-    vendedor: userInfo.Nome_user                  // Nome do vendedor que está logado
+    vendedor: userInfo.Nome_user,                  // Nome do vendedor que está logado
+    userId: userInfo.id_user
   };
 
   const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
