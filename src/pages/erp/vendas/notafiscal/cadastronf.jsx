@@ -77,107 +77,102 @@ function Cad_nf() {
   const generatePDF = () => {
     const doc = new jsPDF("p", "mm", "a4");
 
-    img.onload = () => {
-      // Cabeçalho
-      autoTable(doc, {
-        startY: 10,
-        head: [["", "NOTA FISCAL"]], // Cabeçalho principal
-        body: [
-          [
-            {
-              content: "NOTA FISCAL",
-              styles: { fontSize: 16, valign: "middle", halign: "center" },
-            },
-          ],
+    // Cabeçalho sem imagem
+    autoTable(doc, {
+      startY: 10,
+      head: [["", "NOTA FISCAL"]], // Cabeçalho principal
+      body: [
+        [
+          {
+            content: "NOTA FISCAL",
+            styles: { fontSize: 16, valign: "middle", halign: "center" },
+          },
         ],
-        theme: "plain", // Sem bordas
-        styles: {
-          halign: "center",
-          fillColor: [179, 179, 179], // Cor de fundo do cabeçalho
-          textColor: [0, 0, 0], // Cor do texto
-        },
-      });
+      ],
+      theme: "plain",
+      styles: {
+        halign: "center",
+        fillColor: [179, 179, 179],
+        textColor: [0, 0, 0],
+      },
+    });
 
-      // Informações da empresa e cliente
-      autoTable(doc, {
-        startY: doc.autoTable.previous.finalY + 10,
-        head: [["Razão Social", "CPF/CNPJ", "Endereço", "Cidade/Estado"]],
-        body: [
-          [
-            formData.razaoSocial || "-",
-            formData.cpfCnpj || "-",
-            `${formData.endereco.logradouro}, ${formData.endereco.numero}, ${formData.endereco.complemento}` ||
-              "-",
-            `${formData.endereco.cidade} - ${formData.endereco.estado}` || "-",
-          ],
-        ],
-        styles: {
-          fillColor: [255, 255, 255],
-          textColor: [0, 0, 0],
-          fontSize: 10,
-          halign: "left",
-        },
-      });
+    // Informações da empresa e cliente
+    autoTable(doc, {
+      startY: doc.autoTable.previous.finalY + 10,
+      head: [["Razão Social", "CPF/CNPJ", "Endereço", "Cidade/Estado"]],
+      body: [
+        [
+          formData.razaoSocial || "-",
+          formData.cpfCnpj || "-",
+          `${formData.endereco.logradouro}, ${formData.endereco.numero}, ${formData.endereco.complemento || "-"}`,
+          `${formData.endereco.cidade} - ${formData.endereco.estado || "-"}`,
+        ],        
+      ],
+      styles: {
+        fillColor: [255, 255, 255],
+        textColor: [0, 0, 0],
+        fontSize: 10,
+        halign: "left",
+      },
+    });
+    
+    autoTable(doc, {
+      startY: doc.autoTable.previous.finalY + 10,
+      head: [["Produto", "Preço"]],
+      body: formData.produtos.map((produto) => [
+        produto.nome,
+        `R$ ${parseFloat(produto.preco).toFixed(2)}`,
+      ]),
+      theme: "grid",
+      styles: {
+        halign: "center",
+        fillColor: [179, 179, 179],
+        textColor: [0, 0, 0],
+      },
+      headStyles: {
+        fillColor: [0, 0, 0],
+        textColor: [255, 255, 255],
+        fontSize: 10,
+      },
+      alternateRowStyles: { fillColor: [224, 224, 224] },
+    });
+    
 
-      // Produtos - Personalizar a tabela com cores
-      autoTable(doc, {
-        startY: doc.autoTable.previous.finalY + 10,
-        head: [["Produto", "Preço"]],
-        body: formData.produtos.map((produto) => [
-          produto.nome,
-          `R$ ${parseFloat(produto.preco).toFixed(2)}`,
-        ]),
-        theme: "grid",
-        styles: {
-          halign: "center",
-          fillColor: [179, 179, 179], // Cor de fundo cinza claro
-          textColor: [0, 0, 0], // Texto preto
-        },
-        headStyles: {
-          fillColor: [0, 0, 0], // Fundo preto no cabeçalho
-          textColor: [255, 255, 255], // Texto branco no cabeçalho
-          fontSize: 10, // Tamanho da fonte no cabeçalho
-        },
-        alternateRowStyles: { fillColor: [224, 224, 224] }, // Alternar cor nas linhas
-      });
+    autoTable(doc, {
+      startY: doc.lastAutoTable.finalY + 10,
+      head: [["Descrição", "Valor"]],
+      body: [
+        ["Preço Bruto", `R$ ${parseFloat(formData.precoBruto).toFixed(2)}`],
+        ["ICMS (18%)", `R$ ${parseFloat(formData.icms).toFixed(2)}`],
+        ["IPI (5%)", `R$ ${parseFloat(formData.ipi).toFixed(2)}`],
+        ["Frete", `R$ ${parseFloat(formData.frete).toFixed(2)}`],
+        ["Desconto", `R$ ${parseFloat(formData.desconto).toFixed(2)}`],
+        ["Preço Final", `R$ ${parseFloat(formData.precoFinal).toFixed(2)}`],
+      ],
+      theme: "grid",
+      styles: {
+        halign: "right",
+        fillColor: [179, 179, 179],
+        textColor: [0, 0, 0],
+      },
+      headStyles: {
+        fillColor: [0, 0, 0],
+        textColor: [255, 255, 255],
+        fontSize: 10,
+      },
+      alternateRowStyles: { fillColor: [224, 224, 224] },
+    });
+        // Rodapé
+    doc.setFontSize(8);
+    doc.text(
+      "NF-e Emitida em Ambiente de Homologação - Sem Valor Fiscal",
+      105,
+      doc.internal.pageSize.height - 10,
+      { align: "center" }
+    );
 
-      // Resumo de valores
-      autoTable(doc, {
-        startY: doc.lastAutoTable.finalY + 10,
-        head: [["Descrição", "Valor"]],
-        body: [
-          ["Preço Bruto", `R$ ${parseFloat(formData.precoBruto).toFixed(2)}`],
-          ["ICMS (18%)", `R$ ${parseFloat(formData.icms).toFixed(2)}`],
-          ["IPI (5%)", `R$ ${parseFloat(formData.ipi).toFixed(2)}`],
-          ["Frete", `R$ ${parseFloat(formData.frete).toFixed(2)}`],
-          ["Desconto", `R$ ${parseFloat(formData.desconto).toFixed(2)}`],
-          ["Preço Final", `R$ ${parseFloat(formData.precoFinal).toFixed(2)}`],
-        ],
-        theme: "grid",
-        styles: {
-          halign: "right",
-          fillColor: [179, 179, 179], // Mesma cor de fundo cinza claro
-          textColor: [0, 0, 0], // Texto preto
-        },
-        headStyles: {
-          fillColor: [0, 0, 0], // Cabeçalho preto
-          textColor: [255, 255, 255], // Texto branco
-          fontSize: 10,
-        },
-        alternateRowStyles: { fillColor: [224, 224, 224] },
-      });
-
-      // Rodapé
-      doc.setFontSize(8);
-      doc.text(
-        "NF-e Emitida em Ambiente de Homologação - Sem Valor Fiscal",
-        105,
-        doc.internal.pageSize.height - 10,
-        { align: "center" }
-      );
-
-      doc.save("nota_fiscal.pdf");
-    };
+    doc.save("nota_fiscal.pdf");
   };
 
   const handleSubmit = (e) => {
@@ -185,6 +180,11 @@ function Cad_nf() {
     calculateValues();
     generatePDF();
     console.log("Nota Emitida");
+  };
+
+  const handleCalculate = (e) => {
+    e.preventDefault();
+    calculateValues();
   };
 
   return (
@@ -220,6 +220,7 @@ function Cad_nf() {
             </div>
           </div>
         </div>
+
         <div className="endereço">
           <h5 className="mini-titulo-nf">Endereço</h5>
           <div className="endereço-novo1">
@@ -304,7 +305,6 @@ function Cad_nf() {
                 name="frete"
                 value={formData.frete}
                 onChange={handleInputChange}
-                onBlur={calculateValues}
                 className="input-frete"
               />
             </div>
@@ -315,20 +315,12 @@ function Cad_nf() {
                 name="desconto"
                 value={formData.desconto}
                 onChange={handleInputChange}
-                onBlur={calculateValues}
                 className="input-desconto"
               />
             </div>
             <div className="código">
               <label>Código da Venda:</label>
-              <input
-                type="text"
-                name="desconto"
-                value={formData.desconto}
-                onChange={handleInputChange}
-                onBlur={calculateValues}
-                className="input-código"
-              />
+              <input type="text" name="codigo" className="input-código" />
             </div>
           </div>
           {formData.produtos.map((produto, index) => (
@@ -430,10 +422,17 @@ function Cad_nf() {
                 value={formData.precoFinal}
                 readOnly
               />
-            </div>{" "}
+            </div>
           </div>
         </div>
 
+        <button
+          className="btn-calcular"
+          type="button"
+          onClick={handleCalculate}
+        >
+          Calcular Valores
+        </button>
         <button className="emitir" type="submit">
           Emitir Nota Fiscal
         </button>

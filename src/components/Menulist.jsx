@@ -22,8 +22,6 @@ import axios from "axios";
 import {jwtDecode} from "jwt-decode";
 import "./Sidebar.css";
 
-//<BsPeopleFill className="card_icon" />
-
 const MenuList = ({ darkTheme }) => {
   const navigate = useNavigate();
 
@@ -50,7 +48,6 @@ const MenuList = ({ darkTheme }) => {
     verifyToken();
   }, [navigate]);
 
-  // Enviar informações do usuário para registro do LOG
   const handleNavigation = (path) => {
     navigate(path, {state: {userName: userInfo.Nome_user, userId: userInfo.id_user, id_EmpresaDb: userInfo.id_EmpresaDb}});
   };
@@ -89,7 +86,7 @@ const MenuList = ({ darkTheme }) => {
       label: 'Perfil',
       onClick: () => handleNavigation("/Perfil"),
     },
-     !isRestricted && !isSuperAdmin && {
+    !isRestricted && !isSuperAdmin && {
       key: "logs_empresa",
       icon: <RiContactsBook3Fill />,
       label: "Logs",
@@ -101,13 +98,12 @@ const MenuList = ({ darkTheme }) => {
       label: "Funcionários",
       children: [
         {
-        key: "cadastro_funcionario",
-        label: "Cadastrar",
-        onClick: () => handleNavigation("/CadastroFuncionario"),
-      },
-    ]
+          key: "cadastro_funcionario",
+          label: "Cadastrar",
+          onClick: () => handleNavigation("/CadastroFuncionario"),
+        },
+      ]
     },
-
     !isRestricted && !isSuperAdmin && {
       key: "subestoque",
       icon: <StockOutlined />,
@@ -118,7 +114,12 @@ const MenuList = ({ darkTheme }) => {
           label: "Registrar produtos",
           onClick: () => handleNavigation("/cad_produto"),
         },
-      ],
+        {
+          key: "relatorioestoque",
+          label: "Relatório Estoque",
+          onClick: () => handleNavigation("/relatorioestoque"),
+        },
+      ]
     },
     !isRestricted && !isSuperAdmin && {
       key: "financeiro",
@@ -144,7 +145,7 @@ const MenuList = ({ darkTheme }) => {
               label: "Pagamentos",
               onClick: () => handleNavigation("/pagamentos"),
             },
-          ],
+          ]
         },
         {
           key: "contasreceber",
@@ -160,51 +161,19 @@ const MenuList = ({ darkTheme }) => {
               label: "Receitas",
               onClick: () => handleNavigation("/receitas"),
             },
-          ],
+          ]
         },
         {
-          key: "planoconta",
-          label: "Plano conta",
-          children: [
-            {
-              key: "planodcontas",
-              label: "Plano de Contas",
-              onClick: () => handleNavigation("/planodcontas"),
-            },
-            {
-              key: "lancamentocontabil",
-              label: "Lançamento Contábil",
-              onClick: () => handleNavigation("/lancontabil"),
-            },
-            {
-              key: "balancete",
-              label: "Balancete",
-              onClick: () => handleNavigation("/balancete"),
-            },
-            {
-              key: "dre",
-              label: "DRE",
-              onClick: () => handleNavigation("/dre"),
-            },
-            {
-              key: "razao",
-              label: "Razão",
-              onClick: () => handleNavigation("/razao"),
-            },
-          ],
+          key: "razao",
+          label: "Razão",
+          onClick: () => handleNavigation("/razao"),
         },
         {
-          key: "imposto",
-          label: "Imposto",
-          children: [
-            {
-              key: "cadimposto",
-              label: "Cadastrar imposto",
-              onClick: () => handleNavigation("/cad_imposto"),
-            },
-          ],
+          key: "relatoriofianc",
+          label: "Relatório Financeiro",
+          onClick: () => handleNavigation("/relatoriofinanc"),
         },
-      ],
+      ]
     },
     !isRestricted && !isSuperAdmin && {
       key: "vendas",
@@ -212,7 +181,12 @@ const MenuList = ({ darkTheme }) => {
       label: "Vendas",
       children: [
         {
-          key: "cadastro",
+          key: "relatoriovendas",
+          label: "Relatório Vendas",
+          onClick: () => handleNavigation("/relatoriovendas"),
+        },
+        {
+          key: "cadastronf",
           label: "Notas Fiscais",
           onClick: () => handleNavigation("/cadastronf"),
         },
@@ -241,7 +215,7 @@ const MenuList = ({ darkTheme }) => {
           label: "Caixa",
           onClick: () => handleNavigation("/caixa"),
         }, 
-      ],
+      ]
     },
     {
       key: "Logout",
@@ -255,9 +229,8 @@ const MenuList = ({ darkTheme }) => {
     <Menu
       theme={darkTheme ? "dark" : "light"}
       className="menu-bar"
-      items={menuItems.filter(Boolean)} // Filtra os itens nulos
+      items={menuItems.filter(Boolean)}
     />
-  
   );
 }
 

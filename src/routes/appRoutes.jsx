@@ -21,17 +21,17 @@ import Caixa_Entrada from "../pages/erp/e-mail/Caixa_Entrada";
 import Perfil from "../pages/erp/Perfil/Perfil";
 import CadastroFuncionario from "../pages/erp/funcionarios/RegisterFuncionario";
 import Cad_produto from "../pages/erp/estoque/cad_produto";
+import Relatorioestoque from "../pages/erp/estoque/relatorioestoque.jsx";
 import Despesas from "../pages/erp/financeiro/contaspagar/despesas";
 import Fornecedores from "../pages/erp/financeiro/contaspagar/fornecedores";
 import Pagamentos from "../pages/erp/financeiro/contaspagar/pagamentos";
 import Fluxodecaixa from "../pages/erp/financeiro/contasreceber/fluxodecaixa";
 import Receitas from "../pages/erp/financeiro/contasreceber/receitas";
 import Cad_imposto from "../pages/erp/financeiro/imposto/cad_imposto";
-import Balancete from "../pages/erp/financeiro/planocontas/balancete";
-import Dre from "../pages/erp/financeiro/planocontas/dre";
 import Razao from "../pages/erp/financeiro/planocontas/razao";
-import LanContabil from "../pages/erp/financeiro/planocontas/lancontabil/lancontabil";
+import Relatoriofinanc from "../pages/erp/financeiro/relatoriofinanc.jsx";
 import Vendas from "../pages/erp/vendas/vendas";
+import Relatoriovendas from "../pages/erp/vendas/relatoriovendas.jsx";
 import GestaoVendas from "../pages/erp/vendas/GestaoDeVendas/gestaoVendas.jsx";
 import PedidosCancelados from "../pages/erp/vendas/GestaoDeVendas/gestaoPedidosCancelados.jsx";
 import Abas from "../pages/erp/vendas/GestaoDeVendas/Abas.jsx";
@@ -47,7 +47,6 @@ import Logout from "../components/Logout";
 import Caixa from "../pages/erp/vendas/pedidosEmAberto";
 import Caixa_Pagamento from "../pages/erp/vendas/caixa_Pagamento";
 import Caixa_Modal from "../pages/erp/vendas/caixa_Modal";
-import PlanoDContas from "../pages/erp/financeiro/planocontas/planodecontaspage/planodcontas";
 
 function AppRoutes() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
@@ -202,6 +201,17 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
             }
           />
 
+          
+          {/* Estoque, Gestor e Socio podem acessar  */}
+          <Route
+            path="/relatorioestoque"
+            element={
+              <ProtectedRoute allowedRoles={['Estoque', 'Gestor', 'Socio']}>
+                <Relatorioestoque />
+              </ProtectedRoute>
+            }
+          />
+
           {/* Gestor, Venda, Socio podem acessar gestaoPedidos */}
           <Route
             path="/gestaoPedidos"
@@ -227,6 +237,15 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
             element={
               <ProtectedRoute allowedRoles={['Socio', 'Gestor', 'Venda']}>
                 <Vendas />
+              </ProtectedRoute>
+            }
+          />
+                {/* Socio, Gestor, Venda podem acessar vendas */}
+                <Route
+            path="/relatoriovendas"
+            element={
+              <ProtectedRoute allowedRoles={['Socio', 'Gestor', 'Venda']}>
+                <Relatoriovendas />
               </ProtectedRoute>
             }
           />
@@ -277,38 +296,6 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
             }
           />
           <Route
-            path="/balancete"
-            element={
-              <ProtectedRoute allowedRoles={['Financeiro', 'Socio', 'Gestor']}>
-                <Balancete />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/lancontabil"
-            element={
-              <ProtectedRoute allowedRoles={['Financeiro', 'Socio', 'Gestor']}>
-                <LanContabil />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/dre"
-            element={
-              <ProtectedRoute allowedRoles={['Financeiro', 'Socio', 'Gestor']}>
-                <Dre />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/planodcontas"
-            element={
-              <ProtectedRoute allowedRoles={['Financeiro', 'Socio', 'Gestor']}>
-                <PlanoDContas />
-              </ProtectedRoute>
-            }
-          />
-          <Route
             path="/receitas"
             element={
               <ProtectedRoute allowedRoles={['Financeiro', 'Socio', 'Gestor']}>
@@ -331,6 +318,17 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
             element={
               <ProtectedRoute allowedRoles={['Gestor', 'Gerente', 'Socio', 'Financeiro', 'Caixa']}>
                 <Fluxodecaixa />
+              </ProtectedRoute>
+            }
+          />
+
+          
+          {/* Gestor, Socio, Financeiro e Caixa podem acessar fluxodecaixa */}
+          <Route
+            path="/relatoriofinanc"
+            element={
+              <ProtectedRoute allowedRoles={['Gestor', 'Gerente', 'Socio', 'Financeiro']}>
+                <Relatoriofinanc />
               </ProtectedRoute>
             }
           />
