@@ -1,0 +1,142 @@
+/* Principal */
+.logs-admin {
+  flex: 1;
+  width: 100%;
+  font-family: Arial, sans-serif;
+}
+
+.titleLogsAdm {
+  padding-left: 20px;
+  padding-top: 20px;
+}
+
+.direction-align {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding-top: 30px;
+}
+
+/* Seletores */
+.buttonsSelector {
+  width: 15%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-right: 1px solid rgb(174, 174, 174);
+}
+
+/* Botões de ano */
+.year-selector button {
+  height: 40px;
+  width: 130px;
+  border: none;
+  background: linear-gradient(to top, #357ab7, #4582b8);
+  border-radius: 2px;
+  margin: 5px;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0px 0px 23px rgba(0, 0, 0, 0.1);
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+.year-selector button.selected {
+  background: linear-gradient(to top, #1a5a91, #2a6f9f);
+}
+
+/* Seletores de mês */
+.month-selector {
+  opacity: 0;
+  transform: translateX(10px); /* Inicia fora da tela (abaixo) */
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.month-selector.show {
+  opacity: 1;
+  transform: translateX(0px); /* Move para sua posição original */
+}
+
+.month-selector.hide {
+  opacity: 0;
+  transform: translateX(20px); /* Move para fora da tela (abaixo) */
+}
+
+/* Estilo dos botões do mês */
+.month-selector button {
+  background-color: rgb(237, 244, 249);
+  color: black;
+  font-weight: bold;
+  height: 37px;
+  width: 130px;
+  border-radius: 2px;
+  cursor: pointer;
+  border: white 1px solid;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.month-selector button.selected {
+  background-color: #7dbbe8;
+  color: white;
+}
+
+/* Tabela */
+.logAdm-table {
+  width: 90%;
+  margin: 0 auto;
+  max-height: 600px; /* Ajuste a altura conforme necessário */
+  overflow-y: auto; /* Adiciona rolagem vertical se o conteúdo ultrapassar a altura */
+}
+
+.logAdm-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.logAdm-table th,
+.logAdm-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.logAdm-table th {
+  background-color: #f8f9fa;
+}
+
+/* Paginação */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  border: none;
+  color: #4582b8;
+  background-color: white;
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.pagination button.active {
+  background-color: #2c5c86;
+  color: white;
+  font-weight: bold;
+}
+
+.pagination button:disabled {
+  cursor: not-allowed;
+  color: #ddd;
+  background-color: #f5f5f5;
+}

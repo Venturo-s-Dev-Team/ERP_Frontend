@@ -1,11 +1,13 @@
-import React, { useState } from "react";
-import SuccessPopup from "./PopupFuncionarios"; // Importe o componente pop-up
+import React, { useState, useEffect } from "react";
+import SideBarPage from "../../components/Sidebar/SideBarPage";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { FaFileExport } from "react-icons/fa";
 import { IoIosPersonAdd } from "react-icons/io";
 import { BsSearch } from "react-icons/bs";
+import SuccessPopup from "./PopupFuncionarios"; // Importe o componente pop-up
 import * as XLSX from "xlsx";
-import SideBarPage from "../../components/Sidebar/SideBarPage";
 
 function CadastroFuncionario() {
   const navigate = useNavigate();
@@ -13,6 +15,50 @@ function CadastroFuncionario() {
   const [userInfo, setUserInfo] = useState("");
   const [Funcionarios, setFuncionarios] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); // Estado para armazenar o termo de pesquisa
+
+  // Função para verificar o token
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const response = await axios.get("/api/ServerTwo/verifyToken", {
+          withCredentials: true,
+        });
+
+        if (typeof response.data.token === "string") {
+          const decodedToken = jwtDecode(response.data.token);
+          setUserInfo(decodedToken);
+        } else {
+          console.error("Token não é uma string:", response.data.token);
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Token inválido", error);
+        navigate("/login");
+      }
+    };
+
+    verifyToken();
+  }, [navigate]);
+
+  useEffect(() => {
+    if (userInfo.id_EmpresaDb) {
+      fetchFuncionarios(userInfo.id_EmpresaDb);
+    }
+  }, [userInfo]);
+
+  const fetchFuncionarios = async (id) => {
+    try {
+      const response = await axios.get(
+        `/api/ServerOne/tableFuncionario/${id}`,
+        { withCredentials: true }
+      );
+      if (response.status === 200) {
+        setFuncionarios(response.data.InfoTabela);
+      }
+    } catch (error) {
+      console.log("Não foi possível requerir as informações: ", error);
+    }
+  };
 
   // Filtro dos produtos
   const handleSearchChange = (e) => {

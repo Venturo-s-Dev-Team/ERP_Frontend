@@ -178,9 +178,14 @@ function Home() {
     return (
       <SideBarPage>
         <main>
-          {userInfo.Nome_user}, sua empresa não esta autorizada, entre em
-          contato conosco via e-mail do sistema ou no nosso número de WhatsApp:
-          (19)98171-2080
+          <div className="BoxMensagem-DB">
+            <h1 className="BoasVindasMensagem-DB">Seja Bem Vindo(a)!</h1>
+            <p className="PMensagem-DB">
+              {userInfo.Nome_user}, sua empresa não está autorizada. Entre em
+              contato conosco via e-mail do sistema ou no nosso número de
+              WhatsApp: (19)98171-2080.
+            </p>
+          </div>
         </main>
       </SideBarPage>
     );

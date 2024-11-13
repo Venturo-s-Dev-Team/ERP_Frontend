@@ -74,17 +74,243 @@ const data02 = [
 function Despesas() {
   const navigate = useNavigate();
   const [Despesas, setDespesas] = useState([]);
-  const [valor, setValor] = useState("");
-  const [nome, setNome] = useState("");
-  const [dataExpiracao, setDataExpiracao] = useState("");
+  const [valor, setValor] = useState(null);
+  const [nome, setNome] = useState(null);
+  const [dataExpiracao, setDataExpiracao] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [SelectedDespesa, setSelectedDespesa] = useState(null);
+  const [isEditMode, setIsEditMode] = useState(false); // Determina se está no modo de edição
   const [dataGrafico, setDataGrafico] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); // Estado para armazenar o termo de pesquisa
 
+  // Função para alternar o valor da coluna "Finalizado"
+  const Finalizado = (id) => {
+    setDespesas((prevDespesas) =>
+      prevDespesas.map((despesa) =>
+        despesa.id === id
+          ? {
+              ...despesa,
+              Finalizado: despesa.Finalizado === 0 ? 1 : 0,
+            }
+          : despesa
+      )
+    );
+  };
+
+  // Verificação do token e obtenção das informações do usuário
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const response = await axios.get("/api/ServerTwo/verifyToken", {
+          withCredentials: true,
+        });
+
+        if (typeof response.data.token === "string") {
+          const decodedToken = jwtDecode(response.data.token);
+          setUserInfo(decodedToken);
+        } else {
+          console.error("Token não é uma string:", response.data.token);
+          navigate("/login");
+        }
+      } catch (error) {
+        console.error("Token inválido", error);
+        navigate("/login");
+      }
+    };
+
+    verifyToken();
+  }, [navigate]);
+
+  // Carregar dados inicialmente
+  useEffect(() => {
+    if (userInfo && userInfo.id_EmpresaDb) {
+      fetchData(userInfo.id_EmpresaDb);
+    }
+  }, [userInfo]);
+
+  // Função para carregar dados do banco de dados
+  const fetchData = async (userId) => {
+    try {
+      const despesasResponse = await axios.get(
+        `/api/ServerOne/tabledespesas/${userId}`,
+        { withCredentials: true }
+      );
+
+      const despesas = despesasResponse.data.InfoTabela;
+      setDespesas(despesas);
+
+      // Total em aberto (somando valores)
+      const totalAbertas = despesas
+        .filter((despesa) => despesa.Finalizado === 0)
+        .reduce((acc, despesa) => acc + parseFloat(despesa.Valor || 0), 0);
+
+      // Total atrasadas (somando valores)
+      const totalAtrasadas = despesas
+        .filter((despesa) => {
+          const dataExpiracao = new Date(despesa.DataExpiracao).getTime();
+          return (
+            despesa.Finalizado === 0 && dataExpiracao < new Date().getTime()
+          );
+        })
+        .reduce((acc, despesa) => acc + parseFloat(despesa.Valor || 0), 0);
+
+      // Atualize o estado do gráfico com valores formatados
+      setDataGrafico([
+        { name: "Contas em Aberto", value: totalAbertas },
+        { name: "Contas Atrasadas", value: totalAtrasadas },
+      ]);
+    } catch (error) {
+      console.error("Erro ao carregar dados", error);
+    }
+  };
+
+  // Função para formatar valores em reais
+  const formatCurrency = (value) => {
+    return value.toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
+  };
+
+  // Calcular total das despesas não finalizadas
+  const calcularTotalDespesasNaoFinalizadas = () => {
+    const total = Despesas.filter((despesa) => despesa.Finalizado === 0).reduce(
+      (acc, despesa) => acc + (parseFloat(despesa.Valor) || 0),
+      0
+    );
+
+    return total.toFixed(2);
+  };
+
+  // Função para calcular o total das despesas não finalizadas e que estão atrasadas
+  const calcularTotalDespesasAtrasadas = () => {
+    const dateAtual = new Date().getTime(); // Timestamp da data atual
+
+    const total = Despesas.filter((despesa) => {
+      const dataExpiracao = new Date(despesa.DataExpiracao).getTime(); // Timestamp da data de expiração
+
+      // Verifica se a despesa não está finalizada e se está atrasada
+      return despesa.Finalizado === 0 && dataExpiracao < dateAtual;
+    }).reduce((acc, despesa) => acc + (parseFloat(despesa.Valor) || 0), 0);
+
+    return total.toFixed(2);
+  };
+
+  const handleSubmitDespesa = async (event) => {
+    event.preventDefault();
+
+    const id_EmpresaDb = parseInt(userInfo.id_EmpresaDb); // Alterado para userInfo.id_user
+
+    const despesaData = {
+      Valor: valor,
+      Nome: nome,
+      DataExpiracao: dataExpiracao,
+      id_EmpresaDb,
+      userId: userInfo.id_user,
+      userName: userInfo.Nome_user,
+    };
+
+    if (isEditMode === true) {
+      try {
+        const response = await axios.put(
+          `api/ServerTwo/AtualizandoInfoDespesa/${SelectedDespesa.id}`,
+          despesaData,
+          { withCredentials: true }
+        );
+        console.log("Atualizado: ", response);
+        await fetchData(id_EmpresaDb);
+        fecharModal();
+      } catch (error) {
+        console.error("Erro ao atualizar despesa", error);
+      }
+    } else {
+      // Registro da despesa
+      try {
+        const response = await axios.post(
+          `/api/ServerTwo/registrarDespesas`,
+          despesaData,
+          { withCredentials: true }
+        );
+        console.log("Dados da despesa:", response);
+        await fetchData(id_EmpresaDb);
+        fecharModal();
+      } catch (error) {
+        console.error("Erro ao registrar despesa", error);
+      }
+    }
+  };
+
   // Modal control
-  const abrirModal = () => setShowModal(true);
+  const abrirModal = () => {
+    setShowModal(true);
+    if (isEditMode && SelectedDespesa) {
+      setValor(SelectedDespesa.Valor || "");
+      setNome(SelectedDespesa.Nome || "");
+      setDataExpiracao(SelectedDespesa.DataExpiracao || "");
+    } else {
+      // Reset fields when adding a new despesa or if no despesa is selected
+      setValor("");
+      setNome("");
+      setDataExpiracao("");
+    }
+  };
+
   const fecharModal = () => setShowModal(false);
+
+  // Função para atualizar o estado finalizado para 1
+  const UpdateFinalizado1 = async (id) => {
+    const id_EmpresaDb = parseInt(userInfo.id_EmpresaDb); // Alterado para userInfo.id_user
+
+    try {
+      const response = await axios.put(
+        `/api/ServerOne/tableDespesasFinalizado/${id}`,
+        { id_EmpresaDb }, // Se não há dados a enviar, mantenha o corpo vazio
+        { withCredentials: true }
+      );
+
+      if (response.status === 200) {
+        console.log("Despesa atualizada com sucesso");
+        await fetchData(id_EmpresaDb); // Atualize os dados após a atualização
+      } else {
+        console.error("Erro ao atualizar a despesa");
+      }
+    } catch (err) {
+      console.error("Erro ao atualizar a despesa", err);
+    }
+  };
+
+  // Função para atualizar o estado finalizado para 1
+  const UpdateFinalizado0 = async (id) => {
+    const id_EmpresaDb = parseInt(userInfo.id_EmpresaDb); // Alterado para userInfo.id_user
+
+    try {
+      const response = await axios.put(
+        `/api/ServerOne/tableDespesasNaoFinalizado/${id}`,
+        { id_EmpresaDb }, // Se não há dados a enviar, mantenha o corpo vazio
+        { withCredentials: true }
+      );
+
+      if (response.status === 200) {
+        console.log("Despesa atualizada com sucesso");
+        await fetchData(id_EmpresaDb); // Atualize os dados após a atualização
+      } else {
+        console.error("Erro ao atualizar a despesa");
+      }
+    } catch (err) {
+      console.error("Erro ao atualizar a despesa", err);
+    }
+  };
+
+  const handleEdit = () => {
+    if (!SelectedDespesa) {
+      alert("Por favor, selecione uma despesa para editar.");
+      return;
+    }
+
+    setIsEditMode(true); // Define o modo de edição
+    setShowModal(true); // Abre o modal
+  };
 
   // Função para exportar a tabela de despesas para Excel
   const exportToExcel = () => {
@@ -141,11 +367,11 @@ function Despesas() {
           <div className="box_desp">
             <div className="despesa1-box">
               <h3>Contas a pagar em aberto</h3>
-              <h1>R$ </h1>
+              <h1>R$ {calcularTotalDespesasNaoFinalizadas()}</h1>
             </div>
             <div className="despesa2-box">
               <h3>Contas a pagar em atraso</h3>
-              <h1>R$</h1>
+              <h1>R$ {calcularTotalDespesasAtrasadas()}</h1>
             </div>
           </div>
           {/* Gráficos representativos */}

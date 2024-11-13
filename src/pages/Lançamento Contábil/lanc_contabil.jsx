@@ -31,7 +31,7 @@ function LanContabil() {
 
   return (
     <SideBarPage>
-      <main className="main-lanContabil">
+      <main>
         <div className="main-title">
           <h3>Lançamento Contabil</h3>
         </div>

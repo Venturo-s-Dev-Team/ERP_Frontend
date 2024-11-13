@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import InputMask from "react-input-mask";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import "./Popupstyle.css"; // Certifique-se de que este arquivo contém a estilização fornecida
@@ -7,6 +8,8 @@ const SuccessPopup = ({ onClose, onSubmit }) => {
   const [nome, setNome] = useState("");
   const [senha, setSenha] = useState("");
   const [typeUser, setTypeUser] = useState("");
+  const [cpf, setCPF] = useState("");
+  const [emailPessoal, setEmailPessoal] = useState("");
   const [EmpresaId, setIdEmpresa] = useState("");
   const [erro, setErro] = useState("");
   const [userInfo, setUserInfo] = useState("");
@@ -47,6 +50,8 @@ const SuccessPopup = ({ onClose, onSubmit }) => {
         TypeUser: typeUser,
         Email: generateEmail(nome),
         id: userInfo.id_EmpresaDb,
+        emailPessoal,
+        cpf,
 
         // Info para Logs
         id_EmpresaDb: userInfo.id_EmpresaDb,
@@ -81,6 +86,20 @@ const SuccessPopup = ({ onClose, onSubmit }) => {
               placeholder="Nome Completo"
               value={nome}
               onChange={(e) => setNome(e.target.value)}
+              required
+            />
+            <InputMask
+              mask="999.999.999-99"
+              placeholder="CPF"
+              value={cpf}
+              onChange={(e) => setCPF(e.target.value)}
+              required
+            />
+            <input
+              type="email"
+              placeholder="E-mail pessoal do funcionário"
+              value={emailPessoal}
+              onChange={(e) => setEmailPessoal(e.target.value)}
               required
             />
             <input

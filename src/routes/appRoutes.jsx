@@ -17,7 +17,7 @@ import RegistroProduto from "../pages/Estoque/cad_produto";
 import Error from "../pages/Error/Erros";
 import Caixa_Entrada from "../pages/Email/caixaEntrada";
 import Caixa_Saida from "../pages/Email/caixaSaida";
-import Perfil_User from "../pages/Perfil/perfilUser";
+import Perfil from "../pages/Perfil/perfilUser";
 import Fornecedores from "../pages/Fornecedores/fornecedores";
 import Pagamentos from "../pages/Pagamentos/pagamentos";
 import Perfil_Admin from "../pages/Perfil/perfilAdmin";
@@ -38,6 +38,7 @@ import PedidosCancelados from "../pages/Pedidos Cancelados/pedidosCancelados";
 import Caixa_Modal from "../pages/Caixa/caixa_Modal";
 import Caixa_Pagamentos from "../pages/Caixa/caixa_Pagamentos";
 import Logout from "../components/Logout";
+import LogsEmpresa from "../pages/LogsSystem/LogsEmpresa";
 
 function AppRoutes() {
   return (
@@ -52,7 +53,7 @@ function AppRoutes() {
         <Route path="/error" element={<Error />} />
         <Route path="email_entrada" element={<Caixa_Entrada />} />
         <Route path="/email_saida" element={<Caixa_Saida />} />
-        <Route path="/perfil_user" element={<Perfil_User />} />
+        <Route path="/perfil_user" element={<Perfil />} />
         <Route path="/fornecedores" element={<Fornecedores />} />
         <Route path="/pagamentos" element={<Pagamentos />} />
         <Route path="/perfil_admin" element={<Perfil_Admin />} />
@@ -73,6 +74,7 @@ function AppRoutes() {
         <Route path="/caixa_Modal" element={<Caixa_Modal />} />
         <Route path="/caixa_Pagamentos" element={<Caixa_Pagamentos />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/logsEmpresa" element={<LogsEmpresa />} />
       </Routes>
     </Router>
   );

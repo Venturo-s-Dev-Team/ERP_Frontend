@@ -69,7 +69,7 @@ const MenuList = ({ darkTheme }) => {
     {
       key: "logs",
       icon: <RiContactsBook3Fill />,
-      label: "Logs",
+      label: <Link to="/logsEmpresa">Logs</Link>,
     },
     {
       key: "funcionario",
