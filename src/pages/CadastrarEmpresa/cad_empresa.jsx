@@ -125,92 +125,44 @@ function Cad_Empresa() {
 
   return (
     <main>
-      <div className="container-total-ce">
-        <form className="box-dentro-ce" onSubmit={handleSubmit}>
+      <div className="Container-CadEmp" onSubmit={handleSubmit}>
+        <form className="BoxForms-CadEmp">
           <h2>Formulário de Empresa</h2>
-
-          <div className="geral-div">
-            <legend className="legenda_cadastro-empresa">Geral</legend>
-            <div className="inscricao-div">
-              <label className="inscricao">
+          {/* Parte Geral */}
+          <div className="GeralDiv-CadEmp">
+            <legend>Geral</legend>
+            <div className="Campo-Inscriçao">
+              <label>
                 Inscrição Estadual:
                 <InputMask
                   mask="999.999.999.999"
                   type="text"
                   name="InscricaoEstadual"
                   value={formData.InscricaoEstadual}
-                  className="input-inscricao"
                   onChange={handleChange}
                   required
+                />
+              </label>
+            </div>
+
+            <div className="Campo-Site">
+              <label>
+                Site:
+                <InputMask
+                  type="url"
+                  name="Site"
+                  value={formData.Site}
+                  onChange={handleChange}
                 />
               </label>
             </div>
           </div>
 
-          <div className="endereco-div">
-            <legend className="legenda_cadastro-empresa-especial">
-              Endereço
-            </legend>
+          {/* Parte Endereço */}
+          <div className="EndereçoDiv-CadEmp">
+            <legend>Endereço</legend>
 
-            <div className="municipio-div">
-              <label className="municipio">
-                Município:
-                <input
-                  type="text"
-                  name="Municipio"
-                  value={formData.Municipio}
-                  onChange={handleChange}
-                  className="input-municipio"
-                  required
-                />
-              </label>
-            </div>
-
-            <div className="uf-div">
-              <label className="uf">
-                UF:
-                <InputMask
-                  mask="aa"
-                  type="text"
-                  name="UF"
-                  value={formData.UF}
-                  onChange={handleChange}
-                  className="input-uf"
-                  required
-                />
-              </label>
-            </div>
-
-            <div className="logradouro-div">
-              <label className="logradouro">
-                Logradouro:
-                <input
-                  type="text"
-                  name="Logradouro"
-                  value={formData.Logradouro}
-                  onChange={handleChange}
-                  className="input-logradouro"
-                  required
-                />
-              </label>
-            </div>
-
-            <div className="numeros-div">
-              <label className="numeros">
-                Número:
-                <InputMask
-                  type="text"
-                  name="Numero"
-                  mask="9999"
-                  value={formData.Numero}
-                  onChange={handleChange}
-                  className="input-numeros"
-                  required
-                />
-              </label>
-            </div>
-
-            <div className="cep-div">
+            <div className="Campo-Cep">
               <label>
                 CEP:
                 <InputMask
@@ -220,46 +172,96 @@ function Cad_Empresa() {
                   value={formData.CEP}
                   onChange={handleChange}
                   onBlur={handleCepBlur}
-                  className="input-cep"
                   required
                 />
               </label>
             </div>
 
-            <div className="complemento-div">
+            <div className="Campo-Municipio">
+              <label>
+                Município:
+                <InputMask
+                  type="text"
+                  name="Municipio"
+                  value={formData.Municipio}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+            </div>
+
+            <div className="Campo-Uf">
+              <label>
+                Uf:
+                <InputMask
+                  mask="aa"
+                  type="text"
+                  name="UF"
+                  value={formData.UF}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+            </div>
+
+            <div className="Campo-Logradouro">
+              <label>
+                Logradouro:
+                <InputMask
+                  type="text"
+                  name="Logradouro"
+                  value={formData.Logradouro}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+            </div>
+
+            <div className="Campo-Números">
+              <label>
+                Números:
+                <InputMask
+                  mask="9999"
+                  type="text"
+                  name="Numero"
+                  value={formData.Numero}
+                  onChange={handleChange}
+                  required
+                />
+              </label>
+            </div>
+
+            <div className="Campo-Complemento">
               <label>
                 Complemento:
-                <input
+                <InputMask
                   type="text"
                   name="Complemento"
                   value={formData.Complemento}
                   onChange={handleChange}
-                  className="input-complemento"
+                  required
                 />
               </label>
             </div>
           </div>
 
-          <div className="empresa">
-            <legend className="legenda_cadastro-empresa-especial">
-              Empresa
-            </legend>
-
-            <div className="telefone-div">
-              <label className="telefone">
+          {/* Parte Empresa */}
+          <div className="EmpresaDiv-CadEmp">
+            <legend>Cadastrante</legend>
+            <div className="Campo-Telefone">
+              <label>
                 Telefone:
                 <InputMask
+                  mask="(99)99999-9999"
                   type="text"
                   name="Telefone"
-                  mask="(99)99999-9999"
                   value={formData.Telefone}
                   onChange={handleChange}
-                  className="input-telefone"
+                  required
                 />
               </label>
             </div>
-
-            <div className="cpf-div">
+            <div className="Campo-Cpf">
               <label>
                 CPF:
                 <InputMask
@@ -268,13 +270,11 @@ function Cad_Empresa() {
                   name="CPF"
                   value={formData.CPF}
                   onChange={handleChange}
-                  className="input-cpf"
                   required
                 />
               </label>
             </div>
-
-            <div className="rg-div">
+            <div className="Campo-Rg">
               <label>
                 RG:
                 <InputMask
@@ -283,72 +283,52 @@ function Cad_Empresa() {
                   name="RG"
                   value={formData.RG}
                   onChange={handleChange}
-                  className="input-rg"
                   required
-                />
-              </label>
-            </div>
-
-            <div className="site-div">
-              <label className="site">
-                Site:
-                <input
-                  type="url"
-                  name="Site"
-                  value={formData.Site}
-                  onChange={handleChange}
-                  className="input-site"
                 />
               </label>
             </div>
           </div>
 
-          <div className="documento-div">
-            <legend className="legenda_cadastro-empresa-especial-documento">
-              Documentos
-            </legend>
-
-            <div className="contrato-div">
-              <label className="contrato">
+          {/* Parte Documentos */}
+          <div className="DocumentosDiv-CadEmp">
+            <legend>Documentos</legend>
+            <div className="Campo-Contrato">
+              <label>
                 Contrato Social:
-                <input
+                <InputMask
                   type="file"
                   name="ContratoSocial"
                   onChange={handleFileChange}
-                  className="input-contrato"
                   required
                 />
               </label>
             </div>
-
-            <div className="requerimento-div">
-              <label className="requerimento">
+            <div className="Campo-Requerimento">
+              <label>
                 Requerimento de Empresário:
-                <input
+                <InputMask
                   type="file"
                   name="RequerimentoEmpresario"
                   onChange={handleFileChange}
-                  className="input-requerimento"
                   required
                 />
               </label>
             </div>
-
-            <div className="certificado-div">
-              <label className="certificado">
+            <div className="Campo-Certificado">
+              <label>
                 Certificado MEI:
-                <input
+                <InputMask
                   type="file"
                   name="CertificadoMEI"
                   onChange={handleFileChange}
-                  className="input-certificado"
                   required
                 />
               </label>
             </div>
           </div>
 
-          <button className="btn-enviar-cadastro-empresa" type="submit">
+          {/* Botão de Enviar */}
+          <button className="Enviar-CadEmp" type="submit">
             Enviar
           </button>
         </form>

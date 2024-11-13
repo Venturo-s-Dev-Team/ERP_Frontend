@@ -24,42 +24,44 @@ function Balancete() {
           <h3>Balancete</h3>
         </div>
 
-        <div className="PlanoSelect-Div">
-          <label className="LabelSelect-BC">
-            Selecione o Plano de Contas:{" "}
-          </label>
-          <select className="Select-BC">
-            <option value="">Selecione</option>
-          </select>
-        </div>
+        <div className="scroll-despesas">
+          <div className="PlanoSelect-Div">
+            <label className="LabelSelect-BC">
+              Selecione o Plano de Contas:{" "}
+            </label>
+            <select className="Select-BC">
+              <option value="">Selecione</option>
+            </select>
+          </div>
 
-        {/* Tabela do Balancete */}
-        <div className="Balancete_List">
-          <table>
-            <caption className="Caption-BC">Relatório Balancete</caption>
-            <thead>
-              <tr>
-                <th>Grupo</th>
-                <th>Descrição</th>
-                <th>Conta</th>
-                <th>Saldo</th>
-                <th>Entrada</th>
-                <th>Saída</th>
-              </tr>
-            </thead>
-            <tbody>
-              {contas.map((conta) => (
-                <tr key={conta.id}>
-                  <td>{conta.grupo}</td>
-                  <td>{conta.descricao}</td>
-                  <td>{conta.mascara}</td>
-                  <td>{conta.saldo}</td>
-                  <td>{conta.entrada}</td>
-                  <td>{conta.saida}</td>
+          {/* Tabela do Balancete */}
+          <div className="Balancete_List">
+            <table>
+              <caption className="Caption-BC">Relatório Balancete</caption>
+              <thead>
+                <tr>
+                  <th>Grupo</th>
+                  <th>Descrição</th>
+                  <th>Conta</th>
+                  <th>Saldo</th>
+                  <th>Entrada</th>
+                  <th>Saída</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {contas.map((conta) => (
+                  <tr key={conta.id}>
+                    <td>{conta.grupo}</td>
+                    <td>{conta.descricao}</td>
+                    <td>{conta.mascara}</td>
+                    <td>{conta.saldo}</td>
+                    <td>{conta.entrada}</td>
+                    <td>{conta.saida}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </main>
     </SideBarPage>

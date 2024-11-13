@@ -21,7 +21,7 @@ import Perfil_User from "../pages/Perfil/perfilUser";
 import Fornecedores from "../pages/Fornecedores/fornecedores";
 import Pagamentos from "../pages/Pagamentos/pagamentos";
 import Perfil_Admin from "../pages/Perfil/perfilAdmin";
-import Cad_Empresa from "../pages/Cadastrar Empresa/cad_empresa";
+import Cad_Empresa from "../pages/CadastrarEmpresa/cad_empresa";
 import CadastroFuncionario from "../pages/Registrar Funcionário/registrarFuncionario";
 import SideBarPage from "../components/Sidebar/SideBarPage";
 import Despesas from "../pages/Despesas/despesas";
@@ -37,6 +37,7 @@ import Abas from "../pages/AbasGestãoPedidos/Abas";
 import PedidosCancelados from "../pages/Pedidos Cancelados/pedidosCancelados";
 import Caixa_Modal from "../pages/Caixa/caixa_Modal";
 import Caixa_Pagamentos from "../pages/Caixa/caixa_Pagamentos";
+import Logout from "../components/Logout";
 
 function AppRoutes() {
   return (
@@ -71,6 +72,7 @@ function AppRoutes() {
         <Route path="/pedidoscancelados" element={<PedidosCancelados />} />
         <Route path="/caixa_Modal" element={<Caixa_Modal />} />
         <Route path="/caixa_Pagamentos" element={<Caixa_Pagamentos />} />
+        <Route path="/logout" element={<Logout />} />
       </Routes>
     </Router>
   );

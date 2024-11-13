@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FaSearch } from "react-icons/fa";
+import { BsSearch } from "react-icons/bs";
 import "./razao.css";
 import SideBarPage from "../../components/Sidebar/SideBarPage";
 
@@ -46,20 +46,42 @@ function Razao() {
 
   return (
     <SideBarPage>
-      <main className="main-container">
+      <main>
         <div className="main-title">
           <h3>Razão</h3>
         </div>
 
-        {/* Search Bar começa aqui */}
-        <div className="search-bar-container">
-          <div className="input-wrapper">
-            <FaSearch id="search-icon" />
+        <div className="scroll-despesas">
+          {/* Search Bar começa aqui */}
+
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginTop: "10px",
+              border: "1px solid #ccc",
+              borderRadius: "4px",
+              width: "350px",
+            }}
+          >
+            <BsSearch
+              style={{ marginLeft: "10px", color: "#888", fontSize: "18px" }}
+            />
             <input
               placeholder="Digite aqui..."
-              className="input-razao"
               value={input}
               onChange={(e) => handleChange(e.target.value)}
+              style={{
+                backgroundColor: "white",
+                color: "black",
+                border: "1px solid #fff",
+                padding: "12px",
+                fontSize: "16px",
+                width: "300px",
+                outline: "none",
+                transition: "border-color 0.3s",
+                paddingLeft: "10px",
+              }}
             />
           </div>
 

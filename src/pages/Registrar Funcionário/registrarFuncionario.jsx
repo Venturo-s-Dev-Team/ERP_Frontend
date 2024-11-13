@@ -3,6 +3,7 @@ import SuccessPopup from "./PopupFuncionarios"; // Importe o componente pop-up
 import { useNavigate } from "react-router-dom";
 import { FaFileExport } from "react-icons/fa";
 import { IoIosPersonAdd } from "react-icons/io";
+import { BsSearch } from "react-icons/bs";
 import * as XLSX from "xlsx";
 import SideBarPage from "../../components/Sidebar/SideBarPage";
 
@@ -53,56 +54,80 @@ function CadastroFuncionario() {
           <h3>Cadastrar Funcionário</h3>
         </div>
 
-        <div className="Estoque_Cad">
-          <div className="Button_Cad">
-            <button onClick={openPopup}>
-              Cadastrar
-              <IoIosPersonAdd />
-            </button>
+        <div className="scroll-despesas">
+          <div className="Estoque_Cad">
+            <div className="Button_Cad">
+              <button onClick={openPopup}>
+                Cadastrar
+                <IoIosPersonAdd />
+              </button>
 
-            <button onClick={exportToExcel}>
-              Exportar
-              <FaFileExport />
-            </button>
+              <button onClick={exportToExcel}>
+                Exportar
+                <FaFileExport />
+              </button>
+            </div>
           </div>
-        </div>
 
-        {/* Exibir o pop-up se showPopup for verdadeiro */}
-        {showPopup && (
-          <SuccessPopup onClose={closePopup} onSubmit={handleSuccess} />
-        )}
+          {/* Exibir o pop-up se showPopup for verdadeiro */}
+          {showPopup && (
+            <SuccessPopup onClose={closePopup} onSubmit={handleSuccess} />
+          )}
 
-        {/* Input de pesquisa */}
-        <div>
-          <input
-            type="text"
-            placeholder="Pesquisar Funcionários ou Setor..."
-            value={searchTerm}
-            onChange={handleSearchChange}
-            className="SearchInput"
-          />
-        </div>
+          {/* Input de pesquisa */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginTop: "10px",
+              border: "1px solid #ccc",
+              borderRadius: "4px",
+              width: "350px",
+            }}
+          >
+            <BsSearch
+              style={{ marginLeft: "10px", color: "#888", fontSize: "18px" }}
+            />
+            <input
+              type="text"
+              placeholder="Pesquisar Funcionários ou Setor..."
+              value={searchTerm}
+              onChange={handleSearchChange}
+              style={{
+                backgroundColor: "white",
+                color: "black",
+                border: "1px solid #fff",
+                padding: "12px",
+                fontSize: "16px",
+                width: "300px",
+                outline: "none",
+                transition: "border-color 0.3s",
+                paddingLeft: "10px",
+              }}
+            />
+          </div>
 
-        <div className="Estoque_List">
-          <table>
-            <caption>Listagem de Funcionários</caption>
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>E-mail</th>
-                <th>Setor</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredFuncionarios.map((funcionario) => (
-                <tr key={funcionario.id}>
-                  <td>{funcionario.Nome}</td>
-                  <td>{funcionario.email}</td>
-                  <td>{funcionario.TypeUser}</td>
+          <div className="Estoque_List">
+            <table>
+              <caption>Listagem de Funcionários</caption>
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>E-mail</th>
+                  <th>Setor</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filteredFuncionarios.map((funcionario) => (
+                  <tr key={funcionario.id}>
+                    <td>{funcionario.Nome}</td>
+                    <td>{funcionario.email}</td>
+                    <td>{funcionario.TypeUser}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </main>
     </SideBarPage>

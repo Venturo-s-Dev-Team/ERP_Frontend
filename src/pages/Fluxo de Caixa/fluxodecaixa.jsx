@@ -32,48 +32,45 @@ function FluxoCaixa() {
 
   return (
     <SideBarPage>
-      <main className="main-container">
+      <main>
         <div className="main-title">
           <h3>Fluxo de Caixa</h3>
         </div>
-
-        <div>
-          <br />
-        </div>
-
-        <div className="box_fluxo">
-          <div className="saldo1-box">
-            <h3>Saldo inicial do dia anterior</h3>
-            <h1>R$ {saldoInicial.toFixed(2)}</h1>{" "}
-            {/* Exibir o saldo calculado */}
+        <div className="scroll-despesas">
+          <div className="box_fluxo">
+            <div className="saldo1-box">
+              <h3>Saldo inicial do dia anterior</h3>
+              <h1>R$ {saldoInicial.toFixed(2)}</h1>{" "}
+              {/* Exibir o saldo calculado */}
+            </div>
+            <div className="saldo2-box">
+              <h3>Saldo disponível para o dia seguinte</h3>
+              <h1>R$ {saldoDisponivel.toFixed(2)}</h1>
+              {/* Exibir o saldo calculado */}
+            </div>
           </div>
-          <div className="saldo2-box">
-            <h3>Saldo disponível para o dia seguinte</h3>
-            <h1>R$ {saldoDisponivel.toFixed(2)}</h1>
-            {/* Exibir o saldo calculado */}
-          </div>
-        </div>
 
-        <div className="Fluxos_List">
-          <table>
-            <caption>Fluxo de Caixa - Diário</caption>
-            <thead>
-              <tr>
-                <th>Descrição</th>
-                <th>Entrada</th>
-                <th>Saída</th>
-              </tr>
-            </thead>
-            <tbody>
-              {fluxosDoDia.map((fluxo) => (
-                <tr key={fluxo.id}>
-                  <td>{fluxo.descricao}</td>
-                  <td>R$ {fluxo.entrada}</td>
-                  <td>R$ {fluxo.saida}</td>
+          <div className="Fluxos_List">
+            <table>
+              <caption>Fluxo de Caixa - Diário</caption>
+              <thead>
+                <tr>
+                  <th>Descrição</th>
+                  <th>Entrada</th>
+                  <th>Saída</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {fluxosDoDia.map((fluxo) => (
+                  <tr key={fluxo.id}>
+                    <td>{fluxo.descricao}</td>
+                    <td>R$ {fluxo.entrada}</td>
+                    <td>R$ {fluxo.saida}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </main>
     </SideBarPage>

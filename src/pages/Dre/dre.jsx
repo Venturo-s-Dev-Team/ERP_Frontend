@@ -72,54 +72,57 @@ function Dre() {
         <div className="main-titleDRE">
           <h3>Demonstrativo de resultado</h3>
         </div>
-        <div className="Dre_List">
-          <table>
-            <caption>Relatório Demonstrativo de Resultado</caption>
-            <thead>
-              <tr>
-                {" "}
-                <th>Descrição</th>
-                <th>Saída</th>
-                <th>Entrada</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tabelas.map((tabela) => (
-                <tr key={tabela.id}>
-                  <td>{tabela.descricao}</td>
-                  <td> {tabela.saida}</td>
-                  <td>{tabela.entrada}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
 
-        <div className="Dre-Grafico">
-          <LineChart
-            width={500}
-            height={300}
-            data={data}
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="pv"
-              stroke="#8884d8"
-              activeDot={{ r: 8 }}
-            />
-            <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-          </LineChart>
+        <div className="scroll-despesas">
+          <div className="Dre_List">
+            <table>
+              <caption>Relatório Demonstrativo de Resultado</caption>
+              <thead>
+                <tr>
+                  {" "}
+                  <th>Descrição</th>
+                  <th>Saída</th>
+                  <th>Entrada</th>
+                </tr>
+              </thead>
+              <tbody>
+                {tabelas.map((tabela) => (
+                  <tr key={tabela.id}>
+                    <td>{tabela.descricao}</td>
+                    <td> {tabela.saida}</td>
+                    <td>{tabela.entrada}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="Dre-Grafico">
+            <LineChart
+              width={500}
+              height={300}
+              data={data}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="pv"
+                stroke="#8884d8"
+                activeDot={{ r: 8 }}
+              />
+              <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+            </LineChart>
+          </div>
         </div>
       </main>
     </SideBarPage>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
 import { StockOutlined, AreaChartOutlined } from "@ant-design/icons";
@@ -9,9 +9,47 @@ import { RiContactsBook3Fill } from "react-icons/ri";
 import { BsPeopleFill } from "react-icons/bs";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const MenuList = ({ darkTheme }) => {
   const navigate = useNavigate();
+
+  const [userInfo, setUserInfo] = useState("");
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const response = await axios.get("/api/ServerTwo/verifyToken", {
+          withCredentials: true,
+        });
+
+        if (typeof response.data.token === "string") {
+          const decodedToken = jwtDecode(response.data.token);
+          setUserInfo(decodedToken);
+        } else {
+          console.error("Token não é uma string:", response.data.token);
+          navigate("/login");
+        }
+      } catch (error) {
+        console.error("Token inválido", error);
+        navigate("/login");
+      }
+    };
+
+    verifyToken();
+  }, [navigate]);
+
+  const handleNavigation = (path) => {
+    navigate(path, {
+      state: {
+        userName: userInfo.Nome_user,
+        userId: userInfo.id_user,
+        id_EmpresaDb: userInfo.id_EmpresaDb,
+      },
+    });
+  };
+
   const items = [
     {
       key: "dashboard",
@@ -130,9 +168,10 @@ const MenuList = ({ darkTheme }) => {
       ],
     },
     {
-      key: "logout",
+      key: "Logout",
       icon: <MdLogout />,
       label: "Logout",
+      onClick: () => handleNavigation("/logout"),
     },
   ];
 

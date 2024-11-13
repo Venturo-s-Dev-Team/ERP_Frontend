@@ -12,26 +12,28 @@ function Caixa_Modal() {
           <h3>Caixa (Modal)</h3>
         </div>
 
-        <div className="Valor-CxModal">
-          <h1> Valor Total: R$</h1>
-        </div>
+        <div className="scroll-despesas">
+          <div className="Valor-CxModal">
+            <h1> Valor Total: R$</h1>
+          </div>
 
-        <div className="Valor-CxModal">
-          <input
-            type="number"
-            className="Input-CxModal"
-            placeholder="Digite o valor recebido"
-          />
+          <div className="Valor-CxModal">
+            <input
+              type="number"
+              className="Input-CxModal"
+              placeholder="Digite o valor recebido"
+            />
 
-          <h2 className="H2-CxModal">Troco: R$</h2>
-        </div>
+            <h2 className="H2-CxModal">Troco: R$</h2>
+          </div>
 
-        <div>
-          <p>Cliente:</p>
-          <p>CPF/CNPJ:</p>
-          <p>Forma de pagamento:</p>
+          <div>
+            <p>Cliente:</p>
+            <p>CPF/CNPJ:</p>
+            <p>Forma de pagamento:</p>
+          </div>
+          <button className="Btn-CxModal">Finalizar</button>
         </div>
-        <button className="Btn-CxModal">Finalizar</button>
       </main>
     </SideBarPage>
   );
