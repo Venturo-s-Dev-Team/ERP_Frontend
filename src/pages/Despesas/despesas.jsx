@@ -18,13 +18,19 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
+  Cell, // Importa o Cell
 } from "recharts";
 import { Modal } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import "./despesas.css";
+import {jwtDecode} from "jwt-decode"; // Corrigido para importar corretamente
 import SideBarPage from "../../components/Sidebar/SideBarPage";
+
+// Define as cores para cada categoria
+const COLORS = {
+  "Contas em Aberto": "#103b74", // Azul
+  "Contas Atrasadas": "#8f1515", // Vermelho
+};
 
 const data02 = [
   {
@@ -74,9 +80,9 @@ const data02 = [
 function Despesas() {
   const navigate = useNavigate();
   const [Despesas, setDespesas] = useState([]);
-  const [valor, setValor] = useState(null);
-  const [nome, setNome] = useState(null);
-  const [dataExpiracao, setDataExpiracao] = useState(null);
+  const [valor, setValor] = useState("");
+  const [nome, setNome] = useState("");
+  const [dataExpiracao, setDataExpiracao] = useState("");
   const [userInfo, setUserInfo] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [SelectedDespesa, setSelectedDespesa] = useState(null);
@@ -167,7 +173,7 @@ function Despesas() {
 
   // Função para formatar valores em reais
   const formatCurrency = (value) => {
-    return value.toLocaleString("pt-BR", {
+    return Number(value).toLocaleString("pt-BR", {
       style: "currency",
       currency: "BRL",
     });
@@ -280,7 +286,7 @@ function Despesas() {
     }
   };
 
-  // Função para atualizar o estado finalizado para 1
+  // Função para atualizar o estado finalizado para 0
   const UpdateFinalizado0 = async (id) => {
     const id_EmpresaDb = parseInt(userInfo.id_EmpresaDb); // Alterado para userInfo.id_user
 
@@ -349,17 +355,14 @@ function Despesas() {
         <div className="scroll-despesas">
           <div className="Button_Cad">
             <button onClick={abrirModal}>
-              Adicionar
-              <FaPlus />
+              Adicionar <FaPlus />
             </button>
-            <button>
-              Editar
-              <FaPenToSquare />
+            <button onClick={handleEdit}>
+              Editar <FaPenToSquare />
             </button>
 
             <button onClick={exportToExcel}>
-              Exportar
-              <FaFileExport />
+              Exportar <FaFileExport />
             </button>
           </div>
 
@@ -374,6 +377,7 @@ function Despesas() {
               <h1>R$ {calcularTotalDespesasAtrasadas()}</h1>
             </div>
           </div>
+
           {/* Gráficos representativos */}
           <div className="gráficos">
             <div className="gráfico1">
@@ -385,14 +389,18 @@ function Despesas() {
                   cx="50%"
                   cy="50%"
                   outerRadius={80}
-                  fill="#02416D"
                   label={({ value }) => formatCurrency(value)} // Formata os valores no gráfico
                   className="pie1"
-                />
+                >
+                  {/* Aplicando cores diferentes para cada fatia */}
+                  {dataGrafico.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[entry.name]} />
+                  ))}
+                </Pie>
 
                 <Tooltip />
+                <Legend />
               </PieChart>
-              <h4 className="legenda_despesas1">Gráfico representativo</h4>
             </div>
             <div className="gráfico02">
               <BarChart
@@ -436,7 +444,7 @@ function Despesas() {
                   <tr key={despesa.id}>
                     <td>{despesa.Nome}</td>
                     <td>R$ {Number(despesa.Valor || 0).toFixed(2)}</td>
-                    <td>{despesa.DataExpiracao}</td>
+                    <td>{new Date(despesa.DataExpiracao).toLocaleDateString()}</td>
                     <td>
                       <button
                         className={`despesas_opc_btn ${
@@ -483,30 +491,33 @@ function Despesas() {
             >
               <div className="DivModalDespesas">
                 <div>
-                  <h1>Registrar Despesas</h1>
+                  <h1>{isEditMode ? "Editar Despesa" : "Registrar Despesas"}</h1>
                 </div>
-                <form>
+                <form onSubmit={handleSubmitDespesa}>
                   <input
                     type="number"
                     placeholder="Valor"
                     onChange={(e) => setValor(e.target.value)}
                     value={valor}
+                    required
                   />
                   <input
                     type="text"
                     placeholder="Nome"
                     onChange={(e) => setNome(e.target.value)}
                     value={nome}
+                    required
                   />
                   <input
                     type="date"
                     placeholder="Data de Expiração"
                     onChange={(e) => setDataExpiracao(e.target.value)}
                     value={dataExpiracao}
+                    required
                   />
                   <div>
                     <button type="submit" className="RegisterPr">
-                      Registrar
+                      {isEditMode ? "Atualizar" : "Registrar"}
                     </button>
                     <button
                       type="button"
