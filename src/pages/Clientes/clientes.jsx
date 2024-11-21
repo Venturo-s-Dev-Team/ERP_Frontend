@@ -23,10 +23,62 @@ function Clientes() {
   const [showModal, setShowModal] = useState(false);
   const [showModalClientes, setShowModalClientes] = useState(false);
   const [selectedClient, setSelectedClient] = useState(null); // Cliente selecionado para edição
-  const [isEditMode, setIsEditMode] = useState(false); // Determina se está no modo de edição
+  const [isEditMode, setIsEditMode] = useState(false); // Determina se está no modo de edição  
   const [formType, setFormType] = useState(""); // Para determinar qual formulário será exibido
   const [SelectedCliente, setSelectedCliente] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); // Estado para armazenar o termo de pesquisa
+
+  useEffect(() => {
+    verifyToken();
+  }, []);
+
+  useEffect(() => {
+    if (userInfo.id_EmpresaDb) {
+      fetchDados(userInfo.id_EmpresaDb);
+    }
+  }, [userInfo]);
+
+  const verifyToken = async () => {
+    try {
+      const response = await axios.get("/api/ServerTwo/verifyToken", {
+        withCredentials: true,
+      });
+      if (typeof response.data.token === "string") {
+        const decodedToken = jwtDecode(response.data.token);
+        setUserInfo(decodedToken);
+      } else {
+        console.error("Token não é uma string:", response.data.token);
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Token inválido", error);
+      navigate("/login");
+    }
+  };
+
+  const fetchDados = async (id) => {
+    try {
+      const response = await axios.get(`/api/ServerOne/tableCliente/${id}`, {
+        withCredentials: true,
+      });
+      if (response.status === 200) {
+        setClientes(response.data);
+      }
+    } catch (error) {
+      console.log("Não foi possível requerir as informações: ", error);
+    }
+  };
+
+  // Filtro dos produtos
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
+  };
+
+  const filteredclientes = Clientes.filter(
+    (cliente) =>
+      cliente.razao_social.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      String(cliente.id).toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleShow = () => setShowModal(true);
   const handleClose = () => {
@@ -56,7 +108,7 @@ function Clientes() {
       site: "",
       autorizados: "NÃO",
     });
-  };
+  };  
 
   const handleShowClientes = () => setShowModalClientes(true);
   const handleCloseClientes = () => setShowModalClientes(false);
@@ -64,6 +116,7 @@ function Clientes() {
   const [formData, setFormData] = useState({
     id_EmpresaDb: "",
     cpf_cnpj: "",
+    observacoes: "",
     razao_social: "",
     nome_fantasia: "",
     endereco: "",
@@ -85,15 +138,172 @@ function Clientes() {
     observacoes: "",
   });
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+
+    // Lógica para mostrar/esconder o campo de 'funcionário'
+    if (name === "autorizados") {
+      if (value === "SIM") {
+        setShowFuncionarioInput(true);
+      } else {
+        setShowFuncionarioInput(false);
+        setFormData((prevData) => ({
+          ...prevData,
+          funcionario: [""],
+        }));
+      }
+    }
+  };
+
+  const handleAutorizadoChange = (index, value) => {
+    const newFuncionarios = [...formData.funcionario];
+    newFuncionarios[index] = value;
+    setFormData((prevData) => ({
+      ...prevData,
+      funcionario: newFuncionarios,
+    }));
+  };
+
+  const addAutorizadoInput = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      funcionario: [...prevData.funcionario, ""],
+    }));
+  };
+
+  const removeAutorizadoInput = (index) => {
+    const newFuncionarios = formData.funcionario.filter((_, i) => i !== index);
+    setFormData((prevData) => ({
+      ...prevData,
+      funcionario: newFuncionarios,
+    }));
+  };
+
+  // Função para buscar o CEP na API ViaCEP
+  const buscarCep = async (cep) => {
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await response.json();
+
+      if (!data.erro) {
+        // Atualiza os campos com os valores retornados da API
+        setFormData({
+          ...formData,
+          logradouro: data.logradouro,
+          bairro: data.bairro,
+          cidade: data.localidade,
+          uf: data.uf,
+        });
+
+        console.log(response)
+      } else {
+        alert("CEP não encontrado.");
+      }
+    } catch (error) {
+      console.error("Erro ao buscar CEP:", error);
+      alert("Erro ao buscar o CEP.");
+    }
+  };
+
+  // Função para lidar com o evento de perder o foco (onBlur) no campo CEP
+  const handleCepBlur = (e) => {
+    const cep = e.target.value.replace(/\D/g, ""); // Remove qualquer caractere não numérico
+
+    if (cep.length === 8) {
+      // Chama a função de busca do CEP se o formato for válido
+      buscarCep(cep);
+      console.log(cep)
+    } else {
+      alert("Por favor, insira um CEP válido.");
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    // Concatenando os funcionários em uma string separada por vírgula, apenas se for CNPJ
+    const concatenatedFuncionarios = formType === "CNPJ" && Array.isArray(formData.funcionario)
+      ? formData.funcionario
+          .filter((func) => func.trim() !== "")
+          .join(", ")
+      : null;
+  
+    // Tratando campos vazios ou inválidos
+    const sanitizedFormData = {
+      ...formData,
+      ativo: formData.ativo || null,
+      autorizados: formData.autorizados.length > 0 ? formData.autorizados : null,
+      bairro: formData.bairro || null,
+      cep: formData.cep || null,
+      cidade: formData.cidade || null,
+      dia_para_faturamento: formData.dia_para_faturamento || null,
+      email: formData.email || null,
+      funcionario: concatenatedFuncionarios, // Pode ser string ou null
+      ie: formData.ie || null,
+      limite: formData.limite || null,
+      logradouro: formData.logradouro || null,
+      nome_fantasia: formData.nome_fantasia || null,
+      razao_social: formData.razao_social || null,
+      ramo_atividade: formData.ramo_atividade || null,
+      site: formData.site || null,
+      telefone: formData.telefone || null,
+      uf: formData.uf || null,
+    };
+  
+    if (isEditMode) {
+      // Lógica para editar o cliente
+      try {
+        const response = await axios.put(
+          `/api/ServerTwo/UpdateCliente/${selectedClient.id}`,
+          { ...sanitizedFormData, id_EmpresaDb: userInfo.id_EmpresaDb,
+            userId: userInfo.id_user,
+            userName: userInfo.Nome_user,  },
+          {
+            withCredentials: true,
+          }
+        );
+        if (response.status === 200) {
+          // Atualize a lista de clientes após a edição
+          fetchDados(userInfo.id_EmpresaDb);
+          alert("Cliente atualizado com sucesso!");
+          handleClose();
+        }
+      } catch (error) {
+        console.error("Erro ao atualizar o cliente:", error);
+        alert("Não foi possível atualizar o cliente.");
+      }
+    } else {
+      // Lógica para adicionar um novo cliente
+      try {
+        const response = await axios.post(
+          "/api/ServerTwo/registerCliente",
+          { ...sanitizedFormData, id_EmpresaDb: userInfo.id_EmpresaDb,
+            userId: userInfo.id_user,
+            userName: userInfo.Nome_user,
+           },
+          { withCredentials: true }
+        );
+        if (response.status === 201 || response.status === 200) { // Verifique se o backend retorna 201 ou 200
+          console.log("Cliente registrado com sucesso!");
+          alert("Cliente registrado com sucesso!");
+          handleClose(); // Fecha o modal após o sucesso
+        }
+        await fetchDados(userInfo.id_EmpresaDb); // Atualiza a lista de clientes
+      } catch (error) {
+        alert("Erro ao registrar cliente");
+        console.error("Erro ao registrar o cliente:", error);
+      }
+    }
+  };
+  
+
   const handleFormSelection = (type) => {
     setFormType(type); // Define se é CPF ou CNPJ
   };
-
-  const filteredclientes = Clientes.filter(
-    (cliente) =>
-      cliente.razao_social.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      String(cliente.id).toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   const SelecionandoCliente = (cliente) => {
     setSelectedCliente(cliente);
@@ -101,6 +311,24 @@ function Clientes() {
   };
 
   const handleEdit = () => {
+    if (!selectedClient) {
+      alert("Por favor, selecione um cliente para editar.");
+      return;
+    } else if (selectedClient.razao_social === "Consumidor") {
+      alert('Não é possível editar "Consumidor", selecione um cliente válido')
+    }
+  
+    const cpfCnpjDigits = selectedClient.cpf_cnpj.replace(/\D/g, ""); // Remove caracteres não numéricos
+  
+    if (cpfCnpjDigits.length === 11) {
+      setFormType("CPF");
+    } else if (cpfCnpjDigits.length === 14) {
+      setFormType("CNPJ");
+    } else {
+      alert("CPF/CNPJ inválido.");
+      return;
+    }
+  
     setFormData(selectedClient); // Preenche o formulário com os dados do cliente
     setIsEditMode(true); // Define o modo de edição
     setShowModal(true); // Abre o modal
@@ -146,6 +374,7 @@ function Clientes() {
             <input
               type="text"
               placeholder="Pesquisar clientes"
+              onChange={handleChange}
               value={searchTerm}
               style={{
                 backgroundColor: "white",
@@ -266,18 +495,18 @@ function Clientes() {
               show={showModal}
               onHide={handleClose}
             >
-              <form></form>
               <div className="DivModal2">
                 <h1>
                   {isEditMode
                     ? "Editar Cliente (CNPJ)"
                     : "Registrar Cliente (CNPJ)"}
                 </h1>
-                <form>
+                <form onSubmit={handleSubmit}>                  
                   <input
                     type="text"
                     name="razao_social"
                     placeholder="Razão Social"
+                    onChange={handleChange}
                     value={formData.razao_social}
                     required
                   />
@@ -285,6 +514,7 @@ function Clientes() {
                     type="text"
                     name="nome_fantasia"
                     placeholder="Nome Fantasia"
+                    onChange={handleChange}
                     value={formData.nome_fantasia}
                     required
                   />
@@ -293,6 +523,7 @@ function Clientes() {
                     type="text"
                     name="cpf_cnpj"
                     placeholder="CNPJ"
+                    onChange={handleChange}
                     value={formData.cpf_cnpj}
                     required
                   />
@@ -301,6 +532,7 @@ function Clientes() {
                     type="text"
                     name="ie"
                     placeholder="IE"
+                    onChange={handleChange}
                     value={formData.ie}
                     className="input-inscricao"
                     required
@@ -310,6 +542,7 @@ function Clientes() {
                     type="text"
                     name="cep"
                     placeholder="CEP"
+                    onChange={handleChange}
                     value={formData.cep}
                     required
                   />
@@ -317,6 +550,7 @@ function Clientes() {
                     type="text"
                     name="logradouro"
                     placeholder="Logradouro"
+                    onChange={handleChange}
                     value={formData.logradouro}
                     required
                   />
@@ -324,6 +558,7 @@ function Clientes() {
                     type="text"
                     name="bairro"
                     placeholder="Bairro"
+                    onChange={handleChange}
                     value={formData.bairro}
                     required
                   />
@@ -331,6 +566,7 @@ function Clientes() {
                     type="text"
                     name="cidade"
                     placeholder="Cidade"
+                    onChange={handleChange}
                     value={formData.cidade}
                     required
                   />
@@ -339,6 +575,7 @@ function Clientes() {
                     type="text"
                     name="uf"
                     placeholder="UF"
+                    onChange={handleChange}
                     value={formData.uf}
                     required
                   />
@@ -346,6 +583,7 @@ function Clientes() {
                     type="text"
                     name="endereco"
                     placeholder="Endereço"
+                    onChange={handleChange}
                     value={formData.endereco}
                     required
                   />
@@ -353,6 +591,7 @@ function Clientes() {
                     type="email"
                     name="email"
                     placeholder="E-mail"
+                    onChange={handleChange}
                     value={formData.email}
                     required
                   />
@@ -361,6 +600,7 @@ function Clientes() {
                     name="telefone"
                     placeholder="Telefone"
                     mask="(99)99999-9999"
+                    onChange={handleChange}
                     value={formData.telefone}
                     required
                   />
@@ -369,36 +609,42 @@ function Clientes() {
                     name="celular"
                     placeholder="Celular"
                     mask="(99)99999-9999"
+                    onChange={handleChange}
                     value={formData.celular}
                   />
                   <input
                     type="text"
                     name="site"
                     placeholder="Site"
+                    onChange={handleChange}
                     value={formData.site}
                   />
                   <input
                     type="text"
                     name="limite"
                     placeholder="Limite de compra (R$)"
+                    onChange={handleChange}
                     value={formData.limite}
                     required
                   />
                   <InputMask
                     type="date"
                     name="faturamento"
+                    onChange={handleChange}
                     value={formData.dia_para_faturamento}
-                  />
+                    />
                   <input
                     type="text"
                     name="ramo_atividade"
                     placeholder="Ramo de Atividade"
+                    onChange={handleChange}
                     value={formData.ramo_atividade}
                     required
                   />
                   <select
                     className="select-clientes"
                     name="ativo"
+                    onChange={handleChange}
                     value={formData.ativo}
                   >
                     <option value="SIM">Ativo</option>
@@ -407,6 +653,7 @@ function Clientes() {
                   <select
                     className="select-clientes2"
                     name="autorizados"
+                    onChange={handleChange}
                     value={formData.autorizados}
                   >
                     <option value="NÃO">Não Autorizados</option>
@@ -415,6 +662,7 @@ function Clientes() {
 
                   <textarea
                     name="observacoes"
+                    onChange={handleChange}
                     value={formData.observacoes}
                     className="observacoes"
                     placeholder="Observações"
@@ -487,11 +735,12 @@ function Clientes() {
                     ? "Editar Cliente (CPF)"
                     : "Registrar Cliente (CPF)"}
                 </h1>
-                <form>
+                <form onSubmit={handleSubmit}>
                   <input
                     type="text"
                     name="razao_social"
                     placeholder="Razão Social"
+                    onChange={handleChange}
                     value={formData.razao_social}
                     required
                   />
@@ -500,6 +749,7 @@ function Clientes() {
                     type="text"
                     name="cpf_cnpj"
                     placeholder="CPF"
+                    onChange={handleChange}
                     value={formData.cpf_cnpj}
                     required
                   />
@@ -507,6 +757,7 @@ function Clientes() {
                     type="email"
                     name="email"
                     placeholder="E-mail"
+                    onChange={handleChange}
                     value={formData.email}
                     required
                   />
@@ -515,6 +766,7 @@ function Clientes() {
                     type="text"
                     name="cep"
                     placeholder="CEP"
+                    onChange={handleChange}
                     value={formData.cep}
                     required
                   />
@@ -522,6 +774,7 @@ function Clientes() {
                     type="text"
                     name="logradouro"
                     placeholder="Logradouro"
+                    onChange={handleChange}
                     value={formData.logradouro}
                     required
                   />
@@ -529,6 +782,7 @@ function Clientes() {
                     type="text"
                     name="bairro"
                     placeholder="Bairro"
+                    onChange={handleChange}
                     value={formData.bairro}
                     required
                   />
@@ -536,6 +790,7 @@ function Clientes() {
                     type="text"
                     name="cidade"
                     placeholder="Cidade"
+                    onChange={handleChange}
                     value={formData.cidade}
                     required
                   />
@@ -544,6 +799,7 @@ function Clientes() {
                     type="text"
                     name="uf"
                     placeholder="UF"
+                    onChange={handleChange}
                     value={formData.uf}
                     required
                   />
@@ -551,6 +807,7 @@ function Clientes() {
                     type="text"
                     name="endereco"
                     placeholder="Endereço"
+                    onChange={handleChange}
                     value={formData.endereco}
                     required
                   />
@@ -559,6 +816,7 @@ function Clientes() {
                     name="telefone"
                     placeholder="Telefone"
                     mask="(99)99999-9999"
+                    onChange={handleChange}
                     value={formData.telefone}
                     required
                   />
@@ -567,23 +825,27 @@ function Clientes() {
                     name="celular"
                     placeholder="Celular"
                     mask="(99)99999-9999"
+                    onChange={handleChange}
                     value={formData.celular}
                   />
                   <input
                     type="text"
                     name="limite"
                     placeholder="Limite"
+                    onChange={handleChange}
                     value={formData.limite}
                     required
                   />
                   <InputMask
                     type="date"
                     name="faturamento"
+                    onChange={handleChange}
                     value={formData.dia_para_faturamento}
                   />
                   <select
                     className="select-clientes"
                     name="ativo"
+                    onChange={handleChange}
                     value={formData.ativo}
                   >
                     <option value="SIM">Ativo</option>
@@ -592,6 +854,7 @@ function Clientes() {
                   <div>
                     <textarea
                       name="observacoes"
+                      onChange={handleChange}
                       value={formData.observacoes}
                       className="observacoes"
                       placeholder="Observações"

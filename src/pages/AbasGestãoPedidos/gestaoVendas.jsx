@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Modal } from "react-bootstrap";
 import {
   FaPenToSquare,
@@ -7,8 +7,11 @@ import {
   FaFileExport,
   FaTrash,
 } from "react-icons/fa6";
-import { BsSearch } from "react-icons/bs";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import * as XLSX from "xlsx";
+import { BsSearch } from "react-icons/bs";
 import "./gestaoVendas.css";
 import SideBarPage from "../../components/Sidebar/SideBarPage";
 
@@ -39,6 +42,179 @@ const GestaoVendas = () => {
   };
   const handleCloseInfo = () => setShowModalInfo(false);
 
+  // Função para verificar o token
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const response = await axios.get("/api/ServerTwo/verifyToken", {
+          withCredentials: true,
+        });
+        if (typeof response.data.token === "string") {
+          const decodedToken = jwtDecode(response.data.token);
+          setUserInfo(decodedToken);
+        } else {
+          console.error("Token não é uma string:", response.data.token);
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Token inválido", error);
+        navigate("/login");
+      }
+    };
+
+    verifyToken();
+  }, [navigate]);
+
+  // Função para carregar vendas do banco de dados
+  useEffect(() => {
+    if (userInfo && userInfo.id_EmpresaDb) {
+      fetchVendas(userInfo.id_EmpresaDb);
+      fetchDadosClientes(userInfo.id_EmpresaDb);
+    }
+  }, [userInfo]);
+
+  const fetchDadosClientes = async (id) => {
+    try {
+      const response = await axios.get(`/api/ServerOne/tableCliente/${id}`, {
+        withCredentials: true,
+      });
+      if (response.status === 200) {
+        setClientes(response.data);
+      }
+    } catch (error) {
+      console.log("Não foi possível requerir as informações: ", error);
+    }
+  };
+
+  const fetchVendas = async (id) => {
+    try {
+      const response = await axios.get(`/api/ServerOne/tableVenda/${id}`, {
+        withCredentials: true,
+      });
+      setVendas(response.data.InfoTabela);
+    } catch (error) {
+      console.error("Erro ao carregar vendas", error);
+    }
+  };
+
+    // Filtro dos produtos
+    const handleSearchChange = (e) => {
+      setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
+    };
+  
+    const filteredvenda = vendas.filter(
+      (venda) =>
+        venda.nome_cliente.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        String(venda.id_pedido).toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+  // Função para lidar com mudanças nos campos de input
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNewVenda({ ...newVenda, [name]: value });
+  };
+
+  // Função para lidar com mudanças nos produtos
+  const handleProductChange = (index, value) => {
+    const produtos = [...newVenda.produtos];
+    produtos[index] = value; // Atualiza o produto específico
+    setNewVenda({ ...newVenda, produtos });
+  };
+
+  // Função para adicionar um novo produto
+  const addProductInput = () => {
+    setNewVenda({ ...newVenda, produtos: [...newVenda.produtos, ""] });
+  };
+
+  // Função para remover um produto
+  const removeProductInput = (index) => {
+    const produtos = newVenda.produtos.filter((_, i) => i !== index);
+    setNewVenda({ ...newVenda, produtos });
+  };
+
+  // Função para registrar uma nova venda
+  const handleRegisterVenda = async (e) => {
+    e.preventDefault();
+    const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
+    try {
+      await axios.post(
+        `/api/ServerTwo/tableVenda/${id}`,
+        {
+          ...newVenda,
+          id_EmpresaDb: id,
+          userId: userInfo.id_user,
+          userName: userInfo.Nome_user,
+        },
+        { withCredentials: true }
+      );
+
+      fetchVendas(id); // Atualiza a lista de vendas
+      handleCloseGestao();
+    } catch (error) {
+      console.error("Erro ao registrar venda:", error);
+      alert("Erro ao registrar venda.");
+    }
+  };
+
+  // PARA EDITAR
+  const handleShowEdit = (venda) => {
+    if (venda.Status === ("CANCELADA" || "VENDA CONCLUÍDA")) {
+      alert("Esta venda não está em aberto para edições")
+    } else if (venda) {
+      setSelectedVenda(venda);
+      navigate("/abasUpdate", {
+        state: {
+          VendaForUpdate: venda, // Verifique se 'venda' não está nulo
+        },
+      });
+    } else {
+      console.error("Nenhuma venda selecionada.");
+    }
+  };
+
+// Função para cancelar uma venda
+const CancelarVenda = async (venda) => {
+
+  if(venda.Status != "EM ABERTO") {
+    alert('Este pedido não pode ser cancelado')
+  } else {
+  const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
+
+  console.log("Enviando CancelarVenda com dados:", {
+    id_pedido: venda.id_pedido,
+    produto: venda.produto,
+  });
+
+  try {
+    await axios.put(
+      `/api/ServerTwo/CancelarVenda/${id}`,
+      {
+        id_pedido: venda.id_pedido,
+        produto: venda.produto, // Enviar diretamente como array
+        userId: userInfo.id_user,
+        userName: userInfo.Nome_user,
+      },
+      { withCredentials: true }
+    );
+
+    fetchVendas(id); // Atualiza a lista de vendas
+    handleCloseGestao();
+    alert("Pedido cancelado com sucesso!");
+  } catch (error) {
+    console.error("Erro ao cancelar venda:", error);
+    alert("Erro ao cancelar venda.");
+  }}
+};
+
+
+  // Função para exportar dados para Excel
+  const exportToExcel = () => {
+    const ws = XLSX.utils.json_to_sheet(vendas); // Converte os dados de vendas em uma planilha
+    const wb = XLSX.utils.book_new(); // Cria um novo livro de trabalho
+    XLSX.utils.book_append_sheet(wb, ws, "venda"); // Adiciona a planilha ao livro
+    XLSX.writeFile(wb, `venda_${new Date().toLocaleDateString()}.xlsx`);
+  };
+  
   return (
     <SideBarPage>
       <main>
@@ -53,12 +229,12 @@ const GestaoVendas = () => {
               <FaPlus />
             </button>
             <button
-              className="Button-Menu"
-              onClick={() => handleShowEdit(selectedVenda)}
-            >
-              Editar
-              <FaPenToSquare />
-            </button>
+            className="Button-Menu"
+            onClick={() => handleShowEdit(selectedVenda)}
+          >
+            Editar
+            <FaPenToSquare />
+          </button>
             <button
               className="Button-Menu"
               onClick={() => CancelarVenda(selectedVenda)}
@@ -87,8 +263,9 @@ const GestaoVendas = () => {
             />
             <input
               type="text"
-              placeholder="Pesquisar clientes"
+              placeholder="Pesquisar pedidos..."
               value={searchTerm}
+              onChange={handleSearchChange}
               style={{
                 backgroundColor: "white",
                 color: "black",
@@ -116,33 +293,33 @@ const GestaoVendas = () => {
                 </tr>
               </thead>
               <tbody>
-                {(venda) => (
-                  <tr key={venda.id_pedido}>
-                    <td>{venda.id_pedido}</td>
-                    <td>{venda.nome_cliente}</td>
-                    <td>{venda.total}</td>
-                    <td>{venda.Status}</td>
-                    <td>
-                      <button
-                        className="btn-ver-mais"
-                        onClick={() => handleShowInfo(venda)}
-                      >
-                        Ver Mais
-                      </button>
-                    </td>
-                    <td>
-                      <label className="custom-radio">
-                        <input
-                          type="radio"
-                          name="selectedProduct"
-                          value={venda.id}
-                          onChange={() => setSelectedVenda(venda)}
-                        />
-                        <span className="radio-checkmark"></span>
-                      </label>
-                    </td>
-                  </tr>
-                )}
+              {filteredvenda.map((venda) => (
+              <tr key={venda.id_pedido}>
+                <td>{venda.id_pedido}</td>
+                <td>{venda.nome_cliente}</td>
+                <td>{venda.total}</td>
+                <td>{venda.Status}</td>
+                <td>
+                  <button
+                    className="btn-ver-mais"
+                    onClick={() => handleShowInfo(venda)}
+                  >
+                    Ver Mais
+                  </button>
+                </td>
+                <td>
+                    <label className="custom-radio">
+                      <input
+                        type="radio"
+                        name="selectedProduct"
+                        value={venda.id}
+                        onChange={() => setSelectedVenda(venda)}
+                      />
+                      <span className="radio-checkmark"></span>
+                    </label>
+                  </td>
+              </tr>
+            ))}
               </tbody>
             </table>
           </div>

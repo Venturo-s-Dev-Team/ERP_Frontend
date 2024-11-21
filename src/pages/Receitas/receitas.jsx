@@ -3,6 +3,7 @@ import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
 import { Modal } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { BsSearch } from "react-icons/bs";
 import { jwtDecode } from "jwt-decode";
 import { FaFileExport } from "react-icons/fa";
 import * as XLSX from "xlsx";
@@ -14,13 +15,94 @@ function Receitas() {
   const [userInfo, setUserInfo] = useState({});
   const [receitas, setReceitas] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false); // Determina se está no modo de edição  
+  const [SelectedReceita, setSelectedReceita] = useState("");
+  const [searchTerm, setSearchTerm] = useState(""); // Estado para armazenar o termo de pesquisa
   const [newReceita, setNewReceita] = useState({
-    Nome: "",
-    Valor: "",
+    Nome: SelectedReceita.Nome || '',
+    Valor: SelectedReceita.Valor || '',
   });
 
-  const handleShow = () => setShowModal(true);
+    // Modal control
+    const handleShow = () => {
+      setShowModal(true);
+    };
   const handleClose = () => setShowModal(false);
+
+  // Função para verificar o token
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const response = await axios.get('/api/ServerTwo/verifyToken', { withCredentials: true });
+        if (typeof response.data.token === 'string') {
+          const decodedToken = jwtDecode(response.data.token);
+          setUserInfo(decodedToken);
+        } else {
+          console.error('Token não é uma string:', response.data.token);
+          navigate('/');
+        }
+      } catch (error) {
+        console.error('Token inválido', error);
+        navigate('/login');
+      }
+    };
+    
+    verifyToken();
+  }, [navigate]);
+
+  // Função para carregar receitas do banco de dados
+  useEffect(() => {
+    if (userInfo && userInfo.id_EmpresaDb) {
+      fetchReceitas(userInfo.id_EmpresaDb);
+    }
+  }, [userInfo]);
+
+  const fetchReceitas = async (id) => {
+    try {
+      const response = await axios.get(`/api/ServerOne/tablereceitas/${id}`, { withCredentials: true });
+      setReceitas(response.data.InfoTabela);
+    } catch (error) {
+      console.error("Erro ao carregar receitas", error);
+    }
+  };
+
+  // Função para lidar com mudanças nos campos de input
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNewReceita({ ...newReceita, [name]: value });
+  };
+
+  // Função para registrar uma nova receita
+  const handleRegisterReceita = async (e) => {
+    e.preventDefault();
+    const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
+    try {
+      const response = await axios.post(`/api/ServerTwo/registrarReceitas`, 
+      {...newReceita, 
+        id_EmpresaDb: id, 
+        userId: userInfo.id_user,
+        userName: userInfo.Nome_user}, 
+        {
+        withCredentials: true,
+      });
+
+      await fetchReceitas(id)
+      handleClose()
+    } catch (error) {
+      console.error("Erro ao registrar receita:", error);
+      alert('Erro ao registrar receita.');
+    }
+  };
+
+  const handleEdit = () => {
+    if (!SelectedReceita) {
+      alert("Por favor, selecione uma despesa para editar.");
+      return;
+    }
+  
+    setIsEditMode(true); // Define o modo de edição
+    setShowModal(true); // Abre o modal
+  };
 
   // Função para exportar dados para Excel
   const exportToExcel = () => {
@@ -33,10 +115,19 @@ function Receitas() {
   };
 
   // Função para calcular o total de receitas
-  const totalReceitas = receitas.reduce(
-    (acc, receita) => acc + Number(receita.Valor),
-    0
-  );
+  const totalReceitas = receitas.reduce((acc, receita) => acc + Number(receita.Valor), 0);
+
+    // Filtro das receitas
+    const handleSearchChange = (e) => {
+      setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
+    };
+  
+    const filteredReceita = receitas.filter(
+      (Receita) =>
+        Receita.Nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        Receita.Valor.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        String(Receita.id).toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
   return (
     <SideBarPage>
@@ -51,11 +142,10 @@ function Receitas() {
               Adicionar
               <FaPlus />
             </button>
-            <button>
-              Editar
-              <FaPenToSquare />
-            </button>
-
+            <button onClick={handleEdit} disabled={!SelectedReceita}>
+          Editar
+          <FaPenToSquare />
+        </button>
             <button onClick={exportToExcel}>
               Exportar
               <FaFileExport />
@@ -69,6 +159,39 @@ function Receitas() {
             </div>
           </div>
 
+           {/* Input de pesquisa */}
+           <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginTop: "10px",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+                width: "350px",
+              }}
+            >
+              <BsSearch
+                style={{ marginLeft: "10px", color: "#888", fontSize: "18px" }}
+              />
+              <input
+                type="text"
+                placeholder="Pesquisar produtos"
+                value={searchTerm}
+                onChange={handleSearchChange}
+                style={{
+                  backgroundColor: "white",
+                  color: "black",
+                  border: "1px solid #fff",
+                  padding: "12px",
+                  fontSize: "16px",
+                  width: "300px",
+                  outline: "none",
+                  transition: "border-color 0.3s",
+                  paddingLeft: "10px",
+                }}
+              />
+            </div>
+
           <div className="Receitas_List">
             <table>
               <caption>Registro de Receita</caption>
@@ -76,13 +199,25 @@ function Receitas() {
                 <tr>
                   <th>Nome</th>
                   <th>Valor por mês</th>
+                  <th>Selecionar</th>
                 </tr>
               </thead>
               <tbody>
-                {receitas.map((receita) => (
+                {filteredReceita.map((receita) => (
                   <tr key={receita.id}>
                     <td>{receita.Nome}</td>
                     <td>R$ {Number(receita.Valor).toFixed(2)}</td>
+                    <td>
+                    <label className="custom-radio">
+                      <input
+                        type="radio"
+                        name="selectedProduct"
+                        value={receita.id}
+                        onChange={() => setSelectedReceita(receita)}
+                      />
+                      <span className="radio-checkmark"></span>
+                    </label>
+                  </td>
                   </tr>
                 ))}
               </tbody>
@@ -112,19 +247,21 @@ function Receitas() {
                 <h1>Registrar Receita</h1>
               </div>
 
-              <form>
+              <form onSubmit={handleRegisterReceita} >
                 <input
                   type="text"
                   name="Nome"
                   placeholder="Nome"
                   value={newReceita.Nome}
+                  onChange={handleChange}
                   required
                 />
                 <input
                   type="number"
                   name="Valor"
-                  placeholder="Valor por Mês"
+                  placeholder="Valor"
                   value={newReceita.Valor}
+                  onChange={handleChange}
                   required
                 />
                 <div>
