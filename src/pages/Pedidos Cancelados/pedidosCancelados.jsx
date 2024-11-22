@@ -32,6 +32,58 @@ const PedidosCancelados = () => {
   };
   const handleCloseInfo = () => setShowModalInfo(false);
 
+  // Função para verificar o token
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const response = await axios.get("/api/ServerTwo/verifyToken", {
+          withCredentials: true,
+        });
+        if (typeof response.data.token === "string") {
+          const decodedToken = jwtDecode(response.data.token);
+          setUserInfo(decodedToken);
+        } else {
+          console.error("Token não é uma string:", response.data.token);
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Token inválido", error);
+        navigate("/login");
+      }
+    };
+
+    verifyToken();
+  }, [navigate]);
+
+  // Função para carregar vendas do banco de dados
+  useEffect(() => {
+    if (userInfo && userInfo.id_EmpresaDb) {
+      fetchVendas(userInfo.id_EmpresaDb);
+    }
+  }, [userInfo]);
+
+  const fetchVendas = async (id) => {
+    try {
+      const response = await axios.get(`/api/ServerOne/PedidosCancelados/${id}`, {
+        withCredentials: true,
+      });
+      setVendas(response.data.InfoTabela);
+    } catch (error) {
+      console.error("Erro ao carregar vendas", error);
+    }
+  };
+
+    // Filtro dos produtos
+    const handleSearchChange = (e) => {
+      setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
+    };
+  
+    const filteredvenda = vendas.filter(
+      (venda) =>
+        venda.nome_cliente.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        String(venda.id_pedido).toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
   // Função para exportar dados para Excel
   const exportToExcel = () => {
     const ws = XLSX.utils.json_to_sheet(vendas); // Converte os dados de vendas em uma planilha
@@ -72,6 +124,7 @@ const PedidosCancelados = () => {
               type="text"
               placeholder="Pesquisar clientes"
               value={searchTerm}
+              onChange={handleSearchChange}
               style={{
                 backgroundColor: "white",
                 color: "black",
@@ -99,23 +152,23 @@ const PedidosCancelados = () => {
                 </tr>
               </thead>
               <tbody>
-                {(venda) => (
-                  <tr key={venda.id_pedido}>
-                    <td>{venda.id_pedido}</td>
-                    <td>{venda.nome_cliente}</td>
-                    <td>{venda.total}</td>
-                    <td>{venda.Status}</td>
-                    <td>
-                      <button
-                        className="btn-ver-mais"
-                        onClick={() => handleShowInfo(venda)}
-                      >
-                        Ver Mais
-                      </button>
-                    </td>
-                  </tr>
-                )}
-              </tbody>
+            {filteredvenda.map((venda) => (
+              <tr key={venda.id_pedido}>
+                <td>{venda.id_pedido}</td>
+                <td>{venda.nome_cliente}</td>
+                <td>{venda.total}</td>
+                <td>{venda.Status}</td>
+                <td>
+                  <button
+                    className="btn-ver-mais"
+                    onClick={() => handleShowInfo(venda)}
+                  >
+                    Ver Mais
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
             </table>
           </div>
 

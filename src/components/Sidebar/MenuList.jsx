@@ -163,8 +163,9 @@ const MenuList = ({ darkTheme }) => {
           key: "pedidos_cancelados",
           label: <Link to="/pedidoscancelados"> Pedidos Cancelado </Link>,
         },
-        { key: "historico_de_vendas", label: <Link>Histórico de Vendas</Link> },
-        { key: "caixa", label: <Link to="/caixa_Modal"> Caixa </Link> },
+        { key: "historico_de_vendas", 
+        label: <Link to="/histVendas" >Histórico de Vendas</Link> },
+        { key: "caixa", label: <Link to="/caixa"> Caixa </Link> },
       ],
     },
     {

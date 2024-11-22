@@ -39,6 +39,9 @@ import Caixa_Modal from "../pages/Caixa/caixa_Modal";
 import Caixa_Pagamentos from "../pages/Caixa/caixa_Pagamentos";
 import Logout from "../components/Logout";
 import LogsEmpresa from "../pages/LogsSystem/LogsEmpresa";
+import AbasForUpdate from "../pages/AbasGestãoPedidos/AbasUpdate";
+import Hist_vendas from "../pages/Vendas/vendas";
+import Caixa from "../pages/Caixa/Caixa";
 
 function AppRoutes() {
   return (
@@ -69,8 +72,11 @@ function AppRoutes() {
         <Route path="/razao" element={<Razao />} />
         <Route path="/clientes" element={<Clientes />} />
         <Route path="/gestaoVendas" element={<GestaoVendas />} />
+        <Route path="/histVendas" element={<Hist_vendas />} />
         <Route path="/abas" element={<Abas />} />
+        <Route path="/abasUpdate" element={<AbasForUpdate />} />
         <Route path="/pedidoscancelados" element={<PedidosCancelados />} />
+        <Route path="/caixa" element={<Caixa />} />
         <Route path="/caixa_Modal" element={<Caixa_Modal />} />
         <Route path="/caixa_Pagamentos" element={<Caixa_Pagamentos />} />
         <Route path="/logout" element={<Logout />} />

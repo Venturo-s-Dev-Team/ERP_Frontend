@@ -53,6 +53,24 @@ const Perfil = () => {
       ) {
         return (
           <div className="perfil-body">
+              {/* Dados da Empresa */}
+              <details>
+                        <summary className="Summary-ContainerInt">
+                          Dados da Empresa
+                        </summary>
+                        <p className="Dados-ContainerInt">
+                          <strong> ID: </strong> {userInfo.id_user}{" "}
+                        </p>
+                        <p className="Dados-ContainerInt">
+                          <strong> Gestor: </strong> {userInfo.id_user}{" "}
+                        </p>
+                        <p className="Dados-ContainerInt">
+                          <strong> CNPJ: </strong> {userInfo.id_user}
+                        </p>
+                        <p className="Dados-ContainerInt">
+                          <strong> Email: </strong> {userInfo.id_user}
+                        </p>
+                      </details>
             <footer className="perfil-footer">
               <details className="perfil-details">
                 <summary className="perfil-summary">
@@ -61,24 +79,26 @@ const Perfil = () => {
                   ) : (
                     <img
                       src={`/api/ServerOne/uploads/Logo/${userInfo.id_EmpresaDb}.png`}
-                      style={{ width: 100, height: 100 }}
-                      alt=""
+                      className="LogoEmpresa-Img-DBAdmin"                    
                     />
                   )}
                 </summary>
+                <h2 className="Perfil-Empresa">Dados do Perfil</h2>
+                <div className="Perfil-Dados">
                 <p className="perfil-id">ID: {userInfo.id_user}</p>
                 <p className="perfil-nome">Nome: {userInfo.Nome_user}</p>
                 <p className="perfil-email">E-mail: {userInfo.Email}</p>
-                <p>{userInfo.TypeUser}</p>
+                <p> Função: {userInfo.TypeUser}</p>
+                </div>
               </details>
             </footer>
           </div>
         );
       } else if (userInfo.RazaoSocial) {
         return (
-          <div className="perfil-body-rs">
-            <footer className="perfil-footer-rs">
-              <summary className="perfil-summary-rs">
+          <div>
+            <footer >
+              <summary>
                 {!userInfo.Logo ? (
                   <div>Perfil</div>
                 ) : (
@@ -89,7 +109,7 @@ const Perfil = () => {
                   />
                 )}
               </summary>
-              <div className="perfil-letras-rs">
+              <div >
                 <h2 className="perfil-titulo-rs">Dados do Perfil</h2>
                 <p className="perfil-id-rs">ID: {userInfo.id_user}</p>
                 <p className="perfil-nome-rs">Nome: {userInfo.Nome_user}</p>

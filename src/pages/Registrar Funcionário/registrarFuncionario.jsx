@@ -160,6 +160,7 @@ function CadastroFuncionario() {
                 <tr>
                   <th>Nome</th>
                   <th>E-mail</th>
+                  <th>E-mail pessoal</th>
                   <th>Setor</th>
                 </tr>
               </thead>
@@ -168,6 +169,7 @@ function CadastroFuncionario() {
                   <tr key={funcionario.id}>
                     <td>{funcionario.Nome}</td>
                     <td>{funcionario.email}</td>
+                    <td>{funcionario.emailPessoal}</td>
                     <td>{funcionario.TypeUser}</td>
                   </tr>
                 ))}

@@ -1,0 +1,46 @@
+/* Pedidos em aberto */
+
+.main-container {
+    height: 100dvh;
+    width: 100%;
+    padding: 20px 20px;
+    background-color: #ffffff;
+    }
+    
+.main-title {
+    display: flex;
+    justify-content: space-between;
+    color: #000000;
+    }
+
+.Gestao-List {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    padding: 13px;
+    margin-top: 10px;
+    }
+    
+.btn-abrir{
+    height: 40px;
+    color: white;
+    font-size: 15px;
+    font-weight: 500;
+    width: 160px;
+    background-color: #02416D;
+    border-radius: 5px;
+    border-color: #02416D;
+    box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+  }
+  
+  .btn-abrir:hover{
+    opacity: 0.8;
+    background-color: #02406da7;
+  }
+  
+  .titulo-temporario{
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin-top: 100px;
+  }  

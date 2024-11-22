@@ -413,6 +413,7 @@ function Fornecedores() {
     onChange={(e) =>
       setFormData({ ...formData, cep: e.target.value })
     }
+    onBlur={handleCepBlur}
     required
   />
 

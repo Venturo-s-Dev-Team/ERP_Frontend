@@ -12,7 +12,7 @@ function PerfilAdmin() {
   return (
     <SideBarPage>
       <main>
-        <h1 className="Titulo-PerfAdmin">Perfil</h1>
+        <h1 className="Titulo-PerfAdmin">YUIYIUI</h1>
 
         <div className="Body-PerfAdmin">
           <p>ID: {user.id}</p>

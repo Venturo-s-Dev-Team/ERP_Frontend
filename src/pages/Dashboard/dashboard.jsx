@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./dashboard.css";
 import "../../App.css";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import {
@@ -28,59 +27,17 @@ import SideBarPage from "../../components/Sidebar/SideBarPage";
 function Home() {
   const navigate = useNavigate();
 
-  const InfoData = [
-    {
-      name: "Page A",
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
-    },
-    {
-      name: "Page B",
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
-    },
-    {
-      name: "Page C",
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
-    },
-    {
-      name: "Page D",
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
-    },
-    {
-      name: "Page E",
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
-    },
-    {
-      name: "Page F",
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
-    },
-    {
-      name: "Page G",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
-    },
-  ];
-
-  // Token e Logout
+  // Dados do token e estados de usuário
   const [userInfo, setUserInfo] = useState("");
-  //Informações das tabelas
   const [SelectedTotalEstoque, setSelectedTotalEstoque] = useState(0);
   const [SelectedTotalFuncionario, setSelectedTotalFuncionario] = useState(0);
   const [SelectedTotalVenda, setSelectedTotalVenda] = useState(0);
   const [SelectedTotalLogs, setSelectedTotalLogs] = useState(0);
 
+  // Estado para o fluxo de caixa
+  const [fluxoCaixa, setFluxoCaixa] = useState([]);
+
+  // Funções de Fetch para Estoque, Funcionários, Vendas, Logs
   const fetchDadosEstoque = async (id) => {
     try {
       const response = await axios.get(`/api/ServerOne/tableEstoque/${id}`, {
@@ -129,9 +86,7 @@ function Home() {
     try {
       const response = await axios.get(
         `/api/ServerTwo/EmpresaHistoricLogs/${id}`,
-        {
-          withCredentials: true,
-        }
+        { withCredentials: true }
       );
       setSelectedTotalLogs(response.data.N_Registros);
     } catch (err) {
@@ -140,6 +95,63 @@ function Home() {
     }
   };
 
+  // Função para buscar receitas, despesas e calcular fluxo de caixa
+  const fetchDadosFinanceiros = async (id) => {
+    try {
+      const [receitasResponse, despesasResponse] = await Promise.all([
+        axios.get(`/api/ServerOne/tablereceitas/${id}`, { withCredentials: true }),
+        axios.get(`/api/ServerOne/tabledespesas/${id}`, { withCredentials: true }),
+      ]);
+
+      const receitas = receitasResponse.data.InfoTabela || [];
+      const despesas = despesasResponse.data.InfoTabela || [];
+
+      const fluxo = calcularFluxoCaixa(receitas, despesas);
+      setFluxoCaixa(fluxo);
+    } catch (error) {
+      console.error("Erro ao buscar dados financeiros:", error);
+      setFluxoCaixa([]);
+    }
+  };
+
+  const calcularFluxoCaixa = (receitas, despesas) => {
+    console.log("Receitas", receitas, "Despesas", despesas);
+    const meses = [
+      "Janeiro", "Fevereiro", "Março", "Abril",
+      "Maio", "Junho", "Julho", "Agosto",
+      "Setembro", "Outubro", "Novembro", "Dezembro"
+    ];
+  
+    // Processa as receitas por mês
+    const receitasPorMes = receitas.reduce((acc, item) => {
+      if (item.DataExpiracao) {
+        const mes = new Date(item.DataExpiracao).getMonth();
+        const valor = parseFloat(item.Valor) || 0;
+        acc[mes] = (acc[mes] || 0) + valor;
+      }
+      return acc;
+    }, {});
+  
+    // Processa as despesas por mês
+    const despesasPorMes = despesas.reduce((acc, item) => {
+      if (item.DataExpiracao) {
+        const mes = new Date(item.DataExpiracao).getMonth();
+        const valor = parseFloat(item.Valor) || 0;
+        acc[mes] = (acc[mes] || 0) + valor;
+      }
+      return acc;
+    }, {});
+  
+    // Monta o array de fluxo de caixa por mês
+    return meses.map((mes, index) => ({
+      name: mes,
+      receitas: receitasPorMes[index] || 0,
+      despesas: despesasPorMes[index] || 0,
+      fluxoCaixa: (receitasPorMes[index] || 0) - (despesasPorMes[index] || 0),
+    }));
+  };
+  
+  // Verificação de token
   useEffect(() => {
     const verifyToken = async () => {
       try {
@@ -165,6 +177,7 @@ function Home() {
 
   useEffect(() => {
     if (userInfo.id_EmpresaDb) {
+      fetchDadosFinanceiros(userInfo.id_EmpresaDb);
       fetchDadosEstoque(userInfo.id_EmpresaDb);
       fetchDadosFuncionarios(userInfo.id_EmpresaDb);
       fetchDadosVendas(userInfo.id_EmpresaDb);
@@ -194,7 +207,6 @@ function Home() {
   return (
     <SideBarPage>
       <main>
-        {" "}
         <div>
           <div className="main-title">
             <h3>DASHBOARD - BEM VINDO {userInfo.Nome_user}</h3>
@@ -232,49 +244,33 @@ function Home() {
           </div>
 
           <div className="charts">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                width={500}
-                height={300}
-                data={InfoData}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
 
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="pv" fill="#8884d8" />
-                <Bar dataKey="uv" fill="#82ca9d" />
-              </BarChart>
-            </ResponsiveContainer>
-
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart
-                width={500}
-                height={300}
-                data={InfoData}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={fluxoCaixa}>
                 <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
                 <Tooltip />
                 <Legend />
                 <Line
                   type="monotone"
-                  dataKey="pv"
+                  dataKey="fluxoCaixa"
                   stroke="#8884d8"
+                  name="Fluxo de Caixa"
                   activeDot={{ r: 8 }}
                 />
-                <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+                <Line
+                  type="monotone"
+                  dataKey="receitas"
+                  stroke="#82ca9d"
+                  name="Receitas"
+                />
+                <Line
+                  type="monotone"
+                  dataKey="despesas"
+                  stroke="#FF0000"
+                  name="Despesas"
+                />
               </LineChart>
             </ResponsiveContainer>
           </div>

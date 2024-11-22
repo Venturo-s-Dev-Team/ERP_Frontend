@@ -149,7 +149,14 @@ function Login() {
                   name="Gestor"
                   required
                 />
-                <input type="text" placeholder="CNPJ" name="CNPJ" required />
+                <input
+                  value={CNPJ}
+                  onChange={handleCNPJChange}
+                  type="text"
+                  placeholder="CNPJ"
+                  name="CNPJ"
+                  required
+                />
                 <input
                   value={RazaoSocial}
                   onChange={(e) => setRazaoSocial(e.target.value)}

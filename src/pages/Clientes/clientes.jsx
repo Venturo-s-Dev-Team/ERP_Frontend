@@ -537,15 +537,16 @@ function Clientes() {
                     className="input-inscricao"
                     required
                   />
-                  <InputMask
-                    mask="99999-999"
-                    type="text"
-                    name="cep"
-                    placeholder="CEP"
-                    onChange={handleChange}
-                    value={formData.cep}
-                    required
-                  />
+              <InputMask
+                mask="99999-999"
+                type="text"
+                name="cep"
+                placeholder="CEP"
+                value={formData.cep}
+                onChange={handleChange}
+                onBlur={handleCepBlur}
+                required
+              />
                   <input
                     type="text"
                     name="logradouro"
@@ -629,7 +630,7 @@ function Clientes() {
                   />
                   <InputMask
                     type="date"
-                    name="faturamento"
+                    name="dia_para_faturamento"
                     onChange={handleChange}
                     value={formData.dia_para_faturamento}
                     />
@@ -768,6 +769,7 @@ function Clientes() {
                     placeholder="CEP"
                     onChange={handleChange}
                     value={formData.cep}
+                    onBlur={handleCepBlur}
                     required
                   />
                   <input
@@ -838,7 +840,7 @@ function Clientes() {
                   />
                   <InputMask
                     type="date"
-                    name="faturamento"
+                    name="dia_para_faturamento"
                     onChange={handleChange}
                     value={formData.dia_para_faturamento}
                   />

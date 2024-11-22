@@ -135,41 +135,42 @@ function Despesas() {
     }
   }, [userInfo]);
 
-  // Função para carregar dados do banco de dados
-  const fetchData = async (userId) => {
-    try {
-      const despesasResponse = await axios.get(
-        `/api/ServerOne/tabledespesas/${userId}`,
-        { withCredentials: true }
-      );
+// Função para carregar dados do banco de dados
+const fetchData = async (userId) => {
+  try {
+    const despesasResponse = await axios.get(
+      `/api/ServerOne/tabledespesas/${userId}`,
+      { withCredentials: true }
+    );
 
-      const despesas = despesasResponse.data.InfoTabela;
-      setDespesas(despesas);
+    const despesas = despesasResponse.data.InfoTabela;
+    setDespesas(despesas);
 
-      // Total em aberto (somando valores)
-      const totalAbertas = despesas
-        .filter((despesa) => despesa.Finalizado === 0)
-        .reduce((acc, despesa) => acc + parseFloat(despesa.Valor || 0), 0);
+    // Inicializar os totais
+    let totalAbertas = 0;
+    let totalAtrasadas = 0;
 
-      // Total atrasadas (somando valores)
-      const totalAtrasadas = despesas
-        .filter((despesa) => {
-          const dataExpiracao = new Date(despesa.DataExpiracao).getTime();
-          return (
-            despesa.Finalizado === 0 && dataExpiracao < new Date().getTime()
-          );
-        })
-        .reduce((acc, despesa) => acc + parseFloat(despesa.Valor || 0), 0);
+    // Classificar despesas
+    despesas.forEach((despesa) => {
+      const dataExpiracao = new Date(despesa.DataExpiracao).getTime();
+      const isAtrasada = despesa.Finalizado === 0 && dataExpiracao < new Date().getTime();
 
-      // Atualize o estado do gráfico com valores formatados
-      setDataGrafico([
-        { name: "Contas em Aberto", value: totalAbertas },
-        { name: "Contas Atrasadas", value: totalAtrasadas },
-      ]);
-    } catch (error) {
-      console.error("Erro ao carregar dados", error);
-    }
-  };
+      if (isAtrasada) {
+        totalAtrasadas += parseFloat(despesa.Valor || 0);
+      } else if (despesa.Finalizado === 0) {
+        totalAbertas += parseFloat(despesa.Valor || 0);
+      }
+    });
+
+    // Atualize o estado do gráfico com valores formatados
+    setDataGrafico([
+      { name: "Contas em Aberto", value: totalAbertas },
+      { name: "Contas Atrasadas", value: totalAtrasadas },
+    ]);
+  } catch (error) {
+    console.error("Erro ao carregar dados", error);
+  }
+};
 
   // Função para formatar valores em reais
   const formatCurrency = (value) => {
