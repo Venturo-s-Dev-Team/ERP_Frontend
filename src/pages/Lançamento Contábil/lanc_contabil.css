@@ -1,8 +1,3 @@
-.main-lanContabil {
-  padding: 20px;
-  overflow: scroll;
-  max-height: 100vh;
-}
 
 .lancData {
   border-radius: 7px;
@@ -22,6 +17,11 @@
 
 .divsLancData h5 {
   font-size: 17px;
+}
+
+.lancontabil-form{
+  padding: 20px;
+  padding-top: 10px;
 }
 
 .divsLancData input {

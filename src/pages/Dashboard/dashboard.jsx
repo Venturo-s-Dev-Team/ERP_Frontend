@@ -22,22 +22,81 @@ import {
   LineChart,
   Line,
 } from "recharts";
+import { PieChart, Pie, Sector, ComposedChart, Area} from "recharts";
 import SideBarPage from "../../components/Sidebar/SideBarPage";
+
+
+const RADIAN = Math.PI / 180;
+const renderActiveShape = (props) => {
+  const {
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    startAngle,
+    endAngle,
+    fill,
+    payload,
+    percent,
+    value,
+  } = props;
+  const sin = Math.sin(-RADIAN * midAngle);
+  const cos = Math.cos(-RADIAN * midAngle);
+  const sx = cx + (outerRadius + 10) * cos;
+  const sy = cy + (outerRadius + 10) * sin;
+  const mx = cx + (outerRadius + 30) * cos;
+  const my = cy + (outerRadius + 30) * sin;
+  const ex = mx + (cos >= 0 ? 1 : -1) * 22;
+  const ey = my;
+  const textAnchor = cos >= 0 ? "start" : "end";
+
+  return (
+    <g>
+      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>
+        {payload.name}
+      </text>
+      <Sector
+        cx={cx}
+        cy={cy}
+        innerRadius={innerRadius}
+        outerRadius={outerRadius}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        fill={fill}
+      />
+      <Sector
+        cx={cx}
+        cy={cy}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        innerRadius={outerRadius + 6}
+        outerRadius={outerRadius + 10}
+        fill={fill}
+      />
+      <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
+      <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
+      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`Total ${value}`}</text>
+      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
+        {`( ${(percent * 100).toFixed(2)}%)`}
+      </text>
+    </g>
+  );
+};
 
 function Home() {
   const navigate = useNavigate();
 
-  // Dados do token e estados de usuário
   const [userInfo, setUserInfo] = useState("");
   const [SelectedTotalEstoque, setSelectedTotalEstoque] = useState(0);
   const [SelectedTotalFuncionario, setSelectedTotalFuncionario] = useState(0);
   const [SelectedTotalVenda, setSelectedTotalVenda] = useState(0);
   const [SelectedTotalLogs, setSelectedTotalLogs] = useState(0);
-
-  // Estado para o fluxo de caixa
   const [fluxoCaixa, setFluxoCaixa] = useState([]);
+  const [typeUserData, setTypeUserData] = useState([]);
 
-  // Funções de Fetch para Estoque, Funcionários, Vendas, Logs
+  // Funções para buscar dados de estoque, funcionários, vendas, logs, etc.
+
   const fetchDadosEstoque = async (id) => {
     try {
       const response = await axios.get(`/api/ServerOne/tableEstoque/${id}`, {
@@ -95,12 +154,48 @@ function Home() {
     }
   };
 
-  // Função para buscar receitas, despesas e calcular fluxo de caixa
+  const fetchDadosFuncionariosPorTipoUser = async (id) => {
+    try {
+      const response = await axios.get(`/api/ServerOne/tableFuncionario/${id}`, {
+        withCredentials: true,
+      });
+      if (response.status === 200) {
+        const funcionarioInfo = response.data.InfoTabela;
+
+        // Contar funcionários por tipo de usuário
+        const tipoUsuarioCount = funcionarioInfo.reduce((acc, funcionario) => {
+          const tipo = funcionario.TypeUser;
+          if (acc[tipo]) {
+            acc[tipo] += 1;
+          } else {
+            acc[tipo] = 1;
+          }
+          return acc;
+        }, {});
+
+        // Preparar os dados para o gráfico de pizza
+        const tipoUsuarioData = Object.keys(tipoUsuarioCount).map(tipo => ({
+          name: tipo,
+          value: tipoUsuarioCount[tipo],
+        }));
+
+        setTypeUserData(tipoUsuarioData); // Atualiza o estado com os dados formatados
+      }
+    } catch (error) {
+      console.error("Erro ao buscar dados de tipos de usuários:", error);
+      setTypeUserData([]); // Garante que o estado seja atualizado, mesmo com erro
+    }
+  };
+
   const fetchDadosFinanceiros = async (id) => {
     try {
       const [receitasResponse, despesasResponse] = await Promise.all([
-        axios.get(`/api/ServerOne/tablereceitas/${id}`, { withCredentials: true }),
-        axios.get(`/api/ServerOne/tabledespesas/${id}`, { withCredentials: true }),
+        axios.get(`/api/ServerOne/tablereceitas/${id}`, {
+          withCredentials: true,
+        }),
+        axios.get(`/api/ServerOne/tabledespesas/${id}`, {
+          withCredentials: true,
+        }),
       ]);
 
       const receitas = receitasResponse.data.InfoTabela || [];
@@ -115,14 +210,21 @@ function Home() {
   };
 
   const calcularFluxoCaixa = (receitas, despesas) => {
-    console.log("Receitas", receitas, "Despesas", despesas);
     const meses = [
-      "Janeiro", "Fevereiro", "Março", "Abril",
-      "Maio", "Junho", "Julho", "Agosto",
-      "Setembro", "Outubro", "Novembro", "Dezembro"
+      "Janeiro",
+      "Fevereiro",
+      "Março",
+      "Abril",
+      "Maio",
+      "Junho",
+      "Julho",
+      "Agosto",
+      "Setembro",
+      "Outubro",
+      "Novembro",
+      "Dezembro",
     ];
-  
-    // Processa as receitas por mês
+
     const receitasPorMes = receitas.reduce((acc, item) => {
       if (item.DataExpiracao) {
         const mes = new Date(item.DataExpiracao).getMonth();
@@ -131,8 +233,7 @@ function Home() {
       }
       return acc;
     }, {});
-  
-    // Processa as despesas por mês
+
     const despesasPorMes = despesas.reduce((acc, item) => {
       if (item.DataExpiracao) {
         const mes = new Date(item.DataExpiracao).getMonth();
@@ -141,8 +242,7 @@ function Home() {
       }
       return acc;
     }, {});
-  
-    // Monta o array de fluxo de caixa por mês
+
     return meses.map((mes, index) => ({
       name: mes,
       receitas: receitasPorMes[index] || 0,
@@ -150,8 +250,8 @@ function Home() {
       fluxoCaixa: (receitasPorMes[index] || 0) - (despesasPorMes[index] || 0),
     }));
   };
-  
-  // Verificação de token
+
+  // Verificação do token de autenticação
   useEffect(() => {
     const verifyToken = async () => {
       try {
@@ -182,9 +282,11 @@ function Home() {
       fetchDadosFuncionarios(userInfo.id_EmpresaDb);
       fetchDadosVendas(userInfo.id_EmpresaDb);
       fetchDadosHistoricLogs(userInfo.id_EmpresaDb);
+      fetchDadosFuncionariosPorTipoUser(userInfo.id_EmpresaDb);
     }
   }, [userInfo.id_EmpresaDb]);
 
+  // Verificar se a empresa está ativa
   if (userInfo.ValoresNull === true) {
     navigate("/Cad_empresa");
   } else if (userInfo.Status === "NO") {
@@ -203,11 +305,13 @@ function Home() {
       </SideBarPage>
     );
   }
+  const [activeIndex, setActiveIndex] = useState(0);
 
   return (
     <SideBarPage>
       <main>
-        <div>
+
+        <div classNam>
           <div className="main-title">
             <h3>DASHBOARD - BEM VINDO {userInfo.Nome_user}</h3>
           </div>
@@ -243,8 +347,9 @@ function Home() {
             </div>
           </div>
 
+<div className="graficosDashboard">
           <div className="charts">
-
+            {/* Gráfico de Fluxo de Caixa */}
             <ResponsiveContainer width="100%" height={300}>
               <LineChart data={fluxoCaixa}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -274,6 +379,42 @@ function Home() {
               </LineChart>
             </ResponsiveContainer>
           </div>
+          <div className="charts">
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  activeIndex={activeIndex}
+                  activeShape={renderActiveShape}
+                  data={typeUserData}  // Passa os dados formatados para o gráfico
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={60}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                  onMouseEnter={(_, index) => setActiveIndex(index)} // Atualiza o estado ao passar o mouse
+                />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* <div className="chart">
+            <ResponsiveContainer width="100%" height={300}>
+              <ComposedChart >
+                <CartesianGrid stroke="#f5f5f5" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="vendas" barSize={20} fill="#413ea0" />
+                <Area type="monotone" dataKey="crescimentoR$" fill="#8884d8" stroke="#8884d8" />
+                <Line type="monotone" dataKey="crescimentoPorcentagem" stroke="#ff7300" />
+              </ComposedChart>
+           </ResponsiveContainer>
+          </div>  */}
+
+          </div>
+
         </div>
       </main>
     </SideBarPage>

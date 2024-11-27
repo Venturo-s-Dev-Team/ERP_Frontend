@@ -140,6 +140,7 @@ const Caixa_Saida = () => {
   );
   return (
     <SideBarPage>
+      <div className="scroll-despesas">
       <div className="app">
         <div className="titleEmail">
           <h1 className="Assunto">
@@ -200,7 +201,7 @@ const Caixa_Saida = () => {
               <Cards />
             )}
           </div>
-        </div>
+        </div> </div>
       </div>
     </SideBarPage>
   );

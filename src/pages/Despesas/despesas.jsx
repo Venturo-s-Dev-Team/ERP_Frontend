@@ -210,8 +210,8 @@ const fetchData = async (userId) => {
     const id_EmpresaDb = parseInt(userInfo.id_EmpresaDb); // Alterado para userInfo.id_user
 
     const despesaData = {
-      Valor: valor,
-      Nome: nome,
+      Valor: !valor ? SelectedDespesa.Valor : valor,
+      Nome: !nome ? SelectedDespesa.Nome : nome,
       DataExpiracao: dataExpiracao,
       id_EmpresaDb,
       userId: userInfo.id_user,
@@ -230,8 +230,21 @@ const fetchData = async (userId) => {
         fecharModal();
       } catch (error) {
         console.error("Erro ao atualizar despesa", error);
-      }
-    } else {
+      } 
+    } else if (SelectedDespesa) {
+        try {
+          const response = await axios.put(
+            `api/ServerTwo/EditDespesa/${SelectedDespesa.id}`,
+            despesaData,
+            { withCredentials: true }
+          );
+          console.log("Atualizado: ", response);
+          await fetchData(id_EmpresaDb);
+          fecharModal();
+        } catch (error) {
+          console.error("Erro ao atualizar despesa", error);
+        } 
+      } else {
       // Registro da despesa
       try {
         const response = await axios.post(
@@ -438,6 +451,7 @@ const fetchData = async (userId) => {
                   <th>Valor</th>
                   <th>Data de Expiração</th>
                   <th>Finalizado</th>
+                  <th>Selecionar</th>
                 </tr>
               </thead>
               <tbody>
@@ -463,6 +477,17 @@ const fetchData = async (userId) => {
                           ? "Marcar como Sim"
                           : "Marcar como Não"}
                       </button>
+                    </td>
+                    <td>
+                    <label className="custom-radio">
+                        <input
+                          type="radio"
+                          name="selectedProduct"
+                          value={despesa.id}
+                          onChange={() => setSelectedDespesa(despesa)}
+                        />
+                        <span className="radio-checkmark"></span>
+                      </label>
                     </td>
                   </tr>
                 ))}

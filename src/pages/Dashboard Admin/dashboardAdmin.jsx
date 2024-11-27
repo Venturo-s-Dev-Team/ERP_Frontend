@@ -116,6 +116,13 @@ function HomeAdmin() {
 
   const selectedItem = data.find((item) => item.id === selectedId);
 
+  const handleProsseguir = (dados) => {
+    console.log(dados)
+      navigate("/verMais", {
+        state: { dados },
+      })
+  };
+
   return (
     <SideBarPage>
       <main>
@@ -233,7 +240,7 @@ function HomeAdmin() {
               </motion.button>
 
               <motion.div className="VerMaisDiv-DBAdmin">
-                <motion.button className="VerMaisBtn-DBAdmin"> Ver Mais </motion.button>
+                <motion.button className="VerMaisBtn-DBAdmin" onClick={() => handleProsseguir(item)}> Ver Mais </motion.button>
               </motion.div>
             </motion.div>
           </motion.div>

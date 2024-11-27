@@ -52,10 +52,11 @@ const Perfil = () => {
         "Gerente"
       ) {
         return (
+          
           <div className="perfil-body">
-            <footer className="perfil-footer">
-              <details className="perfil-details">
-                <summary className="perfil-summary">
+            <footer >
+              <div className="perfil-details">
+                <div className="perfil-summary">
                   {!userInfo.id_EmpresaDb ? (
                     <div>Vazio</div>
                   ) : (
@@ -64,15 +65,16 @@ const Perfil = () => {
                       className="LogoEmpresa-Img-DBAdmin"                    
                     />
                   )}
-                </summary>
-                <h2 className="Perfil-Empresa">Dados do Perfil</h2>
+            </div>
                 <div className="Perfil-Dados">
+                  
+                <h2 className="Perfil-Empresa">Dados do Perfil</h2>
                 <p className="perfil-id">ID: {userInfo.id_user}</p>
                 <p className="perfil-nome">Nome: {userInfo.Nome_user}</p>
                 <p className="perfil-email">E-mail: {userInfo.Email}</p>
                 <p> Função: {userInfo.TypeUser}</p>
                 </div>
-              </details>
+                </div>
             </footer>
           </div>
         );
@@ -80,7 +82,6 @@ const Perfil = () => {
         return (
           <div>
             <footer >
-              <summary>
                 {!userInfo.Logo ? (
                   <div>Perfil</div>
                 ) : (
@@ -90,7 +91,6 @@ const Perfil = () => {
                     alt=""
                   />
                 )}
-              </summary>
               <div >
                 <h2 className="perfil-titulo-rs">Dados do Perfil</h2>
                 <p className="perfil-id-rs">ID: {userInfo.id_user}</p>

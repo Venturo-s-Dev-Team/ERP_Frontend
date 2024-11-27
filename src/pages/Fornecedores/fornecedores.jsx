@@ -20,6 +20,7 @@ function Fornecedores() {
   const [selectedFornecedor, setselectedFornecedor] = useState(null); // Fornecedor selecionado
   const [searchTerm, setSearchTerm] = useState(""); // Termo de pesquisa
 
+
   const handleShow = () => setShowModal(true);
   const handleClose = () => {
     setShowModal(false);
@@ -234,6 +235,9 @@ function Fornecedores() {
     });
     handleShow(); // Abre o modal
   };
+
+  
+
 
   return (
     <SideBarPage>

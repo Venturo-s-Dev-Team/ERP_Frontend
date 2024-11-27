@@ -15,18 +15,18 @@ function Receitas() {
   const [userInfo, setUserInfo] = useState({});
   const [receitas, setReceitas] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false); // Determina se está no modo de edição  
-  const [SelectedReceita, setSelectedReceita] = useState("");
+  const [isEditMode, setIsEditMode] = useState(false); // Modo de edição
+  const [SelectedReceita, setSelectedReceita] = useState(null);
   const [searchTerm, setSearchTerm] = useState(""); // Estado para armazenar o termo de pesquisa
   const [newReceita, setNewReceita] = useState({
-    Nome: SelectedReceita.Nome || '',
-    Valor: SelectedReceita.Valor || '',
+    Nome: '',
+    Valor: '',
   });
 
-    // Modal control
-    const handleShow = () => {
-      setShowModal(true);
-    };
+  // Modal control
+  const handleShow = () => {
+    setShowModal(true);
+  };
   const handleClose = () => setShowModal(false);
 
   // Função para verificar o token
@@ -76,9 +76,11 @@ function Receitas() {
   const handleRegisterReceita = async (e) => {
     e.preventDefault();
     const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
+    
+    if (!isEditMode) {
     try {
       const response = await axios.post(`/api/ServerTwo/registrarReceitas`, 
-      {...newReceita, 
+      {...newReceita,
         id_EmpresaDb: id, 
         userId: userInfo.id_user,
         userName: userInfo.Nome_user}, 
@@ -86,22 +88,53 @@ function Receitas() {
         withCredentials: true,
       });
 
-      await fetchReceitas(id)
-      handleClose()
+      await fetchReceitas(id);
+      handleClose();
     } catch (error) {
       console.error("Erro ao registrar receita:", error);
       alert('Erro ao registrar receita.');
     }
+  } else {
+    try {
+      const response = await axios.put(`/api/ServerTwo/EditReceita`, 
+      {...newReceita,
+        id_EmpresaDb: id,
+        id_Receita: SelectedReceita.id,
+        userId: userInfo.id_user,
+        userName: userInfo.Nome_user}, 
+        {
+        withCredentials: true,
+      });
+      
+      await fetchReceitas(id);
+      handleClose();
+    } catch (error) {
+      console.error("Erro ao registrar receita:", error);
+      alert('Erro ao registrar receita.');
+    }
+  }
   };
 
+  // Função para editar a receita
   const handleEdit = () => {
     if (!SelectedReceita) {
-      alert("Por favor, selecione uma despesa para editar.");
+      alert("Por favor, selecione uma receita para editar.");
       return;
     }
-  
-    setIsEditMode(true); // Define o modo de edição
-    setShowModal(true); // Abre o modal
+
+    // Validar se a receita começa com "Venda de número"
+    if (SelectedReceita.Nome.startsWith("Venda de número")) {
+      alert("Você só pode editar receitas que não começam com 'Venda de número'.");
+      return;
+    }
+
+    // Entrar no modo de edição e abrir o modal
+    setIsEditMode(true);
+    setNewReceita({
+      Nome: SelectedReceita.Nome,
+      Valor: SelectedReceita.Valor,
+    });
+    setShowModal(true);
   };
 
   // Função para exportar dados para Excel
@@ -117,17 +150,17 @@ function Receitas() {
   // Função para calcular o total de receitas
   const totalReceitas = receitas.reduce((acc, receita) => acc + Number(receita.Valor), 0);
 
-    // Filtro das receitas
-    const handleSearchChange = (e) => {
-      setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
-    };
-  
-    const filteredReceita = receitas.filter(
-      (Receita) =>
-        Receita.Nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        Receita.Valor.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        String(Receita.id).toLowerCase().includes(searchTerm.toLowerCase())
-    );
+  // Filtro das receitas
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
+  };
+
+  const filteredReceita = receitas.filter(
+    (Receita) =>
+      Receita.Nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      Receita.Valor.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      String(Receita.id).toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <SideBarPage>
@@ -143,9 +176,9 @@ function Receitas() {
               <FaPlus />
             </button>
             <button onClick={handleEdit} disabled={!SelectedReceita}>
-          Editar
-          <FaPenToSquare />
-        </button>
+              Editar
+              <FaPenToSquare />
+            </button>
             <button onClick={exportToExcel}>
               Exportar
               <FaFileExport />
@@ -159,38 +192,38 @@ function Receitas() {
             </div>
           </div>
 
-           {/* Input de pesquisa */}
-           <div
+          {/* Input de pesquisa */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginTop: "10px",
+              border: "1px solid #ccc",
+              borderRadius: "4px",
+              width: "350px",
+            }}
+          >
+            <BsSearch
+              style={{ marginLeft: "10px", color: "#888", fontSize: "18px" }}
+            />
+            <input
+              type="text"
+              placeholder="Pesquisar receitas"
+              value={searchTerm}
+              onChange={handleSearchChange}
               style={{
-                display: "flex",
-                alignItems: "center",
-                marginTop: "10px",
-                border: "1px solid #ccc",
-                borderRadius: "4px",
-                width: "350px",
+                backgroundColor: "white",
+                color: "black",
+                border: "1px solid #fff",
+                padding: "12px",
+                fontSize: "16px",
+                width: "300px",
+                outline: "none",
+                transition: "border-color 0.3s",
+                paddingLeft: "10px",
               }}
-            >
-              <BsSearch
-                style={{ marginLeft: "10px", color: "#888", fontSize: "18px" }}
-              />
-              <input
-                type="text"
-                placeholder="Pesquisar produtos"
-                value={searchTerm}
-                onChange={handleSearchChange}
-                style={{
-                  backgroundColor: "white",
-                  color: "black",
-                  border: "1px solid #fff",
-                  padding: "12px",
-                  fontSize: "16px",
-                  width: "300px",
-                  outline: "none",
-                  transition: "border-color 0.3s",
-                  paddingLeft: "10px",
-                }}
-              />
-            </div>
+            />
+          </div>
 
           <div className="Receitas_List">
             <table>
@@ -208,16 +241,16 @@ function Receitas() {
                     <td>{receita.Nome}</td>
                     <td>R$ {Number(receita.Valor).toFixed(2)}</td>
                     <td>
-                    <label className="custom-radio">
-                      <input
-                        type="radio"
-                        name="selectedProduct"
-                        value={receita.id}
-                        onChange={() => setSelectedReceita(receita)}
-                      />
-                      <span className="radio-checkmark"></span>
-                    </label>
-                  </td>
+                      <label className="custom-radio">
+                        <input
+                          type="radio"
+                          name="selectedProduct"
+                          value={receita.id}
+                          onChange={() => setSelectedReceita(receita)}
+                        />
+                        <span className="radio-checkmark"></span>
+                      </label>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -225,56 +258,64 @@ function Receitas() {
           </div>
 
           <Modal
-            style={{
-              position: "fixed",
-              top: "50%",
-              bottom: 0,
-              left: "50%",
-              right: 0,
-              zIndex: 1000,
-              width: "70%",
-              height: "73%",
-              borderRadius: 20,
-              transform: "translate(-50%, -50%)",
-              background: "white",
-              boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
-            }}
-            show={showModal}
-            onHide={handleClose}
-          >
-            <div className="DivModalReceitas">
-              <div>
-                <h1>Registrar Receita</h1>
-              </div>
+  style={{
+    position: "fixed",
+    top: "50%",
+    bottom: 0,
+    left: "50%",
+    right: 0,
+    zIndex: 1000,
+    width: "70%",
+    height: "73%",
+    borderRadius: 20,
+    transform: "translate(-50%, -50%)",
+    background: "white",
+    boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
+  }}
+  show={showModal}
+  onHide={handleClose}
+>
+  <div className="DivModalReceitas">
+    <div>
+      <h1>{isEditMode ? "Editar Receita" : "Registrar Receita"}</h1>
+    </div>
 
-              <form onSubmit={handleRegisterReceita} >
-                <input
-                  type="text"
-                  name="Nome"
-                  placeholder="Nome"
-                  value={newReceita.Nome}
-                  onChange={handleChange}
-                  required
-                />
-                <input
-                  type="number"
-                  name="Valor"
-                  placeholder="Valor"
-                  value={newReceita.Valor}
-                  onChange={handleChange}
-                  required
-                />
-                <div>
-                  <button className="RegisterPr" type="submit">
-                    Registrar
-                  </button>
-                  <button className="FecharPr" onClick={handleClose}>
-                    Fechar
-                  </button>
-                </div>
-              </form>
-            </div>
-          </Modal>
+    <form onSubmit={handleRegisterReceita}>
+      <input
+        type="text"
+        name="Nome"
+        placeholder="Nome"
+        value={newReceita.Nome}
+        onChange={handleChange}
+        required
+        // Remova o "disabled" se quiser permitir a edição do nome
+        disabled={false} // Para editar o nome em modo de edição
+      />
+      <input
+        type="number"
+        name="Valor"
+        placeholder="Valor"
+        value={newReceita.Valor}
+        onChange={handleChange}
+        required
+      />
+      <div>
+        <button className="RegisterPr" type="submit">
+          {isEditMode ? "Salvar Alterações" : "Registrar"}
+        </button>
+        {/* Altere o tipo do botão para "button" para evitar o submit */}
+        <button
+          className="FecharPr"
+          type="button" // Previna o comportamento de submit
+          onClick={handleClose}
+        >
+          Fechar
+        </button>
+      </div>
+    </form>
+  </div>
+</Modal>
+
         </div>
       </main>
     </SideBarPage>

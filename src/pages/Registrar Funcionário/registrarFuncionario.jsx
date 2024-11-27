@@ -48,18 +48,20 @@ function CadastroFuncionario() {
 
   const fetchFuncionarios = async (id) => {
     try {
-      const response = await axios.get(
-        `/api/ServerOne/tableFuncionario/${id}`,
-        { withCredentials: true }
-      );
+      const response = await axios.get(`/api/ServerOne/tableFuncionario/${id}`, { withCredentials: true });
       if (response.status === 200) {
-        setFuncionarios(response.data.InfoTabela);
+        console.log("Dados recebidos do servidor:", response.data.InfoTabela); // Verifique os dados aqui
+        const validData = response.data.InfoTabela.filter(
+          (funcionario) => funcionario.Nome && funcionario.TypeUser
+        );
+        setFuncionarios(validData);
       }
     } catch (error) {
       console.log("Não foi possível requerir as informações: ", error);
     }
   };
-
+  
+  
   // Filtro dos produtos
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
@@ -67,9 +69,10 @@ function CadastroFuncionario() {
 
   const filteredFuncionarios = Funcionarios.filter(
     (funcionarios) =>
-      funcionarios.Nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      funcionarios.TypeUser.toLowerCase().includes(searchTerm.toLowerCase())
+      (funcionarios.Nome?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+      (funcionarios.TypeUser?.toLowerCase() || "").includes(searchTerm.toLowerCase())
   );
+  
 
   const openPopup = () => {
     setShowPopup(true);

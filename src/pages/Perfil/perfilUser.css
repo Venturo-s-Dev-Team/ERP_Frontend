@@ -1,126 +1,35 @@
 /* Perfil User */
-.Body-PerfUser {
-  background-color: #f2f2f2;
-  width: 65%;
-  justify-content: center;
-  margin-left: 18%;
-  height: 271px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.164);
-}
-
-.Footer-PerfUser {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.Summary-PerfUser img {
-  border: 1px solid #000000;
-  margin-right: 73%;
-}
-
-.DadosPerfil-PerfUser {
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  margin-top: -230px;
-  font-size: 22px;
-  margin-left: 300px;
-  text-align: left;
-  width: 380px;
-}
-
-.DadosPerfil-PerfUser h2 {
-  margin-bottom: 15px;
-  color: #000000da;
-}
-
-.DadosPerfil-PerfUser p {
-  margin-bottom: 2px;
-  font-weight: 400;
-}
-
-.Titulo-PerfUser {
-  font-size: 30px;
-  text-align: center;
-  color: #000000cf;
-}
-
-/* CSS ATUAL ----- */
-
-/* perfil.css */
-/* Razão Social */
-
-
-.perfil-letras-rs {
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  margin-top: -230px;
-  font-size: 22px;
-  margin-left: 290px;
-  width: 380px;
-}
-
-.perfil-id-rs,
-.perfil-nome-rs,
-.perfil-email-rs,
-.perfil-empresa-rs {
-  font-weight: 200px;
-  color: #333;
-  margin: 0;
-  padding: 0;
-  text-align: left;
-}
-
-.perfil-summary-rs img {
-  border: 1px solid #000000;
-  margin-right: 73%;
-}
-
-.perfil-footer-rs {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.perfil-titulo-rs {
-  margin-left: -30%;
-}
-/* Admin */
-/* SuperAdmin */
 .perfil-container {
   padding: 20px;
   font-family: Arial, sans-serif;
-  /* background: linear-gradient(to right, #0666995a, #aedd2b4d); */
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 900px;
+  margin: 30px auto;
 }
 
 .perfil-header {
-  font-size: 2em;
+  font-size: 2.5em;
   margin-bottom: 20px;
   text-align: center;
   color: #333;
 }
 
 .perfil-body {
-  background-color: #f9f9f9;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #fff;
   padding: 20px;
   border-radius: 8px;
+  height: 150px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.perfil-details {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.perfil-summary img {
-  border-radius: 50%;
-  margin-bottom: 15px;
-  border: 2px solid #ddd;
-}
-
 .perfil-info {
-  margin-top: 10px;
+  margin-left: 20px;
+  flex: 1;
   font-size: 1.2em;
   color: #555;
 }
@@ -136,11 +45,79 @@
   color: #333;
 }
 
+/* Imagem de Perfil - Redonda e Menor */
+.perfil-summary img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+  margin-right: 20px;
+}
+
+/* Corpo do Perfil */
+.perfil-details {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
 .perfil-footer {
   margin-top: 20px;
   text-align: center;
 }
 
+.perfil-titulo-rs {
+  margin-left: -30%;
+}
+
+.perfil-summary {
+  text-align: center;
+}
+
+.perfil-summary img {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+.perfil-nome-rs,
+.perfil-id-rs,
+.perfil-email-rs {
+  margin: 5px 0;
+  font-size: 1.2em;
+  color: #444;
+}
+
+.Perfil-Empresa {
+  text-align: center;
+  font-size: 1.5em;
+  color: #333;
+  margin-left: -30px;
+}
+
+.Perfil-Dados {
+  text-align: left;
+  font-size: 1.2em;
+  font-weight: 300;
+  margin-left: 20px;
+}
+
+.LogoEmpresa-Img-DBAdmin {
+  width: 200px;
+  height: 200px;
+  border-radius: 10%;
+  object-fit: cover;
+  margin-top: 420px;
+  border-color: #000;
+  border-width: 1px;
+  border-style: solid;
+  margin-top: 10px;
+}
+
+/* Estilo do Botão */
 .button {
   background-color: #007bff;
   color: white;
@@ -155,38 +132,37 @@
   background-color: #0056b3;
 }
 
-.Perfil-Empresa{
-text-align: center;}
-
-.Perfil-Dados{
-  text-align: left;
-  width: 250px;
-  font-size: 16px;
-  font-weight: 300;
-  margin-left: 80px;
+/* Personalizando Footer */
+.perfil-footer {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #ddd;
+  text-align: center;
 }
 
-.LogoEmpresa-Img-DBAdmin {
-  width: 200px;
-  height: 200px;
-  border-radius: 10%;
-  object-fit: cover;
-  margin-top: -40px;
-  border-color: #000;
-  border-width: 1px;
-  border-style: solid;
-}
+/* Responsividade */
+@media (max-width: 768px) {
+  .perfil-body {
+    flex-direction: column;
+    align-items: center;
+  }
 
+  .perfil-info {
+    margin-left: 0;
+    text-align: center;
+  }
 
+  .perfil-summary img {
+    width: 100px;
+    height: 100px;
+  }
 
-.Summary-ContainerInt {
-  color: #000;
-  text-align: left;
-  font-size: 23px;
-}
+  .Perfil-Dados {
+    margin-left: 0;
+    text-align: center;
+  }
 
-.Dados-ContainerInt {
-  text-align: left;
-  color: #000;
-  font-size: 20px;
+  .Perfil-Empresa {
+    font-size: 1.2em;
+  }
 }

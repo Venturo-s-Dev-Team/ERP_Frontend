@@ -2,10 +2,11 @@
 
 .Container-CadEmp {
   background: linear-gradient(to bottom, #fff, #a7bbff);
-  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 
 .BoxForms-CadEmp {
@@ -13,6 +14,8 @@
   border-radius: 20px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
   padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
  
 }
 
@@ -23,12 +26,13 @@
   border-style: solid;
   padding: 10px;
   display: flex;
+  padding-left: 40px;
   justify-content: center;
   flex-direction: column;
   padding-bottom: 20px;
-  padding-left: 40px;
   box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
   margin-top: 20px;
+
 }
 
 .GeralDiv-CadEmp legend {
@@ -36,146 +40,73 @@
   width: 70px;
   text-align: center;
   margin-top: -20px;
-  font-weight: 600px;
+  font-weight: bold;
 }
 
-.Campo-Inscriçao {
-  margin-top: 10px;
-}
 
-.Campo-Inscriçao label {
-  margin-left: -30px;
-}
-
-.Campo-Inscriçao input {
+.GeralDiv-CadEmp input {
   margin-left: 10px;
-  width: 200px;
+  width: 400px;
   height: 25px;
   padding: 5px;
   border-radius: 2px;
+  margin: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.GeralDiv-CadEmp label
+{
+  display: flex;
+  justify-content: space-between;
+  width: 75%;
+  align-items: center;
 }
 
 /* Endereço */
 .EndereçoDiv-CadEmp {
+
   border-color: #000;
   border-width: 1px;
   border-style: solid;
-  padding: 10px;
   display: flex;
   justify-content: center;
   flex-direction: column;
-  padding-bottom: 20px;
-  padding-left: 40px;
   box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
   margin-top: 20px;
 }
+
 
 .EndereçoDiv-CadEmp legend {
   background-color: #fff;
   width: 100px;
   text-align: center;
   margin-top: -20px;
-  font-weight: 600px;
+  font-weight: bold;
 }
 
-.Campo-Municipio {
-  margin-top: 10px;
-}
 
-.Campo-Municipio label {
-  margin-left: -30px;
-}
 
-.Campo-Municipio input {
+.EndereçoDiv-CadEmp input {
   margin-left: 10px;
-  width: 150px;
+  width: 400px;
   height: 25px;
   padding: 5px;
   border-radius: 2px;
+  margin: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+
 }
 
-.Campo-Uf {
-  margin-top: -25px;
-  margin-left: 260px;
+.EndereçoDiv-CadEmp label{
+  display: flex;
+  justify-content: space-between;
+  width: 75%;
+  align-items: center;
 }
 
-.Campo-Uf label {
-  margin-left: -30px;
-}
 
-.Campo-Uf input {
-  margin-left: 10px;
-  width: 150px;
-  height: 25px;
-  padding: 5px;
-  border-radius: 2px;
-}
-
-.Campo-Logradouro {
-  margin-left: 460px;
-  margin-top: -25px;
-}
-
-.Campo-Logradouro label {
-  margin-left: -30px;
-}
-
-.Campo-Logradouro input {
-  margin-left: 10px;
-  width: 250px;
-  height: 25px;
-  padding: 5px;
-  border-radius: 2px;
-}
-
-.Campo-Números {
-  margin-top: 20px;
-}
-
-.Campo-Números label {
-  margin-left: -30px;
-}
-
-.Campo-Números input {
-  margin-left: 10px;
-  width: 100px;
-  height: 25px;
-  padding: 5px;
-  border-radius: 2px;
-}
-
-.Campo-Cep {
-  margin-left: 205px;
-  margin-top: -25px;
-}
-
-.Campo-Cep label {
-  margin-left: -30px;
-}
-
-.Campo-Cep input {
-  margin-left: 10px;
-  width: 100px;
-  height: 25px;
-  padding: 5px;
-  border-radius: 2px;
-}
-
-.Campo-Complemento {
-  position: relative;
-  left: -600px;
-}
-
-.Campo-Complemento label {
-}
-
-.Campo-Complemento input {
-  margin-left: 10px;
-  width: 320px;
-  height: 25px;
-  padding: 5px;
-  border-radius: 2px;
-}
 
 /* Empresa */
 .EmpresaDiv-CadEmp {
@@ -194,76 +125,29 @@
 
 .EmpresaDiv-CadEmp legend {
   background-color: #fff;
-  width: 100px;
+  width: 130px;
   text-align: center;
   margin-top: -20px;
-  font-weight: 600px;
+  font-weight: bold;
 }
 
-.Campo-Telefone {
-  margin-top: 10px;
-}
 
-.Campo-Telefone label {
-  margin-left: -30px;
-}
-
-.Campo-Telefone input {
+.EmpresaDiv-CadEmp input {
   margin-left: 10px;
-  width: 150px;
+  width: 400px;
   height: 25px;
   padding: 5px;
   border-radius: 2px;
+  margin: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
 }
 
-.Campo-Cpf {
-  margin-left: 250px;
-  margin-top: -25px;
-}
-
-.Campo-Cpf label {
-  margin-left: -30px;
-}
-
-.Campo-Cpf input {
-  margin-left: 10px;
-  width: 150px;
-  height: 25px;
-  padding: 5px;
-  border-radius: 2px;
-}
-
-.Campo-Rg {
-  margin-left: 470px;
-  margin-top: -25px;
-}
-
-.Campo-Rg label {
-  margin-left: -30px;
-}
-
-.Campo-Rg input {
-  margin-left: 10px;
-  width: 150px;
-  height: 25px;
-  padding: 5px;
-  border-radius: 2px;
-}
-
-.Campo-Site {
-  margin-top: 20px;
-}
-
-.Campo-Site label {
-  margin-left: -30px;
-}
-
-.Campo-Site input {
-  margin-left: 10px;
-  width: 785px;
-  height: 25px;
-  padding: 5px;
-  border-radius: 2px;
+.EmpresaDiv-CadEmp label{
+  display: flex;
+  justify-content: space-between;
+  width: 75%;
+  align-items: center;
 }
 
 /* Empresa */
@@ -286,56 +170,19 @@
   width: 130px;
   text-align: center;
   margin-top: -20px;
-  font-weight: 600px;
+  font-weight: bold;
 }
 
-.Campo-Contrato {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
 
-.Campo-Contrato label {
-  margin-left: -30px;
-}
 
-.Campo-Contrato input {
+.DocumentosDiv-CadEmp input {
   margin-left: 10px;
   width: 500px;
   height: 30px;
   padding: 5px;
   border-radius: 2px;
-}
+  margin: 5px;
 
-.Campo-Requerimento {
-  margin-bottom: 10px;
-}
-
-.Campo-Requerimento label {
-  margin-left: -30px;
-}
-
-.Campo-Requerimento input {
-  margin-left: 10px;
-  width: 500px;
-  height: 30px;
-  padding: 5px;
-  border-radius: 2px;
-}
-
-.Campo-Certificado {
-  margin-bottom: 10px;
-}
-
-.Campo-Certificado label {
-  margin-left: -30px;
-}
-
-.Campo-Certificado input {
-  margin-left: 10px;
-  width: 500px;
-  height: 30px;
-  padding: 5px;
-  border-radius: 2px;
 }
 
 /* Enviar */

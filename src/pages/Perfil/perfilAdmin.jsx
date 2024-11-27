@@ -12,12 +12,14 @@ function PerfilAdmin() {
   return (
     <SideBarPage>
       <main>
+        <div className="scroll-despesas">
         <h1 className="Titulo-PerfAdmin">YUIYIUI</h1>
 
         <div className="Body-PerfAdmin">
           <p>ID: {user.id}</p>
           <p>Nome: {user.nome}</p>
           <p>E-mail: {user.email}</p>
+        </div>
         </div>
       </main>
     </SideBarPage>

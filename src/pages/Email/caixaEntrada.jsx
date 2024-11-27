@@ -165,6 +165,7 @@ const Caixa_Entrada = () => {
 
   return (
     <SideBarPage>
+      <div className="scroll-despesas">
       <div className="app">
         <div className="titleEmail">
           <div className="TextAssunt">
@@ -225,7 +226,7 @@ const Caixa_Entrada = () => {
             {protocoloErro ? renderError() : renderEmails()}
           </div>
         </div>
-      </div>
+      </div></div>
     </SideBarPage>
   );
 };

@@ -131,7 +131,6 @@ function Cad_Empresa() {
           {/* Parte Geral */}
           <div className="GeralDiv-CadEmp">
             <legend>Geral</legend>
-            <div className="Campo-Inscriçao">
               <label>
                 Inscrição Estadual:
                 <InputMask
@@ -143,9 +142,7 @@ function Cad_Empresa() {
                   required
                 />
               </label>
-            </div>
 
-            <div className="Campo-Site">
               <label>
                 Site:
                 <InputMask
@@ -153,16 +150,14 @@ function Cad_Empresa() {
                   name="Site"
                   value={formData.Site}
                   onChange={handleChange}
+                  placeholder="url:"
                 />
               </label>
-            </div>
           </div>
 
           {/* Parte Endereço */}
-          {/* <div className="EndereçoDiv-CadEmp">
+          <div className="EndereçoDiv-CadEmp">
             <legend>Endereço</legend>
-
-            <div className="Campo-Cep">
               <label>
                 CEP:
                 <InputMask
@@ -175,9 +170,7 @@ function Cad_Empresa() {
                   required
                 />
               </label>
-            </div>
 
-            <div className="Campo-Municipio">
               <label>
                 Município:
                 <InputMask
@@ -188,9 +181,7 @@ function Cad_Empresa() {
                   required
                 />
               </label>
-            </div>
 
-            <div className="Campo-Uf">
               <label>
                 Uf:
                 <InputMask
@@ -202,9 +193,7 @@ function Cad_Empresa() {
                   required
                 />
               </label>
-            </div>
 
-            <div className="Campo-Logradouro">
               <label>
                 Logradouro:
                 <InputMask
@@ -215,9 +204,7 @@ function Cad_Empresa() {
                   required
                 />
               </label>
-            </div>
 
-            <div className="Campo-Números">
               <label>
                 Números:
                 <InputMask
@@ -229,9 +216,7 @@ function Cad_Empresa() {
                   required
                 />
               </label>
-            </div>
 
-            <div className="Campo-Complemento">
               <label>
                 Complemento:
                 <InputMask
@@ -242,13 +227,12 @@ function Cad_Empresa() {
                   required
                 />
               </label>
-            </div>
-          </div> */}
 
-          {/* Parte Empresa
+          </div> 
+
+          {/* Parte Empresa */}
           <div className="EmpresaDiv-CadEmp">
             <legend>Cadastrante</legend>
-            <div className="Campo-Telefone">
               <label>
                 Telefone:
                 <InputMask
@@ -260,8 +244,6 @@ function Cad_Empresa() {
                   required
                 />
               </label>
-            </div>
-            <div className="Campo-Cpf">
               <label>
                 CPF:
                 <InputMask
@@ -273,8 +255,6 @@ function Cad_Empresa() {
                   required
                 />
               </label>
-            </div>
-            <div className="Campo-Rg">
               <label>
                 RG:
                 <InputMask
@@ -286,13 +266,11 @@ function Cad_Empresa() {
                   required
                 />
               </label>
-            </div>
           </div>
 
-          {/* Parte Documentos */}
-          {/* <div className="DocumentosDiv-CadEmp">
+           {/* Parte Documentos  */}
+           <div className="DocumentosDiv-CadEmp">
             <legend>Documentos</legend>
-            <div className="Campo-Contrato">
               <label>
                 Contrato Social:
                 <InputMask
@@ -302,8 +280,6 @@ function Cad_Empresa() {
                   required
                 />
               </label>
-            </div>
-            <div className="Campo-Requerimento">
               <label>
                 Requerimento de Empresário:
                 <InputMask
@@ -313,8 +289,6 @@ function Cad_Empresa() {
                   required
                 />
               </label>
-            </div>
-            <div className="Campo-Certificado">
               <label>
                 Certificado MEI:
                 <InputMask
@@ -324,10 +298,9 @@ function Cad_Empresa() {
                   required
                 />
               </label>
-            </div>
           </div>
 
-          {/* Botão de Enviar */}
+           {/* Botão de Enviar  */}
           <button className="Enviar-CadEmp" type="submit">
             Enviar
           </button>
