@@ -297,7 +297,7 @@ const CancelarVenda = async (venda) => {
               <tr key={venda.id_pedido}>
                 <td>{venda.id_pedido}</td>
                 <td>{venda.nome_cliente}</td>
-                <td>{venda.total}</td>
+                <td>R$ {venda.total}</td>
                 <td>{venda.Status}</td>
                 <td>
                   <button
@@ -357,8 +357,8 @@ const CancelarVenda = async (venda) => {
                     <p>Código do pedido: {selectedVenda.id_pedido}</p>
                     <p>Cliente: {selectedVenda.nome_cliente}</p>
                     <p>Vendedor: {selectedVenda.vendedor}</p>
-                    <p>Desconto: {selectedVenda.desconto}</p>
-                    <p>Preço Final: {selectedVenda.total}</p>
+                    <p>Desconto: {selectedVenda.desconto}%</p>
+                    <p>Preço Final: R$ {selectedVenda.total}</p>
                   </div>
                 </div>
               ) : (

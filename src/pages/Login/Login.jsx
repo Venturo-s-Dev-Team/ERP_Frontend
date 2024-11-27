@@ -38,21 +38,16 @@ function Login() {
         { withCredentials: true }
       );
 
-      if (response.data.TypeUser === "SuperAdmin") {
-        navigate("/dashboardAdmin");
-      } else if (
-        response.data.TypeUser === "Gestor" ||
-        "Socio" ||
-        "Gerente" ||
-        "Financeiro"
-      ) {
-        navigate("/dashboard");
-      } else if (response.data.TypeUser === "Venda") {
-        navigate("/vendas");
-      } else if (response.data.TypeUser === "Estoque") {
-        navigate("/cad_produto");
-      } else if (response.data.TypeUser === "Caixa") {
-        navigate("/caixa");
+      if (response.data.TypeUser === 'SuperAdmin') {
+        navigate('/dashboardAdmin')
+      } else if (response.data.TypeUser === 'Gestor' || 'Socio' || 'Gerente' || 'Financeiro') {
+        navigate('/dashboard')
+      } else if (response.data.TypeUser === 'Venda') {
+        navigate('/vendas')
+      } else if (response.data.TypeUser === 'Estoque') {
+        navigate('/cad_produto')
+      } else if (response.data.TypeUser === 'Caixa') {
+        navigate('/caixa')
       } else {
         alert("Usuário desconhecido");
       }

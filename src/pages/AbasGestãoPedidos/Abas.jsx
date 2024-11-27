@@ -400,8 +400,18 @@ function Abas() {
                     id="desconto"
                     placeholder="Desconto"
                     type="number"
-                    value={desconto}
-                    onChange={(e) => setDesconto(e.target.value)}
+                    min={0} // Define o valor mínimo como 0
+                    max={5} // Define o valor máximo como 5
+                    onChange={(e) => {
+                      const valor = parseFloat(e.target.value);
+                      if (valor >= 0 && valor <= 5) {
+                        setDesconto(valor); // Atualiza com o valor dentro do intervalo permitido
+                      } else if (valor < 0) {
+                        setDesconto(0); // Corrige automaticamente para o valor mínimo
+                      } else {
+                        setDesconto(5); // Corrige automaticamente para o valor máximo
+                      }
+                    }}
                     required
                   />
                 </div>

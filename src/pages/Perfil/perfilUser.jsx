@@ -53,24 +53,6 @@ const Perfil = () => {
       ) {
         return (
           <div className="perfil-body">
-              {/* Dados da Empresa */}
-              <details>
-                        <summary className="Summary-ContainerInt">
-                          Dados da Empresa
-                        </summary>
-                        <p className="Dados-ContainerInt">
-                          <strong> ID: </strong> {userInfo.id_user}{" "}
-                        </p>
-                        <p className="Dados-ContainerInt">
-                          <strong> Gestor: </strong> {userInfo.id_user}{" "}
-                        </p>
-                        <p className="Dados-ContainerInt">
-                          <strong> CNPJ: </strong> {userInfo.id_user}
-                        </p>
-                        <p className="Dados-ContainerInt">
-                          <strong> Email: </strong> {userInfo.id_user}
-                        </p>
-                      </details>
             <footer className="perfil-footer">
               <details className="perfil-details">
                 <summary className="perfil-summary">

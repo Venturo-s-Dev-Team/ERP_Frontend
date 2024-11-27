@@ -162,7 +162,7 @@ const handleShowInfo = (venda) => {
               <tr key={venda.id_pedido}>
                 <td>{venda.id_pedido}</td>
                 <td>{venda.nome_cliente}</td>
-                <td>{venda.total}</td>
+                <td>R$ {venda.total}</td>
                 <td>
                   <button
                     className="btn-abrir"

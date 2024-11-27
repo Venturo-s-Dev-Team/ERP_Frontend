@@ -179,36 +179,36 @@ const AbasForUpdate = () => {
     return total - (total * (desconto / 100));
   };
 
-// Função para atualizar o pedido
-const enviarPedido = async () => {
-  if (!selectedClient || selectedProducts.length === 0) {
-    alert("Selecione um cliente e pelo menos um produto.");
-    return;
-  }
+  // Função para atualizar o pedido
+  const enviarPedido = async () => {
+    if (!selectedClient || selectedProducts.length === 0) {
+      alert("Selecione um cliente e pelo menos um produto.");
+      return;
+    }
 
-  const dadosVenda = {
-    id_pedido: VendaForUpdate.id_pedido,  // ID do pedido para atualizar
-    nome_cliente: selectedClient.razao_social,    // Cliente selecionado
-    produto: JSON.stringify(selectedProducts),    // Produtos em formato JSON
-    desconto: desconto,                           // Desconto aplicado
-    total: calcularValorTotal().toFixed(2),       // Valor total, formatado com 2 casas decimais
-    vendedor: userInfo.Nome_user,                  // Nome do vendedor que está logado
-    userId: userInfo.id_user
+    const dadosVenda = {
+      id_pedido: VendaForUpdate.id_pedido,  // ID do pedido para atualizar
+      nome_cliente: selectedClient.razao_social,    // Cliente selecionado
+      produto: JSON.stringify(selectedProducts),    // Produtos em formato JSON
+      desconto: desconto,                           // Desconto aplicado
+      total: calcularValorTotal().toFixed(2),       // Valor total, formatado com 2 casas decimais
+      vendedor: userInfo.Nome_user,                  // Nome do vendedor que está logado
+      userId: userInfo.id_user
+    };
+
+    const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
+
+    try {
+      const response = await axios.put(`/api/ServerTwo/UpdatePedido/${id}`, dadosVenda, {
+        withCredentials: true,
+      });
+      alert("Pedido atualizado com sucesso!");
+      navigate("/gestaoVendas");
+    } catch (error) {
+      console.error("Erro ao enviar os dados da venda: ", error);
+      alert("Erro ao atualizar o pedido.");
+    }
   };
-
-  const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
-
-  try {
-    const response = await axios.put(`/api/ServerTwo/UpdatePedido/${id}`, dadosVenda, {
-      withCredentials: true,
-    });
-    alert("Pedido atualizado com sucesso!");
-    navigate("/gestaoVendas");
-  } catch (error) {
-    console.error("Erro ao enviar os dados da venda: ", error);
-    alert("Erro ao atualizar o pedido.");
-  }
-};
 
   // Renderização das abas
   const renderizarPedidos = () => {
@@ -216,38 +216,38 @@ const enviarPedido = async () => {
       case "clientes":
         return (
           <div>
- {/* Input de pesquisa */}
- <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              marginTop: "10px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-              width: "350px",
-            }}
-          >
-            <BsSearch
-              style={{ marginLeft: "10px", color: "#888", fontSize: "18px" }}
-            />
-            <input
-              type="text"
-              placeholder="Pesquisar clientes"
-              onChange={handleSearchChangeCliente}
-              value={searchTermCliente}
+            {/* Input de pesquisa */}
+            <div
               style={{
-                backgroundColor: "white",
-                color: "black",
-                border: "1px solid #fff",
-                padding: "12px",
-                fontSize: "16px",
-                width: "300px",
-                outline: "none",
-                transition: "border-color 0.3s",
-                paddingLeft: "10px",
+                display: "flex",
+                alignItems: "center",
+                marginTop: "10px",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+                width: "350px",
               }}
-            />
-          </div>
+            >
+              <BsSearch
+                style={{ marginLeft: "10px", color: "#888", fontSize: "18px" }}
+              />
+              <input
+                type="text"
+                placeholder="Pesquisar clientes"
+                onChange={handleSearchChangeCliente}
+                value={searchTermCliente}
+                style={{
+                  backgroundColor: "white",
+                  color: "black",
+                  border: "1px solid #fff",
+                  padding: "12px",
+                  fontSize: "16px",
+                  width: "300px",
+                  outline: "none",
+                  transition: "border-color 0.3s",
+                  paddingLeft: "10px",
+                }}
+              />
+            </div>
             <div className="Clientes_List">
               <table>
                 <caption>Listagem de Clientes</caption>
@@ -288,9 +288,8 @@ const enviarPedido = async () => {
               <button
                 onClick={() => setRegistroAtivo("estoque")}
                 disabled={!canGoToNextPage()}
-                className={`ButtonSendEnv ${
-                  canGoToNextPage() ? "" : "disabled"
-                }`}
+                className={`ButtonSendEnv ${canGoToNextPage() ? "" : "disabled"
+                  }`}
               >
                 Próximo
               </button>
@@ -345,30 +344,30 @@ const enviarPedido = async () => {
                           {selectedProducts.some(
                             (p) => p.Codigo === product.Codigo
                           ) && (
-                            <input
-                              type="number"
-                              min="1"
-                              max={Math.min(product.Quantidade)}
-                              defaultValue={
-                                selectedProducts.find(
-                                  (p) => p.Codigo === product.Codigo
-                                )?.quantidade || 1
-                              }
-                              onChange={(e) => {
-                                const value = e.target.value;
-                                if (value === "" || /^\d+$/.test(value)) {
-                                  const quantity = Math.max(
-                                    1,
-                                    Math.min(product.Quantidade, Number(value))
-                                  ); // Limita a quantidade correta
-                                  handleQuantityChange(
-                                    product.Codigo,
-                                    quantity
-                                  );
+                              <input
+                                type="number"
+                                min="1"
+                                max={Math.min(product.Quantidade)}
+                                defaultValue={
+                                  selectedProducts.find(
+                                    (p) => p.Codigo === product.Codigo
+                                  )?.quantidade || 1
                                 }
-                              }}
-                            />
-                          )}
+                                onChange={(e) => {
+                                  const value = e.target.value;
+                                  if (value === "" || /^\d+$/.test(value)) {
+                                    const quantity = Math.max(
+                                      1,
+                                      Math.min(product.Quantidade, Number(value))
+                                    ); // Limita a quantidade correta
+                                    handleQuantityChange(
+                                      product.Codigo,
+                                      quantity
+                                    );
+                                  }
+                                }}
+                              />
+                            )}
                         </div>
                       </td>
                     </tr>
@@ -380,9 +379,8 @@ const enviarPedido = async () => {
               <button
                 onClick={() => setRegistroAtivo("resumo")}
                 disabled={!canGoToNextPage()}
-                className={`ButtonSendEnv ${
-                  canGoToNextPage() ? "" : "disabled"
-                }`}
+                className={`ButtonSendEnv ${canGoToNextPage() ? "" : "disabled"
+                  }`}
               >
                 Próximo
               </button>
@@ -420,9 +418,18 @@ const enviarPedido = async () => {
                     placeholder="Desconto"
                     type="number"
                     value={desconto}
-                    onChange={(e) =>
-                      setDesconto(parseFloat(e.target.value) || 0)
-                    }
+                    min={0} // Define o valor mínimo como 0
+                    max={5} // Define o valor máximo como 100
+                    onChange={(e) => {
+                      const valor = parseFloat(e.target.value);
+                      if (valor >= 0 && valor <= 5) {
+                        setDesconto(valor); // Atualiza com o valor dentro do intervalo permitido
+                      } else if (valor < 0) {
+                        setDesconto(0); // Corrige automaticamente para o valor mínimo
+                      } else {
+                        setDesconto(5); // Corrige automaticamente para o valor máximo
+                      }
+                    }}
                     required
                   />
                 </div>
@@ -453,43 +460,40 @@ const enviarPedido = async () => {
 
   return (
     <SideBarPage>
-    <main className="main-container">
-      <div>
-        <h2>Editar Pedido</h2>
-        <div className="DivButtonsSequence">
-          <div
-            className={`buttonSequencia ${
-              registroAtivo === "clientes" ? "active" : ""
-            }`}
-          >
-            1
+      <main className="main-container">
+        <div>
+          <h2>Editar Pedido</h2>
+          <div className="DivButtonsSequence">
+            <div
+              className={`buttonSequencia ${registroAtivo === "clientes" ? "active" : ""
+                }`}
+            >
+              1
+            </div>
+            <div
+              className="line"
+              style={{ backgroundColor: lineColors[0] }}
+            ></div>
+            <div
+              className={`buttonSequencia ${registroAtivo === "estoque" ? "active" : ""
+                }`}
+            >
+              2
+            </div>
+            <div
+              className="line"
+              style={{ backgroundColor: lineColors[1] }}
+            ></div>
+            <div
+              className={`buttonSequencia ${registroAtivo === "resumo" ? "active" : ""
+                }`}
+            >
+              3
+            </div>
           </div>
-          <div
-            className="line"
-            style={{ backgroundColor: lineColors[0] }}
-          ></div>
-          <div
-            className={`buttonSequencia ${
-              registroAtivo === "estoque" ? "active" : ""
-            }`}
-          >
-            2
-          </div>
-          <div
-            className="line"
-            style={{ backgroundColor: lineColors[1] }}
-          ></div>
-          <div
-            className={`buttonSequencia ${
-              registroAtivo === "resumo" ? "active" : ""
-            }`}
-          >
-            3
-          </div>
+          {renderizarPedidos()}
         </div>
-        {renderizarPedidos()}
-      </div>
-    </main>
+      </main>
     </SideBarPage>
   );
 };
