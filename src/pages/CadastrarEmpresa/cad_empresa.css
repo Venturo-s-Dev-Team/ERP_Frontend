@@ -2,7 +2,7 @@
 
 .Container-CadEmp {
   background: linear-gradient(to bottom, #fff, #a7bbff);
-  height: 100%;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,10 +12,8 @@
   background-color: #fff;
   border-radius: 20px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
-  padding: 20px;
-  width: 80%;
-  max-width: 900px;
-  height: 670px;
+  padding: 10px;
+ 
 }
 
 /* Geral */

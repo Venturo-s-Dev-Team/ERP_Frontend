@@ -159,7 +159,7 @@ function Cad_Empresa() {
           </div>
 
           {/* Parte Endereço */}
-          <div className="EndereçoDiv-CadEmp">
+          {/* <div className="EndereçoDiv-CadEmp">
             <legend>Endereço</legend>
 
             <div className="Campo-Cep">
@@ -243,9 +243,9 @@ function Cad_Empresa() {
                 />
               </label>
             </div>
-          </div>
+          </div> */}
 
-          {/* Parte Empresa */}
+          {/* Parte Empresa
           <div className="EmpresaDiv-CadEmp">
             <legend>Cadastrante</legend>
             <div className="Campo-Telefone">
@@ -290,7 +290,7 @@ function Cad_Empresa() {
           </div>
 
           {/* Parte Documentos */}
-          <div className="DocumentosDiv-CadEmp">
+          {/* <div className="DocumentosDiv-CadEmp">
             <legend>Documentos</legend>
             <div className="Campo-Contrato">
               <label>

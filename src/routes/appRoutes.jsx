@@ -43,6 +43,7 @@ import AbasForUpdate from "../pages/AbasGestãoPedidos/AbasUpdate";
 import Hist_vendas from "../pages/Vendas/vendas";
 import Caixa from "../pages/Caixa/Caixa";
 import Logout from "../components/Logout";
+import VerMais from "../pages/Ver Mais/verMais";
 
 function AppRoutes() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
@@ -114,7 +115,8 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
         <Route path="/email_saida" element={<Caixa_Saida />} />
         <Route path="/perfil_user" element={<Perfil />} />
         <Route path="/logout" element={<Logout />} />
-
+        <Route path="/verMais" element={<VerMais />} />
+        
         {/* Rotas Protegidas */}
         <Route
           path="/balancete"
@@ -332,6 +334,7 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
             </ProtectedRoute>
           }
         />
+     
       </Routes>
   );
 }
