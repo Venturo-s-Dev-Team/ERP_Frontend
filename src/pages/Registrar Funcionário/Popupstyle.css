@@ -14,10 +14,19 @@
 .popup-container {
   background: #fff;
   border-radius: 8px;
-
   max-width: 90%;
+  overflow: hidden;
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.popup-containerModal {
+  background: #fff;
+  border-radius: 8px;
+  width: 100%;
+  overflow: hidden;
+  padding: 20px;
   padding: 20px;
 }
 
@@ -36,6 +45,7 @@
 
 .popup-body {
   padding: 20px 0;
+  width: 100%;
 }
 
 .popup-body input,

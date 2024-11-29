@@ -291,7 +291,7 @@ function RegistroProduto() {
                       <td>R$ {product.ValorUnitario}</td>
                       <td>
                         <button
-                          className="ButtonInfoProduct"
+                          className="Btn-Abrir"
                           onClick={() => handleShowInfo(product)}
                         >
                           Abrir
@@ -320,12 +320,13 @@ function RegistroProduto() {
               position: "fixed",
               top: "50%",
               bottom: 0,
-              left: "50%",
+              left: "55%",
               right: 0,
               zIndex: 1000,
-              width: "70%",
-              height: "73%",
+             padding: 40,
               borderRadius: 20,
+              width: 800,
+              height: 480,
               transform: "translate(-50%, -50%)",
               background: "linear-gradient(135deg, #fff, #fff)",
               boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
@@ -337,19 +338,21 @@ function RegistroProduto() {
               <div className="HeaderModal">
                 <h1>Registrar Produto</h1>
               </div>
-              <form onSubmit={Registro_Produto}>
+              <form onSubmit={Registro_Produto} >
                 <input
                   type="text"
                   name="Nome"
                   placeholder="Nome do produto"
                   required
                   onChange={handleChange}
+                  className="Input-Modal"
                 />
                 <input
                   type="text"
                   name="Fornecedor"
                   placeholder="Fornecedor"
                   onChange={handleChange}
+                  className="Input-Modal"
                 />
                 <input
                   type="number"
@@ -357,6 +360,7 @@ function RegistroProduto() {
                   placeholder="Quantidade"
                   required
                   onChange={handleChange}
+                  className="Input-Modal"
                 />
                 <input
                   type="number"
@@ -364,12 +368,14 @@ function RegistroProduto() {
                   placeholder="Preço por Unidade"
                   value={RegisterProdutos.ValorUnitario}
                   onChange={handleChange}
+                  className="Input-Modal"
                   required
                 />
                 <input
                   type="text"
                   name="Tamanho"
                   placeholder="Tamanho"
+                  className="Input-Modal"
                   required
                   onChange={handleChange}
                 />
@@ -481,11 +487,12 @@ function RegistroProduto() {
               position: "fixed",
               top: "50%",
               bottom: 0,
-              left: "50%",
+              left: "58%",
               right: 0,
               zIndex: 1000,
-              width: "50%",
-              height: "auto",
+              width: "60%",
+              padding: "40px",
+              height: "60%",
               borderRadius: 20,
               transform: "translate(-50%, -50%)",
               background: "linear-gradient(135deg, #fff, #fff)",
@@ -514,7 +521,8 @@ function RegistroProduto() {
                   <div className="ImgEstoqueProduct">
                     <img
                       src={`/api/ServerOne/uploads/ProdutosIMG/${selectedProduct.Imagem}`}
-                      style={{ width: 100, height: 100 }}
+              
+                      className="Img-CadPro"
                     />
                   </div>
                 </div>

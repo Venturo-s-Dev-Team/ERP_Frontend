@@ -13,6 +13,7 @@ const SuccessPopup = ({ onClose, onSubmit }) => {
   const [EmpresaId, setIdEmpresa] = useState("");
   const [erro, setErro] = useState("");
   const [userInfo, setUserInfo] = useState("");
+  const [isLoading, setIsLoading] = useState(false); // To show a loading spinner while submitting
 
   useEffect(() => {
     const verifyToken = async () => {
@@ -36,12 +37,40 @@ const SuccessPopup = ({ onClose, onSubmit }) => {
     verifyToken();
   }, []);
 
+  // Function to generate email based on name
   const generateEmail = (nome) => {
     return nome.toLowerCase().replace(/\s+/g, ".") + "@venturo.com";
   };
 
+  // Function to validate the form
+  const validateForm = () => {
+    if (!nome || !senha || !cpf || !emailPessoal || !typeUser) {
+      setErro("Todos os campos são obrigatórios.");
+      return false;
+    }
+
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (!emailRegex.test(emailPessoal)) {
+      setErro("O e-mail pessoal fornecido é inválido.");
+      return false;
+    }
+
+    if (senha.length < 8) {
+      setErro("A senha deve ter no mínimo 8 caracteres.");
+      return false;
+    }
+
+    return true;
+  };
+
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // First validate the form
+    if (!validateForm()) return;
+
+    setIsLoading(true); // Show loading spinner
 
     try {
       const response = await axios.post("/api/ServerTwo/cadastro_funcionario", {
@@ -53,20 +82,24 @@ const SuccessPopup = ({ onClose, onSubmit }) => {
         emailPessoal,
         cpf,
 
-        // Info para Logs
+        // Info for Logs
         id_EmpresaDb: userInfo.id_EmpresaDb,
         userId: userInfo.id_user,
         userName: userInfo.Nome_user,
       });
 
       if (response.status === 200) {
-        onSubmit(); // Executa a função para fechar o pop-up
-        window.location.reload();
+        setErro(""); // Clear previous error if success
+        onSubmit(); // Close popup
+        window.location.reload(); // Reload page to reflect changes
+      } else {
+        setErro("Erro ao cadastrar funcionário. Tente novamente.");
       }
     } catch (error) {
-      setErro(
-        "Erro ao cadastrar funcionário. Verifique os dados e tente novamente."
-      );
+      console.error("Erro ao cadastrar funcionário:", error);
+      setErro("Erro ao cadastrar funcionário. Verifique os dados e tente novamente.");
+    } finally {
+      setIsLoading(false); // Hide loading spinner after submission
     }
   };
 
@@ -127,7 +160,9 @@ const SuccessPopup = ({ onClose, onSubmit }) => {
               <button type="button" onClick={onClose}>
                 Cancelar
               </button>
-              <button type="submit">Cadastrar</button>
+              <button type="submit" disabled={isLoading}>
+                {isLoading ? "Cadastrando..." : "Cadastrar"}
+              </button>
             </div>
           </form>
         </div>

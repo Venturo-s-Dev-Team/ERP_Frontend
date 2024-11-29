@@ -11,8 +11,6 @@ import {
   BsListCheck,
 } from "react-icons/bs";
 import {
-  BarChart,
-  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -21,10 +19,11 @@ import {
   ResponsiveContainer,
   LineChart,
   Line,
+  Customized,
+  Rectangle,
 } from "recharts";
-import { PieChart, Pie, Sector, ComposedChart, Area} from "recharts";
+import { PieChart, Pie, Sector } from "recharts";
 import SideBarPage from "../../components/Sidebar/SideBarPage";
-
 
 const RADIAN = Math.PI / 180;
 const renderActiveShape = (props) => {
@@ -74,10 +73,25 @@ const renderActiveShape = (props) => {
         outerRadius={outerRadius + 10}
         fill={fill}
       />
-      <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
+      <path
+        d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
+        stroke={fill}
+        fill="none"
+      />
       <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`Total ${value}`}</text>
-      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
+      <text
+        x={ex + (cos >= 0 ? 1 : -1) * 12}
+        y={ey}
+        textAnchor={textAnchor}
+        fill="#333"
+      >{`Total ${value}`}</text>
+      <text
+        x={ex + (cos >= 0 ? 1 : -1) * 12}
+        y={ey}
+        dy={18}
+        textAnchor={textAnchor}
+        fill="#999"
+      >
         {`( ${(percent * 100).toFixed(2)}%)`}
       </text>
     </g>
@@ -95,6 +109,7 @@ function Home() {
   const [fluxoCaixa, setFluxoCaixa] = useState([]);
   const [typeUserData, setTypeUserData] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [vendasCrescimento, setVendasCrescimento] = useState([]);
 
   // Funções para buscar dados de estoque, funcionários, vendas, logs, etc.
 
@@ -126,20 +141,68 @@ function Home() {
       setSelectedTotalFuncionario(0);
     }
   };
-
   const fetchDadosVendas = async (id) => {
     try {
       const response = await axios.get(
         `/api/ServerOne/VendasConcluidas/${id}`,
-        { withCredentials: true }
+        {
+          withCredentials: true,
+        }
       );
       if (response.status === 200) {
-        setSelectedTotalVenda(response.data.N_Registros);
+        const vendas = response.data.InfoTabela || [];
+  
+        // Inicializamos um array para armazenar os dados formatados
+        const vendasFormatadas = [];
+  
+        // Variável para armazenar o total de vendas do mês anterior
+        let vendasMesAnterior = 0;
+  
+        // Formatar os dados das vendas e calcular o crescimento
+        vendas.forEach((venda) => {
+          const totalVendas = parseFloat(venda.total) || 0; // Total de vendas em R$
+          const nomeMes = venda.Data; // Suponha que "Data" seja no formato 'YYYY-MM'
+          
+          // Calcular o crescimento
+          const crescimento = vendasMesAnterior ? totalVendas - vendasMesAnterior : 0;
+  
+          vendasFormatadas.push({
+            name: nomeMes,
+            total: totalVendas,
+            crescimento: crescimento,
+          });
+  
+          vendasMesAnterior = totalVendas; // Atualiza o total de vendas do mês atual
+        });
+  
+        setVendasCrescimento(vendasFormatadas); // Atualiza o estado com os dados formatados
       }
     } catch (error) {
-      console.log("Não foi possível requerir as informações: ", error);
-      setSelectedTotalVenda(0);
+      console.log("Não foi possível requerir as informações de vendas: ", error);
+      setVendasCrescimento([]); // Reseta os dados em caso de erro
     }
+  };
+  
+  const CustomizedRectangle = (props) => {
+    const { formattedGraphicalItems } = props;
+    const firstSeries = formattedGraphicalItems[0];
+    const secondSeries = formattedGraphicalItems[1];
+  
+    return firstSeries?.props?.points.map((firstSeriesPoint, index) => {
+      const secondSeriesPoint = secondSeries?.props?.points[index];
+      const yDifference = firstSeriesPoint.y - secondSeriesPoint.y;
+  
+      return (
+        <Rectangle
+          key={firstSeriesPoint.payload.name}
+          width={10}
+          height={yDifference}
+          x={secondSeriesPoint.x - 5}
+          y={secondSeriesPoint.y}
+          fill={yDifference > 0 ? 'red' : yDifference < 0 ? 'green' : 'none'}
+        />
+      );
+    });
   };
 
   const fetchDadosHistoricLogs = async (id) => {
@@ -157,9 +220,12 @@ function Home() {
 
   const fetchDadosFuncionariosPorTipoUser = async (id) => {
     try {
-      const response = await axios.get(`/api/ServerOne/tableFuncionario/${id}`, {
-        withCredentials: true,
-      });
+      const response = await axios.get(
+        `/api/ServerOne/tableFuncionario/${id}`,
+        {
+          withCredentials: true,
+        }
+      );
       if (response.status === 200) {
         const funcionarioInfo = response.data.InfoTabela;
 
@@ -175,7 +241,7 @@ function Home() {
         }, {});
 
         // Preparar os dados para o gráfico de pizza
-        const tipoUsuarioData = Object.keys(tipoUsuarioCount).map(tipo => ({
+        const tipoUsuarioData = Object.keys(tipoUsuarioCount).map((tipo) => ({
           name: tipo,
           value: tipoUsuarioCount[tipo],
         }));
@@ -226,6 +292,7 @@ function Home() {
       "Dezembro",
     ];
 
+    // Agregando valores por mês
     const receitasPorMes = receitas.reduce((acc, item) => {
       if (item.DataExpiracao) {
         const mes = new Date(item.DataExpiracao).getMonth();
@@ -244,11 +311,18 @@ function Home() {
       return acc;
     }, {});
 
-    return meses.map((mes, index) => ({
-      name: mes,
-      receitas: receitasPorMes[index] || 0,
-      despesas: despesasPorMes[index] || 0,
-      fluxoCaixa: (receitasPorMes[index] || 0) - (despesasPorMes[index] || 0),
+    // Identificar meses relevantes
+    const mesesRelevantes = Object.keys({
+      ...receitasPorMes,
+      ...despesasPorMes,
+    }).map(Number); // Converte as chaves para números
+
+    // Construir os dados do fluxo de caixa para os meses relevantes
+    return mesesRelevantes.map((mes) => ({
+      name: meses[mes], // Nome do mês
+      receitas: receitasPorMes[mes] || 0,
+      despesas: despesasPorMes[mes] || 0,
+      fluxoCaixa: (receitasPorMes[mes] || 0) - (despesasPorMes[mes] || 0),
     }));
   };
 
@@ -277,9 +351,9 @@ function Home() {
   }, [navigate]);
 
   useEffect(() => {
-    if (userInfo.TypeUser === 'Gestor' && userInfo.Status === "NO") {
-      return
-  } else if (userInfo.id_EmpresaDb) {
+    if (userInfo.TypeUser === "Gestor" && userInfo.Status === "NO") {
+      return;
+    } else if (userInfo.id_EmpresaDb) {
       fetchDadosFinanceiros(userInfo.id_EmpresaDb);
       fetchDadosEstoque(userInfo.id_EmpresaDb);
       fetchDadosFuncionarios(userInfo.id_EmpresaDb);
@@ -287,7 +361,7 @@ function Home() {
       fetchDadosHistoricLogs(userInfo.id_EmpresaDb);
       fetchDadosFuncionariosPorTipoUser(userInfo.id_EmpresaDb);
     }
-  }, [ userInfo.TypeUser, userInfo.id_EmpresaDb]);
+  }, [userInfo.TypeUser, userInfo.id_EmpresaDb]);
 
   // Verificar se a empresa está ativa
   if (userInfo.ValoresNull === true) {
@@ -312,111 +386,123 @@ function Home() {
   return (
     <SideBarPage>
       <main>
-
         <div>
           <div className="main-title">
             <h3>DASHBOARD - BEM VINDO {userInfo.Nome_user}</h3>
           </div>
 
-          <div className="main-cards">
-            <div className="card">
-              <div className="card-inner">
-                <h3>ITENS DE ESTOQUE</h3>
-                <BsFillArchiveFill className="card_icon" />
+          <div className="scroll-despesas">
+            <div className="main-cards">
+              <div className="card">
+                <div className="card-inner">
+                  <h3>ITENS DE ESTOQUE</h3>
+                  <BsFillArchiveFill className="card_icon" />
+                </div>
+                <h1>{SelectedTotalEstoque}</h1>
               </div>
-              <h1>{SelectedTotalEstoque}</h1>
+              <div className="card">
+                <div className="card-inner">
+                  <h3>PEDIDOS</h3>
+                  <BsListCheck className="card_icon" />
+                </div>
+                <h1>{SelectedTotalVenda}</h1>
+              </div>
+              <div className="card">
+                <div className="card-inner">
+                  <h3>FUNCIONÁRIOS</h3>
+                  <BsPeopleFill className="card_icon" />
+                </div>
+                <h1>{SelectedTotalFuncionario}</h1>
+              </div>
+              <div className="card">
+                <div className="card-inner">
+                  <h3>ALTERAÇÕES</h3>
+                  <BsFillBellFill className="card_icon" />
+                </div>
+                <h1>{SelectedTotalLogs}</h1>
+              </div>
             </div>
-            <div className="card">
-              <div className="card-inner">
-                <h3>PEDIDOS</h3>
-                <BsListCheck className="card_icon" />
+
+            <div className="graficosDashboard">
+              <div className="charts">
+                {/* Gráfico de Fluxo de Caixa */}
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={fluxoCaixa}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line
+                      type="monotone"
+                      dataKey="fluxoCaixa"
+                      stroke="#8884d8"
+                      name="Fluxo de Caixa"
+                      activeDot={{ r: 8 }}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="receitas"
+                      stroke="#82ca9d"
+                      name="Receitas"
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="despesas"
+                      stroke="#FF0000"
+                      name="Despesas"
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
               </div>
-              <h1>{SelectedTotalVenda}</h1>
-            </div>
-            <div className="card">
-              <div className="card-inner">
-                <h3>FUNCIONÁRIOS</h3>
-                <BsPeopleFill className="card_icon" />
+              <div className="charts">
+                <ResponsiveContainer width="100%" height={300}>
+                  <PieChart>
+                    <Pie
+                      activeIndex={activeIndex}
+                      activeShape={renderActiveShape}
+                      data={typeUserData} // Passa os dados formatados para o gráfico
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={80}
+                      fill="#8884d8"
+                      dataKey="value"
+                      onMouseEnter={(_, index) => setActiveIndex(index)} // Atualiza o estado ao passar o mouse
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
               </div>
-              <h1>{SelectedTotalFuncionario}</h1>
-            </div>
-            <div className="card">
-              <div className="card-inner">
-                <h3>ALTERAÇÕES</h3>
-                <BsFillBellFill className="card_icon" />
+              <div className="charts">
+               <ResponsiveContainer width="100%" height={500}>
+      <LineChart
+        data={vendasCrescimento} // Dados formatados das vendas
+        margin={{
+          top: 5,
+          right: 30,
+          left: 20,
+          bottom: 5,
+        }}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="name" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        
+        {/* Linha de Vendas Totais */}
+        <Line type="monotone" dataKey="total" stroke="#8884d8" name="Vendas Totais (R$)" />
+        
+        {/* Linha de Crescimento das Vendas */}
+        <Line type="monotone" dataKey="crescimento" stroke="#82ca9d" name="Crescimento de Vendas (R$)" />
+        
+        <Customized component={CustomizedRectangle} />
+      </LineChart>
+    </ResponsiveContainer>
+
               </div>
-              <h1>{SelectedTotalLogs}</h1>
             </div>
           </div>
-
-<div className="graficosDashboard">
-          <div className="charts">
-            {/* Gráfico de Fluxo de Caixa */}
-            <ResponsiveContainer width="100%" height={300}>
-              <LineChart data={fluxoCaixa}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Line
-                  type="monotone"
-                  dataKey="fluxoCaixa"
-                  stroke="#8884d8"
-                  name="Fluxo de Caixa"
-                  activeDot={{ r: 8 }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="receitas"
-                  stroke="#82ca9d"
-                  name="Receitas"
-                />
-                <Line
-                  type="monotone"
-                  dataKey="despesas"
-                  stroke="#FF0000"
-                  name="Despesas"
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="charts">
-            <ResponsiveContainer width="100%" height={300}>
-              <PieChart>
-                <Pie
-                  activeIndex={activeIndex}
-                  activeShape={renderActiveShape}
-                  data={typeUserData}  // Passa os dados formatados para o gráfico
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                  onMouseEnter={(_, index) => setActiveIndex(index)} // Atualiza o estado ao passar o mouse
-                />
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-
-          {/* <div className="chart">
-            <ResponsiveContainer width="100%" height={300}>
-              <ComposedChart >
-                <CartesianGrid stroke="#f5f5f5" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="vendas" barSize={20} fill="#413ea0" />
-                <Area type="monotone" dataKey="crescimentoR$" fill="#8884d8" stroke="#8884d8" />
-                <Line type="monotone" dataKey="crescimentoPorcentagem" stroke="#ff7300" />
-              </ComposedChart>
-           </ResponsiveContainer>
-          </div>  */}
-
-          </div>
-
         </div>
       </main>
     </SideBarPage>

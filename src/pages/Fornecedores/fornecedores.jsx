@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import { FaFileExport, } from "react-icons/fa";
 import axios from "axios";
-import {jwtDecode} from "jwt-decode"; // Importação correta
+import { jwtDecode } from "jwt-decode"; // Importação correta
 import InputMask from "react-input-mask";
 import SideBarPage from "../../components/Sidebar/SideBarPage";
 import "./fornecedores.css";
@@ -19,7 +19,7 @@ function Fornecedores() {
   const [showModalFornecedores, setShowModalFornecedores] = useState(false);
   const [selectedFornecedor, setselectedFornecedor] = useState(null); // Fornecedor selecionado
   const [searchTerm, setSearchTerm] = useState(""); // Termo de pesquisa
-
+  
 
   const handleShow = () => setShowModal(true);
   const handleClose = () => {
@@ -315,10 +315,10 @@ function Fornecedores() {
                       <td>
                         <button
                           onClick={() => SelecionandoFornecedor(Fornecedor)}
-                          className="ButtonInfoProduct"
+                          className="Btn-Informations"
                         >
                           {" "}
-                          Info{" "}
+                          Info.{" "}
                         </button>
                       </td>
                       <td>
@@ -343,23 +343,27 @@ function Fornecedores() {
               position: "fixed",
               top: "50%",
               bottom: 0,
-              left: "55%",
+              left: "50%",
               right: 0,
               zIndex: 1000,
-              width: "80%",
+              width: "70%",
               height: "80%",
               borderRadius: 20,
               transform: "translate(-50%, -50%)",
               background: "white",
               boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
+              maxHeight: "calc(100% - 20px)", // Ajuste da altura para que a rolagem funcione corretamente
+              overflowY: "auto",              // A barra de rolagem será ativada se o conteúdo for maior que a altura
+              padding: "10px",  
             }}
             show={showModal}
             onHide={handleClose}
           >
-            <div className="DivModalCont">
+            <div className="popup-containerModal">
               <div>
                 <h1>Registrar Fornecedor</h1>
               </div>
+              <div className="popup-body">
               <form onSubmit={handleSubmit} >
   <input
     type="text"
@@ -542,22 +546,25 @@ function Fornecedores() {
     }
   />
 
-  <div>
-    <button type="submit" className="RegisterPr">
+  <div className="popup-footer">
+    <button type="submit" >
       Registrar
     </button>
     <button
       type="button"
-      className="FecharPr"
       onClick={handleClose}
     >
       Fechar
     </button>
   </div>
 </form>
+</div>
 
             </div>
           </Modal>
+
+ 
+
 
           <Modal
             style={{

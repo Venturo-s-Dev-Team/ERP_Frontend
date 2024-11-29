@@ -31,3 +31,29 @@
   width: 30px;
   height: 30px;
 }
+
+.Input-Modal{
+  margin: 10px;
+  width: 350px;
+  height: 35px;
+  border-radius: 3px;
+  border: 1px solid black;
+  background-color: #fff;
+  padding-left: 30px;
+  
+}
+
+.Btn-Abrir{
+  background-color: rgb(10, 84, 131);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 110px;
+  height: 38px;
+}
+
+.Btn-Abrir:hover {
+  background-color: rgba(10, 85, 131, 0.51);
+}

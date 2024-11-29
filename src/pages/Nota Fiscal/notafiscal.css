@@ -65,7 +65,7 @@
 }
 
 /* Endereço */
-.EndereçoDiv-CadEmp {
+.EndereçoDiv-CadEmpNota {
   border-color: #000;
   border-width: 1px;
   border-style: solid;
@@ -79,7 +79,7 @@
   box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
 }
 
-.EndereçoDiv-CadEmp legend {
+.EndereçoDiv-CadEmpNota legend {
   background-color: #fff;
   width: 120px;
   text-align: center;
@@ -96,11 +96,11 @@
 }
 
 .Campo-Logra input {
-  margin-left: 10px;
   width: 500px;
   height: 25px;
   padding: 5px;
   border-radius: 2px;
+  margin-left: 10px;
 }
 
 .Campo-Numero {

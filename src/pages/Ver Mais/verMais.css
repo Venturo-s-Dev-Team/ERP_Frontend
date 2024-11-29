@@ -7,7 +7,7 @@ border-bottom: 2px solid #000000;
 border-left: 2px solid #000000; 
 margin-top: -89px;
 width: 90%;
-height: 450px;
+height: 500px;
 margin-left: 65px;
 }
 
@@ -24,6 +24,12 @@ font-size: 34px;
 
 .Container-VerMais button{
 justify-content: flex-end;
+}
+
+
+.Localização{
+    margin-top: 20px;
+margin-bottom: 20px;
 }
 
 .Btn-Voltar{

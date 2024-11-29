@@ -60,3 +60,44 @@
   color: #0a5483;
   margin-bottom: 20px;
 }
+
+
+.RegisterPr {
+  width: 120px;
+  height: 40px;
+  border-radius: 5px;
+  background: linear-gradient(to top, #22963d, #28a745);
+  margin: 15px;
+  border-color: transparent;
+  color: #fff;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.RegisterPr:hover {
+  opacity: 0.8;
+  background-color: #000000;
+}
+
+.FecharPr {
+  width: 120px;
+  height: 40px;
+  border-radius: 5px;
+  background: linear-gradient(to top, #dc3545, #ff0e26);
+  margin-top: 100px;
+  border-color: transparent;
+  color: #fff;
+  text-align: center;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.FecharPr:hover {
+  opacity: 0.8;
+  background-color: #000000;
+}

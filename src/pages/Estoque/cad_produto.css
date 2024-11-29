@@ -107,9 +107,6 @@ tbody td {
   justify-content: center;
   align-items: flex-start;
   display: flex;
-  top: 20%;
-  padding-top: 5%;
-  padding-left: 7%;
 }
 
 .DivModalCont input[type="text"],
@@ -117,13 +114,12 @@ tbody td {
 .DivModalCont input[type="date"],
 .DivModalCont input[type="CNPJ"],
 .DivModalCont input[type="email"] {
-  margin: 10px;
-  width: 350px;
+  margin: 5px;
+  width: 45%;
   height: 35px;
   border-radius: 3px;
   border: 1px solid black;
   background-color: #fff;
-  padding-left: 30px;
 }
 
 .perfil-cliente {
@@ -216,12 +212,12 @@ tbody td {
   height: 40px;
   border-radius: 5px;
   background: linear-gradient(to top, #dc3545, #ff0e26);
-  margin: 15px;
+  margin-top: 170px;
   border-color: transparent;
   color: #fff;
   text-align: center;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-end;
+  align-items: flex-end;
   flex-direction: column;
   cursor: pointer;
 }
@@ -236,21 +232,20 @@ tbody td {
   left: 700px;
 }
 
-.ButtonInfoProduct {
-  width: 60px;
-  height: 35px;
-  background: linear-gradient(to top, #bcbcbc, #d8d8d8);
-  color: #000000;
-  border-radius: 5px;
-  border: transparent;
-  font-weight: bold;
+.Btn-Abrir{
+  background-color: rgb(10, 84, 131);
+  color: white;
+  border: none;
+  padding: 10px 20px;
   cursor: pointer;
+  border-radius: 5px;
+  width: 110px;
+  height: 38px;
 }
 
-.ButtonInfoProduct:hover {
-  opacity: 0.8;
+.Btn-Abrir:hover {
+  background-color: rgba(10, 85, 131, 0.51);
 }
-
 .corpoInfoProduto {
   text-align: flex-start;
   font-size: 30px;
@@ -372,4 +367,36 @@ tbody td {
 .FormsEditProdutinput[type="number"]:focus {
   border-color: #007bff;
   outline: none;
+}
+
+.CorpoEtoque{
+  margin-top: -10px;
+  width: 400px;
+}
+
+.CorpoEtoque h3{
+  font-size: 25px;
+  margin-bottom: 5px;
+}
+
+.CorpoEtoque p{
+  font-size: 20px;
+}
+
+.Img-CadPro{
+  margin-left: 70px;
+  margin-top: -80px;
+  width: 260px;
+  height: 260px;
+}
+
+.Input-Modal{
+  margin: 10px;
+  width: 350px;
+  height: 35px;
+  border-radius: 3px;
+  border: 1px solid black;
+  background-color: #fff;
+  padding-left: 30px;
+  
 }

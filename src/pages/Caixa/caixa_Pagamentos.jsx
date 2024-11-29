@@ -97,7 +97,6 @@ function Caixa_Pagamentos() {
         </div>
 
         <div className="scroll-despesas">
-          <div className="main-CaixaPagamentos">
             <div className="Tabela-CxPagamentos">
               <table>
                 <thead>
@@ -161,11 +160,14 @@ function Caixa_Pagamentos() {
           onChange={handleCpfCnpjChange}
         />
       </div>
-            </div>
-          </div>
-        <button className="btn-caixa" onClick={handleProsseguir}>
+      <div className="Button_Cad">
+        <button onClick={handleProsseguir}>
         Prosseguir
       </button>
+      </div>
+          </div>
+    
+
       </main>
     </SideBarPage>
   );

@@ -279,15 +279,38 @@ function Abas() {
         return (
           <div>
             {/* Input de pesquisa */}
-            <div>
-              <input
-                type="text"
-                placeholder="Pesquisar clientes..."
-                value={searchTermProduto}
-                onChange={handleSearchChangeProduto}
-                className="SearchInput"
-              />
-            </div>
+          
+            <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginTop: "10px",
+              border: "1px solid #ccc",
+              borderRadius: "4px",
+              width: "350px",
+            }}
+          >
+            <BsSearch
+              style={{ marginLeft: "10px", color: "#888", fontSize: "18px" }}
+            />
+            <input
+              type="text"
+              placeholder="Pesquisar clientes..."
+              value={searchTermProduto}
+              onChange={handleSearchChangeProduto}
+              style={{
+                backgroundColor: "white",
+                color: "black",
+                border: "1px solid #fff",
+                padding: "12px",
+                fontSize: "16px",
+                width: "300px",
+                outline: "none",
+                transition: "border-color 0.3s",
+                paddingLeft: "10px",
+              }}
+            />
+          </div>
             <div className="Estoque_List">
               <table id="table-to-export">
                 <caption>Listagens de Produtos</caption>

@@ -141,20 +141,8 @@ const MenuList = ({ darkTheme }) => {
           key: "plano_conta",
           label: "Plano conta",
           children: [
-            { key: "planos", label: <Link>Planos</Link> },
-            {
-              key: "lancamento",
-              label: <Link to="/lancontabil"> Lançamento Contábil </Link>,
-            },
-            { key: "balancete", label: <Link to="/balancete">Balancete</Link> },
-            { key: "dre", label: <Link to="/dre"> DRE</Link> },
-            { key: "razao", label: <Link to="/razao">Razão</Link> },
+            { key: "razao", label: <Link to="/razao">Livro Razão</Link> },
           ],
-        },
-        {
-          key: "imposto",
-          label: "Imposto",
-          children: [{ key: "cad_imposto", label: "Cadastrar Imposto" }],
         },
       ],
     },

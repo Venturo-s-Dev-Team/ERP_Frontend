@@ -74,6 +74,7 @@ function VerMais() {
             <h1>{empresa?.RazaoSocial}</h1>
             <h3>Inscrição Estadual: {empresa?.InscricaoEstadual}</h3>
             <h3>Site: {empresa?.Site}</h3>
+            <div className="Localização">
             <h2>Localização</h2>
             <h3>Munícipio: {empresa?.Municipio}</h3>
             <h3>CEP: {empresa?.CEP}</h3>
@@ -81,15 +82,13 @@ function VerMais() {
             <h3>UF: {empresa?.UF}</h3>
             <h3>Números: {empresa?.Numero}</h3>
             <h3>Complemento: {empresa?.Complemento}</h3>
+            </div>
             <h2>Dados do cadastrante</h2>
             <h3>Telefone: {empresa?.Telefone}</h3>
             <h3>CPF: {empresa?.CPF}</h3>
             <h3>RG: {empresa?.RG}</h3>
-            <div className="ImageContainer">
-                <img src={`/api/ServerOne/uploads/Logo/${empresa.Logo}`} alt="Imagem da empresa" className="Imagem" />
-              </div>
+           
           </div>
-        </div>
         <div className="Arquivos">
           <h2>Arquivos</h2>
           <h4>Contrato Social:
@@ -108,6 +107,9 @@ function VerMais() {
             </a>
           </h4>
         </div>
+                </div>
+
+        
       </main>
     </SideBarPage>
   );

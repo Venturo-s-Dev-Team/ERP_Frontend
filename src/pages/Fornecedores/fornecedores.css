@@ -98,3 +98,19 @@
   text-align: center;
   margin-top: 20px;
 }
+
+.Btn-Informations{
+  background-color: rgb(10, 84, 131);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 110px;
+  height: 38px;
+}
+
+.Btn-Informations:hover{
+  background-color: rgba(10, 85, 131, 0.845);
+
+}

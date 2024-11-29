@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
 import { FaFileExport } from "react-icons/fa";
 import axios from "axios";
+import { BsSearch } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import SideBarPage from "../../components/Sidebar/SideBarPage";
 import { jwtDecode } from "jwt-decode";
@@ -119,16 +120,41 @@ function Hist_vendas() {
             <FaFileExport />
           </button>
         </div>
-                            {/* Input de pesquisa */}
-                            <div>
-          <input
-            type="text"
-            placeholder="Pesquisar clientes..."
-            value={searchTerm}
-            onChange={handleSearchChange}
-            className="SearchInput"
-          />
-          </div>
+
+          
+ {/* Input de pesquisa */}
+ <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginTop: "10px",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+                width: "350px",
+              }}
+            >
+              <BsSearch
+                style={{ marginLeft: "10px", color: "#888", fontSize: "18px" }}
+              />
+              <input
+                type="text" 
+                placeholder="Pesquisar clientes..."
+                value={searchTerm}
+                onChange={handleSearchChange}
+               
+                style={{
+                  backgroundColor: "white",
+                  color: "black",
+                  border: "1px solid #fff",
+                  padding: "12px",
+                  fontSize: "16px",
+                  width: "300px",
+                  outline: "none",
+                  transition: "border-color 0.3s",
+                  paddingLeft: "10px",
+                }}
+              />
+            </div>
         <div className="tabela-vendas">
         <table>
             <caption>Histórico de Vendas</caption>

@@ -411,7 +411,7 @@ function Clientes() {
                     <td>
                       <button
                         onClick={() => SelecionandoCliente(cliente)}
-                        className="ButtonInfocliente"
+                        className="Btn-Info"
                       >
                         {" "}
                         Info{" "}
@@ -469,7 +469,7 @@ function Clientes() {
                   Pessoa Jurídica (CNPJ)
                 </button>
                 <button onClick={handleClose} className="FecharPr">
-                  FECHAR
+                  Fechar
                 </button>
               </div>
             </div>
@@ -983,8 +983,8 @@ function Clientes() {
                 </div>
 
                 <div className="buttons">
-                  <button onClick={handleCloseClientes} className="FecharPr">
-                    FECHAR
+                  <button onClick={handleCloseClientes} className="CloseBtn">
+                    Fechar
                   </button>
                 </div>
               </div>

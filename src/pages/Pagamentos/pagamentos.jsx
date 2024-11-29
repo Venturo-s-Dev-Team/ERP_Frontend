@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./pagamentos.css";
 import { useNavigate } from "react-router-dom";
+import InputMask from "react-input-mask";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 import { FaFileExport } from "react-icons/fa";
 import { Modal } from "react-bootstrap";
 import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
@@ -9,6 +11,7 @@ import * as XLSX from "xlsx";
 import SideBarPage from "../../components/Sidebar/SideBarPage";
 
 function Pagamentos() {
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [showModalInfo, setShowModalInfo] = useState(false);
   const [selectedPagament, setSelectedPagament] = useState(null);
@@ -22,7 +25,46 @@ function Pagamentos() {
     TipoPagamento: "",
     Descricao: "",
   });
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    verifyToken();
+  }, []);
+
+  const verifyToken = async () => {
+    try {
+      const response = await axios.get("/api/ServerTwo/verifyToken", {
+        withCredentials: true,
+      });
+      if (typeof response.data.token === "string") {
+        const decodedToken = jwtDecode(response.data.token);
+        setUserInfo(decodedToken);
+      } else {
+        console.error("Token não é uma string:", response.data.token);
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Token inválido", error);
+      navigate("/login");
+    }
+  };
+
+    // Função para carregar vendas do banco de dados
+    useEffect(() => {
+      fetchPagamentos()
+    }, []);
+  
+  
+    const fetchPagamentos= async () => {
+      try {
+        const response = await axios.get(`/api/ServerOne/tablepagamentos`, {
+          withCredentials: true,
+        });
+        setPagaments(response.data.InfoTabela);
+      } catch (error) {
+        console.error("Erro ao carregar pagamentos: ", error);
+      }
+    };
+  
 
   // Mostrar e fechar modal
   const handleShow = () => setShowModal(true);
@@ -48,18 +90,12 @@ function Pagamentos() {
 
   const registerPagament = async (e) => {
     e.preventDefault();
-    const id_EmpresaDb = userInfo.id_EmpresaDb
-      ? userInfo.id_EmpresaDb
-      : userInfo.id_user;
 
     try {
       const response = await axios.post(
         `/api/ServerTwo/registrarPagamento`,
         {
           ...newPagament,
-          id_EmpresaDb,
-          userId: userInfo.id_user,
-          userName: userInfo.username,
         },
         {
           withCredentials: true,
@@ -121,6 +157,7 @@ function Pagamentos() {
                   <th>Valor</th>
                   <th>Conta</th>
                   <th>Info.</th>
+                  <th>Selecionar</th>
                 </tr>
               </thead>
               <tbody>
@@ -132,12 +169,21 @@ function Pagamentos() {
 
                     <td>
                       <button
-                        className="ButtonInfoProduct"
+                        className="Btn-Abrir"
                         onClick={() => handleShowInfo(pagament)}
                       >
                         Abrir
                       </button>
                     </td>
+                    <label className="custom-radio">
+                    <input
+                      type="radio"
+                      name="selectedPagament"
+                      onChange={() => setSelectedPagament(pagament)}
+                      checked={selectedPagament?.id === pagament.id}
+                    />
+                    <span className="radio-checkmark"></span>
+                        </label>
                   </tr>
                 ))}
               </tbody>
@@ -149,11 +195,12 @@ function Pagamentos() {
               position: "fixed",
               top: "50%",
               bottom: 0,
-              left: "50%",
+              left: "55%",
               right: 0,
               zIndex: 1000,
-              width: "70%",
-              height: "73%",
+              padding: 40,
+              width: "55%",
+              height: "63%",
               borderRadius: 20,
               transform: "translate(-50%, -50%)",
               background: "white",
@@ -173,6 +220,8 @@ function Pagamentos() {
                   placeholder="Nome"
                   value={newPagament.Nome}
                   onChange={handleChange}
+                  className="Input-Modal"
+                  required
                 />
                 <input
                   type="text"
@@ -180,6 +229,8 @@ function Pagamentos() {
                   placeholder="Valor"
                   value={newPagament.Valor}
                   onChange={handleChange}
+                  className="Input-Modal"
+                  required
                 />
                 <input
                   type="date"
@@ -187,20 +238,26 @@ function Pagamentos() {
                   placeholder="Data"
                   value={newPagament.Data}
                   onChange={handleChange}
+                  className="Input-Modal"
+                  required
                 />
-                <input
+                <InputMask
+                mask="999999999999"
                   type="text"
                   name="Conta"
                   placeholder="Conta"
                   value={newPagament.Conta}
                   onChange={handleChange}
+                  className="Input-Modal"
                 />
                 <input
                   type="text"
                   name="TipoPagamento"
-                  placeholder="Tipo"
+                  placeholder="Tipo de pagamento"
                   value={newPagament.TipoPagamento}
                   onChange={handleChange}
+                  className="Input-Modal"
+                  required
                 />
                 <input
                   type="text"
@@ -208,6 +265,7 @@ function Pagamentos() {
                   placeholder="Descrição"
                   value={newPagament.Descricao}
                   onChange={handleChange}
+                  className="Input-Modal"
                 />
 
                 <div className="FooterButton">
@@ -234,7 +292,7 @@ function Pagamentos() {
               height: "93%",
               borderRadius: 10,
               transform: "translate(-50%, -50%)",
-              background: "linear-gradient(135deg, #ddd, white)",
+              background: "white",
               boxShadow: "10px 10px 15px rgba(0, 0, 0, 0.6)",
             }}
             show={showModalInfo}

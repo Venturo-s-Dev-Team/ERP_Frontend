@@ -146,7 +146,7 @@
 .scroll-despesas {
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 91vh;
+  max-height: 90vh;
 }
 
 /* Para navegadores baseados em WebKit (Chrome, Safari) */

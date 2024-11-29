@@ -51,7 +51,7 @@ function NotaFiscal() {
             </div>
 
             {/* Parte Endereço */}
-            <div className="EndereçoDiv-CadEmp">
+            <div className="EndereçoDiv-CadEmpNota">
               <legend>Endereço</legend>
               <div className="Campo-Logra">
                 <label>

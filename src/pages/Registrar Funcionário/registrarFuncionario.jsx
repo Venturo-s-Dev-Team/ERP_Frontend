@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import SideBarPage from "../../components/Sidebar/SideBarPage";
 import axios from "axios";
+import InputMask from "react-input-mask";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import { FaFileExport } from "react-icons/fa";
@@ -8,6 +9,8 @@ import { IoIosPersonAdd } from "react-icons/io";
 import { BsSearch } from "react-icons/bs";
 import SuccessPopup from "./PopupFuncionarios"; // Importe o componente pop-up
 import * as XLSX from "xlsx";
+import { Modal } from "react-bootstrap";
+import { FaPenToSquare } from "react-icons/fa6";
 
 function CadastroFuncionario() {
   const navigate = useNavigate();
@@ -15,6 +18,11 @@ function CadastroFuncionario() {
   const [userInfo, setUserInfo] = useState("");
   const [Funcionarios, setFuncionarios] = useState([]);
   const [searchTerm, setSearchTerm] = useState(""); // Estado para armazenar o termo de pesquisa
+  const [ShowModalEditFunc, setShowModalEditFunc] = useState(false); //alterar funcionario
+  const [selectedFuncionario, setSelectedFuncionario] = useState(null); // Track the selected employee
+
+  const handleModalShowEditFunc = () => setShowModalEditFunc(true);
+  const handleModalShowEditFuncClose = () => setShowModalEditFunc(false);
 
   // Função para verificar o token
   useEffect(() => {
@@ -48,9 +56,10 @@ function CadastroFuncionario() {
 
   const fetchFuncionarios = async (id) => {
     try {
-      const response = await axios.get(`/api/ServerOne/tableFuncionario/${id}`, { withCredentials: true });
+      const response = await axios.get(`/api/ServerOne/tableFuncionario/${id}`, {
+        withCredentials: true,
+      });
       if (response.status === 200) {
-        console.log("Dados recebidos do servidor:", response.data.InfoTabela); // Verifique os dados aqui
         const validData = response.data.InfoTabela.filter(
           (funcionario) => funcionario.Nome && funcionario.TypeUser
         );
@@ -60,9 +69,8 @@ function CadastroFuncionario() {
       console.log("Não foi possível requerir as informações: ", error);
     }
   };
-  
-  
-  // Filtro dos produtos
+
+  // Filtro dos funcionários
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
   };
@@ -72,7 +80,6 @@ function CadastroFuncionario() {
       (funcionarios.Nome?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
       (funcionarios.TypeUser?.toLowerCase() || "").includes(searchTerm.toLowerCase())
   );
-  
 
   const openPopup = () => {
     setShowPopup(true);
@@ -96,6 +103,41 @@ function CadastroFuncionario() {
     XLSX.writeFile(wb, `Funcionarios_${new Date().toLocaleDateString()}.xlsx`);
   };
 
+  // Função para selecionar o funcionário
+  const handleFuncionarioSelect = (funcionario) => {
+    setSelectedFuncionario(funcionario);
+  };
+
+  // Função para enviar os dados atualizados do funcionário para o backend
+  const updateFuncionario = async (e) => {
+    e.preventDefault();
+    if (!selectedFuncionario) return;
+
+    try {
+      const updatedFuncionario = {
+        id_funcionario: selectedFuncionario.id,
+        Nome: e.target.AlterarNome.value,
+        cpf: e.target.alterarCPF.value,
+        email: e.target.alterarEMAIL.value,
+        emailPessoal: e.target.alterarEMAILpessoal.value,
+        TypeUser: e.target.alterarCargo.value,
+      };
+
+      const response = await axios.put(
+        `/api/ServerTwo/updateFuncionario/${userInfo.id_EmpresaDb}`,
+        updatedFuncionario,
+        { withCredentials: true }
+      );
+
+      if (response.status === 200) {
+        fetchFuncionarios(userInfo.id_EmpresaDb); // Re-fetch employee data after update
+        handleModalShowEditFuncClose(); // Close the modal
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar funcionário:", error);
+    }
+  };
+
   return (
     <SideBarPage>
       <main>
@@ -109,6 +151,15 @@ function CadastroFuncionario() {
               <button onClick={openPopup}>
                 Cadastrar
                 <IoIosPersonAdd />
+              </button>
+
+              <button
+                className="Button_Cad"
+                onClick={handleModalShowEditFunc}
+                disabled={!selectedFuncionario} // Disable if no employee is selected
+              >
+                Editar
+                <FaPenToSquare />
               </button>
 
               <button onClick={exportToExcel}>
@@ -165,6 +216,7 @@ function CadastroFuncionario() {
                   <th>E-mail</th>
                   <th>E-mail pessoal</th>
                   <th>Setor</th>
+                  <th>Selecionar</th>
                 </tr>
               </thead>
               <tbody>
@@ -174,6 +226,17 @@ function CadastroFuncionario() {
                     <td>{funcionario.email}</td>
                     <td>{funcionario.emailPessoal}</td>
                     <td>{funcionario.TypeUser}</td>
+                    <td>
+                      <label className="custom-radio">
+                        <input
+                          type="radio"
+                          name="selectedFuncionario"
+                          checked={selectedFuncionario?.id === funcionario.id}
+                          onChange={() => handleFuncionarioSelect(funcionario)} // Set the selected employee
+                        />
+                        <span className="radio-checkmark"></span>
+                      </label>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -181,6 +244,77 @@ function CadastroFuncionario() {
           </div>
         </div>
       </main>
+
+      {/* Modal Edit */}
+      <Modal
+        show={ShowModalEditFunc}
+        onHide={handleModalShowEditFuncClose}
+        style={{
+          position: "fixed",
+          top: "50%",
+          bottom: 0,
+          left: "50%",
+          right: 0,
+          zIndex: 1000,
+          width: "70%",
+          height: "73%",
+          padding: 20,
+          borderRadius: 20,
+          transform: "translate(-50%, -50%)",
+          background: "white",
+          boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
+          padding: 2,
+        }}
+      >
+        <div className="popup-containerModal">
+          <div className="HeaderModal">
+            <h1>Editar Funcionário</h1>
+          </div>
+          <div className="popup-body">
+            <form onSubmit={updateFuncionario}>
+              <input
+                type="text"
+                name="AlterarNome"
+                defaultValue={selectedFuncionario?.Nome}
+                placeholder="Alterar Nome"
+              />
+              <InputMask
+                mask="999.999.999-99"
+                name="alterarCPF"
+                defaultValue={selectedFuncionario?.cpf}
+                placeholder="Alterar CPF"
+              />
+              <input
+                type="email"
+                name="alterarEMAIL"
+                defaultValue={selectedFuncionario?.email}
+                placeholder="Alterar e-mail"
+              />
+              <input
+                type="email"
+                name="alterarEMAILpessoal"
+                defaultValue={selectedFuncionario?.emailPessoal}
+                placeholder="Alterar e-mail pessoal"
+              />
+              <select name="alterarCargo" defaultValue={selectedFuncionario?.TypeUser}>
+                <option value="">Selecione para mudar o cargo</option>
+                <option value="Socio">Sócio</option>
+                <option value="Gerente">Gerente</option>
+                <option value="Financeiro">Financeiro</option>
+                <option value="Estoque">Estoque</option>
+                <option value="Venda">Venda</option>
+                <option value="Caixa">Caixa</option>
+              </select>
+              <div className="popup-footer">
+                <button className="button_Cad">CONCLUIR</button>
+                <button className="button_Cad" onClick={handleModalShowEditFuncClose}>
+                  CANCELAR
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </Modal>
     </SideBarPage>
   );
 }

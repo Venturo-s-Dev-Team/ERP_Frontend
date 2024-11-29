@@ -262,11 +262,11 @@ function Receitas() {
     position: "fixed",
     top: "50%",
     bottom: 0,
-    left: "50%",
+    left: "58%",
     right: 0,
     zIndex: 1000,
-    width: "70%",
-    height: "73%",
+    width: "50%",
+    height: "50%",
     borderRadius: 20,
     transform: "translate(-50%, -50%)",
     background: "white",
@@ -301,7 +301,7 @@ function Receitas() {
       />
       <div>
         <button className="RegisterPr" type="submit">
-          {isEditMode ? "Salvar Alterações" : "Registrar"}
+          {isEditMode ? "Salvar" : "Registrar"}
         </button>
         {/* Altere o tipo do botão para "button" para evitar o submit */}
         <button
