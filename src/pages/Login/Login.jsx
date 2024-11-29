@@ -38,16 +38,21 @@ function Login() {
         { withCredentials: true }
       );
 
-      if (response.data.TypeUser === 'SuperAdmin') {
-        navigate('/dashboardAdmin')
-      } else if (response.data.TypeUser === 'Gestor' || 'Socio' || 'Gerente' || 'Financeiro') {
-        navigate('/dashboard')
-      } else if (response.data.TypeUser === 'Venda') {
-        navigate('/vendas')
-      } else if (response.data.TypeUser === 'Estoque') {
-        navigate('/cad_produto')
-      } else if (response.data.TypeUser === 'Caixa') {
-        navigate('/caixa')
+      if (response.data.TypeUser === "SuperAdmin") {
+        navigate("/dashboardAdmin");
+      } else if (
+        response.data.TypeUser === "Gestor" ||
+        "Socio" ||
+        "Gerente" ||
+        "Financeiro"
+      ) {
+        navigate("/dashboard");
+      } else if (response.data.TypeUser === "Venda") {
+        navigate("/vendas");
+      } else if (response.data.TypeUser === "Estoque") {
+        navigate("/cad_produto");
+      } else if (response.data.TypeUser === "Caixa") {
+        navigate("/caixa");
       } else {
         alert("Usuário desconhecido");
       }
@@ -76,6 +81,7 @@ function Login() {
   const [senha, setsenha] = useState("");
   const [Logo, setLogo] = useState(null);
 
+  // Função para formatar o CNPJ
   const formatCNPJ = (value) => {
     return value
       .replace(/\D/g, "")
@@ -86,13 +92,45 @@ function Login() {
       .replace(/(-\d{2})\d+?$/, "$1");
   };
 
+  // Função para gerar o e-mail automaticamente
   const generateEmail = (name) => {
     return name.toLowerCase().replace(/\s+/g, ".") + "@venturo.com";
   };
 
+  // Nova função para validar a senha
+  const validarSenha = (senha) => {
+    if (senha.length < 8) {
+      return "A senha deve ter no mínimo 8 caracteres.";
+    }
+
+    // Verificar sequência crescente ou decrescente
+    const sequenciaCrescente = /(?:012|123|234|345|456|567|678|789|890|abc|bcd|cde|def|efg|fgh|ghi|hij|ijk|jkl|klm|lmn|mno|nop|opq|pqr|qrs|rst|stu|tuv|uvw|vwx|wxy|xyz)/i;
+    const sequenciaDecrescente = /(?:210|321|432|543|654|765|876|987|098|cba|dcb|edc|fed|gfe|hgf|ihg|jih|kji|lkj|mlk|nml|onm|pon|qpo|rqp|srq|tsr|uts|vut|wvu|xwv|yxw|zyx)/i;
+    if (sequenciaCrescente.test(senha) || sequenciaDecrescente.test(senha)) {
+      return "A senha não pode conter sequências crescentes ou decrescentes.";
+    }
+
+    // Verificar repetição de caracteres
+    const repeticao = /(.)\1{2,}/;
+    if (repeticao.test(senha)) {
+      return "A senha não pode conter repetições de caracteres consecutivos.";
+    }
+
+    return ""; // Senha válida
+  };
+
+  // Cadastro da empresa
   const handleRegister = async (e) => {
     e.preventDefault();
+
     const Email = generateEmail(Gestor);
+
+    // Validação da senha
+    const erroSenha = validarSenha(senha);
+    if (erroSenha) {
+      alert(erroSenha); // Exibe o erro e impede o envio
+      return;
+    }
 
     const formData = new FormData();
     formData.append("Gestor", Gestor);
@@ -211,29 +249,29 @@ function Login() {
           <div className={`toggle ${isSignUp ? "sign-up" : "sign-in"}`}>
             {isSignUp ? (
               <div className="toggle-panel toggle-left">
-                <h1>Bem vindo de volta!</h1>
-                <p>Entre na sua conta</p>
+              <h1>Bem vindo de volta!</h1>
+              <p>Entre na sua conta</p>
 
-                <button
-                  className="hidden"
-                  id="login"
-                  onClick={handleSignInClick}
-                >
-                  Entrar
-                </button>
-              </div>
-            ) : (
-              <div className="toggle-panel toggle-right">
-                <h1>Bem vindo!</h1>
-                <p>Faça seu Registro</p>
-                <button
-                  className="hidden"
-                  id="cadastro"
-                  onClick={handleSignUpClick}
-                >
-                  Cadastro
-                </button>
-              </div>
+              <button
+                className="hidden"
+                id="login"
+                onClick={handleSignInClick}
+              >
+                Entrar
+              </button>
+            </div>
+          ) : (
+            <div className="toggle-panel toggle-right">
+              <h1>Bem vindo!</h1>
+              <p>Faça seu Registro</p>
+              <button
+                className="hidden"
+                id="cadastro"
+                onClick={handleSignUpClick}
+              >
+                Cadastro
+              </button>
+            </div>
             )}
           </div>
         </div>

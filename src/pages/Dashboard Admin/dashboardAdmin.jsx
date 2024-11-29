@@ -116,10 +116,9 @@ function HomeAdmin() {
 
   const selectedItem = data.find((item) => item.id === selectedId);
 
-  const handleProsseguir = (dados) => {
-    console.log(dados)
+  const handleProsseguir = (id) => {
       navigate("/verMais", {
-        state: { dados },
+        state: { id },
       })
   };
 
@@ -240,7 +239,7 @@ function HomeAdmin() {
               </motion.button>
 
               <motion.div className="VerMaisDiv-DBAdmin">
-                <motion.button className="VerMaisBtn-DBAdmin" onClick={() => handleProsseguir(item)}> Ver Mais </motion.button>
+                <motion.button className="VerMaisBtn-DBAdmin" onClick={() => handleProsseguir(item.id)}> Ver Mais </motion.button>
               </motion.div>
             </motion.div>
           </motion.div>

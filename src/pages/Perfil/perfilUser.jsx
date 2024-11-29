@@ -49,10 +49,11 @@ const Perfil = () => {
         "Estoque" ||
         "Venda" ||
         "Socio" ||
-        "Gerente"
+        "Gerente" ||
+        "Gestor"
       ) {
         return (
-          
+
           <div className="perfil-body">
             <footer >
               <div className="perfil-details">
@@ -61,44 +62,37 @@ const Perfil = () => {
                     <div>Vazio</div>
                   ) : (
                     <img
-                      src={`/api/ServerOne/uploads/Logo/${userInfo.id_EmpresaDb}.png`}
-                      className="LogoEmpresa-Img-DBAdmin"                    
+                      src={`/api/ServerOne/uploads/Logo/${userInfo.id_EmpresaDb}.jpeg`}
+                      className="LogoEmpresa-Img-DBAdmin"
+                      alt="Logo da Empresa"
+                      onError={(e) => {
+                        const fallbackFormats = ["png", "jpg"];
+                        let currentFormatIndex = fallbackFormats.findIndex((format) =>
+                          e.target.src.endsWith(format)
+                        );
+
+                        if (currentFormatIndex === -1) currentFormatIndex = 0; // Primeiro erro tenta PNG
+
+                        if (currentFormatIndex < fallbackFormats.length - 1) {
+                          // Atualiza o formato da imagem para o próximo na lista
+                          e.target.src = `/api/ServerOne/uploads/Logo/${userInfo.id_EmpresaDb}.${fallbackFormats[currentFormatIndex + 1]
+                            }`;
+                        } else {
+                          // Caso todas as alternativas falhem, exibe uma imagem padrão
+                          e.target.src = "/default-image-path/default-logo.png";
+                        }
+                      }}
                     />
                   )}
-            </div>
+                </div>
                 <div className="Perfil-Dados">
-                  
-                <h2 className="Perfil-Empresa">Dados do Perfil</h2>
-                <p className="perfil-id">ID: {userInfo.id_user}</p>
-                <p className="perfil-nome">Nome: {userInfo.Nome_user}</p>
-                <p className="perfil-email">E-mail: {userInfo.Email}</p>
-                <p> Função: {userInfo.TypeUser}</p>
+
+                  <h2 className="Perfil-Empresa">Dados do Perfil</h2>
+                  <p className="perfil-id">ID: {userInfo.id_user}</p>
+                  <p className="perfil-nome">Nome: {userInfo.Nome_user}</p>
+                  <p className="perfil-email">E-mail: {userInfo.Email}</p>
+                  <p> Função: {userInfo.TypeUser}</p>
                 </div>
-                </div>
-            </footer>
-          </div>
-        );
-      } else if (userInfo.RazaoSocial) {
-        return (
-          <div>
-            <footer >
-                {!userInfo.Logo ? (
-                  <div>Perfil</div>
-                ) : (
-                  <img
-                    src={`/api/ServerOne/uploads/Logo/${userInfo.Logo}`}
-                    style={{ width: 270, height: 270 }}
-                    alt=""
-                  />
-                )}
-              <div >
-                <h2 className="perfil-titulo-rs">Dados do Perfil</h2>
-                <p className="perfil-id-rs">ID: {userInfo.id_user}</p>
-                <p className="perfil-nome-rs">Nome: {userInfo.Nome_user}</p>
-                <p className="perfil-empresa-rs">
-                  Empresa: {userInfo.RazaoSocial}
-                </p>
-                <p className="perfil-email-rs">E-mail: {userInfo.Email}</p>
               </div>
             </footer>
           </div>

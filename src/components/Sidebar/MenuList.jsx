@@ -276,15 +276,29 @@ const MenuList = ({ darkTheme }) => {
     Estoque: ["email", "Logout", "perfil", "estoque"],
     Venda: ["email", "Logout", "perfil", "vendasForVenda", "financeiroForVenda", "clientes"],
     Financeiro: ["email", "Logout", "perfil", "financeiro"],
+    Beta_gestor: [
+      "dashboard",
+      "email",
+      "perfil",
+      "Logout",
+    ],
   };
 
   const filteredItems = items.filter((item) => {
     const userRole = userInfo?.TypeUser; // Papel do usuário
+
+    if (userRole === 'Gestor' && userInfo.Status === "NO") {
+      return (
+        menuAccess["Beta_gestor"]?.includes(item.key) ||
+        (item.children &&
+          item.children.some((child) => menuAccess["Beta_gestor"]?.includes(child.key)))
+      );
+    } else {
     return (
       menuAccess[userRole]?.includes(item.key) ||
       (item.children &&
         item.children.some((child) => menuAccess[userRole]?.includes(child.key)))
-    );
+    ); }
   });
 
   return (

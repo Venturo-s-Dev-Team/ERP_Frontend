@@ -94,6 +94,7 @@ function Home() {
   const [SelectedTotalLogs, setSelectedTotalLogs] = useState(0);
   const [fluxoCaixa, setFluxoCaixa] = useState([]);
   const [typeUserData, setTypeUserData] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   // Funções para buscar dados de estoque, funcionários, vendas, logs, etc.
 
@@ -276,7 +277,9 @@ function Home() {
   }, [navigate]);
 
   useEffect(() => {
-    if (userInfo.id_EmpresaDb) {
+    if (userInfo.TypeUser === 'Gestor' && userInfo.Status === "NO") {
+      return
+  } else if (userInfo.id_EmpresaDb) {
       fetchDadosFinanceiros(userInfo.id_EmpresaDb);
       fetchDadosEstoque(userInfo.id_EmpresaDb);
       fetchDadosFuncionarios(userInfo.id_EmpresaDb);
@@ -284,7 +287,7 @@ function Home() {
       fetchDadosHistoricLogs(userInfo.id_EmpresaDb);
       fetchDadosFuncionariosPorTipoUser(userInfo.id_EmpresaDb);
     }
-  }, [userInfo.id_EmpresaDb]);
+  }, [ userInfo.TypeUser, userInfo.id_EmpresaDb]);
 
   // Verificar se a empresa está ativa
   if (userInfo.ValoresNull === true) {
@@ -305,13 +308,12 @@ function Home() {
       </SideBarPage>
     );
   }
-  const [activeIndex, setActiveIndex] = useState(0);
 
   return (
     <SideBarPage>
       <main>
 
-        <div classNam>
+        <div>
           <div className="main-title">
             <h3>DASHBOARD - BEM VINDO {userInfo.Nome_user}</h3>
           </div>
