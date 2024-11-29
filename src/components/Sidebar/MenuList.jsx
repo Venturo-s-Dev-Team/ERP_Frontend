@@ -89,6 +89,10 @@ const MenuList = ({ darkTheme }) => {
           key: "cad_funcionario",
           label: <Link to="/funcionarios"> Cadastrar Funcionários </Link>,
         },
+        {
+          key: "AtualizarSenha",
+          label: <Link to="/AtualizarSenha"> Atualizar Senha </Link>,
+        },
       ],
     },
     {

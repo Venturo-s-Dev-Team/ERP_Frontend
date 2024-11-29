@@ -44,6 +44,7 @@ import Hist_vendas from "../pages/Vendas/vendas";
 import Caixa from "../pages/Caixa/Caixa";
 import Logout from "../components/Logout";
 import VerMais from "../pages/Ver Mais/verMais";
+import AtualizarSenha from "../pages/Registrar Funcionário/AtualizarSenha";
 
 function AppRoutes() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
@@ -187,6 +188,14 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           element={
             <ProtectedRoute allowedRoles={["Gestor", "Gerente", "Socio"]}>
               <CadastroFuncionario />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/AtualizarSenha"
+          element={
+            <ProtectedRoute allowedRoles={["Gestor", "Gerente", "Socio"]}>
+              <AtualizarSenha />
             </ProtectedRoute>
           }
         />
