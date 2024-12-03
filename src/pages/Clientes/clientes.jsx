@@ -15,6 +15,9 @@ import InputMask from "react-input-mask";
 import "./clientes.css";
 import SideBarPage from "../../components/Sidebar/SideBarPage";
 
+// Importação dos utilitários de data
+import { formatarData, converterParaISO } from "../../utils/dateUtils";
+
 function Clientes() {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState({});
@@ -414,7 +417,7 @@ function Clientes() {
                         className="Btn-Info"
                       >
                         {" "}
-                        Info{" "}
+                        Info.{" "}
                       </button>
                     </td>
                     <td>
@@ -955,7 +958,7 @@ function Clientes() {
                     </p>
                     <p>
                       <strong>Dia para Faturamento:</strong>{" "}
-                      {SelectedCliente.dia_para_faturamento}
+                      {formatarData(SelectedCliente.dia_para_faturamento)}
                     </p>
                     <p>
                       <strong>Ramo de Atividade:</strong>{" "}

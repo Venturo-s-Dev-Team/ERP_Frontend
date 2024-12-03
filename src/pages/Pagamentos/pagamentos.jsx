@@ -10,6 +10,9 @@ import { FaPenToSquare, FaPlus, FaTrashCan } from "react-icons/fa6";
 import * as XLSX from "xlsx";
 import SideBarPage from "../../components/Sidebar/SideBarPage";
 
+// Importação dos utilitários de data
+import { formatarData, converterParaISO } from "../../utils/dateUtils";
+
 function Pagamentos() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
@@ -18,6 +21,15 @@ function Pagamentos() {
   const [pagaments, setPagaments] = useState([]);
   const [userInfo, setUserInfo] = useState(null);
   const [newPagament, setNewPagament] = useState({
+    Nome: "",
+    Valor: "",
+    Data: "",
+    Conta: "",
+    TipoPagamento: "",
+    Descricao: "",
+  });
+  const [showModalEdit, setShowModalEdit] = useState(false);
+  const [editPagament, setEditPagament] = useState({
     Nome: "",
     Valor: "",
     Data: "",
@@ -125,6 +137,62 @@ function Pagamentos() {
     setNewPagament((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Função para abrir modal de edição
+  const handleOpenEditModal = () => {
+    if (!selectedPagament) {
+      alert("Selecione um pagamento para editar");
+      return;
+    }
+    
+    // Preenche o estado de edição com os dados do pagamento selecionado
+    setEditPagament({
+      Nome: selectedPagament.Nome,
+      Valor: selectedPagament.Valor,
+      Data: selectedPagament.Data,
+      Conta: selectedPagament.Conta,
+      TipoPagamento: selectedPagament.TipoPagamento,
+      Descricao: selectedPagament.Descricao,
+    });
+    
+    setShowModalEdit(true);
+  };
+
+  // Função para lidar com mudanças nos inputs do formulário de edição
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setEditPagament((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Função para atualizar pagamento
+  const updatePagament = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.put(
+        `/api/ServerTwo/atualizarPagamento/${selectedPagament.id}`,
+        {
+          ...editPagament,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.status === 200) {
+        // Atualiza a lista de pagamentos
+        fetchPagamentos();
+        
+        // Fecha o modal de edição
+        setShowModalEdit(false);
+        
+        // Limpa o pagamento selecionado
+        setSelectedPagament(null);
+      }
+    } catch (error) {
+      console.error("Erro ao atualizar pagamento:", error);
+    }
+  };
+
   return (
     <SideBarPage>
       <main>
@@ -138,7 +206,7 @@ function Pagamentos() {
               Adicionar
               <FaPlus />
             </button>
-            <button>
+            <button onClick={handleOpenEditModal}>
               Editar
               <FaPenToSquare />
             </button>
@@ -164,7 +232,7 @@ function Pagamentos() {
                 {pagaments.map((pagament) => (
                   <tr key={pagament.id}>
                     <td>{pagament.Nome}</td>
-                    <td>{pagament.Valor}</td>
+                    <td>R$ {pagament.Valor}</td>
                     <td>{pagament.Conta}</td>
 
                     <td>
@@ -323,7 +391,7 @@ function Pagamentos() {
                       <strong>Valor:</strong> R$ {selectedPagament.Valor}
                     </li>
                     <li>
-                      <strong>Data:</strong> {selectedPagament.Data}
+                      <strong>Data:</strong> {formatarData(selectedPagament.Data)}
                     </li>
                     <li>
                       <strong>Conta:</strong> {selectedPagament.Conta}
@@ -345,6 +413,102 @@ function Pagamentos() {
               </div>
             </div>
           </Modal>
+
+          {/* Modal de Edição */}
+      <Modal
+        style={{
+          position: "fixed",
+          top: "50%",
+          bottom: 0,
+          left: "55%",
+          right: 0,
+          zIndex: 1000,
+          padding: 40,
+          width: "55%",
+          height: "63%",
+          borderRadius: 20,
+          transform: "translate(-50%, -50%)",
+          background: "white",
+          boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
+        }}
+        show={showModalEdit}
+        onHide={() => setShowModalEdit(false)}
+      >
+        <div className="DivModalCont">
+          <div className="HeaderModal">
+            <h1>Editar Pagamento</h1>
+          </div>
+          <form onSubmit={updatePagament}>
+            <input
+              type="text"
+              name="Nome"
+              placeholder="Nome"
+              value={editPagament.Nome}
+              onChange={handleEditChange}
+              className="Input-Modal"
+              required
+            />
+            <input
+              type="text"
+              name="Valor"
+              placeholder="Valor"
+              value={editPagament.Valor}
+              onChange={handleEditChange}
+              className="Input-Modal"
+              required
+            />
+            <input
+              type="date"
+              name="Data"
+              placeholder="Data"
+              value={editPagament.Data}
+              onChange={handleEditChange}
+              className="Input-Modal"
+              required
+            />
+            <InputMask
+              mask="999999999999"
+              type="text"
+              name="Conta"
+              placeholder="Conta"
+              value={editPagament.Conta}
+              onChange={handleEditChange}
+              className="Input-Modal"
+            />
+            <input
+              type="text"
+              name="TipoPagamento"
+              placeholder="Tipo de pagamento"
+              value={editPagament.TipoPagamento}
+              onChange={handleEditChange}
+              className="Input-Modal"
+              required
+            />
+            <input
+              type="text"
+              name="Descricao"
+              placeholder="Descrição"
+              value={editPagament.Descricao}
+              onChange={handleEditChange}
+              className="Input-Modal"
+            />
+
+            <div className="FooterButton">
+              <button className="RegisterPr" type="submit">
+                Atualizar
+              </button>
+              <button 
+                className="FecharPr" 
+                type="button"
+                onClick={() => setShowModalEdit(false)}
+              >
+                Fechar
+              </button>
+            </div>
+          </form>
+        </div>
+      </Modal>
+
         </div>
       </main>
     </SideBarPage>

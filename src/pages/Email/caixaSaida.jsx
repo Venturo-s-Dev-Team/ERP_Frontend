@@ -46,10 +46,8 @@ const Caixa_Saida = () => {
 
   useEffect(() => {
       const fetchData = async () => {
-          if (userInfo && userInfo.Email) {
               try {
                   const response = await axios.get('/api/ServerOne/caixa_saida', {
-                      params: { Email: userInfo.Email },
                       withCredentials: true
                   });
                   setEmails(response.data);
@@ -57,10 +55,9 @@ const Caixa_Saida = () => {
                   setProtocoloErro("500");
                   setMsgErro("Não foi possível fazer a requisição da sua caixa de saída");
               }
-          }
       };
       fetchData();
-  }, [userInfo]);
+  }, []);
 
   const formatTimestamp = (timestamp) => {
       const date = new Date(timestamp);

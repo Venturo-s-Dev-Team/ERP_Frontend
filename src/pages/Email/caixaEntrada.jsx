@@ -12,96 +12,96 @@ import EmailPopup from "./popupemail";
 
 const Caixa_Entrada = () => {
   const navigate = useNavigate();
-    const [userInfo, setUserInfo] = useState({});
-    const [emails, setEmails] = useState([]);
-    const [protocoloErro, setProtocoloErro] = useState(null);
-    const [msgErro, setMsgErro] = useState('');
-    const [openedEmailId, setOpenedEmailId] = useState(null);
-    const [isPopupOpen, setPopupOpen] = useState(false);
-    const [activeButton, setActiveButton] = useState('entrada');
+  const [userInfo, setUserInfo] = useState({});
+  const [emails, setEmails] = useState([]);
+  const [protocoloErro, setProtocoloErro] = useState(null);
+  const [msgErro, setMsgErro] = useState('');
+  const [openedEmailId, setOpenedEmailId] = useState(null);
+  const [isPopupOpen, setPopupOpen] = useState(false);
+  const [activeButton, setActiveButton] = useState('entrada');
 
-    useEffect(() => {
-        verifyToken();
-    }, []);
+  useEffect(() => {
+    verifyToken();
+    fetchEmails();
+  }, []);
 
-    useEffect(() => {
-        if (userInfo.Email) {
-            fetchEmails(userInfo.Email);
-        }
-    }, [userInfo]);
+  const verifyToken = async () => {
+    try {
+      const response = await axios.get('/api/ServerTwo/verifyToken', { withCredentials: true });
+      if (typeof response.data.token === 'string') {
+        const decodedToken = jwtDecode(response.data.token);
+        setUserInfo(decodedToken);
+      } else {
+        console.error('Token não é uma string:', response.data.token);
+        navigate('/');
+      }
+    } catch (error) {
+      console.error('Token inválido', error);
+      navigate('/login');
+    }
+  };
 
-    const verifyToken = async () => {
-        try {
-            const response = await axios.get('/api/ServerTwo/verifyToken', { withCredentials: true });
-            if (typeof response.data.token === 'string') {
-                const decodedToken = jwtDecode(response.data.token);
-                setUserInfo(decodedToken);
-            } else {
-                console.error('Token não é uma string:', response.data.token);
-                navigate('/');
-            }
-        } catch (error) {
-            console.error('Token inválido', error);
-            navigate('/login');
-        }
-    };
+  const fetchEmails = async () => {
+    try {
+      const response = await axios.get('/api/ServerOne/caixa_entrada', {
+        withCredentials: true
+      });
+      setEmails(response.data);
+    } catch (err) {
+      setProtocoloErro("500");
+      setMsgErro("Não foi possível fazer a requisição da sua caixa de entrada");
+    }
+  };
 
-    const fetchEmails = async (email) => {
-        try {
-            const response = await axios.get('/api/ServerOne/caixa_entrada', {
-                params: { Email: email },
-                withCredentials: true
-            });
-            setEmails(response.data);
-        } catch (err) {
-            setProtocoloErro("500");
-            setMsgErro("Não foi possível fazer a requisição da sua caixa de entrada");
-        }
-    };
+  const formatTimestamp = (timestamp) => {
+    const date = new Date(timestamp);
+    return date.toLocaleString('pt-BR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    });
+  };
 
-    const formatTimestamp = (timestamp) => {
-        const date = new Date(timestamp);
-        return date.toLocaleString('pt-BR', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-        });
-    };
+  const toggleEmail = async (id) => {
+    setOpenedEmailId(openedEmailId === id ? null : id);
+    if (openedEmailId !== id) {
+      await markEmailAsRead(id);
+    }
+  };
 
-    const toggleEmail = async (id) => {
-        setOpenedEmailId(openedEmailId === id ? null : id);
-        if (openedEmailId !== id) {
-            await markEmailAsRead(id);
-        }
-    };
+  const markEmailAsRead = async (id) => {
+    try {
+      await axios.put('/api/ServerOne/caixa_entrada/view', { id });
+      const updatedEmails = emails.map(email =>
+        email.id === id ? { ...email, View: 1 } : email
+      );
+      setEmails(updatedEmails);
+    } catch (err) {
+      console.error('Erro ao marcar o e-mail como lido', err);
+    }
+  };
 
-    const markEmailAsRead = async (id) => {
-        try {
-            await axios.put('/api/ServerOne/caixa_entrada/view', { id });
-            const updatedEmails = emails.map(email =>
-                email.id === id ? { ...email, View: 1 } : email
-            );
-            setEmails(updatedEmails);
-        } catch (err) {
-            console.error('Erro ao marcar o e-mail como lido', err);
-        }
-    };
+  const renderError = () => (
+    <div>Erro {protocoloErro}: {msgErro}</div>
+  );
 
-    const renderError = () => (
-        <div>Erro {protocoloErro}: {msgErro}</div>
-    );
+  const excluirEmail = async (id) => {
+    try {
+      await axios.put(`/api/ServerOne/excluir_email_destinatario`, { id });
+      setEmails(emails.filter(email => email.id !== id));
+    } catch (err) {
+      console.error("Erro ao excluir o e-mail", err);
+    }
+  };
 
-    const excluirEmail = async (id) => {
-        try {
-            await axios.put(`/api/ServerOne/excluir_email_destinatario`, { id });
-            setEmails(emails.filter(email => email.id !== id));
-        } catch (err) {
-            console.error("Erro ao excluir o e-mail", err);
-        }
-    };
+  const isImage = (fileName) => {
+    const validImageExtensions = ["jpeg", "png", "jpg", "webp", "gif"];
+    const fileExtension = fileName.split(".").pop().toLowerCase();
+    return validImageExtensions.includes(fileExtension);
+  };
 
   const renderEmails = () => (
     <div className="email-list">
@@ -125,9 +125,9 @@ const Caixa_Entrada = () => {
                     </span>
                   )}
                   {!email.Assunto ? (
-                    <h3>Sem assunto</h3>
+                    <h3>Sem assunto, enviado por {email.Remetente}</h3>
                   ) : (
-                    <h3>{email.Assunto}</h3>
+                    <h3>{email.Assunto}, enviado por {email.Remetente}</h3>
                   )}
                 </div>
 
@@ -166,67 +166,66 @@ const Caixa_Entrada = () => {
   return (
     <SideBarPage>
       <div className="scroll-despesas">
-      <div className="app">
-        <div className="titleEmail">
-          <div className="TextAssunt">
-            <h1 className="Assunto">
-              E-mail: Caixa de Entrada{" "}
-              <RiInboxArchiveFill
-                style={{ height: 35, width: 35, position: "relative", top: 10 }}
-              />
-            </h1>
-          </div>
-          <div>
-            <img src={LogoVenturo} className="LogoEmail" />
-          </div>
-        </div>
-
-        <div className="alinhar-divs">
-          <div className="buttonsEntrada">
-            <button className="btn-mensagem" onClick={() => setPopupOpen(true)}>
-              {" "}
-              <FaPen style={{ height: 18, width: 18 }} /> Escrever
-            </button>
-
-            <button
-              className={`btn-caixas ${
-                activeButton === "entrada" ? "active" : ""
-              }`}
-              onClick={() => {
-                setActiveButton("entrada");
-                navigate("/email_entrada");
-              }}
-            >
-              {" "}
-              <RiInboxArchiveFill style={{ height: 18, width: 18 }} /> Caixa de
-              Entrada
-            </button>
-
-            <button
-              className={`btn-caixas ${activeButton === "s" ? "active" : ""}`}
-              onClick={() => {
-                setActiveButton("entrada");
-                navigate("/email_saida");
-              }}
-            >
-              {" "}
-              <RiInboxUnarchiveFill style={{ height: 18, width: 18 }} /> Caixa
-              de saída
-            </button>
-
-            {isPopupOpen && (
-              <EmailPopup
-                Email={userInfo?.Email}
-                onClose={() => setPopupOpen(false)}
-              />
-            )}
+        <div className="app">
+          <div className="titleEmail">
+            <div className="TextAssunt">
+              <h1 className="Assunto">
+                E-mail: Caixa de Entrada{" "}
+                <RiInboxArchiveFill
+                  style={{ height: 35, width: 35, position: "relative", top: 10 }}
+                />
+              </h1>
+            </div>
+            <div>
+              <img src={LogoVenturo} className="LogoEmail" />
+            </div>
           </div>
 
-          <div className="Conteudo">
-            {protocoloErro ? renderError() : renderEmails()}
+          <div className="alinhar-divs">
+            <div className="buttonsEntrada">
+              <button className="btn-mensagem" onClick={() => setPopupOpen(true)}>
+                {" "}
+                <FaPen style={{ height: 18, width: 18 }} /> Escrever
+              </button>
+
+              <button
+                className={`btn-caixas ${activeButton === "entrada" ? "active" : ""
+                  }`}
+                onClick={() => {
+                  setActiveButton("entrada");
+                  navigate("/email_entrada");
+                }}
+              >
+                {" "}
+                <RiInboxArchiveFill style={{ height: 18, width: 18 }} /> Caixa de
+                Entrada
+              </button>
+
+              <button
+                className={`btn-caixas ${activeButton === "s" ? "active" : ""}`}
+                onClick={() => {
+                  setActiveButton("entrada");
+                  navigate("/email_saida");
+                }}
+              >
+                {" "}
+                <RiInboxUnarchiveFill style={{ height: 18, width: 18 }} /> Caixa
+                de saída
+              </button>
+
+              {isPopupOpen && (
+                <EmailPopup
+                  Email={userInfo?.Email}
+                  onClose={() => setPopupOpen(false)}
+                />
+              )}
+            </div>
+
+            <div className="Conteudo">
+              {protocoloErro ? renderError() : renderEmails()}
+            </div>
           </div>
-        </div>
-      </div></div>
+        </div></div>
     </SideBarPage>
   );
 };

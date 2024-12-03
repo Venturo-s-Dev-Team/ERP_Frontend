@@ -63,7 +63,7 @@ const MenuList = ({ darkTheme }) => {
     {
       key: "email",
       icon: <MdOutlineMailOutline />,
-      label: <Link to="/email_entrada">Email</Link>,
+      label: <Link to="/email_entrada">E-mail</Link>,
     },
     {
       key: "perfil",
@@ -173,7 +173,7 @@ const MenuList = ({ darkTheme }) => {
         },
         {
           key: "pedidos_cancelados",
-          label: <Link to="/pedidoscancelados"> Pedidos Cancelado </Link>,
+          label: <Link to="/pedidoscancelados"> Pedidos Cancelados </Link>,
         },
         {
           key: "historico_de_vendas",
@@ -188,17 +188,12 @@ const MenuList = ({ darkTheme }) => {
       label: "Vendas",
       children: [
         {
-          key: "notas_fiscais",
-          label: <Link to="/notafiscal">Notas Fiscais</Link>,
-        },
-        { key: "clientes", label: <Link to="/clientes"> Clientes </Link> },
-        {
           key: "gestao_de_pedidos",
           label: <Link to="/gestaoVendas"> Gestão de Pedidos </Link>,
         },
         {
           key: "pedidos_cancelados",
-          label: <Link to="/pedidoscancelados"> Pedidos Cancelado </Link>,
+          label: <Link to="/pedidoscancelados"> Pedidos Cancelados </Link>,
         },
         {
           key: "historico_de_vendas",
@@ -266,7 +261,7 @@ const MenuList = ({ darkTheme }) => {
     ],
     Caixa: ["email", "Logout", "perfil", "Caixa"],
     Estoque: ["email", "Logout", "perfil", "estoque"],
-    Venda: ["email", "Logout", "perfil", "vendasForVenda", "financeiroForVenda", "clientes"],
+    Venda: ["email", "Logout", "perfil", "VendasForVenda"],
     Financeiro: ["email", "Logout", "perfil", "financeiro"],
     Beta_gestor: [
       "dashboard",

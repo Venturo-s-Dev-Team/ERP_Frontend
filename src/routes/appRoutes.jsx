@@ -21,7 +21,6 @@ import Caixa_Saida from "../pages/Email/caixaSaida";
 import Perfil from "../pages/Perfil/perfilUser";
 import Fornecedores from "../pages/Fornecedores/fornecedores";
 import Pagamentos from "../pages/Pagamentos/pagamentos";
-import Perfil_Admin from "../pages/Perfil/perfilAdmin";
 import Cad_Empresa from "../pages/CadastrarEmpresa/cad_empresa";
 import CadastroFuncionario from "../pages/Registrar Funcionário/registrarFuncionario";
 import Despesas from "../pages/Despesas/despesas";
@@ -116,9 +115,15 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
         <Route path="/email_saida" element={<Caixa_Saida />} />
         <Route path="/perfil_user" element={<Perfil />} />
         <Route path="/logout" element={<Logout />} />
-        <Route path="/verMais" element={<VerMais />} />
         
         {/* Rotas Protegidas */}
+        <Route 
+        path="/verMais"          
+        element={
+            <ProtectedRoute allowedRoles={["SuperAdmin"]}>
+              <VerMais />
+            </ProtectedRoute>
+          } />
         <Route
           path="/balancete"
           element={
@@ -164,14 +169,6 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
           element={
             <ProtectedRoute allowedRoles={["Financeiro", "Gestor", "Socio"]}>
               <Pagamentos />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/perfil_admin"
-          element={
-            <ProtectedRoute allowedRoles={["SuperAdmin"]}>
-              <Perfil_Admin />
             </ProtectedRoute>
           }
         />

@@ -97,16 +97,16 @@ const GestaoVendas = () => {
     }
   };
 
-    // Filtro dos produtos
-    const handleSearchChange = (e) => {
-      setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
-    };
-  
-    const filteredvenda = vendas.filter(
-      (venda) =>
-        venda.nome_cliente.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        String(venda.id_pedido).toLowerCase().includes(searchTerm.toLowerCase())
-    );
+  // Filtro dos produtos
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
+  };
+
+  const filteredvenda = vendas.filter(
+    (venda) =>
+      venda.nome_cliente.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      String(venda.id_pedido).toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // Função para lidar com mudanças nos campos de input
   const handleChange = (e) => {
@@ -172,39 +172,40 @@ const GestaoVendas = () => {
     }
   };
 
-// Função para cancelar uma venda
-const CancelarVenda = async (venda) => {
+  // Função para cancelar uma venda
+  const CancelarVenda = async (venda) => {
 
-  if(venda.Status != "EM ABERTO") {
-    alert('Este pedido não pode ser cancelado')
-  } else {
-  const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
+    if (venda.Status != "EM ABERTO") {
+      alert('Este pedido não pode ser cancelado')
+    } else {
+      const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
 
-  console.log("Enviando CancelarVenda com dados:", {
-    id_pedido: venda.id_pedido,
-    produto: venda.produto,
-  });
-
-  try {
-    await axios.put(
-      `/api/ServerTwo/CancelarVenda/${id}`,
-      {
+      console.log("Enviando CancelarVenda com dados:", {
         id_pedido: venda.id_pedido,
-        produto: venda.produto, // Enviar diretamente como array
-        userId: userInfo.id_user,
-        userName: userInfo.Nome_user,
-      },
-      { withCredentials: true }
-    );
+        produto: venda.produto,
+      });
 
-    fetchVendas(id); // Atualiza a lista de vendas
-    handleCloseGestao();
-    alert("Pedido cancelado com sucesso!");
-  } catch (error) {
-    console.error("Erro ao cancelar venda:", error);
-    alert("Erro ao cancelar venda.");
-  }}
-};
+      try {
+        await axios.put(
+          `/api/ServerTwo/CancelarVenda/${id}`,
+          {
+            id_pedido: venda.id_pedido,
+            produto: venda.produto, // Enviar diretamente como array
+            userId: userInfo.id_user,
+            userName: userInfo.Nome_user,
+          },
+          { withCredentials: true }
+        );
+
+        fetchVendas(id); // Atualiza a lista de vendas
+        handleCloseGestao();
+        alert("Pedido cancelado com sucesso!");
+      } catch (error) {
+        console.error("Erro ao cancelar venda:", error);
+        alert("Erro ao cancelar venda.");
+      }
+    }
+  };
 
 
   // Função para exportar dados para Excel
@@ -214,7 +215,7 @@ const CancelarVenda = async (venda) => {
     XLSX.utils.book_append_sheet(wb, ws, "venda"); // Adiciona a planilha ao livro
     XLSX.writeFile(wb, `venda_${new Date().toLocaleDateString()}.xlsx`);
   };
-  
+
   return (
     <SideBarPage>
       <main>
@@ -229,12 +230,12 @@ const CancelarVenda = async (venda) => {
               <FaPlus />
             </button>
             <button
-            className="Button-Menu"
-            onClick={() => handleShowEdit(selectedVenda)}
-          >
-            Editar
-            <FaPenToSquare />
-          </button>
+              className="Button-Menu"
+              onClick={() => handleShowEdit(selectedVenda)}
+            >
+              Editar
+              <FaPenToSquare />
+            </button>
             <button
               className="Button-Menu"
               onClick={() => CancelarVenda(selectedVenda)}
@@ -293,33 +294,33 @@ const CancelarVenda = async (venda) => {
                 </tr>
               </thead>
               <tbody>
-              {filteredvenda.map((venda) => (
-              <tr key={venda.id_pedido}>
-                <td>{venda.id_pedido}</td>
-                <td>{venda.nome_cliente}</td>
-                <td>R$ {venda.total}</td>
-                <td>{venda.Status}</td>
-                <td>
-                  <button
-                    className="btn-ver-mais"
-                    onClick={() => handleShowInfo(venda)}
-                  >
-                    Ver Mais
-                  </button>
-                </td>
-                <td>
-                    <label className="custom-radio">
-                      <input
-                        type="radio"
-                        name="selectedProduct"
-                        value={venda.id}
-                        onChange={() => setSelectedVenda(venda)}
-                      />
-                      <span className="radio-checkmark"></span>
-                    </label>
-                  </td>
-              </tr>
-            ))}
+                {filteredvenda.map((venda) => (
+                  <tr key={venda.id_pedido}>
+                    <td>{venda.id_pedido}</td>
+                    <td>{venda.nome_cliente}</td>
+                    <td>R$ {venda.total}</td>
+                    <td>{venda.Status}</td>
+                    <td>
+                      <button
+                        className="btn-ver-mais"
+                        onClick={() => handleShowInfo(venda)}
+                      >
+                        Ver Mais
+                      </button>
+                    </td>
+                    <td>
+                      <label className="custom-radio">
+                        <input
+                          type="radio"
+                          name="selectedProduct"
+                          value={venda.id}
+                          onChange={() => setSelectedVenda(venda)}
+                        />
+                        <span className="radio-checkmark"></span>
+                      </label>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -351,7 +352,7 @@ const CancelarVenda = async (venda) => {
               {selectedVenda ? (
                 <div>
                   <h4 className="h4-modal">
-                    Nome da Empresa: {selectedVenda.razaoSocial}
+                    Pedido para: {selectedVenda.nome_cliente}
                   </h4>
                   <div className="textos-modal">
                     <p>Código do pedido: {selectedVenda.id_pedido}</p>

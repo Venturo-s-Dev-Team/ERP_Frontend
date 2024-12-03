@@ -67,96 +67,96 @@ function Hist_vendas() {
     }
   };
 
-      // Filtro dos produtos
-      const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
-      };
-    
-      const filteredvenda = vendas.filter(
-        (venda) =>
-          String(venda.id_pedido).toLowerCase().includes(searchTerm.toLowerCase())
-      );
+  // Filtro dos produtos
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
+  };
+
+  const filteredvenda = vendas.filter(
+    (venda) =>
+      String(venda.id_pedido).toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
 
-      const processarDadosPorSemana = (vendas) => {
-        const vendasPorSemana = {};
-        let maxVenda = 0;
-      
-        vendas.forEach((venda) => {
-          const semana = moment(venda.Data).week(); // Obtém a semana da data
-          if (!vendasPorSemana[semana]) {
-            vendasPorSemana[semana] = 0;
-          }
-      
-          const totalVenda = parseFloat(venda.total); // Garantir que total seja um número
-          if (!isNaN(totalVenda)) { // Verifica se o valor é um número válido
-            vendasPorSemana[semana] += totalVenda;
-          }
-      
-          if (vendasPorSemana[semana] > maxVenda) {
-            maxVenda = vendasPorSemana[semana]; // Armazena a venda com maior valor
-          }
-        });
-      
-        const dadosFormatados = Object.keys(vendasPorSemana).map((semana) => ({
-          name: `Semana ${semana}`,
-          total: vendasPorSemana[semana],
-        }));
-      
-        setMaxVendaMes(maxVenda); // Define o maior valor vendido no mês
-        setDadosPorSemana(dadosFormatados); // Define os dados processados para o gráfico
-      };
-      
+  const processarDadosPorSemana = (vendas) => {
+    const vendasPorSemana = {};
+    let maxVenda = 0;
+
+    vendas.forEach((venda) => {
+      const semana = moment(venda.Data).week(); // Obtém a semana da data
+      if (!vendasPorSemana[semana]) {
+        vendasPorSemana[semana] = 0;
+      }
+
+      const totalVenda = parseFloat(venda.total); // Garantir que total seja um número
+      if (!isNaN(totalVenda)) { // Verifica se o valor é um número válido
+        vendasPorSemana[semana] += totalVenda;
+      }
+
+      if (vendasPorSemana[semana] > maxVenda) {
+        maxVenda = vendasPorSemana[semana]; // Armazena a venda com maior valor
+      }
+    });
+
+    const dadosFormatados = Object.keys(vendasPorSemana).map((semana) => ({
+      name: `Semana ${semana}`,
+      total: vendasPorSemana[semana],
+    }));
+
+    setMaxVendaMes(maxVenda); // Define o maior valor vendido no mês
+    setDadosPorSemana(dadosFormatados); // Define os dados processados para o gráfico
+  };
+
   return (
     <SideBarPage>
-    <main className="main-container">
-      <div className="main-title">
-        <h3>Histórico de Vendas</h3>
-      </div>
-       {/* Botões para cadastrar despesas, excluir ou editar */}
-       <div className="Button_Cad">
+      <main className="main-container">
+        <div className="main-title">
+          <h3>Histórico de Vendas</h3>
+        </div>
+        {/* Botões para cadastrar despesas, excluir ou editar */}
+        <div className="Button_Cad">
           <button>
             Exportar
             <FaFileExport />
           </button>
         </div>
 
-          
- {/* Input de pesquisa */}
- <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                marginTop: "10px",
-                border: "1px solid #ccc",
-                borderRadius: "4px",
-                width: "350px",
-              }}
-            >
-              <BsSearch
-                style={{ marginLeft: "10px", color: "#888", fontSize: "18px" }}
-              />
-              <input
-                type="text" 
-                placeholder="Pesquisar clientes..."
-                value={searchTerm}
-                onChange={handleSearchChange}
-               
-                style={{
-                  backgroundColor: "white",
-                  color: "black",
-                  border: "1px solid #fff",
-                  padding: "12px",
-                  fontSize: "16px",
-                  width: "300px",
-                  outline: "none",
-                  transition: "border-color 0.3s",
-                  paddingLeft: "10px",
-                }}
-              />
-            </div>
+
+        {/* Input de pesquisa */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            marginTop: "10px",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+            width: "350px",
+          }}
+        >
+          <BsSearch
+            style={{ marginLeft: "10px", color: "#888", fontSize: "18px" }}
+          />
+          <input
+            type="text"
+            placeholder="Pesquisar clientes..."
+            value={searchTerm}
+            onChange={handleSearchChange}
+
+            style={{
+              backgroundColor: "white",
+              color: "black",
+              border: "1px solid #fff",
+              padding: "12px",
+              fontSize: "16px",
+              width: "300px",
+              outline: "none",
+              transition: "border-color 0.3s",
+              paddingLeft: "10px",
+            }}
+          />
+        </div>
         <div className="tabela-vendas">
-        <table>
+          <table>
             <caption>Histórico de Vendas</caption>
             <thead>
               <tr>
@@ -175,8 +175,8 @@ function Hist_vendas() {
               ))}
             </tbody>
           </table>
-          </div>
-    </main>
+        </div>
+      </main>
     </SideBarPage>
   );
 }

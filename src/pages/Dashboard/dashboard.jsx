@@ -21,8 +21,8 @@ import {
   Line,
   Customized,
   Rectangle,
+  PieChart, Pie, Sector, Cell
 } from "recharts";
-import { PieChart, Pie, Sector } from "recharts";
 import SideBarPage from "../../components/Sidebar/SideBarPage";
 
 const RADIAN = Math.PI / 180;
@@ -84,7 +84,7 @@ const renderActiveShape = (props) => {
         y={ey}
         textAnchor={textAnchor}
         fill="#333"
-      >{`Total ${value}`}</text>
+      >Total</text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
@@ -92,7 +92,7 @@ const renderActiveShape = (props) => {
         textAnchor={textAnchor}
         fill="#999"
       >
-        {`( ${(percent * 100).toFixed(2)}%)`}
+        {`${(percent * 100).toFixed(2)}%`}
       </text>
     </g>
   );
@@ -110,6 +110,9 @@ function Home() {
   const [typeUserData, setTypeUserData] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [vendasCrescimento, setVendasCrescimento] = useState([]);
+
+  // Array de cores
+  const COLORS_GRAFICO = ["#FF8042", "#00C49F", "#FFBB28", "#0088FE", "#FF00FF", "#40E0D0"];
 
   // Funções para buscar dados de estoque, funcionários, vendas, logs, etc.
 
@@ -151,30 +154,30 @@ function Home() {
       );
       if (response.status === 200) {
         const vendas = response.data.InfoTabela || [];
-  
+
         // Inicializamos um array para armazenar os dados formatados
         const vendasFormatadas = [];
-  
+
         // Variável para armazenar o total de vendas do mês anterior
         let vendasMesAnterior = 0;
-  
+
         // Formatar os dados das vendas e calcular o crescimento
         vendas.forEach((venda) => {
           const totalVendas = parseFloat(venda.total) || 0; // Total de vendas em R$
           const nomeMes = venda.Data; // Suponha que "Data" seja no formato 'YYYY-MM'
-          
+
           // Calcular o crescimento
           const crescimento = vendasMesAnterior ? totalVendas - vendasMesAnterior : 0;
-  
+
           vendasFormatadas.push({
             name: nomeMes,
             total: totalVendas,
             crescimento: crescimento,
           });
-  
+
           vendasMesAnterior = totalVendas; // Atualiza o total de vendas do mês atual
         });
-  
+        setSelectedTotalVenda(response.data.N_Registros)
         setVendasCrescimento(vendasFormatadas); // Atualiza o estado com os dados formatados
       }
     } catch (error) {
@@ -182,16 +185,16 @@ function Home() {
       setVendasCrescimento([]); // Reseta os dados em caso de erro
     }
   };
-  
+
   const CustomizedRectangle = (props) => {
     const { formattedGraphicalItems } = props;
     const firstSeries = formattedGraphicalItems[0];
     const secondSeries = formattedGraphicalItems[1];
-  
+
     return firstSeries?.props?.points.map((firstSeriesPoint, index) => {
       const secondSeriesPoint = secondSeries?.props?.points[index];
       const yDifference = firstSeriesPoint.y - secondSeriesPoint.y;
-  
+
       return (
         <Rectangle
           key={firstSeriesPoint.payload.name}
@@ -205,10 +208,10 @@ function Home() {
     });
   };
 
-  const fetchDadosHistoricLogs = async (id) => {
+  const fetchDadosHistoricLogs = async () => {
     try {
       const response = await axios.get(
-        `/api/ServerTwo/EmpresaHistoricLogs/${id}`,
+        `/api/ServerTwo/EmpresaHistoricLogs`,
         { withCredentials: true }
       );
       setSelectedTotalLogs(response.data.N_Registros);
@@ -358,7 +361,7 @@ function Home() {
       fetchDadosEstoque(userInfo.id_EmpresaDb);
       fetchDadosFuncionarios(userInfo.id_EmpresaDb);
       fetchDadosVendas(userInfo.id_EmpresaDb);
-      fetchDadosHistoricLogs(userInfo.id_EmpresaDb);
+      fetchDadosHistoricLogs();
       fetchDadosFuncionariosPorTipoUser(userInfo.id_EmpresaDb);
     }
   }, [userInfo.TypeUser, userInfo.id_EmpresaDb]);
@@ -402,7 +405,7 @@ function Home() {
               </div>
               <div className="card">
                 <div className="card-inner">
-                  <h3>PEDIDOS</h3>
+                  <h3>VENDAS</h3>
                   <BsListCheck className="card_icon" />
                 </div>
                 <h1>{SelectedTotalVenda}</h1>
@@ -469,36 +472,40 @@ function Home() {
                       fill="#8884d8"
                       dataKey="value"
                       onMouseEnter={(_, index) => setActiveIndex(index)} // Atualiza o estado ao passar o mouse
-                    />
+                    >
+                      {typeUserData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={COLORS_GRAFICO[index % COLORS_GRAFICO.length]} />
+                      ))}
+                    </Pie>
                   </PieChart>
                 </ResponsiveContainer>
               </div>
               <div className="charts">
-               <ResponsiveContainer width="100%" height={500}>
-      <LineChart
-        data={vendasCrescimento} // Dados formatados das vendas
-        margin={{
-          top: 5,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="name" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        
-        {/* Linha de Vendas Totais */}
-        <Line type="monotone" dataKey="total" stroke="#8884d8" name="Vendas Totais (R$)" />
-        
-        {/* Linha de Crescimento das Vendas */}
-        <Line type="monotone" dataKey="crescimento" stroke="#82ca9d" name="Crescimento de Vendas (R$)" />
-        
-        <Customized component={CustomizedRectangle} />
-      </LineChart>
-    </ResponsiveContainer>
+                <ResponsiveContainer width="100%" height={500}>
+                  <LineChart
+                    data={vendasCrescimento} // Dados formatados das vendas
+                    margin={{
+                      top: 5,
+                      right: 30,
+                      left: 20,
+                      bottom: 5,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="name" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+
+                    {/* Linha de Vendas Totais */}
+                    <Line type="monotone" dataKey="total" stroke="#8884d8" name="Vendas Totais (R$)" />
+
+                    {/* Linha de Crescimento das Vendas */}
+                    <Line type="monotone" dataKey="crescimento" stroke="#82ca9d" name="Crescimento de Vendas (R$)" />
+
+                    <Customized component={CustomizedRectangle} />
+                  </LineChart>
+                </ResponsiveContainer>
 
               </div>
             </div>

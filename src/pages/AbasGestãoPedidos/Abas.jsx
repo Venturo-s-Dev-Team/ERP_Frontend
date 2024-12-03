@@ -75,13 +75,13 @@ function Abas() {
     // Permite selecionar ou desmarcar o cliente, mas sem alertas
     const isSelected = selectedClient && selectedClient.id === cliente.id;
     setSelectedClient(isSelected ? null : cliente);
-  
+
     setLineColors([
       isSelected ? "#ccc" : "#0a5483",
       lineColors[1]
     ]);
   };
-  
+
   const canGoToNextPage = () => {
     if (registroAtivo === "clientes") {
       // Verifica se o cliente está selecionado e se é ativo
@@ -91,86 +91,86 @@ function Abas() {
       return selectedProducts.length > 0;
     }
     return false;
-  };  
-  
+  };
 
 
-    // INFORMAÇÕES DOS CLIENTES
 
-    const [Clientes, setClientes] = useState([]);
+  // INFORMAÇÕES DOS CLIENTES
 
-    const fetchDadosClientes = async (id) => {
-      try {
-        const response = await axios.get(`/api/ServerOne/tableCliente/${id}`, {
-          withCredentials: true,
-        });
-        if (response.status === 200) {
-          setClientes(response.data);
-        }
-      } catch (error) {
-        console.log("Não foi possível requerir as informações: ", error);
+  const [Clientes, setClientes] = useState([]);
+
+  const fetchDadosClientes = async (id) => {
+    try {
+      const response = await axios.get(`/api/ServerOne/tableCliente/${id}`, {
+        withCredentials: true,
+      });
+      if (response.status === 200) {
+        setClientes(response.data);
       }
-    };
+    } catch (error) {
+      console.log("Não foi possível requerir as informações: ", error);
+    }
+  };
 
 
-    // INFORMAÇÕES DOS PRODUTOS
+  // INFORMAÇÕES DOS PRODUTOS
 
-    const [ProductsEstoque, setSelectedEstoque] = useState([]);
+  const [ProductsEstoque, setSelectedEstoque] = useState([]);
 
-    const fetchDadosEstoque = async (id) => {
-      try {
-        const response = await axios.get(`/api/ServerOne/tableEstoque/${id}`, {
-          withCredentials: true,
-        });
-        if (response.status === 200) {
-          setSelectedEstoque(response.data.InfoTabela);
-        }
-      } catch (error) {
-        console.log("Não foi possível requerir as informações: ", error);
+  const fetchDadosEstoque = async (id) => {
+    try {
+      const response = await axios.get(`/api/ServerOne/tableEstoque/${id}`, {
+        withCredentials: true,
+      });
+      if (response.status === 200) {
+        setSelectedEstoque(response.data.InfoTabela);
       }
-    };
+    } catch (error) {
+      console.log("Não foi possível requerir as informações: ", error);
+    }
+  };
 
-    // OUTRAS FUNÇÕES
+  // OUTRAS FUNÇÕES
 
-    // Filtro
-    const [searchTermCliente, setSearchTermCliente] = useState(""); // Estado para armazenar o termo de pesquisa
-    const [searchTermProduto, setSearchTermProduto] = useState(""); // Estado para armazenar o termo de pesquisa
+  // Filtro
+  const [searchTermCliente, setSearchTermCliente] = useState(""); // Estado para armazenar o termo de pesquisa
+  const [searchTermProduto, setSearchTermProduto] = useState(""); // Estado para armazenar o termo de pesquisa
 
-        // Filtro dos clientes e produtos
-        const handleSearchChangeCliente = (e) => {
-          setSearchTermCliente(e.target.value); // Atualiza o termo de pesquisa
-        };
-      
-        const filteredClientes = Clientes.filter(
-          (cliente) =>
-            cliente.razao_social.toLowerCase().includes(searchTermCliente.toLowerCase()) ||
-            String(cliente.id).toLowerCase().includes(searchTermCliente.toLowerCase())
-        );
+  // Filtro dos clientes e produtos
+  const handleSearchChangeCliente = (e) => {
+    setSearchTermCliente(e.target.value); // Atualiza o termo de pesquisa
+  };
 
-        const handleSearchChangeProduto = (e) => {
-          setSearchTermProduto(e.target.value); // Atualiza o termo de pesquisa
-        };
-      
-        const filteredProdutos = ProductsEstoque.filter(
-          (product) =>
-            product.Nome.toLowerCase().includes(searchTermProduto.toLowerCase()) ||
-            String(product.Codigo).toLowerCase().includes(searchTermProduto.toLowerCase())
-        );
+  const filteredClientes = Clientes.filter(
+    (cliente) =>
+      cliente.razao_social.toLowerCase().includes(searchTermCliente.toLowerCase()) ||
+      String(cliente.id).toLowerCase().includes(searchTermCliente.toLowerCase())
+  );
 
-      // Função para calcular o valor total dos produtos
-      const calcularValorTotal = () => {
-        const total = selectedProducts.reduce((acc, product) => acc + (parseFloat(product.ValorUnitario) * product.quantidade), 0);
-        return total - (total * (desconto / 100));
-      };
-    
-  
+  const handleSearchChangeProduto = (e) => {
+    setSearchTermProduto(e.target.value); // Atualiza o termo de pesquisa
+  };
+
+  const filteredProdutos = ProductsEstoque.filter(
+    (product) =>
+      product.Nome.toLowerCase().includes(searchTermProduto.toLowerCase()) ||
+      String(product.Codigo).toLowerCase().includes(searchTermProduto.toLowerCase())
+  );
+
+  // Função para calcular o valor total dos produtos
+  const calcularValorTotal = () => {
+    const total = selectedProducts.reduce((acc, product) => acc + (parseFloat(product.ValorUnitario) * product.quantidade), 0);
+    return total - (total * (desconto / 100));
+  };
+
+
 
   const enviarPedido = async () => {
     if (!selectedClient || selectedProducts.length === 0) {
       alert("Selecione um cliente e pelo menos um produto.");
       return;
     }
-  
+
     const dadosVenda = {
       nome_cliente: selectedClient.razao_social,    // Cliente selecionado
       produto: JSON.stringify(selectedProducts),    // Produtos em formato JSON
@@ -180,13 +180,13 @@ function Abas() {
     };
 
     const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
-  
+
     try {
       const response = await axios.post(`/api/ServerTwo/registrarPedido/${id}`, dadosVenda, {
         withCredentials: true,
       });
-        alert("Pedido registrado com sucesso!");
-        navigate("/gestaoVendas")
+      alert("Pedido registrado com sucesso!");
+      navigate("/gestaoVendas")
     } catch (error) {
       console.error("Erro ao enviar os dados da venda: ", error);
       alert("Erro ao registrar a venda.");
@@ -199,37 +199,37 @@ function Abas() {
         return (
           <div>
             {/* Input de pesquisa */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              marginTop: "10px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-              width: "350px",
-            }}
-          >
-            <BsSearch
-              style={{ marginLeft: "10px", color: "#888", fontSize: "18px" }}
-            />
-            <input
-              type="text"
-              placeholder="Pesquisar clientes"
-              onChange={handleSearchChangeCliente}
-              value={searchTermCliente}
+            <div
               style={{
-                backgroundColor: "white",
-                color: "black",
-                border: "1px solid #fff",
-                padding: "12px",
-                fontSize: "16px",
-                width: "300px",
-                outline: "none",
-                transition: "border-color 0.3s",
-                paddingLeft: "10px",
+                display: "flex",
+                alignItems: "center",
+                marginTop: "10px",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+                width: "350px",
               }}
-            />
-          </div>
+            >
+              <BsSearch
+                style={{ marginLeft: "10px", color: "#888", fontSize: "18px" }}
+              />
+              <input
+                type="text"
+                placeholder="Pesquisar clientes"
+                onChange={handleSearchChangeCliente}
+                value={searchTermCliente}
+                style={{
+                  backgroundColor: "white",
+                  color: "black",
+                  border: "1px solid #fff",
+                  padding: "12px",
+                  fontSize: "16px",
+                  width: "300px",
+                  outline: "none",
+                  transition: "border-color 0.3s",
+                  paddingLeft: "10px",
+                }}
+              />
+            </div>
             <div className="Clientes_List">
               <table>
                 <caption>Listagem de Clientes</caption>
@@ -243,7 +243,7 @@ function Abas() {
                   </tr>
                 </thead>
                 <tbody>
-                {filteredClientes.map((cliente) => (
+                  {filteredClientes.map((cliente) => (
                     <tr key={cliente.id}>
                       <td>{cliente.id}</td>
                       <td>{cliente.razao_social}</td>
@@ -266,9 +266,8 @@ function Abas() {
               <button
                 onClick={() => setRegistroAtivo("estoque")}
                 disabled={!canGoToNextPage()}
-                className={`ButtonSendEnv ${
-                  canGoToNextPage() ? "" : "disabled"
-                }`}
+                className={`ButtonSendEnv ${canGoToNextPage() ? "" : "disabled"
+                  }`}
               >
                 Próximo
               </button>
@@ -279,38 +278,38 @@ function Abas() {
         return (
           <div>
             {/* Input de pesquisa */}
-          
+
             <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              marginTop: "10px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-              width: "350px",
-            }}
-          >
-            <BsSearch
-              style={{ marginLeft: "10px", color: "#888", fontSize: "18px" }}
-            />
-            <input
-              type="text"
-              placeholder="Pesquisar clientes..."
-              value={searchTermProduto}
-              onChange={handleSearchChangeProduto}
               style={{
-                backgroundColor: "white",
-                color: "black",
-                border: "1px solid #fff",
-                padding: "12px",
-                fontSize: "16px",
-                width: "300px",
-                outline: "none",
-                transition: "border-color 0.3s",
-                paddingLeft: "10px",
+                display: "flex",
+                alignItems: "center",
+                marginTop: "10px",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+                width: "350px",
               }}
-            />
-          </div>
+            >
+              <BsSearch
+                style={{ marginLeft: "10px", color: "#888", fontSize: "18px" }}
+              />
+              <input
+                type="text"
+                placeholder="Pesquisar clientes..."
+                value={searchTermProduto}
+                onChange={handleSearchChangeProduto}
+                style={{
+                  backgroundColor: "white",
+                  color: "black",
+                  border: "1px solid #fff",
+                  padding: "12px",
+                  fontSize: "16px",
+                  width: "300px",
+                  outline: "none",
+                  transition: "border-color 0.3s",
+                  paddingLeft: "10px",
+                }}
+              />
+            </div>
             <div className="Estoque_List">
               <table id="table-to-export">
                 <caption>Listagens de Produtos</caption>
@@ -345,30 +344,30 @@ function Abas() {
                           {selectedProducts.some(
                             (p) => p.Codigo === product.Codigo
                           ) && (
-                            <input
-                              type="number"
-                              min="1"
-                              max={Math.min(product.Quantidade)}
-                              defaultValue={1}
-                              onChange={(e) => {
-                                const value = e.target.value;
-                                // Permite apenas números ou deixa em branco
-                                if (value === "" || /^\d+$/.test(value)) {
-                                  const quantity = Math.max(
-                                    1,
-                                    Math.min(
-                                      Math.min(product.Quantidade),
-                                      Number(value)
-                                    )
-                                  ); // Limita entre 1 e o menor valor entre 10 e product.Quantidade
-                                  handleQuantityChange(
-                                    product.Codigo,
-                                    quantity
-                                  );
-                                }
-                              }}
-                            />
-                          )}
+                              <input
+                                type="number"
+                                min="1"
+                                max={Math.min(product.Quantidade)}
+                                defaultValue={1}
+                                onChange={(e) => {
+                                  const value = e.target.value;
+                                  // Permite apenas números ou deixa em branco
+                                  if (value === "" || /^\d+$/.test(value)) {
+                                    const quantity = Math.max(
+                                      1,
+                                      Math.min(
+                                        Math.min(product.Quantidade),
+                                        Number(value)
+                                      )
+                                    ); // Limita entre 1 e o menor valor entre 10 e product.Quantidade
+                                    handleQuantityChange(
+                                      product.Codigo,
+                                      quantity
+                                    );
+                                  }
+                                }}
+                              />
+                            )}
                         </div>
                       </td>
                     </tr>
@@ -387,9 +386,8 @@ function Abas() {
               <button
                 onClick={() => setRegistroAtivo("Resumo")}
                 disabled={!canGoToNextPage()}
-                className={`ButtonSendEnv ${
-                  canGoToNextPage() ? "" : "disabled"
-                }`}
+                className={`ButtonSendEnv ${canGoToNextPage() ? "" : "disabled"
+                  }`}
               >
                 Próximo
               </button>
@@ -464,39 +462,37 @@ function Abas() {
 
   return (
     <SideBarPage>
-    <main className="main-container">
-      <div>
-        <h2>Adicionar Pedidos</h2>
-        <div className="DivButtonsSequence">
-          <div className={`buttonSequencia ${selectedClient ? "active" : ""}`}>
-            1
+      <main className="main-container">
+        <div>
+          <h2>Adicionar Pedidos</h2>
+          <div className="DivButtonsSequence">
+            <div className={`buttonSequencia ${selectedClient ? "active" : ""}`}>
+              1
+            </div>
+            <div
+              className="line"
+              style={{ backgroundColor: lineColors[0] }}
+            ></div>
+            <div
+              className={`buttonSequencia ${selectedProducts.length > 0 ? "active" : ""
+                }`}
+            >
+              2
+            </div>
+            <div
+              className="line"
+              style={{ backgroundColor: lineColors[1] }}
+            ></div>
+            <div
+              className={`buttonSequencia ${selectedClient && selectedProducts.length > 0 ? "active" : ""
+                }`}
+            >
+              3
+            </div>
           </div>
-          <div
-            className="line"
-            style={{ backgroundColor: lineColors[0] }}
-          ></div>
-          <div
-            className={`buttonSequencia ${
-              selectedProducts.length > 0 ? "active" : ""
-            }`}
-          >
-            2
-          </div>
-          <div
-            className="line"
-            style={{ backgroundColor: lineColors[1] }}
-          ></div>
-          <div
-            className={`buttonSequencia ${
-              selectedClient && selectedProducts.length > 0 ? "active" : ""
-            }`}
-          >
-            3
-          </div>
+          {renderizarPedidos()}
         </div>
-        {renderizarPedidos()}
-      </div>
-    </main>
+      </main>
     </SideBarPage>
   );
 }

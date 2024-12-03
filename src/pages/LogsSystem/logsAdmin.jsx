@@ -1,221 +1,180 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 import SideBarPage from "../../components/Sidebar/SideBarPage";
 import './Logs.css';
 
 function LogsAdmin() {
-    const navigate = useNavigate();
-    const [selectedYear, setSelectedYear] = useState(null);
-    const [selectedMonth, setSelectedMonth] = useState(null);
-    const [dataLogs, setDataLogs] = useState([]);
-    const [userInfo, setUserInfo] = useState('');
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-    const [pageRange, setPageRange] = useState({ start: 1, end: 5 });
-    const [showMonths, setShowMonths] = useState(false);
-    const logsPerPage = 10;
-    const pagesToShow = 5;
+  const navigate = useNavigate();
+  const [selectedYear, setSelectedYear] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState(null);
+  const [logs, setLogs] = useState([]);
+  const [years, setYears] = useState([]);
+  const [months, setMonths] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const logsPerPage = 12;
 
-    const fetchHistoricLogs = async () => {
-        try {
-            const response = await axios.get('/api/ServerTwo/MainHistoricLogs', {
-                params: { page: currentPage, limit: logsPerPage, year: selectedYear, month: selectedMonth },
-                withCredentials: true
-            });
-            if (response.data && Array.isArray(response.data.logs)) {
-                setDataLogs(response.data.logs);
-                setTotalPages(response.data.totalPages);
-            } else {
-                console.error("Data recebida não é um array:", response.data);
-                setDataLogs([]);
-            }
-        } catch (err) {
-            console.log(err);
-            setDataLogs([]);
-        }
+  const monthNames = [
+    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+  ];
+
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const response = await axios.get('/api/ServerTwo/verifyToken', { withCredentials: true });
+        const decodedToken = jwtDecode(response.data.token);
+        if (!decodedToken) throw new Error('Token inválido');
+      } catch {
+        navigate('/login');
+      }
     };
 
-    useEffect(() => {
-        const verifyToken = async () => {
-            try {
-                const response = await axios.get('/api/ServerTwo/verifyToken', { withCredentials: true });
-                if (typeof response.data.token === 'string') {
-                    const decodedToken = jwtDecode(response.data.token);
-                    setUserInfo(decodedToken);
-                } else {
-                    console.error('Token não é uma string:', response.data.token);
-                    navigate('/');
-                }
-            } catch (error) {
-                console.error('Token inválido', error);
-                navigate('/login');
-            }
-        };
+    verifyToken();
+    fetchYearsAndMonths();
+  }, []);
 
-        verifyToken();
-        fetchHistoricLogs();
-    }, [navigate, currentPage, selectedYear, selectedMonth]);
+  useEffect(() => {
+    fetchLogs();
+  }, [currentPage, selectedYear, selectedMonth]);
 
-    const monthNames = [
-        "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-    ];
+  const fetchYearsAndMonths = async () => {
+    try {
+      const response = await axios.get('/api/ServerTwo/MainHistoricLogs', {
+        params: { limit: logsPerPage },
+        withCredentials: true,
+      });
 
-    const years = [...new Set(dataLogs.map(log => new Date(log.timestamp).getFullYear()))];
+      setYears(response.data.years);
+    } catch (err) {
+      console.error('Erro ao buscar anos e meses:', err);
+    }
+  };
 
-    // Extrair todos os meses únicos para o ano selecionado
-    const months = selectedYear ?
-        [...new Set(dataLogs
-            .filter(log => new Date(log.timestamp).getFullYear() === selectedYear)
-            .map(log => new Date(log.timestamp).getMonth() + 1)
-        )] : [];
+  const fetchMonths = async (year) => {
+    try {
+      const response = await axios.get('/api/ServerTwo/MainHistoricLogs', {
+        params: { year },
+        withCredentials: true,
+      });
 
-    const filteredLogs = dataLogs.filter(log => {
-        const logDate = new Date(log.timestamp);
-        const yearMatch = selectedYear ? logDate.getFullYear() === selectedYear : true;
-        const monthMatch = selectedMonth ? (logDate.getMonth() + 1) === selectedMonth : true;
-        return yearMatch && monthMatch;
-    });
+      setMonths(response.data.months);
+    } catch (err) {
+      console.error('Erro ao buscar meses:', err);
+    }
+  };
 
-    const paginate = (pageNumber) => {
-        setCurrentPage(pageNumber);
-        updatePageRange(pageNumber);
-    };
+  const fetchLogs = async () => {
+    try {
+      const response = await axios.get('/api/ServerTwo/MainHistoricLogs', {
+        params: {
+          page: currentPage,
+          limit: logsPerPage,
+          year: selectedYear,
+          month: selectedMonth,
+        },
+        withCredentials: true,
+      });
 
-    const updatePageRange = (newPage) => {
-        let newStart = newPage - Math.floor(pagesToShow / 2);
-        let newEnd = newPage + Math.floor(pagesToShow / 2);
+      setLogs(response.data.logs);
+      setTotalPages(response.data.totalPages);
+    } catch (err) {
+      console.error('Erro ao buscar logs:', err);
+    }
+  };
 
-        if (newStart < 1) {
-            newStart = 1;
-            newEnd = Math.min(pagesToShow, totalPages);
-        }
-        if (newEnd > totalPages) {
-            newEnd = totalPages;
-            newStart = Math.max(1, totalPages - pagesToShow + 1);
-        }
+  const handleYearClick = (year) => {
+    setSelectedYear(year === selectedYear ? null : year);
+    setSelectedMonth(null);
+    setCurrentPage(1);
+    if (year !== selectedYear) fetchMonths(year);
+  };
 
-        setPageRange({ start: newStart, end: newEnd });
-    };
+  const handleMonthClick = (month) => {
+    setSelectedMonth(month);
+    setCurrentPage(1);
+  };
 
-    const handlePrevClick = () => {
-        if (currentPage > 1) {
-            const newPage = currentPage - 1;
-            paginate(newPage);
-        }
-    };
+  return (
+    <SideBarPage>
+      <div className="logs-admin">
+        <div className="titleLogsAdm">
+          <h3>Logs</h3>
+        </div>
 
-    const handleNextClick = () => {
-        if (currentPage < totalPages) {
-            const newPage = currentPage + 1;
-            paginate(newPage);
-        }
-    };
-
-    const handleYearClick = (year) => {
-        if (year === selectedYear) {
-            setSelectedYear(null);
-            setSelectedMonth(null);
-            setShowMonths(false);
-        } else {
-            setSelectedYear(year);
-            setSelectedMonth(null);
-            setCurrentPage(1);
-            setShowMonths(true);
-        }
-    };
-
-    const handleMonthClick = (month) => {
-        setSelectedMonth(month);
-        setCurrentPage(1);
-    };
-
-    return (
-        <SideBarPage>
-            <div className="logs-admin">
-                <div className="titleLogsAdm">
-                    <h3>Logs</h3>
-                </div>
-
-                <div className="direction-align">
-                    <div className="buttonsSelector">
-                        <div className="year-selector">
-                            {years.map(year => (
-                                <button
-                                    key={year}
-                                    onClick={() => handleYearClick(year)}
-                                    className={year === selectedYear ? 'selected' : ''}
-                                >
-                                    {year}
-                                </button>
-                            ))}
-                        </div>
-
-                        <div className={`month-selector ${showMonths ? 'show' : 'hide'}`}>
-                            {months.map(month => (
-                                <button
-                                    key={month}
-                                    onClick={() => handleMonthClick(month)}
-                                    className={month === selectedMonth ? 'selected' : ''}
-                                >
-                                    {monthNames[month - 1]}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    {selectedMonth && (
-                        <div className="logAdm-table">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>User ID</th>
-                                        <th>User Name</th>
-                                        <th>Action</th>
-                                        <th>Table Name</th>
-                                        <th>Timestamp</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {filteredLogs.map(log => (
-                                        <tr key={log.id}>
-                                            <td>{log.id}</td>
-                                            <td>{log.user_id}</td>
-                                            <td>{log.user_name}</td>
-                                            <td>{log.action}</td>
-                                            <td>{log.table_name}</td>
-                                            <td>{log.timestamp}</td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
-
-                            <div className="pagination">
-                                <button onClick={handlePrevClick} disabled={currentPage === 1}>
-                                    &laquo;
-                                </button>
-                                {Array.from({ length: pageRange.end - pageRange.start + 1 }, (_, i) => pageRange.start + i).map(pageNumber => (
-                                    <button
-                                        key={pageNumber}
-                                        onClick={() => paginate(pageNumber)}
-                                        className={pageNumber === currentPage ? 'active' : ''}
-                                    >
-                                        {pageNumber}
-                                    </button>
-                                ))}
-                                <button onClick={handleNextClick} disabled={currentPage === totalPages}>
-                                    &raquo;
-                                </button>
-                            </div>
-                        </div>
-                    )}
-                </div>
+        <div className="direction-align">
+          <div className="buttonsSelector">
+            <div className="year-selector">
+              {years.map(year => (
+                <button
+                  key={year}
+                  onClick={() => handleYearClick(year)}
+                  className={selectedYear === year ? 'selected' : ''}
+                >
+                  {year}
+                </button>
+              ))}
             </div>
-        </SideBarPage>
-    );
+
+            {selectedYear && (
+              <div className={`month-selector ${months ? 'show' : 'hide'}`}>
+                {months.map(month => (
+                  <button
+                    key={month}
+                    onClick={() => handleMonthClick(month)}
+                    className={selectedMonth === month ? 'selected' : ''}
+                  >
+                    {monthNames[month - 1]}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="logAdm-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>User ID</th>
+                  <th>User Name</th>
+                  <th>Action</th>
+                  <th>Table Name</th>
+                  <th>Timestamp</th>
+                </tr>
+              </thead>
+              <tbody>
+                {logs.map(log => (
+                  <tr key={log.id}>
+                    <td>{log.id}</td>
+                    <td>{log.user_id}</td>
+                    <td>{log.user_name}</td>
+                    <td>{log.action}</td>
+                    <td>{log.table_name}</td>
+                    <td>{new Date(log.timestamp).toLocaleString()}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <div className="pagination">
+              {[...Array(totalPages).keys()].map(page => (
+                <button
+                  key={page + 1}
+                  onClick={() => setCurrentPage(page + 1)}
+                  className={currentPage === page + 1 ? 'active' : ''}
+                >
+                  {page + 1}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </SideBarPage>
+  );
 }
 
 export default LogsAdmin;

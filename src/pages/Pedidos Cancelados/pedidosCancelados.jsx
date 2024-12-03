@@ -73,16 +73,16 @@ const PedidosCancelados = () => {
     }
   };
 
-    // Filtro dos produtos
-    const handleSearchChange = (e) => {
-      setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
-    };
-  
-    const filteredvenda = vendas.filter(
-      (venda) =>
-        venda.nome_cliente.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        String(venda.id_pedido).toLowerCase().includes(searchTerm.toLowerCase())
-    );
+  // Filtro dos produtos
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
+  };
+
+  const filteredvenda = vendas.filter(
+    (venda) =>
+      venda.nome_cliente.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      String(venda.id_pedido).toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   // Função para exportar dados para Excel
   const exportToExcel = () => {
@@ -152,23 +152,23 @@ const PedidosCancelados = () => {
                 </tr>
               </thead>
               <tbody>
-            {filteredvenda.map((venda) => (
-              <tr key={venda.id_pedido}>
-                <td>{venda.id_pedido}</td>
-                <td>{venda.nome_cliente}</td>
-                <td>{venda.total}</td>
-                <td>{venda.Status}</td>
-                <td>
-                  <button
-                    className="btn-ver-mais"
-                    onClick={() => handleShowInfo(venda)}
-                  >
-                    Ver Mais
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+                {filteredvenda.map((venda) => (
+                  <tr key={venda.id_pedido}>
+                    <td>{venda.id_pedido}</td>
+                    <td>{venda.nome_cliente}</td>
+                    <td>{venda.total}</td>
+                    <td>{venda.Status}</td>
+                    <td>
+                      <button
+                        className="btn-ver-mais"
+                        onClick={() => handleShowInfo(venda)}
+                      >
+                        Ver Mais
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
             </table>
           </div>
 
@@ -179,9 +179,9 @@ const PedidosCancelados = () => {
               top: "50%",
               left: "55%",
               transform: "translate(-50%, -50%)",
-              width: "50%",
-              height: 280,
-              overflowY: "auto",
+              width: "48%",
+              padding: "40px",
+              height: 370,
               borderRadius: 10,
               background: "#fff",
               boxShadow: "10px 10px 15px rgba(0, 0, 0, 0.6)",
@@ -199,7 +199,7 @@ const PedidosCancelados = () => {
               {selectedVenda ? (
                 <div>
                   <h4 className="h4-modal">
-                    Nome da Empresa: {selectedVenda.razaoSocial}
+                    Pedido para: {selectedVenda.nome_cliente}
                   </h4>
                   <div className="textos-modal">
                     <p>Código do pedido: {selectedVenda.id_pedido}</p>

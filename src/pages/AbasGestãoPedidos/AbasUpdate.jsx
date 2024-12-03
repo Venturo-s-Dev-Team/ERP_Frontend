@@ -271,7 +271,7 @@ const AbasForUpdate = () => {
                         <input
                           type="radio" // Alterado para radio button
                           name="cliente"
-                          className="custom-radio"
+                          className="custom-checkbox"
                           checked={
                             selectedClient?.razao_social ===
                             cliente.razao_social

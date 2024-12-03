@@ -38,20 +38,17 @@ function Login() {
         { withCredentials: true }
       );
 
-      if (response.data.TypeUser === "SuperAdmin") {
+      const userType = response.data.TypeUser;
+
+      if (userType === "SuperAdmin") {
         navigate("/dashboardAdmin");
-      } else if (
-        response.data.TypeUser === "Gestor" ||
-        "Socio" ||
-        "Gerente" ||
-        "Financeiro"
-      ) {
+      } else if (["Gestor", "Socio", "Gerente", "Financeiro"].includes(userType)) {
         navigate("/dashboard");
-      } else if (response.data.TypeUser === "Venda") {
-        navigate("/vendas");
-      } else if (response.data.TypeUser === "Estoque") {
+      } else if (userType === "Venda") {
+        navigate("/histVendas");
+      } else if (userType === "Estoque") {
         navigate("/cad_produto");
-      } else if (response.data.TypeUser === "Caixa") {
+      } else if (userType === "Caixa") {
         navigate("/caixa");
       } else {
         alert("Usuário desconhecido");
@@ -249,29 +246,29 @@ function Login() {
           <div className={`toggle ${isSignUp ? "sign-up" : "sign-in"}`}>
             {isSignUp ? (
               <div className="toggle-panel toggle-left">
-              <h1>Bem vindo de volta!</h1>
-              <p>Entre na sua conta</p>
+                <h1>Bem vindo de volta!</h1>
+                <p>Entre na sua conta</p>
 
-              <button
-                className="hidden"
-                id="login"
-                onClick={handleSignInClick}
-              >
-                Entrar
-              </button>
-            </div>
-          ) : (
-            <div className="toggle-panel toggle-right">
-              <h1>Bem vindo!</h1>
-              <p>Faça seu Registro</p>
-              <button
-                className="hidden"
-                id="cadastro"
-                onClick={handleSignUpClick}
-              >
-                Cadastro
-              </button>
-            </div>
+                <button
+                  className="hidden"
+                  id="login"
+                  onClick={handleSignInClick}
+                >
+                  Entrar
+                </button>
+              </div>
+            ) : (
+              <div className="toggle-panel toggle-right">
+                <h1>Bem vindo!</h1>
+                <p>Faça seu Registro</p>
+                <button
+                  className="hidden"
+                  id="cadastro"
+                  onClick={handleSignUpClick}
+                >
+                  Cadastro
+                </button>
+              </div>
             )}
           </div>
         </div>
