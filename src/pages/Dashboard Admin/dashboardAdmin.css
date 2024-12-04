@@ -1,0 +1,195 @@
+/* Dashboard Admin */
+.main-titleDBAdmin {
+  color: #000000;
+  font-size: 60px;
+  font-weight: 300;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.IntroText-DBAdmin-1,
+.IntroText-DBAdmin-2,
+.IntroText-DBAdmin-3 {
+  color: #000000;
+  font-size: 20px;
+  justify-content: center;
+  align-items: center;
+  font-weight: 300;
+  text-align: center;
+}
+
+.ContainerEmp-DBAdmin {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 100px;
+}
+
+.ContainerExt-DBAdmin {
+  width: 290px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  padding: 10px;
+  color: #fff;
+  text-align: center;
+  background-color: rgb(10, 84, 131);
+}
+
+.ContainerInt-DBAdmin {
+  position: fixed;
+  top: 30%;
+  transform: translateX(-30%);
+  background: rgb(249, 247, 247);
+  border-radius: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 1);
+  padding: 20px;
+  width: 45%;
+  height: 48%;
+  text-align: center;
+  color: #ffffff00;
+  display: flex;
+  flex-direction: column;
+}
+
+.ContainerBtn-DBAdmin {
+  margin-left: 90%;
+  background-color: #f8f8f800;
+  border: 0px;
+}
+
+.ContainerIcone {
+  height: 42px;
+  width: 42px;
+}
+
+.LogoEmpresa-DBAdmin {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-top: -30px;
+  margin-bottom: 20px;
+  width: 100px;
+}
+
+.LogoEmpresa-Img-DBAdmin {
+  width: 200px;
+  height: 200px;
+  border-radius: 10%;
+  object-fit: cover;
+  margin-top: -40px;
+  border-color: #000;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.ContainerConteudo {
+  width: 300px;
+  margin-left: 230px;
+  margin-right: auto;
+}
+
+.ContainerConteudo.has-logo {
+  text-align: left;
+  margin-top: -220px;
+}
+
+.ContainerConteudo.no-logo {
+  text-align: left;
+  margin-top: -120px;
+  margin-left: 10px;
+}
+
+.ContainerInt-Title {
+  color: #000000;
+  font-size: 29px;
+  text-align: left;
+  margin-bottom: 0px;
+}
+
+.ContainerInt-Dados {
+  color: #000000;
+  text-align: left;
+  font-size: 20px;
+}
+
+.Summary-ContainerInt {
+  color: #000;
+  text-align: left;
+  font-size: 23px;
+}
+
+.Dados-ContainerInt {
+  text-align: left;
+  color: #000;
+  font-size: 20px;
+  width: 400px;
+}
+
+.ContainerInt-BtnBox {
+  position: absolute;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  bottom: 10px;
+  left: 12px;
+  width: 96%;
+  height: 14%;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: rgb(0, 0, 0);
+}
+
+.Desautorizar-DBAdmin {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: -3px;
+}
+
+.Desautorizar-DBAdmin:hover {
+  background-color: rgba(255, 0, 0, 0.427);
+}
+
+.Autorizar-DBAdmin {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: -3px;
+}
+
+.Autorizar-DBAdmin:hover {
+  background-color: #22963d83;
+}
+
+.VerMaisDiv-DBAdmin {
+  margin-left: 83%;
+  margin-top: -36px;
+}
+
+.VerMaisBtn-DBAdmin {
+  background-color: rgb(10, 84, 131);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 110px;
+  height: 38px;
+}
+
+.VerMaisBtn-DBAdmin:hover {
+  background-color: rgba(10, 85, 131, 0.51);
+}

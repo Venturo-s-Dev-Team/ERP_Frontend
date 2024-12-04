@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 
 function Logout() {
   const navigate = useNavigate();
@@ -10,12 +10,15 @@ function Logout() {
   useEffect(() => {
     const logout = async () => {
       try {
-        const response = await axios.get('/api/ServerTwo/logout', { params: { userName, userId, id_EmpresaDb }, withCredentials: true });
+        const response = await axios.get("/api/ServerTwo/logout", {
+          params: { userName, userId, id_EmpresaDb },
+          withCredentials: true,
+        });
         if (response) {
-          navigate('/login');
+          navigate("/login");
         }
       } catch (err) {
-        alert('Erro ao efetuar logout');
+        alert("Erro ao efetuar logout");
       }
     };
 

@@ -1,0 +1,186 @@
+.DivButtonsSequence {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  margin-top: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 40px;
+  position: relative; /* Para o posicionamento das linhas */
+}
+
+/* Linhas entre os botões */
+.line {
+  height: 4px; /* Altura da linha */
+  width: 60px; /* Comprimento da linha */
+  margin: 0; /* Margem entre botões */
+}
+
+.buttonSequencia {
+  margin: 0; /* Removido para evitar espaço adicional */
+  border: none;
+  border-radius: 60%;
+  background-color: #f0f0f0; /* Cor padrão */
+  color: #333;
+  transition: background-color 0.6s ease, color 0.6s ease, box-shadow 0.5s ease;
+  height: 40px;
+  width: 40px;
+  font-size: 14px;
+  position: relative;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.buttonSequencia.active {
+  background: linear-gradient(to bottom, #0a5483, #01456f);
+  color: white;
+  box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
+}
+
+.Div-ButtonProx {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.Div-ButtonProxEstoque {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.custom-checkbox {
+  width: 20px; /* Largura do checkbox */
+  height: 20px; /* Altura do checkbox */
+  border-radius: 40px; /* Arredondar as bordas */
+  appearance: none; /* Remove a aparência padrão */
+  border: 2px solid #0a5483; /* Cor da borda */
+  cursor: pointer; /* Muda o cursor ao passar sobre */
+  outline: none; /* Remove o contorno padrão */
+  transition: background-color 0.2s, border-color 0.2s; /* Transições suaves */
+}
+
+.custom-checkbox:checked {
+  background-color: #0a5483; /* Cor de fundo quando marcado */
+  border-color: rgb(255, 255, 255); /* Cor da borda quando marcado */
+}
+
+.ButtonSendEnv {
+  width: 120px;
+  height: 40px;
+  border-radius: 5px;
+  background: linear-gradient(to top, #0056b3, #0a5483);
+  margin: 15px;
+  border-color: transparent;
+  color: #fff;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+  box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
+  font-weight: bold;
+}
+
+.ButtonSendEnv.disabled {
+  background-color: grey; /* Cor de fundo apagada */
+  color: #777; /* Cor do texto apagada */
+  cursor: not-allowed; /* Cursor indicando que não está disponível */
+  box-shadow: none; /* Remove a sombra para parecer desativado */
+  pointer-events: none; /* Impede cliques quando desativado */
+  opacity: 0.5;
+}
+
+.resumo-container {
+  background-color: #ffffff; /* Fundo branco */
+  padding: 20px;
+  border-radius: 8px; /* Bordas arredondadas */
+  box-shadow: 5px 5px 10px 2px rgba(0, 0, 0, 0.2);
+  max-width: 800px; /* Largura máxima */
+  margin: 20px auto; /* Centralizar horizontalmente */
+}
+
+.resumo-content {
+  font-family: Arial, sans-serif; /* Fonte clean */
+}
+
+.resumo-container h1 {
+  font-size: 24px;
+  color: #333; /* Cor do texto */
+  margin-bottom: 20px;
+}
+
+.resumo-container h4 {
+  font-size: 18px;
+  color: #555; /* Cor do subtítulo */
+  margin-top: 20px;
+}
+
+.clientes-list,
+.produtos-list {
+  list-style: none; /* Remove marcadores de lista */
+  padding: 0;
+}
+
+.clientes-list li,
+.produtos-list li {
+  background-color: #f9f9f9; /* Fundo das linhas */
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 5px; /* Bordas arredondadas para os itens */
+  transition: background-color 0.7s ease; /* Transição suave */
+}
+
+.clientes-list li:hover,
+.produtos-list li:hover {
+  background-color: #e1e1e1; /* Fundo ao passar o mouse */
+}
+
+.desconto-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.desconto-container input {
+  margin-top: 5px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px; /* Bordas arredondadas */
+}
+
+.button-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.ButtonSendEnv:hover {
+  background-color: #0056b3; /* Cor ao passar o mouse */
+}
+
+.alinhandoInputsTab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.alinhandoInputsTab input[type="number"] {
+  width: 60px;
+  height: 36px;
+  padding: 8px;
+  border: 1px solid #ffffff;
+  border-radius: 5px;
+  font-size: 17px;
+  text-align: center;
+  transition: border-color 0.3s;
+  transition: background-color 0.3s;
+  margin-left: 10px;
+}
+
+.alinhandoInputsTab input[type="number"]:focus {
+  outline: none;
+  border-color: #ffffff;
+  background-color: #dae1ff;
+}

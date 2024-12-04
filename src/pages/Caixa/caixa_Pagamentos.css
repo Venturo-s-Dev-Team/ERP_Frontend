@@ -1,0 +1,95 @@
+/* Caixa Pagamentos */
+
+.main-CaixaPagamentos {
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 91vh;
+}
+
+.main-CaixaPagamentos::-webkit-scrollbar {
+  width: 10px; /* Largura da barra de rolagem */
+}
+
+.main-CaixaPagamentos::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Cor do fundo da barra de rolagem */
+}
+
+.main-CaixaPagamentos::-webkit-scrollbar-thumb {
+  background: #888; /* Cor da parte deslizante da barra */
+  border-radius: 10px; /* Arredondar os cantos */
+}
+
+.main-CaixaPagamentos::-webkit-scrollbar-thumb:hover {
+  background: #555; /* Cor ao passar o mouse */
+}
+
+.main-titleCxPagamentos {
+  display: flex;
+  justify-content: space-between;
+  color: #000000;
+}
+
+.Tabela-CxPagamentos {
+  margin-top: 30px;
+}
+
+.Card-CxPagamentos {
+  width: 95%;
+  height: 270px;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+  margin-left: 2%;
+  margin-top: 50px;
+  border-color: #00000029;
+  border-width: 1px;
+  border-style: solid;
+}
+
+.TítuloCard-CxPagamentos {
+  padding: 20px;
+  text-align: left;
+  margin-left: 10px;
+}
+
+.InputRadio-CxPagamentos {
+  margin-top: -20px;
+}
+
+.DivInputs-CxPagamentos {
+  margin-bottom: 10px;
+  margin-left: 30px;
+  font-size: 18px;
+}
+
+.Radio-CxPagamentos {
+  margin-right: 10px;
+  height: 20px;
+  width: 20px;
+}
+
+.Informações-CxPagamentos {
+  border-top-color: #000;
+  border-top-width: 1px;
+  border-top-style: solid;
+  margin-top: 40px;
+}
+
+.TítulosInfo-CxPagamentos {
+  text-align: left;
+  margin-top: 10px;
+}
+
+.p-CxPagamentos {
+  margin-bottom: 10px;
+  font-size: 17px;
+}
+
+.InputCPF-CxPagamentos {
+  margin: 10px;
+  width: 420px;
+  height: 35px;
+  border-radius: 3px;
+  border: 1px solid black;
+  background-color: #fff;
+  padding-left: 30px;
+  margin-left: 0px;
+}

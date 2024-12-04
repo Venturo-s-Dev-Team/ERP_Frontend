@@ -9,44 +9,41 @@ import {
 } from "react-router-dom";
 import axios from "axios";
 import { jwtDecode } from "jwt-decode";
-import Sidebar from "../components/Sidebar";
-import FooterComponent from "../components/Footer"; // Importando o Footer
-import Header from "../components/Header";
-import Dashboard from "../pages/erp/Dashboard";
-import DashboardAdmin from "../pages/erp/DashboardAdmin";
-import Login from "../pages/Login";
-import CadastroEmpresa from "../pages/CadastroEmpresa";
-import Caixa_Saida from "../pages/erp/e-mail/Caixa_Saida";
-import Caixa_Entrada from "../pages/erp/e-mail/Caixa_Entrada";
-import Perfil from "../pages/erp/Perfil/Perfil";
-import CadastroFuncionario from "../pages/erp/funcionarios/RegisterFuncionario";
-import Cad_produto from "../pages/erp/estoque/cad_produto";
-import Relatorioestoque from "../pages/erp/estoque/relatorioestoque.jsx";
-import Despesas from "../pages/erp/financeiro/contaspagar/despesas";
-import Fornecedores from "../pages/erp/financeiro/contaspagar/fornecedores";
-import Pagamentos from "../pages/erp/financeiro/contaspagar/pagamentos";
-import Fluxodecaixa from "../pages/erp/financeiro/contasreceber/fluxodecaixa";
-import Receitas from "../pages/erp/financeiro/contasreceber/receitas";
-import Cad_imposto from "../pages/erp/financeiro/imposto/cad_imposto";
-import Razao from "../pages/erp/financeiro/planocontas/razao";
-import Relatoriofinanc from "../pages/erp/financeiro/relatoriofinanc.jsx";
-import Vendas from "../pages/erp/vendas/vendas";
-import Relatoriovendas from "../pages/erp/vendas/relatoriovendas.jsx";
-import GestaoVendas from "../pages/erp/vendas/GestaoDeVendas/gestaoVendas.jsx";
-import PedidosCancelados from "../pages/erp/vendas/GestaoDeVendas/gestaoPedidosCancelados.jsx";
-import Abas from "../pages/erp/vendas/GestaoDeVendas/Abas.jsx";
-import AbasForUpdate from "../pages/erp/vendas/GestaoDeVendas/AbasForUpdate.jsx"
-import Cadastronf from "../pages/erp/vendas/notafiscal/cadastronf";
-import Clientes from "../pages/erp/vendas/pedidos/clientes";
-import Precofinal from "../pages/erp/vendas/pedidos/precofinal";
-import Error from "../pages/erro/error";
-import Landpage from "../pages/erp/landpage/landpage";
-import LogsAdmin from "../pages/erp/LogsAdmin/LogsAdmin";
-import LogsEmpresa from "../pages/erp/LogsAdmin/LogsEmpresa.jsx";
+import Landpage from "../pages/LandPage/landpage";
+import Login from "../pages/Login/Login";
+import Balancete from "../pages/Balancete/balancete";
+import Home from "../pages/Dashboard/dashboard";
+import HomeAdmin from "../pages/Dashboard Admin/dashboardAdmin";
+import RegistroProduto from "../pages/Estoque/cad_produto";
+import Error from "../pages/Error/Erros";
+import Caixa_Entrada from "../pages/Email/caixaEntrada";
+import Caixa_Saida from "../pages/Email/caixaSaida";
+import Perfil from "../pages/Perfil/perfilUser";
+import Fornecedores from "../pages/Fornecedores/fornecedores";
+import Pagamentos from "../pages/Pagamentos/pagamentos";
+import Cad_Empresa from "../pages/CadastrarEmpresa/cad_empresa";
+import CadastroFuncionario from "../pages/Registrar Funcionário/registrarFuncionario";
+import Despesas from "../pages/Despesas/despesas";
+import FluxoCaixa from "../pages/Fluxo de Caixa/fluxodecaixa";
+import Receitas from "../pages/Receitas/receitas";
+import Dre from "../pages/Dre/dre";
+import NotaFiscal from "../pages/Nota Fiscal/notafiscal";
+import LanContabil from "../pages/Lançamento Contábil/lanc_contabil";
+import Razao from "../pages/Razão/razao";
+import Clientes from "../pages/Clientes/clientes";
+import GestaoVendas from "../pages/AbasGestãoPedidos/gestaoVendas";
+import Abas from "../pages/AbasGestãoPedidos/Abas";
+import PedidosCancelados from "../pages/Pedidos Cancelados/pedidosCancelados";
+import Caixa_Modal from "../pages/Caixa/caixa_Modal";
+import Caixa_Pagamentos from "../pages/Caixa/caixa_Pagamentos";
+import LogsEmpresa from "../pages/LogsSystem/LogsEmpresa";
+import LogsAdmin from "../pages/LogsSystem/logsAdmin";
+import AbasForUpdate from "../pages/AbasGestãoPedidos/AbasUpdate";
+import Hist_vendas from "../pages/Vendas/vendas";
+import Caixa from "../pages/Caixa/Caixa";
 import Logout from "../components/Logout";
-import Caixa from "../pages/erp/vendas/pedidosEmAberto";
-import Caixa_Pagamento from "../pages/erp/vendas/caixa_Pagamento";
-import Caixa_Modal from "../pages/erp/vendas/caixa_Modal";
+import VerMais from "../pages/Ver Mais/verMais";
+import AtualizarSenha from "../pages/Registrar Funcionário/AtualizarSenha";
 
 function AppRoutes() {
   const [openSidebarToggle, setOpenSidebarToggle] = useState(false);
@@ -108,260 +105,243 @@ function RouteRenderer({ openSidebarToggle, OpenSidebar }) {
     location.pathname
   );
 
-
   return (
-    <div className="grid-container">
-      {!isExcludedRoute && (
-        <>
-          <Sidebar openSidebarToggle={openSidebarToggle} OpenSidebar={OpenSidebar} />
-        </>
-      )}
-      <div className="content">
-        <Routes>
-          <Route path="/" element={<Landpage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/Perfil" element={<Perfil />} />
-          <Route path="/CadastroEmpresa" element={<CadastroEmpresa />} />
-          <Route path='/E-mail_Caixa_Saida' element={<Caixa_Saida />} />
-          <Route path="/E-mail_Caixa_Entrada" element={<Caixa_Entrada />} />
-
-                    {/* Rotas com permissões específicas */}
-                    <Route
-            path="/dashboard"
-            element={
-              <ProtectedRoute allowedRoles={['Gestor', 'Gerente', 'Socio', 'Financeiro']}>
-                <Dashboard />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Apenas SuperAdmin pode acessar logs_admin */}
-          <Route
-            path="/logs_admin"
-            element={
-              <ProtectedRoute allowedRoles={['SuperAdmin']}>
-                <LogsAdmin />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Gestor e Socio podem acessar logs_empresa */}
-          <Route
-            path="/logs_empresa"
-            element={
-              <ProtectedRoute allowedRoles={['Gestor', 'Gerente', 'Socio']}>
-                <LogsEmpresa />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Apenas SuperAdmin pode acessar dashboard_admin */}
-          <Route
-            path="/dashboard_admin"
-            element={
-              <ProtectedRoute allowedRoles={['SuperAdmin']}>
-                <DashboardAdmin />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Caixa, Gestor e Socio têm acesso às rotas de caixa */}
-          <Route
-            path="/caixa"
-            element={
-              <ProtectedRoute allowedRoles={['Caixa', 'Gestor', 'Socio']}>
-                <Caixa />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/caixa_pagamento"
-            element={
-              <ProtectedRoute allowedRoles={['Caixa', 'Gestor', 'Socio']}>
-                <Caixa_Pagamento />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/caixa_modal"
-            element={
-              <ProtectedRoute allowedRoles={['Caixa', 'Gestor', 'Socio']}>
-                <Caixa_Modal />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Estoque, Gestor e Socio podem acessar cad_produto */}
-          <Route
-            path="/cad_produto"
-            element={
-              <ProtectedRoute allowedRoles={['Estoque', 'Gestor', 'Socio']}>
-                <Cad_produto />
-              </ProtectedRoute>
-            }
-          />
-
-          
-          {/* Estoque, Gestor e Socio podem acessar  */}
-          <Route
-            path="/relatorioestoque"
-            element={
-              <ProtectedRoute allowedRoles={['Estoque', 'Gestor', 'Socio']}>
-                <Relatorioestoque />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Gestor, Venda, Socio podem acessar gestaoPedidos */}
-          <Route
-            path="/gestaoPedidos"
-            element={
-              <ProtectedRoute allowedRoles={['Gestor', 'Gerente', 'Venda', 'Socio']}>
-                <GestaoVendas />
-              </ProtectedRoute>
-            }
-          />
-
-<Route
-            path="/gestaoPedidosCancelados"
-            element={
-              <ProtectedRoute allowedRoles={['Gestor', 'Gerente', 'Venda', 'Socio']}>
-                <PedidosCancelados />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Socio, Gestor, Venda podem acessar vendas */}
-          <Route
-            path="/vendas"
-            element={
-              <ProtectedRoute allowedRoles={['Socio', 'Gestor', 'Venda']}>
-                <Vendas />
-              </ProtectedRoute>
-            }
-          />
-                {/* Socio, Gestor, Venda podem acessar vendas */}
-                <Route
-            path="/relatoriovendas"
-            element={
-              <ProtectedRoute allowedRoles={['Socio', 'Gestor', 'Venda']}>
-                <Relatoriovendas />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Socio, Gestor, Venda podem acessar fornecedores e clientes */}
-          <Route
-            path="/fornecedores"
-            element={
-              <ProtectedRoute allowedRoles={['Socio', 'Gestor', 'Venda']}>
-                <Fornecedores />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/clientes"
-            element={
-              <ProtectedRoute allowedRoles={['Socio', 'Gestor', 'Venda']}>
-                <Clientes />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Socio e Gestor podem acessar CadastroFuncionario */}
-          <Route
-            path="/CadastroFuncionario"
-            element={
-              <ProtectedRoute allowedRoles={['Socio', 'Gestor']}>
-                <CadastroFuncionario />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Financeiro, Socio, Gestor podem acessar despesas, pagamentos, balancete, lacontabil, dre, planoscontas, receitas, razao */}
-          <Route
-            path="/despesas"
-            element={
-              <ProtectedRoute allowedRoles={['Financeiro', 'Socio', 'Gestor']}>
-                <Despesas />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/pagamentos"
-            element={
-              <ProtectedRoute allowedRoles={['Financeiro', 'Socio', 'Gestor']}>
-                <Pagamentos />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/receitas"
-            element={
-              <ProtectedRoute allowedRoles={['Financeiro', 'Socio', 'Gestor']}>
-                <Receitas />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/razao"
-            element={
-              <ProtectedRoute allowedRoles={['Financeiro', 'Socio', 'Gestor']}>
-                <Razao />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Gestor, Socio, Financeiro e Caixa podem acessar fluxodecaixa */}
-          <Route
-            path="/fluxodecaixa"
-            element={
-              <ProtectedRoute allowedRoles={['Gestor', 'Gerente', 'Socio', 'Financeiro', 'Caixa']}>
-                <Fluxodecaixa />
-              </ProtectedRoute>
-            }
-          />
-
-          
-          {/* Gestor, Socio, Financeiro e Caixa podem acessar fluxodecaixa */}
-          <Route
-            path="/relatoriofinanc"
-            element={
-              <ProtectedRoute allowedRoles={['Gestor', 'Gerente', 'Socio', 'Financeiro']}>
-                <Relatoriofinanc />
-              </ProtectedRoute>
-            }
-          />
-
-          {/* Venda, Socio e Gestor podem acessar Abas */}
-          <Route
-            path="/abas"
-            element={
-              <ProtectedRoute allowedRoles={['Venda', 'Socio', 'Gestor']}>
-                <Abas />
-              </ProtectedRoute>
-            }
-          />
-
-                    {/* Venda, Socio e Gestor podem acessar AbasForUpdate */}
-                    <Route
-            path="/abasForUpdate"
-            element={
-              <ProtectedRoute allowedRoles={['Venda', 'Socio', 'Gestor']}>
-                <AbasForUpdate />
-              </ProtectedRoute>
-            }
-          />
-
-              <Route path="/cadastronf" element={<Cadastronf />} />
-              <Route path="/precofinal" element={<Precofinal />} />
-              <Route path="*" element={<Navigate to="/error" />} />
-          <Route path="/error" element={<Error errorCode={404 || 500} />} />
-          <Route path="/logout" element={<Logout />} />
-        </Routes>
-      </div>
-    </div>
-    
+      <Routes>
+        {/* Rotas Públicas */}
+        <Route path="/" element={<Landpage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/error" element={<Error />} />
+        <Route path="/email_entrada" element={<Caixa_Entrada />} />
+        <Route path="/email_saida" element={<Caixa_Saida />} />
+        <Route path="/perfil_user" element={<Perfil />} />
+        <Route path="/logout" element={<Logout />} />
+        
+        {/* Rotas Protegidas */}
+        <Route 
+        path="/verMais"          
+        element={
+            <ProtectedRoute allowedRoles={["SuperAdmin"]}>
+              <VerMais />
+            </ProtectedRoute>
+          } />
+        <Route
+          path="/balancete"
+          element={
+            <ProtectedRoute allowedRoles={["Financeiro", "Gestor", "Socio"]}>
+              <Balancete />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={["Gestor", "Gerente", "Financeiro", "Socio"]}>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dashboardAdmin"
+          element={
+            <ProtectedRoute allowedRoles={["SuperAdmin"]}>
+              <HomeAdmin />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/cad_produtos"
+          element={
+            <ProtectedRoute allowedRoles={["Socio", "Gestor", "Estoque"]}>
+              <RegistroProduto />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/fornecedores"
+          element={
+            <ProtectedRoute allowedRoles={["Financeiro", "Gestor", "Gerente", "Socio", "Venda"]}>
+              <Fornecedores />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/pagamentos"
+          element={
+            <ProtectedRoute allowedRoles={["Financeiro", "Gestor", "Socio"]}>
+              <Pagamentos />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/cad_empresa"
+          element={
+            <ProtectedRoute allowedRoles={["Gestor", "Socio"]}>
+              <Cad_Empresa />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/funcionarios"
+          element={
+            <ProtectedRoute allowedRoles={["Gestor", "Gerente", "Socio"]}>
+              <CadastroFuncionario />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/AtualizarSenha"
+          element={
+            <ProtectedRoute allowedRoles={["Gestor", "Gerente", "Socio"]}>
+              <AtualizarSenha />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/despesas"
+          element={
+            <ProtectedRoute allowedRoles={["Socio", "Gestor", "Financeiro"]}>
+              <Despesas />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/fluxocaixa"
+          element={
+            <ProtectedRoute allowedRoles={["Socio", "Gestor", "Financeiro", "Caixa"]}>
+              <FluxoCaixa />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/receitas"
+          element={
+            <ProtectedRoute allowedRoles={["Socio", "Gestor", "Financeiro"]}>
+              <Receitas />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/dre"
+          element={
+            <ProtectedRoute allowedRoles={["Financeiro", "Gestor", "Socio"]}>
+              <Dre />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/notafiscal"
+          element={
+            <ProtectedRoute allowedRoles={["Socio", "Gestor", "Financeiro"]}>
+              <NotaFiscal />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/lancontabil"
+          element={
+            <ProtectedRoute allowedRoles={["Financeiro", "Gestor", "Socio"]}>
+              <LanContabil />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/razao"
+          element={
+            <ProtectedRoute allowedRoles={["Financeiro", "Gestor", "Socio"]}>
+              <Razao />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/clientes"
+          element={
+            <ProtectedRoute allowedRoles={["Financeiro", "Gerente", "Gestor", "Socio"]}>
+              <Clientes />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/gestaoVendas"
+          element={
+            <ProtectedRoute allowedRoles={["Socio", "Gerente", "Gestor", "Venda"]}>
+              <GestaoVendas />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/histVendas"
+          element={
+            <ProtectedRoute allowedRoles={["Socio", "Gerente", "Gestor", "Venda"]}>
+              <Hist_vendas />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/abas"
+          element={
+            <ProtectedRoute allowedRoles={["Socio", "Gerente", "Gestor", "Venda"]}>
+              <Abas />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/abasUpdate"
+          element={
+            <ProtectedRoute allowedRoles={["Socio", "Gerente", "Gestor", "Venda"]}>
+              <AbasForUpdate />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/pedidoscancelados"
+          element={
+            <ProtectedRoute allowedRoles={["Socio", "Gerente", "Gestor", "Venda"]}>
+              <PedidosCancelados />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/caixa"
+          element={
+            <ProtectedRoute allowedRoles={["Caixa", "Gestor", "Socio"]}>
+              <Caixa />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/caixa_modal"
+          element={
+            <ProtectedRoute allowedRoles={["Caixa", "Gestor", "Socio"]}>
+              <Caixa_Modal />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/caixa_pagamentos"
+          element={
+            <ProtectedRoute allowedRoles={["Caixa", "Gestor", "Socio"]}>
+              <Caixa_Pagamentos />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/logsEmpresa"
+          element={
+            <ProtectedRoute allowedRoles={["Gestor", "Gerente", "Socio"]}>
+              <LogsEmpresa />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/logsAdmin"
+          element={
+            <ProtectedRoute allowedRoles={["SuperAdmin"]}>
+              <LogsAdmin />
+            </ProtectedRoute>
+          }
+        />
+     
+      </Routes>
   );
 }
 

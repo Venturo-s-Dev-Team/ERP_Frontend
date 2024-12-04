@@ -1,0 +1,203 @@
+/* Cadastro Empresas */
+
+.Container-CadEmp {
+  background: linear-gradient(to bottom, #fff, #a7bbff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.BoxForms-CadEmp {
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
+  padding: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
+ 
+}
+
+/* Geral */
+.GeralDiv-CadEmp {
+  border-color: #000;
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
+  display: flex;
+  padding-left: 40px;
+  justify-content: center;
+  flex-direction: column;
+  padding-bottom: 20px;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+  margin-top: 20px;
+
+}
+
+.GeralDiv-CadEmp legend {
+  background-color: #fff;
+  width: 70px;
+  text-align: center;
+  margin-top: -20px;
+  font-weight: bold;
+}
+
+
+.GeralDiv-CadEmp input {
+  margin-left: 10px;
+  width: 400px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+  margin: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.GeralDiv-CadEmp label
+{
+  display: flex;
+  justify-content: space-between;
+  width: 75%;
+  align-items: center;
+}
+
+/* Endereço */
+.EndereçoDiv-CadEmp {
+
+  border-color: #000;
+  border-width: 1px;
+  border-style: solid;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+  margin-top: 20px;
+}
+
+
+.EndereçoDiv-CadEmp legend {
+  background-color: #fff;
+  width: 100px;
+  text-align: center;
+  margin-top: -20px;
+  font-weight: bold;
+}
+
+
+
+.EndereçoDiv-CadEmp input {
+  margin-left: 10px;
+  width: 400px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+  margin: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+
+}
+
+.EndereçoDiv-CadEmp label{
+  display: flex;
+  justify-content: space-between;
+  width: 75%;
+  align-items: center;
+}
+
+
+
+/* Empresa */
+.EmpresaDiv-CadEmp {
+  border-color: #000;
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding-bottom: 20px;
+  padding-left: 40px;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+  margin-top: 20px;
+}
+
+.EmpresaDiv-CadEmp legend {
+  background-color: #fff;
+  width: 130px;
+  text-align: center;
+  margin-top: -20px;
+  font-weight: bold;
+}
+
+
+.EmpresaDiv-CadEmp input {
+  margin-left: 10px;
+  width: 400px;
+  height: 25px;
+  padding: 5px;
+  border-radius: 2px;
+  margin: 5px;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+
+.EmpresaDiv-CadEmp label{
+  display: flex;
+  justify-content: space-between;
+  width: 75%;
+  align-items: center;
+}
+
+/* Empresa */
+.DocumentosDiv-CadEmp {
+  border-color: #000;
+  border-width: 1px;
+  border-style: solid;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding-bottom: 20px;
+  padding-left: 40px;
+  box-shadow: 0 6px 7px -3px rgba(0, 0, 0, 0.35);
+  margin-top: 20px;
+}
+
+.DocumentosDiv-CadEmp legend {
+  background-color: #fff;
+  width: 130px;
+  text-align: center;
+  margin-top: -20px;
+  font-weight: bold;
+}
+
+
+
+.DocumentosDiv-CadEmp input {
+  margin-left: 10px;
+  width: 500px;
+  height: 30px;
+  padding: 5px;
+  border-radius: 2px;
+  margin: 5px;
+
+}
+
+/* Enviar */
+.Enviar-CadEmp {
+  height: 40px;
+  width: 160px;
+  text-align: center;
+  background-color: #02416d;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px;
+  text-transform: uppercase;
+}
+
+.Enviar-CadEmp:hover {
+  background-color: #0a5583f4;
+}

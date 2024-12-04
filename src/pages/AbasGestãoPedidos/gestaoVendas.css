@@ -1,0 +1,69 @@
+/* Gestão Vendas */
+
+.Gestao_List {
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  padding: 13px;
+  margin-top: 60px;
+}
+
+.btn-ver-mais-div {
+  left: 90%;
+  margin-left: 500px;
+  margin-top: -35px;
+
+}
+
+.btn-ver-mais{
+  background-color: rgb(10, 84, 131);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 110px;
+  height: 38px;
+}
+
+.btn-ver-mais:hover {
+  background-color: rgba(10, 85, 131, 0.51);
+}
+
+.title-modal {
+  font-size: 30px;
+  margin-left: 20px;
+  margin-top: 10px;
+  font-weight: 700;
+  color: #02416d;
+}
+
+.h4-modal {
+  margin: 20px;
+  margin-top: -10px;
+  font-weight: 700;
+  font-size: 25px;
+}
+
+.textos-modal {
+  margin-left: 20px;
+  font-size: 18px;
+  margin-top: -15px;
+  font-weight: 500;
+}
+
+.btn-fechar-modal {
+  width: 120px;
+  height: 40px;
+  border-radius: 5px;
+  background: linear-gradient(to top, #dc3545, #ff0e26);
+  margin-left: 20px;
+  margin-top: 40px;
+  border-color: transparent;
+  color: #ffffff;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  cursor: pointer;
+}
