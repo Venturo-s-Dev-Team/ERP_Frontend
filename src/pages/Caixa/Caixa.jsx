@@ -117,17 +117,17 @@ const Caixa = () => {
     }
   };
 
-// Processo de venda - Ajuste para passar um array, mesmo que seja um array com uma única venda
-const handleShowInfo = (venda) => {
+  // Processo de venda - Ajuste para passar um array, mesmo que seja um array com uma única venda
+  const handleShowInfo = (venda) => {
 
-  if (venda) {
-    // Passa um array com a venda selecionada
-    navigate("/caixa_Pagamentos", { state: { VendaSelecionada: [venda] } });
-  } else {
-    alert('Erro ao abrir venda');
-    console.error('Venda não encontrada');
-  }
-};
+    if (venda) {
+      // Passa um array com a venda selecionada
+      navigate("/caixa_Pagamentos", { state: { VendaSelecionada: [venda] } });
+    } else {
+      alert('Erro ao abrir venda');
+      console.error('Venda não encontrada');
+    }
+  };
 
 
   // Função para exportar dados para Excel
@@ -138,66 +138,66 @@ const handleShowInfo = (venda) => {
     XLSX.writeFile(wb, `venda_${new Date().toLocaleDateString()}.xlsx`);
   };
 
- 
+
   return (
     <SideBarPage>
-    <main className="main-container">
-      <div className="main-title">
-        <h3>Pedidos Em Aberto no Caixa</h3>
-      </div>
+      <main className="main-container">
+        <div className="main-title">
+          <h3>Pedidos Em Aberto no Caixa</h3>
+        </div>
 
-      <div className="Gestao-List">
-        <table>
-          <caption>Pedidos em Aberto</caption>
-          <thead>
-            <tr>
-              <th>Id</th>
-              <th>Cliente</th>
-              <th>Valor</th>
-              <th>Iniciar Venda</th>
-            </tr>
-          </thead>
-          <tbody>
-            {vendas.map((venda) => (
-              <tr key={venda.id_pedido}>
-                <td>{venda.id_pedido}</td>
-                <td>{venda.nome_cliente}</td>
-                <td>R$ {venda.total}</td>
-                <td>
-                  <button
-                    className="btn-abrir"
-                    onClick={() => handleShowInfo(venda)}
-                  >
-                    Abrir
-                  </button>
-                </td>
+        <div className="Gestao-List">
+          <table>
+            <caption>Pedidos em Aberto</caption>
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Cliente</th>
+                <th>Valor</th>
+                <th>Iniciar Venda</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {vendas.map((venda) => (
+                <tr key={venda.id_pedido}>
+                  <td>{venda.id_pedido}</td>
+                  <td>{venda.nome_cliente}</td>
+                  <td>R$ {venda.total}</td>
+                  <td>
+                    <button
+                      className="btn-abrir"
+                      onClick={() => handleShowInfo(venda)}
+                    >
+                      Abrir
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-      {/* Modal para informações da venda */}
-      <Modal
-        style={{
-          position: "fixed",
-          top: "50%",
-          left: "55%",
-          transform: "translate(-50%, -50%)",
-          width: "50%",
-          height: 280,
-          overflowY: "auto",
-          borderRadius: 10,
-          background: "#fff",
-          boxShadow: "10px 10px 15px rgba(0, 0, 0, 0.6)",
-          border: "#000000d1",
-        }}
-        show={showModalInfo}
-        onHide={handleCloseInfo}
-      >
-       <h1 className="titulo-temporario">Próxima Página!</h1> 
-      </Modal>
-    </main>
+        {/* Modal para informações da venda */}
+        <Modal
+          style={{
+            position: "fixed",
+            top: "50%",
+            left: "55%",
+            transform: "translate(-50%, -50%)",
+            width: "50%",
+            height: 280,
+            overflowY: "auto",
+            borderRadius: 10,
+            background: "#fff",
+            boxShadow: "10px 10px 15px rgba(0, 0, 0, 0.6)",
+            border: "#000000d1",
+          }}
+          show={showModalInfo}
+          onHide={handleCloseInfo}
+        >
+          <h1 className="titulo-temporario">Próxima Página!</h1>
+        </Modal>
+      </main>
     </SideBarPage>
   );
 };

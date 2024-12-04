@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import SideBarPage from "../../components/Sidebar/SideBarPage";
 import './Logs.css';
+
+// Importação dos utilitários de data
+import { formatarData, converterDataHora } from "../../utils/dateUtils";
 
 function LogsAdmin() {
   const navigate = useNavigate();
@@ -153,7 +156,7 @@ function LogsAdmin() {
                     <td>{log.user_name}</td>
                     <td>{log.action}</td>
                     <td>{log.table_name}</td>
-                    <td>{new Date(log.timestamp).toLocaleString()}</td>
+                    <td>{converterDataHora(log.timestamp)}</td>
                   </tr>
                 ))}
               </tbody>

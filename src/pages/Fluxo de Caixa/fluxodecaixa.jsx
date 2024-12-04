@@ -27,7 +27,7 @@ function FluxoCaixa() {
     const verifyToken = async () => {
       try {
         const response = await axios.get('/api/ServerTwo/verifyToken', { withCredentials: true });
-        
+
         if (typeof response.data.token === 'string') {
           const decodedToken = jwtDecode(response.data.token);
           setUserInfo(decodedToken);
@@ -40,7 +40,7 @@ function FluxoCaixa() {
         navigate('/login');
       }
     };
-    
+
     verifyToken();
   }, [navigate]);
 
@@ -49,7 +49,7 @@ function FluxoCaixa() {
     const hoje = new Date();
     const ontem = new Date(hoje);
     ontem.setDate(hoje.getDate() - 1);
-    
+
     const receitasDiaAnterior = fluxos
       .filter(fluxo => new Date(fluxo.DataExpiracao).toDateString() === ontem.toDateString() && fluxo.entrada > 0)
       .reduce((acc, fluxo) => acc + fluxo.entrada, 0);
@@ -61,25 +61,25 @@ function FluxoCaixa() {
     const saldo = receitasDiaAnterior - despesasDiaAnterior;
     setSaldoInicial(saldo);
   };
-// Função para calcular o saldo disponível para o dia seguinte
-const calcularSaldoDisponivel = () => {
-  const hoje = new Date();
+  // Função para calcular o saldo disponível para o dia seguinte
+  const calcularSaldoDisponivel = () => {
+    const hoje = new Date();
 
-  // Certifique-se de que os valores são números antes de realizar a soma
-  const receitasHoje = fluxos
-    .filter(fluxo => new Date(fluxo.DataExpiracao).toDateString() === hoje.toDateString() && fluxo.entrada > 0)
-    .reduce((acc, fluxo) => acc + (Number(fluxo.entrada) || 0), 0);
+    // Certifique-se de que os valores são números antes de realizar a soma
+    const receitasHoje = fluxos
+      .filter(fluxo => new Date(fluxo.DataExpiracao).toDateString() === hoje.toDateString() && fluxo.entrada > 0)
+      .reduce((acc, fluxo) => acc + (Number(fluxo.entrada) || 0), 0);
 
-  const despesasHoje = fluxos
-    .filter(fluxo => new Date(fluxo.DataExpiracao).toDateString() === hoje.toDateString() && fluxo.saida > 0)
-    .reduce((acc, fluxo) => acc + (Number(fluxo.saida) || 0), 0);
+    const despesasHoje = fluxos
+      .filter(fluxo => new Date(fluxo.DataExpiracao).toDateString() === hoje.toDateString() && fluxo.saida > 0)
+      .reduce((acc, fluxo) => acc + (Number(fluxo.saida) || 0), 0);
 
-  // Evite NaN, garantindo que saldoInicial seja numérico
-  const saldoHoje = receitasHoje - despesasHoje;
-  const saldoTotal = (Number(saldoInicial) || 0) + saldoHoje;
+    // Evite NaN, garantindo que saldoInicial seja numérico
+    const saldoHoje = receitasHoje - despesasHoje;
+    const saldoTotal = (Number(saldoInicial) || 0) + saldoHoje;
 
-  setSaldoDisponivel(saldoTotal);
-};
+    setSaldoDisponivel(saldoTotal);
+  };
 
   // Função para carregar dados do banco de dados
   useEffect(() => {
@@ -132,15 +132,15 @@ const calcularSaldoDisponivel = () => {
 
   const fluxosDoDia = filtrarFluxosDoDia();
 
-      // Filtro das receitas
-      const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
-      };
-    
-      const filteredFluxo = fluxosDoDia.filter(
-        (fluxo) =>
-          fluxo.descricao.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+  // Filtro das receitas
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value); // Atualiza o termo de pesquisa
+  };
+
+  const filteredFluxo = fluxosDoDia.filter(
+    (fluxo) =>
+      fluxo.descricao.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <SideBarPage>
@@ -164,36 +164,36 @@ const calcularSaldoDisponivel = () => {
 
           {/* Input de pesquisa */}
           <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              marginTop: "10px",
+              border: "1px solid #ccc",
+              borderRadius: "4px",
+              width: "350px",
+            }}
+          >
+            <BsSearch
+              style={{ marginLeft: "10px", color: "#888", fontSize: "18px" }}
+            />
+            <input
+              type="text"
+              placeholder="Pesquisar produtos"
+              value={searchTerm}
+              onChange={handleSearchChange}
               style={{
-                display: "flex",
-                alignItems: "center",
-                marginTop: "10px",
-                border: "1px solid #ccc",
-                borderRadius: "4px",
-                width: "350px",
+                backgroundColor: "white",
+                color: "black",
+                border: "1px solid #fff",
+                padding: "12px",
+                fontSize: "16px",
+                width: "300px",
+                outline: "none",
+                transition: "border-color 0.3s",
+                paddingLeft: "10px",
               }}
-            >
-              <BsSearch
-                style={{ marginLeft: "10px", color: "#888", fontSize: "18px" }}
-              />
-              <input
-                type="text"
-                placeholder="Pesquisar produtos"
-                value={searchTerm}
-                onChange={handleSearchChange}
-                style={{
-                  backgroundColor: "white",
-                  color: "black",
-                  border: "1px solid #fff",
-                  padding: "12px",
-                  fontSize: "16px",
-                  width: "300px",
-                  outline: "none",
-                  transition: "border-color 0.3s",
-                  paddingLeft: "10px",
-                }}
-              />
-            </div>
+            />
+          </div>
 
           <div className="Fluxos_List">
             <table>

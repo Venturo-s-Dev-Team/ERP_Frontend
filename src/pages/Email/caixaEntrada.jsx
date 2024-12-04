@@ -9,6 +9,7 @@ import { RiInboxUnarchiveFill, RiInboxArchiveFill } from "react-icons/ri";
 import SideBarPage from "../../components/Sidebar/SideBarPage";
 // Componentes
 import EmailPopup from "./popupemail";
+import { converterDataHora } from "../../utils/dateUtils";
 
 const Caixa_Entrada = () => {
   const navigate = useNavigate();
@@ -51,18 +52,6 @@ const Caixa_Entrada = () => {
       setProtocoloErro("500");
       setMsgErro("Não foi possível fazer a requisição da sua caixa de entrada");
     }
-  };
-
-  const formatTimestamp = (timestamp) => {
-    const date = new Date(timestamp);
-    return date.toLocaleString('pt-BR', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    });
   };
 
   const toggleEmail = async (id) => {
@@ -132,7 +121,7 @@ const Caixa_Entrada = () => {
                 </div>
 
                 <p className="email-timestamp">
-                  {formatTimestamp(email.TimeStamp)}
+                  {converterDataHora(email.TimeStamp)}
                 </p>
               </div>
               {openedEmailId === email.id && (

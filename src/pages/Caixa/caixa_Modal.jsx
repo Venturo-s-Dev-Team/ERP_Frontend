@@ -11,25 +11,25 @@ function Caixa_Modal() {
   const { VendaSelecionada, selectedCliente, selectedPayment, cpf_cnpj } = location.state || {};
   const [userInfo, setUserInfo] = useState({});
 
-    // Verifica o token JWT
-    useEffect(() => {
-      const verifyToken = async () => {
-        try {
-          const response = await axios.get("/api/ServerTwo/verifyToken", {
-            withCredentials: true,
-          });
-          if (typeof response.data.token === "string") {
-            const decodedToken = jwtDecode(response.data.token);
-            setUserInfo(decodedToken);
-          } else {
-            navigate("/");
-          }
-        } catch (error) {
-          navigate("/login");
+  // Verifica o token JWT
+  useEffect(() => {
+    const verifyToken = async () => {
+      try {
+        const response = await axios.get("/api/ServerTwo/verifyToken", {
+          withCredentials: true,
+        });
+        if (typeof response.data.token === "string") {
+          const decodedToken = jwtDecode(response.data.token);
+          setUserInfo(decodedToken);
+        } else {
+          navigate("/");
         }
-      };
-      verifyToken();
-    }, [navigate]);
+      } catch (error) {
+        navigate("/login");
+      }
+    };
+    verifyToken();
+  }, [navigate]);
 
   const [valorRecebido, setValorRecebido] = useState(""); // Estado para o valor recebido
   const [troco, setTroco] = useState(0); // Estado para o troco
@@ -52,17 +52,17 @@ function Caixa_Modal() {
   };
 
 
-   // Função para enviar os dados para o backend
-   const handleSubmit = async () => {
+  // Função para enviar os dados para o backend
+  const handleSubmit = async () => {
     const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
     const recebido = parseFloat(valorRecebido);
-  
+
     // Verifica se o valor recebido é vazio, não é um número ou é menor que o total da venda
     if (isNaN(recebido) || recebido < VendaSelecionada[0]?.total) {
       alert("O valor recebido é inválido ou menor do que o valor da compra.");
     } else {
       try {
-        const response = await axios.put(`/api/ServerTwo/RegisterVenda/${VendaSelecionada[0].id_pedido}`, 
+        const response = await axios.put(`/api/ServerTwo/RegisterVenda/${VendaSelecionada[0].id_pedido}`,
           {
             formData: JSON.stringify({
               cpf_cnpj: cpf_cnpj,
@@ -78,18 +78,18 @@ function Caixa_Modal() {
           },
           { withCredentials: true }
         );
-  
+
         if (response.status === 200) {
           alert('Venda concluída');
           navigate("/caixa");
         }
       } catch (error) {
         console.error("Erro ao enviar os dados:", error);
-        alert("Erro ao atualizar a venda.");
+        alert("Erro ao efetuar a venda.");
       }
     }
   };
-  
+
 
   return (
     <SideBarPage>
@@ -115,9 +115,9 @@ function Caixa_Modal() {
           </div>
 
           <div>
-          <p>Cliente: {selectedCliente.razao_social}</p>
-        <p>CPF/CNPJ: {cpf_cnpj}</p>
-        <p>Forma de pagamento: {selectedPayment}</p>
+            <p>Cliente: {selectedCliente.razao_social}</p>
+            <p>CPF/CNPJ: {cpf_cnpj}</p>
+            <p>Forma de pagamento: {selectedPayment}</p>
           </div>
           <button className="Btn-CxModal" onClick={handleSubmit} >Finalizar</button>
         </div>

@@ -46,7 +46,7 @@ function Receitas() {
         navigate('/login');
       }
     };
-    
+
     verifyToken();
   }, [navigate]);
 
@@ -76,43 +76,47 @@ function Receitas() {
   const handleRegisterReceita = async (e) => {
     e.preventDefault();
     const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
-    
-    if (!isEditMode) {
-    try {
-      const response = await axios.post(`/api/ServerTwo/registrarReceitas`, 
-      {...newReceita,
-        id_EmpresaDb: id, 
-        userId: userInfo.id_user,
-        userName: userInfo.Nome_user}, 
-        {
-        withCredentials: true,
-      });
 
-      await fetchReceitas(id);
-      handleClose();
-    } catch (error) {
-      console.error("Erro ao registrar receita:", error);
-      alert('Erro ao registrar receita.');
+    if (!isEditMode) {
+      try {
+        const response = await axios.post(`/api/ServerTwo/registrarReceitas`,
+          {
+            ...newReceita,
+            id_EmpresaDb: id,
+            userId: userInfo.id_user,
+            userName: userInfo.Nome_user
+          },
+          {
+            withCredentials: true,
+          });
+
+        await fetchReceitas(id);
+        handleClose();
+      } catch (error) {
+        console.error("Erro ao registrar receita:", error);
+        alert('Erro ao registrar receita.');
+      }
+    } else {
+      try {
+        const response = await axios.put(`/api/ServerTwo/EditReceita`,
+          {
+            ...newReceita,
+            id_EmpresaDb: id,
+            id_Receita: SelectedReceita.id,
+            userId: userInfo.id_user,
+            userName: userInfo.Nome_user
+          },
+          {
+            withCredentials: true,
+          });
+
+        await fetchReceitas(id);
+        handleClose();
+      } catch (error) {
+        console.error("Erro ao registrar receita:", error);
+        alert('Erro ao registrar receita.');
+      }
     }
-  } else {
-    try {
-      const response = await axios.put(`/api/ServerTwo/EditReceita`, 
-      {...newReceita,
-        id_EmpresaDb: id,
-        id_Receita: SelectedReceita.id,
-        userId: userInfo.id_user,
-        userName: userInfo.Nome_user}, 
-        {
-        withCredentials: true,
-      });
-      
-      await fetchReceitas(id);
-      handleClose();
-    } catch (error) {
-      console.error("Erro ao registrar receita:", error);
-      alert('Erro ao registrar receita.');
-    }
-  }
   };
 
   // Função para editar a receita
@@ -258,63 +262,63 @@ function Receitas() {
           </div>
 
           <Modal
-  style={{
-    position: "fixed",
-    top: "50%",
-    bottom: 0,
-    left: "58%",
-    right: 0,
-    zIndex: 1000,
-    width: "50%",
-    height: "50%",
-    borderRadius: 20,
-    transform: "translate(-50%, -50%)",
-    background: "white",
-    boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
-  }}
-  show={showModal}
-  onHide={handleClose}
->
-  <div className="DivModalReceitas">
-    <div>
-      <h1>{isEditMode ? "Editar Receita" : "Registrar Receita"}</h1>
-    </div>
+            style={{
+              position: "fixed",
+              top: "50%",
+              bottom: 0,
+              left: "58%",
+              right: 0,
+              zIndex: 1000,
+              width: "50%",
+              height: "50%",
+              borderRadius: 20,
+              transform: "translate(-50%, -50%)",
+              background: "white",
+              boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
+            }}
+            show={showModal}
+            onHide={handleClose}
+          >
+            <div className="DivModalReceitas">
+              <div>
+                <h1>{isEditMode ? "Editar Receita" : "Registrar Receita"}</h1>
+              </div>
 
-    <form onSubmit={handleRegisterReceita}>
-      <input
-        type="text"
-        name="Nome"
-        placeholder="Nome"
-        value={newReceita.Nome}
-        onChange={handleChange}
-        required
-        // Remova o "disabled" se quiser permitir a edição do nome
-        disabled={false} // Para editar o nome em modo de edição
-      />
-      <input
-        type="number"
-        name="Valor"
-        placeholder="Valor"
-        value={newReceita.Valor}
-        onChange={handleChange}
-        required
-      />
-      <div>
-        <button className="RegisterPr" type="submit">
-          {isEditMode ? "Salvar" : "Registrar"}
-        </button>
-        {/* Altere o tipo do botão para "button" para evitar o submit */}
-        <button
-          className="FecharPr"
-          type="button" // Previna o comportamento de submit
-          onClick={handleClose}
-        >
-          Fechar
-        </button>
-      </div>
-    </form>
-  </div>
-</Modal>
+              <form onSubmit={handleRegisterReceita}>
+                <input
+                  type="text"
+                  name="Nome"
+                  placeholder="Nome"
+                  value={newReceita.Nome}
+                  onChange={handleChange}
+                  required
+                  // Remova o "disabled" se quiser permitir a edição do nome
+                  disabled={false} // Para editar o nome em modo de edição
+                />
+                <input
+                  type="number"
+                  name="Valor"
+                  placeholder="Valor"
+                  value={newReceita.Valor}
+                  onChange={handleChange}
+                  required
+                />
+                <div>
+                  <button className="RegisterPr" type="submit">
+                    {isEditMode ? "Salvar" : "Registrar"}
+                  </button>
+                  {/* Altere o tipo do botão para "button" para evitar o submit */}
+                  <button
+                    className="FecharPr"
+                    type="button" // Previna o comportamento de submit
+                    onClick={handleClose}
+                  >
+                    Fechar
+                  </button>
+                </div>
+              </form>
+            </div>
+          </Modal>
 
         </div>
       </main>

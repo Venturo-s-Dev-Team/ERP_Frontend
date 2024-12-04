@@ -10,6 +10,7 @@ import SideBarPage from "../../components/Sidebar/SideBarPage";
 
 // Componentes
 import EmailPopup from "./popupemail";
+import { converterDataHora } from "../../utils/dateUtils";
 
 const Caixa_Saida = () => {
   const navigate = useNavigate();
@@ -25,63 +26,51 @@ const Caixa_Saida = () => {
   const closePopup = () => setPopupOpen(false);
 
   useEffect(() => {
-      const verifyToken = async () => {
-          try {
-              const response = await axios.get('/api/ServerTwo/verifyToken', { withCredentials: true });
+    const verifyToken = async () => {
+      try {
+        const response = await axios.get('/api/ServerTwo/verifyToken', { withCredentials: true });
 
-              if (typeof response.data.token === 'string') {
-                  const decodedToken = jwtDecode(response.data.token);
-                  setUserInfo(decodedToken);
-              } else {
-                  console.error('Token não é uma string:', response.data.token);
-                  navigate('/');
-              }
-          } catch (error) {
-              console.error('Token inválido', error);
-              navigate('/login');
-          }
-      };
-      verifyToken();
+        if (typeof response.data.token === 'string') {
+          const decodedToken = jwtDecode(response.data.token);
+          setUserInfo(decodedToken);
+        } else {
+          console.error('Token não é uma string:', response.data.token);
+          navigate('/');
+        }
+      } catch (error) {
+        console.error('Token inválido', error);
+        navigate('/login');
+      }
+    };
+    verifyToken();
   }, [navigate]);
 
   useEffect(() => {
-      const fetchData = async () => {
-              try {
-                  const response = await axios.get('/api/ServerOne/caixa_saida', {
-                      withCredentials: true
-                  });
-                  setEmails(response.data);
-              } catch (err) {
-                  setProtocoloErro("500");
-                  setMsgErro("Não foi possível fazer a requisição da sua caixa de saída");
-              }
-      };
-      fetchData();
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('/api/ServerOne/caixa_saida', {
+          withCredentials: true
+        });
+        setEmails(response.data);
+      } catch (err) {
+        setProtocoloErro("500");
+        setMsgErro("Não foi possível fazer a requisição da sua caixa de saída");
+      }
+    };
+    fetchData();
   }, []);
 
-  const formatTimestamp = (timestamp) => {
-      const date = new Date(timestamp);
-      return date.toLocaleString('pt-BR', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
-      });
-  };
-
   const toggleEmail = (id) => {
-      setOpenedEmailId(openedEmailId === id ? null : id);
+    setOpenedEmailId(openedEmailId === id ? null : id);
   };
 
   const excluirEmail = async (id) => {
-      try {
-          await axios.put(`/api/ServerOne/excluir_email_remetente`, { id });
-          setEmails(emails.filter(email => email.id !== id));
-      } catch (err) {
-          console.error("Erro ao excluir o e-mail", err);
-      }
+    try {
+      await axios.put(`/api/ServerOne/excluir_email_remetente`, { id });
+      setEmails(emails.filter(email => email.id !== id));
+    } catch (err) {
+      console.error("Erro ao excluir o e-mail", err);
+    }
   };
 
   const Cards = () => (
@@ -103,7 +92,7 @@ const Caixa_Saida = () => {
                   </h3>
                 )}
                 <p className="email-timestamp">
-                  {formatTimestamp(email.TimeStamp)}
+                  {converterDataHora(email.TimeStamp)}
                 </p>
               </div>
               {openedEmailId === email.id && (
@@ -138,67 +127,65 @@ const Caixa_Saida = () => {
   return (
     <SideBarPage>
       <div className="scroll-despesas">
-      <div className="app">
-        <div className="titleEmail">
-          <h1 className="Assunto">
-            E-mail: Suas mensagens enviadas{" "}
-            <RiInboxUnarchiveFill
-              style={{ height: 35, width: 35, position: "relative", top: 10 }}
-            />
-          </h1>
-          <img src={LogoVenturo} className="LogoEmail" />
-        </div>
-
-        <div className="alinhar-divs">
-          <div className="buttonsEntrada">
-            <button
-              className={`btn-mensagem ${isPopupOpen ? "active" : ""}`}
-              onClick={openPopup}
-            >
-              <FaPen style={{ height: 18, width: 18 }} /> Escrever
-            </button>
-
-            <button
-              className={`btn-caixas ${
-                activeButton === "entrada" ? "active" : ""
-              }`}
-              onClick={() => {
-                setActiveButton("entrada");
-                navigate("/email_entrada");
-              }}
-            >
-              <RiInboxArchiveFill style={{ height: 18, width: 18 }} /> Caixa de
-              Entrada
-            </button>
-
-            <button
-              className={`btn-caixas ${
-                activeButton === "saida" ? "active" : ""
-              }`}
-              onClick={() => {
-                setActiveButton("saida");
-                navigate("/email_saida");
-              }}
-            >
-              <RiInboxUnarchiveFill style={{ height: 18, width: 18 }} /> Caixa
-              de Saída
-            </button>
-
-            {isPopupOpen && (
-              <EmailPopup Email={userInfo?.Email} onClose={closePopup} />
-            )}
+        <div className="app">
+          <div className="titleEmail">
+            <h1 className="Assunto">
+              E-mail: Suas mensagens enviadas{" "}
+              <RiInboxUnarchiveFill
+                style={{ height: 35, width: 35, position: "relative", top: 10 }}
+              />
+            </h1>
+            <img src={LogoVenturo} className="LogoEmail" />
           </div>
 
-          <div className="Conteudo">
-            {protocoloErro ? (
-              <div>
-                Erro {protocoloErro}: {msgErro}
-              </div>
-            ) : (
-              <Cards />
-            )}
-          </div>
-        </div> </div>
+          <div className="alinhar-divs">
+            <div className="buttonsEntrada">
+              <button
+                className={`btn-mensagem ${isPopupOpen ? "active" : ""}`}
+                onClick={openPopup}
+              >
+                <FaPen style={{ height: 18, width: 18 }} /> Escrever
+              </button>
+
+              <button
+                className={`btn-caixas ${activeButton === "entrada" ? "active" : ""
+                  }`}
+                onClick={() => {
+                  setActiveButton("entrada");
+                  navigate("/email_entrada");
+                }}
+              >
+                <RiInboxArchiveFill style={{ height: 18, width: 18 }} /> Caixa de
+                Entrada
+              </button>
+
+              <button
+                className={`btn-caixas ${activeButton === "saida" ? "active" : ""
+                  }`}
+                onClick={() => {
+                  setActiveButton("saida");
+                  navigate("/email_saida");
+                }}
+              >
+                <RiInboxUnarchiveFill style={{ height: 18, width: 18 }} /> Caixa
+                de Saída
+              </button>
+
+              {isPopupOpen && (
+                <EmailPopup Email={userInfo?.Email} onClose={closePopup} />
+              )}
+            </div>
+
+            <div className="Conteudo">
+              {protocoloErro ? (
+                <div>
+                  Erro {protocoloErro}: {msgErro}
+                </div>
+              ) : (
+                <Cards />
+              )}
+            </div>
+          </div> </div>
       </div>
     </SideBarPage>
   );

@@ -131,176 +131,176 @@ function Cad_Empresa() {
           {/* Parte Geral */}
           <div className="GeralDiv-CadEmp">
             <legend>Geral</legend>
-              <label>
-                Inscrição Estadual:
-                <InputMask
-                  mask="999.999.999.999"
-                  type="text"
-                  name="InscricaoEstadual"
-                  value={formData.InscricaoEstadual}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
+            <label>
+              Inscrição Estadual:
+              <InputMask
+                mask="999.999.999.999"
+                type="text"
+                name="InscricaoEstadual"
+                value={formData.InscricaoEstadual}
+                onChange={handleChange}
+                required
+              />
+            </label>
 
-              <label>
-                Site:
-                <InputMask
-                  type="url"
-                  name="Site"
-                  value={formData.Site}
-                  onChange={handleChange}
-                  placeholder="url:"
-                />
-              </label>
+            <label>
+              Site:
+              <InputMask
+                type="url"
+                name="Site"
+                value={formData.Site}
+                onChange={handleChange}
+                placeholder="url:"
+              />
+            </label>
           </div>
 
           {/* Parte Endereço */}
           <div className="EndereçoDiv-CadEmp">
             <legend>Endereço</legend>
-              <label>
-                CEP:
-                <InputMask
-                  mask="99999-999"
-                  type="text"
-                  name="CEP"
-                  value={formData.CEP}
-                  onChange={handleChange}
-                  onBlur={handleCepBlur}
-                  required
-                />
-              </label>
+            <label>
+              CEP:
+              <InputMask
+                mask="99999-999"
+                type="text"
+                name="CEP"
+                value={formData.CEP}
+                onChange={handleChange}
+                onBlur={handleCepBlur}
+                required
+              />
+            </label>
 
-              <label>
-                Município:
-                <InputMask
-                  type="text"
-                  name="Municipio"
-                  value={formData.Municipio}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
+            <label>
+              Município:
+              <InputMask
+                type="text"
+                name="Municipio"
+                value={formData.Municipio}
+                onChange={handleChange}
+                required
+              />
+            </label>
 
-              <label>
-                Uf:
-                <InputMask
-                  mask="aa"
-                  type="text"
-                  name="UF"
-                  value={formData.UF}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
+            <label>
+              Uf:
+              <InputMask
+                mask="aa"
+                type="text"
+                name="UF"
+                value={formData.UF}
+                onChange={handleChange}
+                required
+              />
+            </label>
 
-              <label>
-                Logradouro:
-                <InputMask
-                  type="text"
-                  name="Logradouro"
-                  value={formData.Logradouro}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
+            <label>
+              Logradouro:
+              <InputMask
+                type="text"
+                name="Logradouro"
+                value={formData.Logradouro}
+                onChange={handleChange}
+                required
+              />
+            </label>
 
-              <label>
-                Números:
-                <InputMask
-                  mask="9999"
-                  type="text"
-                  name="Numero"
-                  value={formData.Numero}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
+            <label>
+              Números:
+              <InputMask
+                mask="9999"
+                type="text"
+                name="Numero"
+                value={formData.Numero}
+                onChange={handleChange}
+                required
+              />
+            </label>
 
-              <label>
-                Complemento:
-                <InputMask
-                  type="text"
-                  name="Complemento"
-                  value={formData.Complemento}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
+            <label>
+              Complemento:
+              <InputMask
+                type="text"
+                name="Complemento"
+                value={formData.Complemento}
+                onChange={handleChange}
+                required
+              />
+            </label>
 
-          </div> 
+          </div>
 
           {/* Parte Empresa */}
           <div className="EmpresaDiv-CadEmp">
             <legend>Cadastrante</legend>
-              <label>
-                Telefone:
-                <InputMask
-                  mask="(99)99999-9999"
-                  type="text"
-                  name="Telefone"
-                  value={formData.Telefone}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
-              <label>
-                CPF:
-                <InputMask
-                  mask="999.999.999-99"
-                  type="text"
-                  name="CPF"
-                  value={formData.CPF}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
-              <label>
-                RG:
-                <InputMask
-                  mask="99.999.999-9"
-                  type="text"
-                  name="RG"
-                  value={formData.RG}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
+            <label>
+              Telefone:
+              <InputMask
+                mask="(99)99999-9999"
+                type="text"
+                name="Telefone"
+                value={formData.Telefone}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <label>
+              CPF:
+              <InputMask
+                mask="999.999.999-99"
+                type="text"
+                name="CPF"
+                value={formData.CPF}
+                onChange={handleChange}
+                required
+              />
+            </label>
+            <label>
+              RG:
+              <InputMask
+                mask="99.999.999-9"
+                type="text"
+                name="RG"
+                value={formData.RG}
+                onChange={handleChange}
+                required
+              />
+            </label>
           </div>
 
-           {/* Parte Documentos  */}
-           <div className="DocumentosDiv-CadEmp">
+          {/* Parte Documentos  */}
+          <div className="DocumentosDiv-CadEmp">
             <legend>Documentos</legend>
-              <label>
-                Contrato Social:
-                <InputMask
-                  type="file"
-                  name="ContratoSocial"
-                  onChange={handleFileChange}
-                  required
-                />
-              </label>
-              <label>
-                Requerimento de Empresário:
-                <InputMask
-                  type="file"
-                  name="RequerimentoEmpresario"
-                  onChange={handleFileChange}
-                  required
-                />
-              </label>
-              <label>
-                Certificado MEI:
-                <InputMask
-                  type="file"
-                  name="CertificadoMEI"
-                  onChange={handleFileChange}
-                  required
-                />
-              </label>
+            <label>
+              Contrato Social:
+              <InputMask
+                type="file"
+                name="ContratoSocial"
+                onChange={handleFileChange}
+                required
+              />
+            </label>
+            <label>
+              Requerimento de Empresário:
+              <InputMask
+                type="file"
+                name="RequerimentoEmpresario"
+                onChange={handleFileChange}
+                required
+              />
+            </label>
+            <label>
+              Certificado MEI:
+              <InputMask
+                type="file"
+                name="CertificadoMEI"
+                onChange={handleFileChange}
+                required
+              />
+            </label>
           </div>
 
-           {/* Botão de Enviar  */}
+          {/* Botão de Enviar  */}
           <button className="Enviar-CadEmp" type="submit">
             Enviar
           </button>

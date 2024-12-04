@@ -65,10 +65,10 @@ function Caixa_Pagamentos() {
 
   const handlePaymentChange = (paymentMethod) => {
     if (paymentMethod === "À vista") {
-    setSelectedPayment(paymentMethod);
-  } else {
-    alert("Esta forma de pagamento está sendo desenvolvida")
-  }
+      setSelectedPayment(paymentMethod);
+    } else {
+      alert("Esta forma de pagamento está sendo desenvolvida")
+    }
   };
 
   const handleCpfCnpjChange = (event) => {
@@ -97,76 +97,76 @@ function Caixa_Pagamentos() {
         </div>
 
         <div className="scroll-despesas">
-            <div className="Tabela-CxPagamentos">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Id</th>
-                    <th>Cliente</th>
-                    <th>Valor</th>
+          <div className="Tabela-CxPagamentos">
+            <table>
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Cliente</th>
+                  <th>Valor</th>
+                </tr>
+              </thead>
+              <tbody>
+                {VendaSelected.map((venda) => (
+                  <tr key={venda.id_pedido}>
+                    <td>{venda.id_pedido}</td>
+                    <td>{venda.nome_cliente}</td>
+                    <td>R$ {venda.total}</td>
                   </tr>
-                </thead>
-                <tbody>
-            {VendaSelected.map((venda) => (
-              <tr key={venda.id_pedido}>
-                <td>{venda.id_pedido}</td>
-                <td>{venda.nome_cliente}</td>
-                <td>R$ {venda.total}</td>
-              </tr>
-            ))}
-          </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
+          </div>
 
-            <div className="Card-CxPagamentos">
-              <h2 className="TítuloCard-CxPagamentos">Formas de Pagamento</h2>
+          <div className="Card-CxPagamentos">
+            <h2 className="TítuloCard-CxPagamentos">Formas de Pagamento</h2>
 
-              <div className="InputRadio-CxPagamentos">
+            <div className="InputRadio-CxPagamentos">
               {["À vista", "pix", "cartão", "permuta", "cheque"].map((method) => (
-            <div className="DivInputs-CxPagamentos"  key={method}>
-              <label>
-                <input
-                  type="radio"
-                  value={method}
-                  className="Radio-CxPagamentos"
-                  checked={selectedPayment === method}
-                  onChange={() => handlePaymentChange(method)}
-                />
-                {method.charAt(0).toUpperCase() + method.slice(1)}
-              </label>
+                <div className="DivInputs-CxPagamentos" key={method}>
+                  <label>
+                    <input
+                      type="radio"
+                      value={method}
+                      className="Radio-CxPagamentos"
+                      checked={selectedPayment === method}
+                      onChange={() => handlePaymentChange(method)}
+                    />
+                    {method.charAt(0).toUpperCase() + method.slice(1)}
+                  </label>
+                </div>
+              ))}
             </div>
-          ))}
-              </div>
-            </div>
+          </div>
 
-            <div className="Informações-CxPagamentos">
-              <h2 className="TítulosInfo-CxPagamentos">Informações</h2>
-              {selectedCliente ? (
-          <div>
-            <p className="p-CxPagamentos">Cad. Cliente: {selectedCliente.razao_social}</p>
-            <p className="p-CxPagamentos">PD (pedido): {VendaSelected[0]?.id_pedido}</p>
-            <p className="p-CxPagamentos">Endereço: {selectedCliente.endereco}</p>
-            <p className="p-CxPagamentos">Bairro: {selectedCliente.bairro}</p>
-            <p className="p-CxPagamentos">Cidade: {selectedCliente.cidade}</p>
+          <div className="Informações-CxPagamentos">
+            <h2 className="TítulosInfo-CxPagamentos">Informações</h2>
+            {selectedCliente ? (
+              <div>
+                <p className="p-CxPagamentos">Cad. Cliente: {selectedCliente.razao_social}</p>
+                <p className="p-CxPagamentos">PD (pedido): {VendaSelected[0]?.id_pedido}</p>
+                <p className="p-CxPagamentos">Endereço: {selectedCliente.endereco}</p>
+                <p className="p-CxPagamentos">Bairro: {selectedCliente.bairro}</p>
+                <p className="p-CxPagamentos">Cidade: {selectedCliente.cidade}</p>
+              </div>
+            ) : (
+              <p>Carregando informações do cliente...</p>
+            )}
+            <InputMask
+              type="text"
+              className="InputCPF-CxPagamentos"
+              placeholder="CPF/CNPJ"
+              value={cpf_cnpj}
+              onChange={handleCpfCnpjChange}
+            />
           </div>
-        ) : (
-          <p>Carregando informações do cliente...</p>
-        )}
-        <InputMask
-          type="text"
-          className="InputCPF-CxPagamentos"
-          placeholder="CPF/CNPJ"
-          value={cpf_cnpj}
-          onChange={handleCpfCnpjChange}
-        />
-      </div>
-      <div className="Button_Cad">
-        <button onClick={handleProsseguir}>
-        Prosseguir
-      </button>
-      </div>
+          <div className="Button_Cad">
+            <button onClick={handleProsseguir}>
+              Prosseguir
+            </button>
           </div>
-    
+        </div>
+
 
       </main>
     </SideBarPage>

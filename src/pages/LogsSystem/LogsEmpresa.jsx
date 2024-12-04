@@ -5,6 +5,9 @@ import { jwtDecode } from "jwt-decode";
 import SideBarPage from "../../components/Sidebar/SideBarPage";
 import "./Logs.css";
 
+// Importação dos utilitários de data
+import { formatarData, converterDataHora } from "../../utils/dateUtils";
+
 function LogsEmpresa() {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState("");
@@ -82,8 +85,8 @@ function LogsEmpresa() {
     }
   };
 
-   // Função para converter número do mês para nome
-   const getMonthName = (monthNumber) => {
+  // Função para converter número do mês para nome
+  const getMonthName = (monthNumber) => {
     const monthNames = [
       "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
       "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
@@ -95,37 +98,37 @@ function LogsEmpresa() {
     <SideBarPage>
       <div className="logs-admin">
         <div className="titleLogsAdm">
-      <h3>Logs</h3>
-              <div className="direction-align">
-          <div className="buttonsSelector">
-     <div className="year-selector">
-        {years.map((year) => (
-          <button
-            key={year}
-            onClick={() => setSelectedYear(year)}
-            className={year === selectedYear ? "selected" : ""}
-          >
-            {year}
-          </button>
-        ))}
-      </div>
-      {selectedYear && (
-        <>
-           <div className={`month-selector ${months ? "show" : "hide"}`}>
-            {months.map((month) => (
-              <button
-                key={month}
-                onClick={() => setSelectedMonth(month)}
-                className={month === selectedMonth ? "selected" : ""}
-              >
-                {getMonthName(month)}
-              </button>
-            ))}
-          </div>
-        </>
-      )}
-    </div>
-     <div className="logAdm-table">
+          <h3>Logs</h3>
+          <div className="direction-align">
+            <div className="buttonsSelector">
+              <div className="year-selector">
+                {years.map((year) => (
+                  <button
+                    key={year}
+                    onClick={() => setSelectedYear(year)}
+                    className={year === selectedYear ? "selected" : ""}
+                  >
+                    {year}
+                  </button>
+                ))}
+              </div>
+              {selectedYear && (
+                <>
+                  <div className={`month-selector ${months ? "show" : "hide"}`}>
+                    {months.map((month) => (
+                      <button
+                        key={month}
+                        onClick={() => setSelectedMonth(month)}
+                        className={month === selectedMonth ? "selected" : ""}
+                      >
+                        {getMonthName(month)}
+                      </button>
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
+            <div className="logAdm-table">
               <table>
                 <thead>
                   <tr>
@@ -141,27 +144,27 @@ function LogsEmpresa() {
                       <td>{log.user_id}</td>
                       <td>{log.user_name}</td>
                       <td>{log.action}</td>
-                      <td>{log.timestamp}</td>
+                      <td>{converterDataHora(log.timestamp)}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-      <div className="pagination">
-        {[...Array(totalPages)].map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentPage(index + 1)}
-            className={currentPage === index + 1 ? "active" : ""}
-          >
-            {index + 1}
-          </button>
-        ))}
-        </div>
+              <div className="pagination">
+                {[...Array(totalPages)].map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentPage(index + 1)}
+                    className={currentPage === index + 1 ? "active" : ""}
+                  >
+                    {index + 1}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-  </SideBarPage>
+    </SideBarPage>
   );
 }
 

@@ -44,27 +44,27 @@ const AtualizarSenha = () => {
     verifyToken();
   }, [navigate]);
 
-    // Função para buscar o funcionário por nome e CPF (Step 1)
-    const handleBuscarFuncionario = async () => {
-        const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
-        try {
-          setErrorMessage(""); // Limpa qualquer erro anterior
-          const response = await axios.post(
-            `/api/ServerTwo/BuscarFuncionario/${id}`,
-            { nome, cpf }
-          );
-    
-          if (response.data.id) {
-            setEmployeeId(response.data.id);
-            setStep(2); // Passa para o Step 2 (Alteração de senha)
-          } else {
-            setErrorMessage("Funcionário não encontrado.");
-          }
-        } catch (error) {
-          console.log("Erro ao buscar funcionário:", error);
-          setErrorMessage("Erro ao buscar funcionário.");
-        }
-      };
+  // Função para buscar o funcionário por nome e CPF (Step 1)
+  const handleBuscarFuncionario = async () => {
+    const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
+    try {
+      setErrorMessage(""); // Limpa qualquer erro anterior
+      const response = await axios.post(
+        `/api/ServerTwo/BuscarFuncionario/${id}`,
+        { nome, cpf }
+      );
+
+      if (response.data.id) {
+        setEmployeeId(response.data.id);
+        setStep(2); // Passa para o Step 2 (Alteração de senha)
+      } else {
+        setErrorMessage("Funcionário não encontrado.");
+      }
+    } catch (error) {
+      console.log("Erro ao buscar funcionário:", error);
+      setErrorMessage("Erro ao buscar funcionário.");
+    }
+  };
 
   // Função para validar a senha
   const validarSenha = (novoSenha) => {
@@ -125,7 +125,7 @@ const AtualizarSenha = () => {
     }
   };
 
-  
+
   return (
     <SideBarPage>
       <div
@@ -197,7 +197,7 @@ const AtualizarSenha = () => {
                 type="text"
                 placeholder="CPF"
                 value={cpf}
-              onChange={(e) => setCpf(e.target.value)}
+                onChange={(e) => setCpf(e.target.value)}
                 style={{
                   backgroundColor: "white",
                   color: "black",
@@ -227,8 +227,8 @@ const AtualizarSenha = () => {
         {step === 2 && (
           <div className="password-form">
             <h2>Alterar Senha</h2>
-           
-                <div
+
+            <div
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -239,10 +239,10 @@ const AtualizarSenha = () => {
               }}
             >
               <input
-              type="password"
-              placeholder="Nova Senha"
-              value={novoSenha}
-              onChange={(e) => setNovoSenha(e.target.value)}
+                type="password"
+                placeholder="Nova Senha"
+                value={novoSenha}
+                onChange={(e) => setNovoSenha(e.target.value)}
                 style={{
                   backgroundColor: "white",
                   color: "black",
@@ -268,10 +268,10 @@ const AtualizarSenha = () => {
               }}
             >
               <input
-               type="password"
-               placeholder="Confirmar Senha"
-               value={confirmarSenha}
-               onChange={(e) => setConfirmarSenha(e.target.value)}
+                type="password"
+                placeholder="Confirmar Senha"
+                value={confirmarSenha}
+                onChange={(e) => setConfirmarSenha(e.target.value)}
                 style={{
                   backgroundColor: "white",
                   color: "black",
@@ -285,9 +285,9 @@ const AtualizarSenha = () => {
                 }}
               />
             </div>
-           
+
             <button
-             className="AtualizarBtn"
+              className="AtualizarBtn"
               onClick={handleAtualizarSenha}
             >
               Atualizar Senha

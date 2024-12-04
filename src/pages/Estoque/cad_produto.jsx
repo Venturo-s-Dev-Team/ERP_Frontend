@@ -323,7 +323,7 @@ function RegistroProduto() {
               left: "55%",
               right: 0,
               zIndex: 1000,
-             padding: 40,
+              padding: 40,
               borderRadius: 20,
               width: 800,
               height: 480,
@@ -521,7 +521,7 @@ function RegistroProduto() {
                   <div className="ImgEstoqueProduct">
                     <img
                       src={`/api/ServerOne/uploads/ProdutosIMG/${selectedProduct.Imagem}`}
-              
+
                       className="Img-CadPro"
                     />
                   </div>

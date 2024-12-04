@@ -241,6 +241,8 @@
 .graficosDashboard{
   display: flex;
   width: 100%;
-  flex-wrap: wrap
+  flex-wrap: wrap;
+  justify-content: "center";
+  margin-top: 5%;
 }
 

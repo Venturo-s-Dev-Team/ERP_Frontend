@@ -19,7 +19,7 @@ function Fornecedores() {
   const [showModalFornecedores, setShowModalFornecedores] = useState(false);
   const [selectedFornecedor, setselectedFornecedor] = useState(null); // Fornecedor selecionado
   const [searchTerm, setSearchTerm] = useState(""); // Termo de pesquisa
-  
+
 
   const handleShow = () => setShowModal(true);
   const handleClose = () => {
@@ -161,9 +161,11 @@ function Fornecedores() {
       try {
         const response = await axios.put(
           `/api/ServerTwo/UpdateFornecedor/${selectedFornecedor.id}`,
-          { ...formData, id_EmpresaDb: userInfo.id_EmpresaDb,
+          {
+            ...formData, id_EmpresaDb: userInfo.id_EmpresaDb,
             userId: userInfo.id_user,
-            userName: userInfo.Nome_user, },
+            userName: userInfo.Nome_user,
+          },
           {
             withCredentials: true,
           }
@@ -182,9 +184,11 @@ function Fornecedores() {
       try {
         const response = await axios.post(
           "/api/ServerTwo/registerFornecedor",
-          { ...formData, id_EmpresaDb: userInfo.id_EmpresaDb,
+          {
+            ...formData, id_EmpresaDb: userInfo.id_EmpresaDb,
             userId: userInfo.id_user,
-            userName: userInfo.Nome_user, }, // Enviando o id_EmpresaDb junto aos outros dados
+            userName: userInfo.Nome_user,
+          }, // Enviando o id_EmpresaDb junto aos outros dados
           { withCredentials: true }
         );
 
@@ -236,7 +240,7 @@ function Fornecedores() {
     handleShow(); // Abre o modal
   };
 
-  
+
 
 
   return (
@@ -254,7 +258,7 @@ function Fornecedores() {
                 <FaPlus />
               </button>
               <button onClick={handleShowEditModal} disabled={!selectedFornecedor}>
-              Editar <FaPenToSquare />
+                Editar <FaPenToSquare />
               </button>
 
               <button>
@@ -322,13 +326,14 @@ function Fornecedores() {
                         </button>
                       </td>
                       <td>
-                    <input
-                      type="radio"
-                      name="selectedFornecedor"
-                      onChange={() => setselectedFornecedor(Fornecedor)}
-                      checked={selectedFornecedor?.id === Fornecedor.id}
-                    />
-                  </td>
+                        <input
+                          type="radio"
+                          name="selectedFornecedor"
+                          className="custom-checkbox"
+                          onChange={() => setselectedFornecedor(Fornecedor)}
+                          checked={selectedFornecedor?.id === Fornecedor.id}
+                        />
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -354,7 +359,7 @@ function Fornecedores() {
               boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
               maxHeight: "calc(100% - 20px)", // Ajuste da altura para que a rolagem funcione corretamente
               overflowY: "auto",              // A barra de rolagem será ativada se o conteúdo for maior que a altura
-              padding: "10px",  
+              padding: "10px",
             }}
             show={showModal}
             onHide={handleClose}
@@ -364,206 +369,206 @@ function Fornecedores() {
                 <h1>Registrar Fornecedor</h1>
               </div>
               <div className="popup-body">
-              <form onSubmit={handleSubmit} >
-  <input
-    type="text"
-    name="razao_social"
-    placeholder="Razão Social"
-    value={formData.razao_social}
-    onChange={(e) =>
-      setFormData({ ...formData, razao_social: e.target.value })
-    }
-    required
-  />
+                <form onSubmit={handleSubmit} >
+                  <input
+                    type="text"
+                    name="razao_social"
+                    placeholder="Razão Social"
+                    value={formData.razao_social}
+                    onChange={(e) =>
+                      setFormData({ ...formData, razao_social: e.target.value })
+                    }
+                    required
+                  />
 
-  <input
-    type="text"
-    name="nome_fantasia"
-    placeholder="Nome Fantasia"
-    value={formData.nome_fantasia}
-    onChange={(e) =>
-      setFormData({ ...formData, nome_fantasia: e.target.value })
-    }
-    required
-  />
+                  <input
+                    type="text"
+                    name="nome_fantasia"
+                    placeholder="Nome Fantasia"
+                    value={formData.nome_fantasia}
+                    onChange={(e) =>
+                      setFormData({ ...formData, nome_fantasia: e.target.value })
+                    }
+                    required
+                  />
 
-  <InputMask
-    mask="99.999.999/9999-99"
-    type="text"
-    name="cpf_cnpj"
-    placeholder="CNPJ"
-    value={formData.cpf_cnpj}
-    onChange={(e) =>
-      setFormData({ ...formData, cpf_cnpj: e.target.value })
-    }
-    required
-  />
+                  <InputMask
+                    mask="99.999.999/9999-99"
+                    type="text"
+                    name="cpf_cnpj"
+                    placeholder="CNPJ"
+                    value={formData.cpf_cnpj}
+                    onChange={(e) =>
+                      setFormData({ ...formData, cpf_cnpj: e.target.value })
+                    }
+                    required
+                  />
 
-  <InputMask
-    mask="999.999.999.999"
-    type="text"
-    name="ie"
-    placeholder="IE"
-    value={formData.ie}
-    onChange={(e) =>
-      setFormData({ ...formData, ie: e.target.value })
-    }
-    className="input-inscricao"
-    required
-  />
+                  <InputMask
+                    mask="999.999.999.999"
+                    type="text"
+                    name="ie"
+                    placeholder="IE"
+                    value={formData.ie}
+                    onChange={(e) =>
+                      setFormData({ ...formData, ie: e.target.value })
+                    }
+                    className="input-inscricao"
+                    required
+                  />
 
-  <InputMask
-    mask="99999-999"
-    type="text"
-    name="cep"
-    placeholder="CEP"
-    value={formData.cep}
-    onChange={(e) =>
-      setFormData({ ...formData, cep: e.target.value })
-    }
-    onBlur={handleCepBlur}
-    required
-  />
+                  <InputMask
+                    mask="99999-999"
+                    type="text"
+                    name="cep"
+                    placeholder="CEP"
+                    value={formData.cep}
+                    onChange={(e) =>
+                      setFormData({ ...formData, cep: e.target.value })
+                    }
+                    onBlur={handleCepBlur}
+                    required
+                  />
 
-  <input
-    type="text"
-    name="logradouro"
-    placeholder="Logradouro"
-    value={formData.logradouro}
-    onChange={(e) =>
-      setFormData({ ...formData, logradouro: e.target.value })
-    }
-    required
-  />
+                  <input
+                    type="text"
+                    name="logradouro"
+                    placeholder="Logradouro"
+                    value={formData.logradouro}
+                    onChange={(e) =>
+                      setFormData({ ...formData, logradouro: e.target.value })
+                    }
+                    required
+                  />
 
-  <input
-    type="text"
-    name="bairro"
-    placeholder="Bairro"
-    value={formData.bairro}
-    onChange={(e) =>
-      setFormData({ ...formData, bairro: e.target.value })
-    }
-    required
-  />
+                  <input
+                    type="text"
+                    name="bairro"
+                    placeholder="Bairro"
+                    value={formData.bairro}
+                    onChange={(e) =>
+                      setFormData({ ...formData, bairro: e.target.value })
+                    }
+                    required
+                  />
 
-  <input
-    type="text"
-    name="cidade"
-    placeholder="Cidade"
-    value={formData.cidade}
-    onChange={(e) =>
-      setFormData({ ...formData, cidade: e.target.value })
-    }
-    required
-  />
+                  <input
+                    type="text"
+                    name="cidade"
+                    placeholder="Cidade"
+                    value={formData.cidade}
+                    onChange={(e) =>
+                      setFormData({ ...formData, cidade: e.target.value })
+                    }
+                    required
+                  />
 
-  <InputMask
-    mask="aa"
-    type="text"
-    name="uf"
-    placeholder="UF"
-    value={formData.uf}
-    onChange={(e) =>
-      setFormData({ ...formData, uf: e.target.value })
-    }
-    required
-  />
+                  <InputMask
+                    mask="aa"
+                    type="text"
+                    name="uf"
+                    placeholder="UF"
+                    value={formData.uf}
+                    onChange={(e) =>
+                      setFormData({ ...formData, uf: e.target.value })
+                    }
+                    required
+                  />
 
-  <input
-    type="text"
-    name="endereco"
-    placeholder="Endereço"
-    value={formData.endereco}
-    onChange={(e) =>
-      setFormData({ ...formData, endereco: e.target.value })
-    }
-    required
-  />
+                  <input
+                    type="text"
+                    name="endereco"
+                    placeholder="Endereço"
+                    value={formData.endereco}
+                    onChange={(e) =>
+                      setFormData({ ...formData, endereco: e.target.value })
+                    }
+                    required
+                  />
 
-  <input
-    type="email"
-    name="email"
-    placeholder="E-mail"
-    value={formData.email}
-    onChange={(e) =>
-      setFormData({ ...formData, email: e.target.value })
-    }
-    required
-  />
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="E-mail"
+                    value={formData.email}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
+                    required
+                  />
 
-  <InputMask
-    type="text"
-    name="telefone"
-    placeholder="Telefone"
-    mask="(99)99999-9999"
-    value={formData.telefone}
-    onChange={(e) =>
-      setFormData({ ...formData, telefone: e.target.value })
-    }
-    required
-  />
+                  <InputMask
+                    type="text"
+                    name="telefone"
+                    placeholder="Telefone"
+                    mask="(99)99999-9999"
+                    value={formData.telefone}
+                    onChange={(e) =>
+                      setFormData({ ...formData, telefone: e.target.value })
+                    }
+                    required
+                  />
 
-  <InputMask
-    type="text"
-    name="celular"
-    placeholder="Celular"
-    mask="(99)99999-9999"
-    value={formData.celular}
-    onChange={(e) =>
-      setFormData({ ...formData, celular: e.target.value })
-    }
-  />
+                  <InputMask
+                    type="text"
+                    name="celular"
+                    placeholder="Celular"
+                    mask="(99)99999-9999"
+                    value={formData.celular}
+                    onChange={(e) =>
+                      setFormData({ ...formData, celular: e.target.value })
+                    }
+                  />
 
-  <input
-    type="text"
-    name="site"
-    placeholder="Site"
-    value={formData.site}
-    onChange={(e) =>
-      setFormData({ ...formData, site: e.target.value })
-    }
-  />
+                  <input
+                    type="text"
+                    name="site"
+                    placeholder="Site"
+                    value={formData.site}
+                    onChange={(e) =>
+                      setFormData({ ...formData, site: e.target.value })
+                    }
+                  />
 
-  <input
-    type="text"
-    name="ramo_atividade"
-    placeholder="Ramo de Atividade"
-    value={formData.ramo_atividade}
-    onChange={(e) =>
-      setFormData({ ...formData, ramo_atividade: e.target.value })
-    }
-    required
-  />
+                  <input
+                    type="text"
+                    name="ramo_atividade"
+                    placeholder="Ramo de Atividade"
+                    value={formData.ramo_atividade}
+                    onChange={(e) =>
+                      setFormData({ ...formData, ramo_atividade: e.target.value })
+                    }
+                    required
+                  />
 
-  <textarea
-    name="observacoes"
-    value={formData.observacoes}
-    className="observacoes2"
-    placeholder="Observações"
-    onChange={(e) =>
-      setFormData({ ...formData, observacoes: e.target.value })
-    }
-  />
+                  <textarea
+                    name="observacoes"
+                    value={formData.observacoes}
+                    className="observacoes2"
+                    placeholder="Observações"
+                    onChange={(e) =>
+                      setFormData({ ...formData, observacoes: e.target.value })
+                    }
+                  />
 
-  <div className="popup-footer">
-    <button type="submit" >
-      Registrar
-    </button>
-    <button
-      type="button"
-      onClick={handleClose}
-    >
-      Fechar
-    </button>
-  </div>
-</form>
-</div>
+                  <div className="popup-footer">
+                    <button type="submit" >
+                      Registrar
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleClose}
+                    >
+                      Fechar
+                    </button>
+                  </div>
+                </form>
+              </div>
 
             </div>
           </Modal>
 
- 
+
 
 
           <Modal

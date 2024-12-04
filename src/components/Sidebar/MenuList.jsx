@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
 import { StockOutlined, AreaChartOutlined } from "@ant-design/icons";
-import { MdLogout, MdOutlineMailOutline, MdLocalAtm  } from "react-icons/md";
+import { MdLogout, MdOutlineMailOutline, MdLocalAtm } from "react-icons/md";
 import { IoPieChartSharp } from "react-icons/io5";
 import { RxAvatar } from "react-icons/rx";
 import { RiContactsBook3Fill } from "react-icons/ri";
@@ -10,7 +10,7 @@ import { BsPeopleFill } from "react-icons/bs";
 import { FaMoneyBillTrendUp } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const MenuList = ({ darkTheme }) => {
   const navigate = useNavigate();
@@ -151,11 +151,11 @@ const MenuList = ({ darkTheme }) => {
       icon: <FaMoneyBillTrendUp />,
       label: "Financeiro",
       children: [
-            {
-              key: "fornecedores",
-              label: <Link to="/fornecedores"> Fornecedores </Link>,
-            },
-          ],
+        {
+          key: "fornecedores",
+          label: <Link to="/fornecedores"> Fornecedores </Link>,
+        },
+      ],
     },
     {
       key: "vendas",
@@ -262,7 +262,7 @@ const MenuList = ({ darkTheme }) => {
     Caixa: ["email", "Logout", "perfil", "Caixa"],
     Estoque: ["email", "Logout", "perfil", "estoque"],
     Venda: ["email", "Logout", "perfil", "VendasForVenda"],
-    Financeiro: ["email", "Logout", "perfil", "financeiro"],
+    Financeiro: ["dashboard", "email", "Logout", "perfil", "financeiro"],
     Beta_gestor: [
       "dashboard",
       "email",
@@ -281,11 +281,12 @@ const MenuList = ({ darkTheme }) => {
           item.children.some((child) => menuAccess["Beta_gestor"]?.includes(child.key)))
       );
     } else {
-    return (
-      menuAccess[userRole]?.includes(item.key) ||
-      (item.children &&
-        item.children.some((child) => menuAccess[userRole]?.includes(child.key)))
-    ); }
+      return (
+        menuAccess[userRole]?.includes(item.key) ||
+        (item.children &&
+          item.children.some((child) => menuAccess[userRole]?.includes(child.key)))
+      );
+    }
   });
 
   return (

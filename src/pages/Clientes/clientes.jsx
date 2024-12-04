@@ -16,7 +16,7 @@ import "./clientes.css";
 import SideBarPage from "../../components/Sidebar/SideBarPage";
 
 // Importação dos utilitários de data
-import { formatarData, converterParaISO } from "../../utils/dateUtils";
+import { formatarData, converterDataHora } from "../../utils/dateUtils";
 
 function Clientes() {
   const navigate = useNavigate();
@@ -111,7 +111,7 @@ function Clientes() {
       site: "",
       autorizados: "NÃO",
     });
-  };  
+  };
 
   const handleShowClientes = () => setShowModalClientes(true);
   const handleCloseClientes = () => setShowModalClientes(false);
@@ -227,14 +227,14 @@ function Clientes() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     // Concatenando os funcionários em uma string separada por vírgula, apenas se for CNPJ
     const concatenatedFuncionarios = formType === "CNPJ" && Array.isArray(formData.funcionario)
       ? formData.funcionario
-          .filter((func) => func.trim() !== "")
-          .join(", ")
+        .filter((func) => func.trim() !== "")
+        .join(", ")
       : null;
-  
+
     // Tratando campos vazios ou inválidos
     const sanitizedFormData = {
       ...formData,
@@ -256,15 +256,17 @@ function Clientes() {
       telefone: formData.telefone || null,
       uf: formData.uf || null,
     };
-  
+
     if (isEditMode) {
       // Lógica para editar o cliente
       try {
         const response = await axios.put(
           `/api/ServerTwo/UpdateCliente/${selectedClient.id}`,
-          { ...sanitizedFormData, id_EmpresaDb: userInfo.id_EmpresaDb,
+          {
+            ...sanitizedFormData, id_EmpresaDb: userInfo.id_EmpresaDb,
             userId: userInfo.id_user,
-            userName: userInfo.Nome_user,  },
+            userName: userInfo.Nome_user,
+          },
           {
             withCredentials: true,
           }
@@ -284,10 +286,11 @@ function Clientes() {
       try {
         const response = await axios.post(
           "/api/ServerTwo/registerCliente",
-          { ...sanitizedFormData, id_EmpresaDb: userInfo.id_EmpresaDb,
+          {
+            ...sanitizedFormData, id_EmpresaDb: userInfo.id_EmpresaDb,
             userId: userInfo.id_user,
             userName: userInfo.Nome_user,
-           },
+          },
           { withCredentials: true }
         );
         if (response.status === 201 || response.status === 200) { // Verifique se o backend retorna 201 ou 200
@@ -302,7 +305,7 @@ function Clientes() {
       }
     }
   };
-  
+
 
   const handleFormSelection = (type) => {
     setFormType(type); // Define se é CPF ou CNPJ
@@ -320,9 +323,9 @@ function Clientes() {
     } else if (selectedClient.razao_social === "Consumidor") {
       alert('Não é possível editar "Consumidor", selecione um cliente válido')
     }
-  
+
     const cpfCnpjDigits = selectedClient.cpf_cnpj.replace(/\D/g, ""); // Remove caracteres não numéricos
-  
+
     if (cpfCnpjDigits.length === 11) {
       setFormType("CPF");
     } else if (cpfCnpjDigits.length === 14) {
@@ -331,7 +334,7 @@ function Clientes() {
       alert("CPF/CNPJ inválido.");
       return;
     }
-  
+
     setFormData(selectedClient); // Preenche o formulário com os dados do cliente
     setIsEditMode(true); // Define o modo de edição
     setShowModal(true); // Abre o modal
@@ -504,7 +507,7 @@ function Clientes() {
                     ? "Editar Cliente (CNPJ)"
                     : "Registrar Cliente (CNPJ)"}
                 </h1>
-                <form onSubmit={handleSubmit}>                  
+                <form onSubmit={handleSubmit}>
                   <input
                     type="text"
                     name="razao_social"
@@ -540,16 +543,16 @@ function Clientes() {
                     className="input-inscricao"
                     required
                   />
-              <InputMask
-                mask="99999-999"
-                type="text"
-                name="cep"
-                placeholder="CEP"
-                value={formData.cep}
-                onChange={handleChange}
-                onBlur={handleCepBlur}
-                required
-              />
+                  <InputMask
+                    mask="99999-999"
+                    type="text"
+                    name="cep"
+                    placeholder="CEP"
+                    value={formData.cep}
+                    onChange={handleChange}
+                    onBlur={handleCepBlur}
+                    required
+                  />
                   <input
                     type="text"
                     name="logradouro"
@@ -636,7 +639,7 @@ function Clientes() {
                     name="dia_para_faturamento"
                     onChange={handleChange}
                     value={formData.dia_para_faturamento}
-                    />
+                  />
                   <input
                     type="text"
                     name="ramo_atividade"

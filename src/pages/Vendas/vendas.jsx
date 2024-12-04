@@ -9,6 +9,9 @@ import SideBarPage from "../../components/Sidebar/SideBarPage";
 import { jwtDecode } from "jwt-decode";
 import "./vendas.css";
 
+// Importação dos utilitários de data
+import { formatarData, converterDataHora } from "../../utils/dateUtils";
+
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ComposedChart, Area, Bar } from 'recharts';
 import moment from 'moment'; // Para manipulação de datas
 function Hist_vendas() {
@@ -170,7 +173,7 @@ function Hist_vendas() {
                 <tr key={venda.id_venda}>
                   <td>{venda.nome_cliente}</td>
                   <td>R$ {venda.total}</td>
-                  <td>{venda.Data}</td>
+                  <td>{formatarData(venda.Data)}</td>
                 </tr>
               ))}
             </tbody>

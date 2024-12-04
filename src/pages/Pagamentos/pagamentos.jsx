@@ -11,7 +11,7 @@ import * as XLSX from "xlsx";
 import SideBarPage from "../../components/Sidebar/SideBarPage";
 
 // Importação dos utilitários de data
-import { formatarData, converterParaISO } from "../../utils/dateUtils";
+import { formatarData, converterDataHora } from "../../utils/dateUtils";
 
 function Pagamentos() {
   const navigate = useNavigate();
@@ -60,23 +60,23 @@ function Pagamentos() {
     }
   };
 
-    // Função para carregar vendas do banco de dados
-    useEffect(() => {
-      fetchPagamentos()
-    }, []);
-  
-  
-    const fetchPagamentos= async () => {
-      try {
-        const response = await axios.get(`/api/ServerOne/tablepagamentos`, {
-          withCredentials: true,
-        });
-        setPagaments(response.data.InfoTabela);
-      } catch (error) {
-        console.error("Erro ao carregar pagamentos: ", error);
-      }
-    };
-  
+  // Função para carregar vendas do banco de dados
+  useEffect(() => {
+    fetchPagamentos()
+  }, []);
+
+
+  const fetchPagamentos = async () => {
+    try {
+      const response = await axios.get(`/api/ServerOne/tablepagamentos`, {
+        withCredentials: true,
+      });
+      setPagaments(response.data.InfoTabela);
+    } catch (error) {
+      console.error("Erro ao carregar pagamentos: ", error);
+    }
+  };
+
 
   // Mostrar e fechar modal
   const handleShow = () => setShowModal(true);
@@ -143,7 +143,7 @@ function Pagamentos() {
       alert("Selecione um pagamento para editar");
       return;
     }
-    
+
     // Preenche o estado de edição com os dados do pagamento selecionado
     setEditPagament({
       Nome: selectedPagament.Nome,
@@ -153,7 +153,7 @@ function Pagamentos() {
       TipoPagamento: selectedPagament.TipoPagamento,
       Descricao: selectedPagament.Descricao,
     });
-    
+
     setShowModalEdit(true);
   };
 
@@ -181,10 +181,10 @@ function Pagamentos() {
       if (response.status === 200) {
         // Atualiza a lista de pagamentos
         fetchPagamentos();
-        
+
         // Fecha o modal de edição
         setShowModalEdit(false);
-        
+
         // Limpa o pagamento selecionado
         setSelectedPagament(null);
       }
@@ -243,15 +243,15 @@ function Pagamentos() {
                         Abrir
                       </button>
                     </td>
-                    <label className="custom-radio">
-                    <input
-                      type="radio"
-                      name="selectedPagament"
-                      onChange={() => setSelectedPagament(pagament)}
-                      checked={selectedPagament?.id === pagament.id}
-                    />
-                    <span className="radio-checkmark"></span>
-                        </label>
+                    <td>
+                      <input
+                        type="radio"
+                        name="selectedPagament"
+                        className="custom-checkbox"
+                        onChange={() => setSelectedPagament(pagament)}
+                        checked={selectedPagament?.id === pagament.id}
+                      />
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -310,7 +310,7 @@ function Pagamentos() {
                   required
                 />
                 <InputMask
-                mask="999999999999"
+                  mask="999999999999"
                   type="text"
                   name="Conta"
                   placeholder="Conta"
@@ -415,99 +415,99 @@ function Pagamentos() {
           </Modal>
 
           {/* Modal de Edição */}
-      <Modal
-        style={{
-          position: "fixed",
-          top: "50%",
-          bottom: 0,
-          left: "55%",
-          right: 0,
-          zIndex: 1000,
-          padding: 40,
-          width: "55%",
-          height: "63%",
-          borderRadius: 20,
-          transform: "translate(-50%, -50%)",
-          background: "white",
-          boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
-        }}
-        show={showModalEdit}
-        onHide={() => setShowModalEdit(false)}
-      >
-        <div className="DivModalCont">
-          <div className="HeaderModal">
-            <h1>Editar Pagamento</h1>
-          </div>
-          <form onSubmit={updatePagament}>
-            <input
-              type="text"
-              name="Nome"
-              placeholder="Nome"
-              value={editPagament.Nome}
-              onChange={handleEditChange}
-              className="Input-Modal"
-              required
-            />
-            <input
-              type="text"
-              name="Valor"
-              placeholder="Valor"
-              value={editPagament.Valor}
-              onChange={handleEditChange}
-              className="Input-Modal"
-              required
-            />
-            <input
-              type="date"
-              name="Data"
-              placeholder="Data"
-              value={editPagament.Data}
-              onChange={handleEditChange}
-              className="Input-Modal"
-              required
-            />
-            <InputMask
-              mask="999999999999"
-              type="text"
-              name="Conta"
-              placeholder="Conta"
-              value={editPagament.Conta}
-              onChange={handleEditChange}
-              className="Input-Modal"
-            />
-            <input
-              type="text"
-              name="TipoPagamento"
-              placeholder="Tipo de pagamento"
-              value={editPagament.TipoPagamento}
-              onChange={handleEditChange}
-              className="Input-Modal"
-              required
-            />
-            <input
-              type="text"
-              name="Descricao"
-              placeholder="Descrição"
-              value={editPagament.Descricao}
-              onChange={handleEditChange}
-              className="Input-Modal"
-            />
+          <Modal
+            style={{
+              position: "fixed",
+              top: "50%",
+              bottom: 0,
+              left: "55%",
+              right: 0,
+              zIndex: 1000,
+              padding: 40,
+              width: "55%",
+              height: "63%",
+              borderRadius: 20,
+              transform: "translate(-50%, -50%)",
+              background: "white",
+              boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
+            }}
+            show={showModalEdit}
+            onHide={() => setShowModalEdit(false)}
+          >
+            <div className="DivModalCont">
+              <div className="HeaderModal">
+                <h1>Editar Pagamento</h1>
+              </div>
+              <form onSubmit={updatePagament}>
+                <input
+                  type="text"
+                  name="Nome"
+                  placeholder="Nome"
+                  value={editPagament.Nome}
+                  onChange={handleEditChange}
+                  className="Input-Modal"
+                  required
+                />
+                <input
+                  type="text"
+                  name="Valor"
+                  placeholder="Valor"
+                  value={editPagament.Valor}
+                  onChange={handleEditChange}
+                  className="Input-Modal"
+                  required
+                />
+                <input
+                  type="date"
+                  name="Data"
+                  placeholder="Data"
+                  value={editPagament.Data}
+                  onChange={handleEditChange}
+                  className="Input-Modal"
+                  required
+                />
+                <InputMask
+                  mask="999999999999"
+                  type="text"
+                  name="Conta"
+                  placeholder="Conta"
+                  value={editPagament.Conta}
+                  onChange={handleEditChange}
+                  className="Input-Modal"
+                />
+                <input
+                  type="text"
+                  name="TipoPagamento"
+                  placeholder="Tipo de pagamento"
+                  value={editPagament.TipoPagamento}
+                  onChange={handleEditChange}
+                  className="Input-Modal"
+                  required
+                />
+                <input
+                  type="text"
+                  name="Descricao"
+                  placeholder="Descrição"
+                  value={editPagament.Descricao}
+                  onChange={handleEditChange}
+                  className="Input-Modal"
+                />
 
-            <div className="FooterButton">
-              <button className="RegisterPr" type="submit">
-                Atualizar
-              </button>
-              <button 
-                className="FecharPr" 
-                type="button"
-                onClick={() => setShowModalEdit(false)}
-              >
-                Fechar
-              </button>
+                <div className="FooterButton">
+                  <button className="RegisterPr" type="submit">
+                    Atualizar
+                  </button>
+                  <button
+                    className="FecharPr"
+                    type="button"
+                    onClick={() => setShowModalEdit(false)}
+                  >
+                    Fechar
+                  </button>
+                </div>
+              </form>
             </div>
-          </form>
-        </div>
-      </Modal>
+          </Modal>
 
         </div>
       </main>

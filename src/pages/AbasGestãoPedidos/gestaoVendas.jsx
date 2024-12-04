@@ -178,12 +178,8 @@ const GestaoVendas = () => {
     if (venda.Status != "EM ABERTO") {
       alert('Este pedido não pode ser cancelado')
     } else {
+      
       const id = userInfo.id_EmpresaDb ? userInfo.id_EmpresaDb : userInfo.id_user;
-
-      console.log("Enviando CancelarVenda com dados:", {
-        id_pedido: venda.id_pedido,
-        produto: venda.produto,
-      });
 
       try {
         await axios.put(

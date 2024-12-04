@@ -23,7 +23,7 @@ import {
 import { Modal } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {jwtDecode} from "jwt-decode"; // Corrigido para importar corretamente
+import { jwtDecode } from "jwt-decode"; // Corrigido para importar corretamente
 import SideBarPage from "../../components/Sidebar/SideBarPage";
 
 // Define as cores para cada categoria
@@ -51,9 +51,9 @@ function Despesas() {
       prevDespesas.map((despesa) =>
         despesa.id === id
           ? {
-              ...despesa,
-              Finalizado: despesa.Finalizado === 0 ? 1 : 0,
-            }
+            ...despesa,
+            Finalizado: despesa.Finalizado === 0 ? 1 : 0,
+          }
           : despesa
       )
     );
@@ -90,42 +90,42 @@ function Despesas() {
     }
   }, [userInfo]);
 
-// Função para carregar dados do banco de dados
-const fetchData = async (userId) => {
-  try {
-    const despesasResponse = await axios.get(
-      `/api/ServerOne/tabledespesas/${userId}`,
-      { withCredentials: true }
-    );
+  // Função para carregar dados do banco de dados
+  const fetchData = async (userId) => {
+    try {
+      const despesasResponse = await axios.get(
+        `/api/ServerOne/tabledespesas/${userId}`,
+        { withCredentials: true }
+      );
 
-    const despesas = despesasResponse.data.InfoTabela;
-    setDespesas(despesas);
+      const despesas = despesasResponse.data.InfoTabela;
+      setDespesas(despesas);
 
-    // Inicializar os totais
-    let totalAbertas = 0;
-    let totalAtrasadas = 0;
+      // Inicializar os totais
+      let totalAbertas = 0;
+      let totalAtrasadas = 0;
 
-    // Classificar despesas
-    despesas.forEach((despesa) => {
-      const dataExpiracao = new Date(despesa.DataExpiracao).getTime();
-      const isAtrasada = despesa.Finalizado === 0 && dataExpiracao < new Date().getTime();
+      // Classificar despesas
+      despesas.forEach((despesa) => {
+        const dataExpiracao = new Date(despesa.DataExpiracao).getTime();
+        const isAtrasada = despesa.Finalizado === 0 && dataExpiracao < new Date().getTime();
 
-      if (isAtrasada) {
-        totalAtrasadas += parseFloat(despesa.Valor || 0);
-      } else if (despesa.Finalizado === 0) {
-        totalAbertas += parseFloat(despesa.Valor || 0);
-      }
-    });
+        if (isAtrasada) {
+          totalAtrasadas += parseFloat(despesa.Valor || 0);
+        } else if (despesa.Finalizado === 0) {
+          totalAbertas += parseFloat(despesa.Valor || 0);
+        }
+      });
 
-    // Atualize o estado do gráfico com valores formatados
-    setDataGrafico([
-      { name: "Contas em Aberto", value: totalAbertas },
-      { name: "Contas Atrasadas", value: totalAtrasadas },
-    ]);
-  } catch (error) {
-    console.error("Erro ao carregar dados", error);
-  }
-};
+      // Atualize o estado do gráfico com valores formatados
+      setDataGrafico([
+        { name: "Contas em Aberto", value: totalAbertas },
+        { name: "Contas Atrasadas", value: totalAtrasadas },
+      ]);
+    } catch (error) {
+      console.error("Erro ao carregar dados", error);
+    }
+  };
 
   // Função para formatar valores em reais
   const formatCurrency = (value) => {
@@ -185,21 +185,21 @@ const fetchData = async (userId) => {
         fecharModal();
       } catch (error) {
         console.error("Erro ao atualizar despesa", error);
-      } 
+      }
     } else if (SelectedDespesa) {
-        try {
-          const response = await axios.put(
-            `api/ServerTwo/EditDespesa/${SelectedDespesa.id}`,
-            despesaData,
-            { withCredentials: true }
-          );
-          console.log("Atualizado: ", response);
-          await fetchData(id_EmpresaDb);
-          fecharModal();
-        } catch (error) {
-          console.error("Erro ao atualizar despesa", error);
-        } 
-      } else {
+      try {
+        const response = await axios.put(
+          `api/ServerTwo/EditDespesa/${SelectedDespesa.id}`,
+          despesaData,
+          { withCredentials: true }
+        );
+        console.log("Atualizado: ", response);
+        await fetchData(id_EmpresaDb);
+        fecharModal();
+      } catch (error) {
+        console.error("Erro ao atualizar despesa", error);
+      }
+    } else {
       // Registro da despesa
       try {
         const response = await axios.post(
@@ -394,9 +394,8 @@ const fetchData = async (userId) => {
                     <td>{new Date(despesa.DataExpiracao).toLocaleDateString()}</td>
                     <td>
                       <button
-                        className={`despesas_opc_btn ${
-                          despesa.Finalizado === 1 ? "sim" : "nao"
-                        }`}
+                        className={`despesas_opc_btn ${despesa.Finalizado === 1 ? "sim" : "nao"
+                          }`}
                         onClick={() => {
                           if (despesa.Finalizado === 0) {
                             UpdateFinalizado1(despesa.id);
@@ -411,7 +410,7 @@ const fetchData = async (userId) => {
                       </button>
                     </td>
                     <td>
-                    <label className="custom-radio">
+                      <label className="custom-radio">
                         <input
                           type="radio"
                           name="selectedProduct"

@@ -13,13 +13,13 @@ function HomeAdmin() {
   const navigate = useNavigate();
 
   const [selectedId, setSelectedId] = useState(null);
-  const [datatatus, setdatatatus] = useState({});
+  const [datastatus, setdatastatus] = useState({});
   const [userInfo, setUserInfo] = useState('');
   const [data, setData] = useState([]);
 
   // Função para alterar o status localmente
   const status = (id) => {
-    setdatatatus((prevStatus) => ({
+    setdatastatus((prevStatus) => ({
       ...prevStatus,
       [id]: prevStatus[id] === "Autorizado" ? "Desautorizado" : "Autorizado",
     }));
@@ -85,8 +85,6 @@ function HomeAdmin() {
           withCredentials: true,
         });
 
-        console.log(Info)
-
         if (Info.status === 200) {
           const fetchedData = Info.data.InfoTabela.map((item) => ({
             id: item.id,
@@ -105,7 +103,7 @@ function HomeAdmin() {
           fetchedData.forEach((item) => {
             statusMap[item.id] = item.status;
           });
-          setdatatatus(statusMap);
+          setdatastatus(statusMap);
         }
       } catch (err) {
         console.error("Erro: ", err);
@@ -117,9 +115,9 @@ function HomeAdmin() {
   const selectedItem = data.find((item) => item.id === selectedId);
 
   const handleProsseguir = (id) => {
-      navigate("/verMais", {
-        state: { id },
-      })
+    navigate("/verMais", {
+      state: { id },
+    })
   };
 
   return (
@@ -158,94 +156,94 @@ function HomeAdmin() {
             ))}
             {/* Container - Parte Interna */}
             <AnimatePresence>
-  {selectedId &&
-    data
-      .filter((item) => item.id === selectedId) // Filtra o item selecionado
-      .map((item) => (
-        <motion.div
-          layoutId={selectedId}
-          className="ContainerInt-DBAdmin"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          key={item.id}
-        >
-          {/* Div - Botão de Fechar do Container */}
-          <motion.div>
-            <motion.button
-              className="ContainerBtn-DBAdmin"
-              onClick={() => setSelectedId(null)}
-            >
-              <CgCloseR className="ContainerIcone" />
-            </motion.button>
-          </motion.div>
+              {selectedId &&
+                data
+                  .filter((item) => item.id === selectedId) // Filtra o item selecionado
+                  .map((item) => (
+                    <motion.div
+                      layoutId={selectedId}
+                      className="ContainerInt-DBAdmin"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      key={item.id}
+                    >
+                      {/* Div - Botão de Fechar do Container */}
+                      <motion.div>
+                        <motion.button
+                          className="ContainerBtn-DBAdmin"
+                          onClick={() => setSelectedId(null)}
+                        >
+                          <CgCloseR className="ContainerIcone" />
+                        </motion.button>
+                      </motion.div>
 
-          {/* Div - Container com Logo */}
-          <motion.div className="LogoEmpresa-DBAdmin">
-            {/* Logo da empresa */}
-            {item.logo ? (
-              <img
-                src={`/api/ServerOne/uploads/Logo/${item.logo}`}
-                className="LogoEmpresa-Img-DBAdmin"
-                alt="Logo"
-              />
-            ) : (
-              <div style={{ width: 100, height: 100 }}></div>
-            )}
-          </motion.div>
+                      {/* Div - Container com Logo */}
+                      <motion.div className="LogoEmpresa-DBAdmin">
+                        {/* Logo da empresa */}
+                        {item.logo ? (
+                          <img
+                            src={`/api/ServerOne/uploads/Logo/${item.logo}`}
+                            className="LogoEmpresa-Img-DBAdmin"
+                            alt="Logo"
+                          />
+                        ) : (
+                          <div style={{ width: 100, height: 100 }}></div>
+                        )}
+                      </motion.div>
 
-          {/* Div - Container sem logo */}
-          <motion.div
-            className={`ContainerConteudo ${item.logo ? "has-logo" : "no-logo"}`}
-          >
-            <motion.h2 className="ContainerInt-Title">{item.title}</motion.h2>
-            <motion.h6 className="ContainerInt-Dados">Status: {item.status}</motion.h6>
+                      {/* Div - Container sem logo */}
+                      <motion.div
+                        className={`ContainerConteudo ${item.logo ? "has-logo" : "no-logo"}`}
+                      >
+                        <motion.h2 className="ContainerInt-Title">{item.title}</motion.h2>
+                        <motion.h6 className="ContainerInt-Dados">Status: {item.status}</motion.h6>
 
-            {/* Dados da Empresa */}
-            <details>
-              <summary className="Summary-ContainerInt">Dados da Empresa</summary>
-              <motion.p className="Dados-ContainerInt">
-                <strong> ID: </strong> {item.id}{" "}
-              </motion.p>
-              <motion.p className="Dados-ContainerInt">
-                <strong> Gestor: </strong> {item.gestor}{" "}
-              </motion.p>
-              <motion.p className="Dados-ContainerInt">
-                <strong> CNPJ: </strong> {item.cnpj}
-              </motion.p>
-              <motion.p className="Dados-ContainerInt">
-                <strong> Email: </strong> {item.email}
-              </motion.p>
-            </details>
+                        {/* Dados da Empresa */}
+                        <details>
+                          <summary className="Summary-ContainerInt">Dados da Empresa</summary>
+                          <motion.p className="Dados-ContainerInt">
+                            <strong> ID: </strong> {item.id}{" "}
+                          </motion.p>
+                          <motion.p className="Dados-ContainerInt">
+                            <strong> Gestor: </strong> {item.gestor}{" "}
+                          </motion.p>
+                          <motion.p className="Dados-ContainerInt">
+                            <strong> CNPJ: </strong> {item.cnpj}
+                          </motion.p>
+                          <motion.p className="Dados-ContainerInt">
+                            <strong> Email: </strong> {item.email}
+                          </motion.p>
+                        </details>
 
-            {/* Botões para "Ver Mais" e "Autorizar" */}
-            <motion.div className="ContainerInt-BtnBox">
-              <motion.button
-                className={
-                  item.status === "Autorizado"
-                    ? "Desautorizar-DBAdmin"
-                    : "Autorizar-DBAdmin"
-                }
-                onClick={() => {
-                  // Verifica o status e chama a função apropriada
-                  if (item.status === "Autorizado") {
-                    Desautorizado(selectedId); // Desautorizar quando o status for "Autorizado"
-                  } else {
-                    Autorizado(selectedId); // Autorizar quando o status for "Desautorizado"
-                  }
-                }}
-              >
-                {item.status === "Autorizado" ? "Desativar" : "Autorizar"}
-              </motion.button>
+                        {/* Botões para "Ver Mais" e "Autorizar" */}
+                        <motion.div className="ContainerInt-BtnBox">
+                          <motion.button
+                            className={
+                              item.status === "Autorizado"
+                                ? "Desautorizar-DBAdmin"
+                                : "Autorizar-DBAdmin"
+                            }
+                            onClick={() => {
+                              // Verifica o status e chama a função apropriada
+                              if (item.status === "Autorizado") {
+                                Desautorizado(selectedId); // Desautorizar quando o status for "Autorizado"
+                              } else {
+                                Autorizado(selectedId); // Autorizar quando o status for "Desautorizado"
+                              }
+                            }}
+                          >
+                            {item.status === "Autorizado" ? "Desativar" : "Autorizar"}
+                          </motion.button>
 
-              <motion.div className="VerMaisDiv-DBAdmin">
-                <motion.button className="VerMaisBtn-DBAdmin" onClick={() => handleProsseguir(item.id)}> Ver Mais </motion.button>
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        </motion.div>
-      ))}
-</AnimatePresence>
+                          <motion.div className="VerMaisDiv-DBAdmin">
+                            <motion.button className="VerMaisBtn-DBAdmin" onClick={() => handleProsseguir(item.id)}> Ver Mais </motion.button>
+                          </motion.div>
+                        </motion.div>
+                      </motion.div>
+                    </motion.div>
+                  ))}
+            </AnimatePresence>
 
           </div>
         </div>

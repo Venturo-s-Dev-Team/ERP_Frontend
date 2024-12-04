@@ -84,7 +84,9 @@ const renderActiveShape = (props) => {
         y={ey}
         textAnchor={textAnchor}
         fill="#333"
-      >Total</text>
+      >
+        {payload.value} {/* Exibe o número de funcionários */}
+      </text>
       <text
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
@@ -92,7 +94,7 @@ const renderActiveShape = (props) => {
         textAnchor={textAnchor}
         fill="#999"
       >
-        {`${(percent * 100).toFixed(2)}%`}
+        Funcionários
       </text>
     </g>
   );
@@ -113,6 +115,12 @@ function Home() {
 
   // Array de cores
   const COLORS_GRAFICO = ["#FF8042", "#00C49F", "#FFBB28", "#0088FE", "#FF00FF", "#40E0D0"];
+
+    // Define as cores para Despesas
+const COLORS = {
+  "Contas em Aberto": "#103b74", // Azul
+  "Contas Atrasadas": "#8f1515", // Vermelho
+};
 
   // Funções para buscar dados de estoque, funcionários, vendas, logs, etc.
 
@@ -144,45 +152,57 @@ function Home() {
       setSelectedTotalFuncionario(0);
     }
   };
+
   const fetchDadosVendas = async (id) => {
     try {
-      const response = await axios.get(
-        `/api/ServerOne/VendasConcluidas/${id}`,
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await axios.get(`/api/ServerOne/VendasConcluidas/${id}`, {
+        withCredentials: true,
+      });
       if (response.status === 200) {
         const vendas = response.data.InfoTabela || [];
 
-        // Inicializamos um array para armazenar os dados formatados
         const vendasFormatadas = [];
+        let vendasDiaAnterior = 0;
+        let totalVendasDia = 0;
+        let diasContados = 0;
 
-        // Variável para armazenar o total de vendas do mês anterior
-        let vendasMesAnterior = 0;
-
-        // Formatar os dados das vendas e calcular o crescimento
         vendas.forEach((venda) => {
-          const totalVendas = parseFloat(venda.total) || 0; // Total de vendas em R$
-          const nomeMes = venda.Data; // Suponha que "Data" seja no formato 'YYYY-MM'
+          const totalVendas = parseFloat(venda.total) || 0;
+          const dataVenda = new Date(venda.Data);
 
-          // Calcular o crescimento
-          const crescimento = vendasMesAnterior ? totalVendas - vendasMesAnterior : 0;
+          // Acumula as vendas do dia
+          totalVendasDia += totalVendas;
+          diasContados++;
+
+          // Calcula o crescimento
+          const crescimento = vendasDiaAnterior ? totalVendasDia - vendasDiaAnterior : 0;
 
           vendasFormatadas.push({
-            name: nomeMes,
-            total: totalVendas,
+            name: dataVenda.toLocaleDateString(), // Exibe a data
+            total: totalVendasDia,
             crescimento: crescimento,
           });
 
-          vendasMesAnterior = totalVendas; // Atualiza o total de vendas do mês atual
+          vendasDiaAnterior = totalVendasDia;
+
+          // Reseta após 30 dias
+          if (diasContados >= 30) {
+            vendasFormatadas.push({
+              name: `Resetado - ${dataVenda.toLocaleDateString()}`,
+              total: totalVendasDia,
+              crescimento: 0,
+            });
+
+            totalVendasDia = 0; // Reset vendas
+            diasContados = 0; // Reinicia contagem dos dias
+          }
         });
         setSelectedTotalVenda(response.data.N_Registros)
-        setVendasCrescimento(vendasFormatadas); // Atualiza o estado com os dados formatados
+        setVendasCrescimento(vendasFormatadas); // Atualiza os dados
       }
     } catch (error) {
-      console.log("Não foi possível requerir as informações de vendas: ", error);
-      setVendasCrescimento([]); // Reseta os dados em caso de erro
+      console.log("Erro ao carregar vendas:", error);
+      setVendasCrescimento([]); // Reseta em caso de erro
     }
   };
 
@@ -428,8 +448,8 @@ function Home() {
 
             <div className="graficosDashboard">
               <div className="charts">
-                {/* Gráfico de Fluxo de Caixa */}
                 <ResponsiveContainer width="100%" height={300}>
+                <h3 style={{ textAlign: 'center' }}>Panorama Financeiro</h3>
                   <LineChart data={fluxoCaixa}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
@@ -439,8 +459,8 @@ function Home() {
                     <Line
                       type="monotone"
                       dataKey="fluxoCaixa"
-                      stroke="#8884d8"
-                      name="Fluxo de Caixa"
+                      stroke="#ffd700"
+                      name="Lucro"
                       activeDot={{ r: 8 }}
                     />
                     <Line
@@ -460,6 +480,7 @@ function Home() {
               </div>
               <div className="charts">
                 <ResponsiveContainer width="100%" height={300}>
+                <h3 style={{ textAlign: 'center' }}>Funcionários</h3>
                   <PieChart>
                     <Pie
                       activeIndex={activeIndex}
@@ -479,34 +500,6 @@ function Home() {
                     </Pie>
                   </PieChart>
                 </ResponsiveContainer>
-              </div>
-              <div className="charts">
-                <ResponsiveContainer width="100%" height={500}>
-                  <LineChart
-                    data={vendasCrescimento} // Dados formatados das vendas
-                    margin={{
-                      top: 5,
-                      right: 30,
-                      left: 20,
-                      bottom: 5,
-                    }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="name" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-
-                    {/* Linha de Vendas Totais */}
-                    <Line type="monotone" dataKey="total" stroke="#8884d8" name="Vendas Totais (R$)" />
-
-                    {/* Linha de Crescimento das Vendas */}
-                    <Line type="monotone" dataKey="crescimento" stroke="#82ca9d" name="Crescimento de Vendas (R$)" />
-
-                    <Customized component={CustomizedRectangle} />
-                  </LineChart>
-                </ResponsiveContainer>
-
               </div>
             </div>
           </div>
