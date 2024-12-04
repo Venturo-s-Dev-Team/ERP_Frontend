@@ -81,13 +81,13 @@ const AtualizarSenha = () => {
       sequenciaCrescente.test(novoSenha) ||
       sequenciaDecrescente.test(novoSenha)
     ) {
-      return "A senha não pode conter sequências crescentes ou decrescentes.";
+      return "A senha não pode conter sequências crescentes ou decrescentes de números ou letras, por exemplo: '123 ou 321' ou 'ABC OU CBA'.";
     }
 
     // Verificar repetição de caracteres
     const repeticao = /(.)\1{2,}/;
     if (repeticao.test(novoSenha)) {
-      return "A senha não pode conter repetições de caracteres consecutivos.";
+      return "A senha não pode conter repetições de caracteres consecutivos, por exemplo: 'AAA' ou '111'.";
     }
 
     return ""; // Senha válida

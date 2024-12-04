@@ -141,11 +141,12 @@ const Caixa = () => {
 
   return (
     <SideBarPage>
-      <main className="main-container">
+      <main >
         <div className="main-title">
           <h3>Pedidos Em Aberto no Caixa</h3>
         </div>
 
+      <div className="scroll-despesas">
         <div className="Gestao-List">
           <table>
             <caption>Pedidos em Aberto</caption>
@@ -197,6 +198,8 @@ const Caixa = () => {
         >
           <h1 className="titulo-temporario">Próxima Página!</h1>
         </Modal>
+
+        </div>
       </main>
     </SideBarPage>
   );

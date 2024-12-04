@@ -102,81 +102,93 @@ function LogsAdmin() {
 
   return (
     <SideBarPage>
-      <div className="logs-admin">
-        <div className="titleLogsAdm">
-          <h3>Logs</h3>
-        </div>
+    <div className="logs-admin">
+      <div className="titleLogsAdm">
+        <h3>Logs</h3>
+      </div>
 
-        <div className="direction-align">
-          <div className="buttonsSelector">
-            <div className="year-selector">
-              {years.map(year => (
-                <button
-                  key={year}
-                  onClick={() => handleYearClick(year)}
-                  className={selectedYear === year ? 'selected' : ''}
-                >
-                  {year}
-                </button>
-              ))}
-            </div>
+      <div className="direction-align">
+      <div className="logAdm-table">
 
-            {selectedYear && (
-              <div className={`month-selector ${months ? 'show' : 'hide'}`}>
-                {months.map(month => (
-                  <button
-                    key={month}
-                    onClick={() => handleMonthClick(month)}
-                    className={selectedMonth === month ? 'selected' : ''}
-                  >
-                    {monthNames[month - 1]}
-                  </button>
-                ))}
-              </div>
-            )}
+        <div className="buttonsSelector">
+          {/* Botões de Ano à Lateral */}
+          <div className="year-selector">
+          <h5 className="titleYear-Month">
+              Anos
+              </h5>
+            {years.map(year => (
+              <button
+                key={year}
+                onClick={() => handleYearClick(year)}
+                className={selectedYear === year ? 'selected' : ''}
+              >
+                {year}
+              </button>
+            ))}
           </div>
 
-          <div className="logAdm-table">
-            <table>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>User ID</th>
-                  <th>User Name</th>
-                  <th>Action</th>
-                  <th>Table Name</th>
-                  <th>Timestamp</th>
-                </tr>
-              </thead>
-              <tbody>
-                {logs.map(log => (
-                  <tr key={log.id}>
-                    <td>{log.id}</td>
-                    <td>{log.user_id}</td>
-                    <td>{log.user_name}</td>
-                    <td>{log.action}</td>
-                    <td>{log.table_name}</td>
-                    <td>{converterDataHora(log.timestamp)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        {/* Botões de Mês - Posicionados Acima da Tabela */}
+        {selectedYear && (
+          <div className={`month-selector ${months ? 'show' : 'hide'}`}>
+            <h5 className="titleYear-Month">
+              Meses
+              </h5>
+            {months.map(month => (
+              <button
+                key={month}
+                onClick={() => handleMonthClick(month)}
+                className={selectedMonth === month ? 'selected' : ''}
+              >
+                {monthNames[month - 1]}
+              </button>
+            ))}
+          </div>
+        )}
+        </div>
 
-            <div className="pagination">
-              {[...Array(totalPages).keys()].map(page => (
-                <button
-                  key={page + 1}
-                  onClick={() => setCurrentPage(page + 1)}
-                  className={currentPage === page + 1 ? 'active' : ''}
-                >
-                  {page + 1}
-                </button>
+
+        {/* Tabela de Logs */}
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>User ID</th>
+                <th>User Name</th>
+                <th>Action</th>
+                <th>Table Name</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody>
+              {logs.map(log => (
+                <tr key={log.id}>
+                  <td>{log.id}</td>
+                  <td>{log.user_id}</td>
+                  <td>{log.user_name}</td>
+                  <td>{log.action}</td>
+                  <td>{log.table_name}</td>
+                  <td>{converterDataHora(log.timestamp)}</td>
+                </tr>
               ))}
-            </div>
+            </tbody>
+          </table>
+
+          {/* Paginação */}
+          <div className="pagination">
+            {[...Array(totalPages).keys()].map(page => (
+              <button
+                key={page + 1}
+                onClick={() => setCurrentPage(page + 1)}
+                className={currentPage === page + 1 ? 'active' : ''}
+              >
+                {page + 1}
+              </button>
+            ))}
           </div>
         </div>
       </div>
-    </SideBarPage>
+    </div>
+  </SideBarPage>
   );
 }
 

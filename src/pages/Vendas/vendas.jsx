@@ -112,11 +112,12 @@ function Hist_vendas() {
 
   return (
     <SideBarPage>
-      <main className="main-container">
-        <div className="main-title">
+      <main>
+        <div >
           <h3>Histórico de Vendas</h3>
         </div>
         {/* Botões para cadastrar despesas, excluir ou editar */}
+        <div className="scroll-despesas">
         <div className="Button_Cad">
           <button>
             Exportar
@@ -179,6 +180,8 @@ function Hist_vendas() {
             </tbody>
           </table>
         </div>
+        </div>
+
       </main>
     </SideBarPage>
   );

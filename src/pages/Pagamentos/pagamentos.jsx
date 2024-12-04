@@ -353,36 +353,31 @@ function Pagamentos() {
               position: "fixed",
               top: "50%",
               bottom: 0,
-              left: "50%",
+              left: "58%",
               right: 0,
               zIndex: 1000,
-              width: "70%",
-              height: "93%",
-              borderRadius: 10,
+              width: "60%",
+              padding: "40px",
+              height: "60%",
+              borderRadius: 20,
               transform: "translate(-50%, -50%)",
-              background: "white",
-              boxShadow: "10px 10px 15px rgba(0, 0, 0, 0.6)",
+              background: "linear-gradient(135deg, #fff, #fff)",
+              boxShadow: "10px 15px 30px rgba(0, 0, 0, 0.6)",
             }}
             show={showModalInfo}
             onHide={handleCloseInfo}
           >
-            <div
-              className="DivModalCont"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                height: "100%",
-              }}
-            >
-              <div className="HeaderModal">
-                <h1>Informação do beneficiário</h1>
-              </div>
+            <div className="DivModalCont" >
+            <div className="HeaderModal">
+                  <h1>Informações do Beneficiário</h1>
+                </div>
 
               {selectedPagament && (
                 <div
-                  className="corpoInfoProduto"
+                  className="Informacoes-Pagamentos"
                   style={{ overflowY: "auto", flex: 1, padding: "20px" }}
                 >
+                  <div  className="CorpoEtoque">
                   <ul style={{ listStyleType: "none", padding: 0 }}>
                     <li>
                       <strong>Nome:</strong> {selectedPagament.Nome}
@@ -403,11 +398,13 @@ function Pagamentos() {
                       <strong>Descrição:</strong> {selectedPagament.Descricao}
                     </li>
                   </ul>
+                                  </div>
+
                 </div>
               )}
 
               <div>
-                <button className="FecharPr" onClick={handleCloseInfo}>
+                <button className="FecharPr-Pagamentos" onClick={handleCloseInfo}>
                   Fechar
                 </button>
               </div>

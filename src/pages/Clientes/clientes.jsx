@@ -667,13 +667,7 @@ function Clientes() {
                     <option value="SIM">Autorizados</option>
                   </select>
 
-                  <textarea
-                    name="observacoes"
-                    onChange={handleChange}
-                    value={formData.observacoes}
-                    className="observacoes"
-                    placeholder="Observações"
-                  />
+                 
 
                   {showFuncionarioInput && (
                     <>
@@ -699,6 +693,13 @@ function Clientes() {
                       ))}
                     </>
                   )}
+ <textarea
+                    name="observacoes"
+                    onChange={handleChange}
+                    value={formData.observacoes}
+                    className="observacoes"
+                    placeholder="Observações"
+                  />
 
                   <div>
                     <button type="submit" className="RegisterPr">

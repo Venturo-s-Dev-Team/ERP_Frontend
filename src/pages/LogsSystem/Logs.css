@@ -12,20 +12,31 @@
 
 .direction-align {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: flex-start;
   padding-top: 30px;
 }
 
 /* Seletores */
 .buttonsSelector {
-  width: 15%;
-  height: 100%;
+  width: 100%;
   display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.year-selector{
+  gap: 5px;
+  display: flex;
+  margin-bottom: 5px;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  border-right: 1px solid rgb(174, 174, 174);
+}
+
+.titleYear-Month{
+  width: 50px;
+  border-right: 1px solid grey;
 }
 
 /* Botões de ano */
@@ -35,7 +46,6 @@
   border: none;
   background: linear-gradient(to top, #357ab7, #4582b8);
   border-radius: 2px;
-  margin: 5px;
   color: white;
   cursor: pointer;
   box-shadow: 0px 0px 23px rgba(0, 0, 0, 0.1);
@@ -50,19 +60,18 @@
 /* Seletores de mês */
 .month-selector {
   opacity: 0;
-  transform: translateX(10px); /* Inicia fora da tela (abaixo) */
+  transform: translateX(0px); /* Inicia fora da tela (abaixo) */
   transition: opacity 0.5s ease, transform 0.5s ease;
+  gap: 5px;
 }
 
 .month-selector.show {
   opacity: 1;
-  transform: translateX(0px); /* Move para sua posição original */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.month-selector.hide {
-  opacity: 0;
-  transform: translateX(20px); /* Move para fora da tela (abaixo) */
-}
 
 /* Estilo dos botões do mês */
 .month-selector button {

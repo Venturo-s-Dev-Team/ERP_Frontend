@@ -461,18 +461,16 @@ function RegistroProduto() {
                     onChange={handleFileChange}
                   />
 
-                  <div className="buttons">
+                  <div className="popup-footer">
                     <button
                       variant="primary"
                       type="submit"
-                      className="RegisterPr"
                     >
                       Salvar
                     </button>
                     <button
                       type="button"
                       onClick={handleCloseEdit}
-                      className="FecharPr"
                     >
                       Fechar
                     </button>

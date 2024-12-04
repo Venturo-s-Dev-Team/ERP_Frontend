@@ -57,3 +57,29 @@
 .Btn-Abrir:hover {
   background-color: rgba(10, 85, 131, 0.51);
 }
+
+.Informacoes-Pagamentos{
+  font-size: 22px;
+  margin-top: -10px;
+  text-align: left;
+  margin-left: -18px;
+}
+
+.FecharPr-Pagamentos {
+  width: 120px;
+  height: 40px;
+  border-radius: 5px;
+  background: linear-gradient(to top, #dc3545, #ff0e26);
+  border-color: transparent;
+  color: #fff;
+  text-align: center;
+  justify-content: flex-end;
+  align-items: flex-end;
+  flex-direction: column;
+  cursor: pointer;
+margin-top: 50px;}
+
+.FecharPr-Pagamentos:hover {
+  opacity: 0.8;
+  background-color: #000000;
+}

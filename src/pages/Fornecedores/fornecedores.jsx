@@ -591,7 +591,7 @@ function Fornecedores() {
             onHide={handleCloseFornecedores}
           >
             <div className="perfil-cliente">
-              <h2>Informações do Cliente</h2>
+              <h2>Informações do Fornecedor</h2>
               <div className="container-infos">
                 <div className="info-card">
                   <h3>Dados Básicos</h3>
@@ -658,8 +658,8 @@ function Fornecedores() {
                 </div>
               </div>
 
-              <div className="buttons">
-                <button onClick={handleCloseFornecedores} className="FecharPr">
+              <div className="popup-footer">
+                <button onClick={handleCloseFornecedores} >
                   FECHAR
                 </button>
               </div>

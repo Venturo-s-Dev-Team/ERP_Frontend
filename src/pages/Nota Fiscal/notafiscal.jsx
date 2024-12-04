@@ -45,7 +45,7 @@ function NotaFiscal() {
               <div className="Campo-CNPJ">
                 <label>
                   CPF/CNPJ:
-                  <InputMask type="text" required />
+                  <InputMask   mask="999.999.999-99" type="text" required />
                 </label>
               </div>
             </div>
