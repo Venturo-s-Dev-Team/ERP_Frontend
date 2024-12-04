@@ -104,13 +104,13 @@ function Login() {
     const sequenciaCrescente = /(?:012|123|234|345|456|567|678|789|890|abc|bcd|cde|def|efg|fgh|ghi|hij|ijk|jkl|klm|lmn|mno|nop|opq|pqr|qrs|rst|stu|tuv|uvw|vwx|wxy|xyz)/i;
     const sequenciaDecrescente = /(?:210|321|432|543|654|765|876|987|098|cba|dcb|edc|fed|gfe|hgf|ihg|jih|kji|lkj|mlk|nml|onm|pon|qpo|rqp|srq|tsr|uts|vut|wvu|xwv|yxw|zyx)/i;
     if (sequenciaCrescente.test(senha) || sequenciaDecrescente.test(senha)) {
-      return "A senha não pode conter sequências crescentes ou decrescentes.";
+      return "A senha não pode conter sequências crescentes ou decrescentes, por exemplo: '123' ou 'ABC'";
     }
 
     // Verificar repetição de caracteres
     const repeticao = /(.)\1{2,}/;
     if (repeticao.test(senha)) {
-      return "A senha não pode conter repetições de caracteres consecutivos.";
+      return "A senha não pode conter repetições de caracteres consecutivos, por exemplo: '123' ou 'abc";
     }
 
     return ""; // Senha válida
