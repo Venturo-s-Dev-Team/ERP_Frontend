@@ -202,6 +202,26 @@ const MenuList = ({ darkTheme }) => {
       ],
     },
     {
+      key: "VendasForGerente",
+      icon: <AreaChartOutlined />,
+      label: "Vendas",
+      children: [
+        { key: "clientes", label: <Link to="/clientes"> Clientes </Link> },
+        {
+          key: "gestao_de_pedidos",
+          label: <Link to="/gestaoVendas"> Gestão de Pedidos </Link>,
+        },
+        {
+          key: "pedidos_cancelados",
+          label: <Link to="/pedidoscancelados"> Pedidos Cancelados </Link>,
+        },
+        {
+          key: "historico_de_vendas",
+          label: <Link to="/histVendas">Histórico de Vendas</Link>,
+        },
+      ],
+    },
+    {
       key: "Caixa",
       icon: <MdLocalAtm />,
       label: "Caixa",
@@ -253,7 +273,8 @@ const MenuList = ({ darkTheme }) => {
     ],
     Gerente: [
       "logs",
-      "vendas",
+      "funcionario",
+      "VendasForGerente",
       "email",
       "perfil",
       "Logout",
